@@ -6,7 +6,7 @@ import signxml
 from lxml import etree
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx
 from signxml import XMLSigner
-
+import sys
 
 class Assinatura(object):
     def __init__(self, arquivo, senha):
@@ -43,5 +43,9 @@ class Assinatura(object):
 
             if element_signed is not None and signature is not None:
                 parent = element_signed.getparent()
-                parent.append(signature)
-        return etree.tostring(signed_root, encoding=str)
+                parent.append(signature) 
+
+        if sys.version_info[0] > 2:
+            return etree.tostring(signed_root, encoding=str)
+        else:
+            return etree.tostring(signed_root, encoding="utf8")
