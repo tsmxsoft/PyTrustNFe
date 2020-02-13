@@ -54,7 +54,7 @@ class Assinatura(object):
         ctx.key.load_cert_from_file(self.cert_pem, consts.KeyDataFormatPem)
 
         ctx.sign(signature_node)
-        if sys.version_info[0] > 3:
+        if sys.version_info[0] > 2:
             return etree.tostring(template, encoding=str)
         else:
             return etree.tostring(template, encoding="utf8")
