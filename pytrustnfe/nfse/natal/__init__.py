@@ -57,7 +57,7 @@ def _render(certificado, method, **kwargs):
 def _send(certificado, method, **kwargs):
     base_url = ""
     if kwargs["ambiente"] == "producao":
-        base_url = "https://wsnfsev1.natal.rn.gov.br:8444"
+        base_url = "https://wsnfsev1.natal.rn.gov.br:8444/axis2/services/NfseWSServiceV1?wsdl"
     else:
         base_url = "https://wsnfsev1homologacao.natal.rn.gov.br:8443/axis2/services/NfseWSServiceV1?wsdl"
 
