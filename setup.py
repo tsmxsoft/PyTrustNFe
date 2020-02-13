@@ -41,6 +41,7 @@ later (LGPLv2+)",
             "nfse/bh/templates/*xml",
             "nfse/mga/templates/*xml",
             "nfse/aparecida/templates/*xml",
+            "nfse/natal/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
