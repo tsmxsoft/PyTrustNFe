@@ -1,5 +1,6 @@
 # © 2019 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# -*- coding: utf-8 -*-
 
 import os
 from OpenSSL import crypto
@@ -25,7 +26,7 @@ def sign_rps(path, certificado, **kwargs):
 
             signer = Assinatura(certificado.pfx, certificado.password)
             lote += signer.assina_xml(
-                xml_rps, f"rps:{item.get('numero')}{item.get('serie')}", getchildren=True
+                xml_rps, "rps:{0}{1}".format(item.get('numero'), item.get('serie')), getchildren=True
             )
         return lote
     return ""
