@@ -2,6 +2,7 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import sys
 from lxml import etree
 import xmlsec
 import os.path
@@ -53,4 +54,7 @@ class Assinatura(object):
         ctx.key.load_cert_from_file(self.cert_pem, consts.KeyDataFormatPem)
 
         ctx.sign(signature_node)
-        return etree.tostring(template, encoding=str)
+        if sys.version_info[0] < 3:
+            return etree.tostring(template, encoding=str)
+        else:
+            return etree.tostring(template, encoding="utf8")
