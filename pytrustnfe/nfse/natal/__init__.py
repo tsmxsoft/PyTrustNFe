@@ -49,7 +49,7 @@ def _render(certificado, method, **kwargs):
     signer = Assinatura(certificado.pfx, certificado.password)
 
     xml_send = signer.assina_xml(etree.fromstring(
-        xml_send, parser=parser), f"{referencia}", getchildren=True)
+        xml_send, parser=parser), "{0}".format(referencia), getchildren=True)
     return xml_send
 
 
@@ -60,7 +60,6 @@ def _send(certificado, method, **kwargs):
     else:
         base_url = "https://wsnfsev1homologacao.natal.rn.gov.br:8443/axis2/services/NfseWSServiceV1?wsdl"
 
-    base_url = "https://wsnfsev1homologacao.natal.rn.gov.br:8443/axis2/services/NfseWSServiceV1?wsdl"
     cert, key = extract_cert_and_key_from_pfx(
         certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
