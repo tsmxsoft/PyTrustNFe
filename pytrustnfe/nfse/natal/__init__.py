@@ -25,9 +25,13 @@ def sign_rps(path, certificado, **kwargs):
             xml_rps = render_xml(path, "Rps.xml", True, **data)
 
             signer = Assinatura(certificado.pfx, certificado.password)
-            lote += signer.assina_xml(
-                xml_rps, "rps:{0}{1}".format(item.get('numero'), item.get('serie')), getchildren=True
-            )
+            reference = "rps:{0}{1}".format(
+                item.get('numero'), item.get('serie'))
+
+            rps = signer.assina_xml(xml_rps, reference=reference,
+                                    getchildren=False)
+
+            lote += rps
         return lote
     return ""
 
@@ -41,7 +45,7 @@ def _render(certificado, method, **kwargs):
     lote = ""
     referencia = ""
     if method == "RecepcionarLoteRps":
-        referencia = "lote"
+        referencia = kwargs.get("nfse").get("numero_lote")
         lote = sign_rps(path, certificado, **kwargs)
 
     kwargs["lote"] = lote
@@ -50,7 +54,9 @@ def _render(certificado, method, **kwargs):
     signer = Assinatura(certificado.pfx, certificado.password)
 
     xml_send = signer.assina_xml(etree.fromstring(
-        xml_send, parser=parser), "{0}".format(referencia), getchildren=True)
+        xml_send, parser=parser), "lote:{0}".format(referencia))
+    #xml_send = '<EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">' + \
+    #    xml_send + '</EnviarLoteRpsEnvio>'
     return xml_send
 
 

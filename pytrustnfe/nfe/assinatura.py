@@ -33,11 +33,15 @@ class Assinatura(object):
         signer.namespaces = ns
 
         ref_uri = ("#%s" % reference) if reference else None
+        # get the element to signer
+        element = xml_element.find(".//*[@Id='%s']" % reference)
         signed_root = signer.sign(
-            xml_element, key=key.encode(), cert=cert.encode(), reference_uri=ref_uri
+            element, key=key.encode(), cert=cert.encode(), reference_uri=ref_uri
         )
+
         if reference:
-            element_signed = signed_root.find(".//*[@Id='%s']" % reference)
+            print("assinando tag: " + reference)
+            element_signed = xml_element.find(".//*[@Id='%s']" % reference)
             signature = signed_root.find(
                 ".//{http://www.w3.org/2000/09/xmldsig#}Signature"
             )
@@ -50,6 +54,6 @@ class Assinatura(object):
                 element_extern.append(signature)
 
         if sys.version_info[0] > 2:
-            return etree.tostring(signed_root, encoding=str)
+            return etree.tostring(xml_element, encoding=str)
         else:
             return etree.tostring(signed_root, encoding="utf8")

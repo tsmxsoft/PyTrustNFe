@@ -107,6 +107,5 @@
             <Art>{{ rps.construcao_civil.art }}</Art>
         </ContrucaoCivil>
         {% endif %}
-    </InfRps>
-    <Signature Id="placeholder"></Signature>
+    </InfRps> 
 </Rps>
