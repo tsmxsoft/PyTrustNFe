@@ -17,47 +17,34 @@ from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
 
 
-def sign_rps(path, certificado, **kwargs):
-    if "nfse" in kwargs:
-        lote = ""
-        for item in kwargs["nfse"]["lista_rps"]:
-            data = {"rps": item}
-            xml_rps = render_xml(path, "Rps.xml", True, **data)
-
-            signer = Assinatura(certificado.pfx, certificado.password)
-            reference = "rps:{0}{1}".format(
-                item.get('numero'), item.get('serie'))
-
-            rps = signer.assina_xml(xml_rps, reference=reference,
-                                    getchildren=False)
-
-            lote += rps
-        return lote
-    return ""
-
-
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
     parser = etree.XMLParser(
         remove_blank_text=True, remove_comments=True, strip_cdata=False
     )
+    signer = Assinatura(certificado.pfx, certificado.password)
 
     lote = ""
     referencia = ""
     if method == "RecepcionarLoteRps":
         referencia = kwargs.get("nfse").get("numero_lote")
-        lote = sign_rps(path, certificado, **kwargs)
 
-    kwargs["lote"] = lote
-    xml_send = render_xml(path, "%s.xml" % method, False, **kwargs)
+    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    signer = Assinatura(certificado.pfx, certificado.password)
+    # xml object
+    xml_send = etree.fromstring(
+        xml_string_send, parser=parser)
 
-    xml_send = signer.assina_xml(etree.fromstring(
-        xml_send, parser=parser), "lote:{0}".format(referencia))
-    #xml_send = '<EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">' + \
-    #    xml_send + '</EnviarLoteRpsEnvio>'
-    return xml_send
+    for item in kwargs["nfse"]["lista_rps"]:
+        reference = "rps:{0}{1}".format(
+            item.get('numero'), item.get('serie'))
+
+        signer.assina_xml(xml_send, reference)
+
+    xml_signed_send = signer.assina_xml(
+        xml_send, "lote:{0}".format(referencia))
+
+    return xml_signed_send
 
 
 def _send(certificado, method, **kwargs):

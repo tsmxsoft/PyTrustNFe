@@ -69,13 +69,13 @@
             </IdentificacaoTomador>
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
-              <Endereco>{{ rps.tomador.endereco }}</Endereco>
-              <Numero>{{ rps.tomador.numero }}</Numero>
-              <Complemento>{{ rps.tomador.complemento }}</Complemento>
-              <Bairro>{{ rps.tomador.bairro }}</Bairro>
-              <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
-              <Uf>{{ rps.tomador.uf }}</Uf>
-              <Cep>{{ rps.tomador.cep }}</Cep>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
+                <Numero>{{ rps.tomador.numero }}</Numero>
+                <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                <Bairro>{{ rps.tomador.bairro }}</Bairro>
+                <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
+                <Uf>{{ rps.tomador.uf }}</Uf>
+                <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
             <Contato>
                 {% if rps.tomador.telefone is defined -%}

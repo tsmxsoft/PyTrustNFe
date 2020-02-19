@@ -43,7 +43,6 @@ def render_xml(path, template_name, remove_empty, **nfe):
             parent = elem.getparent()
             if recursively_empty(elem):
                 parent.remove(elem)
-        return root
 
     if sys.version_info[0] > 2:
         return etree.tostring(root, encoding=str)

@@ -7,10 +7,10 @@ from lxml import etree
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx
 from signxml import XMLSigner
 import sys
-import copy
 
 
 class Assinatura(object):
+
     def __init__(self, arquivo, senha):
         self.arquivo = arquivo
         self.senha = senha
@@ -25,39 +25,31 @@ class Assinatura(object):
         signer = XMLSigner(
             method=signxml.methods.enveloped,
             signature_algorithm="rsa-sha1",
-            digest_algorithm="sha1",
-            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",
-        )
+            digest_algorithm='sha1',
+            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",)
 
         ns = {}
-        ns[None] = signer.namespaces["ds"]
+        ns[None] = signer.namespaces['ds']
         signer.namespaces = ns
 
-        ref_uri = ("#%s" % reference) if reference else None
-        # get the element to signer
-        element = copy.deepcopy(xml_element.find(".//*[@Id='%s']" % reference))
-        #if "lote" in reference:
-        #import ipdb
-        #ipdb.set_trace()
-        #    for signature in element.findall(".//{http://www.w3.org/2000/09/xmldsig#}Signature"):
-        #        signature.getparent().remove(signature)
+        ref_uri = ('#%s' % reference) if reference else None
 
+        element = xml_element.find(".//*[@Id='%s']" % reference)
         signed_root = signer.sign(
-            element, key=key.encode(), cert=cert.encode(), reference_uri=ref_uri
-        )
+            element, key=key.encode(), cert=cert.encode(),
+            reference_uri=ref_uri)
 
         if reference:
-            print("assinando tag: " + reference)
             element_signed = xml_element.find(".//*[@Id='%s']" % reference)
             signature = signed_root.findall(
                 ".//{http://www.w3.org/2000/09/xmldsig#}Signature"
             )[-1]
 
             if element_signed is not None and signature is not None:
-                element_extern = element_signed.getparent()
-                element_extern.append(signature)
+                parent = element_signed.getparent()
+                parent.append(signature)
 
         if sys.version_info[0] > 2:
             return etree.tostring(xml_element, encoding=str)
         else:
-            return etree.tostring(signed_root, encoding="utf8")
+            return etree.tostring(xml_element, encoding="utf8")
