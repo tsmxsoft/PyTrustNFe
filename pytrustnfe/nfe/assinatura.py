@@ -10,6 +10,7 @@ import sys
 
 
 class Assinatura(object):
+
     def __init__(self, arquivo, senha):
         self.arquivo = arquivo
         self.senha = senha
@@ -24,36 +25,31 @@ class Assinatura(object):
         signer = XMLSigner(
             method=signxml.methods.enveloped,
             signature_algorithm="rsa-sha1",
-            digest_algorithm="sha1",
-            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",
-        )
+            digest_algorithm='sha1',
+            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",)
 
         ns = {}
-        ns[None] = signer.namespaces["ds"]
+        ns[None] = signer.namespaces['ds']
         signer.namespaces = ns
 
-        ref_uri = ("#%s" % reference) if reference else None
-        # get the element to signer
+        ref_uri = ('#%s' % reference) if reference else None
+
         element = xml_element.find(".//*[@Id='%s']" % reference)
         signed_root = signer.sign(
-            element, key=key.encode(), cert=cert.encode(), reference_uri=ref_uri
-        )
+            element, key=key.encode(), cert=cert.encode(),
+            reference_uri=ref_uri)
 
         if reference:
-            print("assinando tag: " + reference)
             element_signed = xml_element.find(".//*[@Id='%s']" % reference)
-            signature = signed_root.find(
+            signature = signed_root.findall(
                 ".//{http://www.w3.org/2000/09/xmldsig#}Signature"
-            )
+            )[-1]
 
-            if getchildren and element_signed is not None and signature is not None:
-                element_intern = element_signed.getchildren()
-                element_intern.append(signature)
-            elif element_signed is not None and signature is not None:
-                element_extern = element_signed.getparent()
-                element_extern.append(signature)
+            if element_signed is not None and signature is not None:
+                parent = element_signed.getparent()
+                parent.append(signature)
 
         if sys.version_info[0] > 2:
             return etree.tostring(xml_element, encoding=str)
         else:
-            return etree.tostring(signed_root, encoding="utf8")
+            return etree.tostring(xml_element, encoding="utf8")

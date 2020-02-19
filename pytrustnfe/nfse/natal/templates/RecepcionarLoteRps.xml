@@ -5,7 +5,9 @@
         <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
         <QuantidadeRps>{{ nfse.lista_rps|length }}</QuantidadeRps>
         <ListaRps>
-            {{lote}}
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
         </ListaRps>
     </LoteRps>
 </EnviarLoteRpsEnvio>
