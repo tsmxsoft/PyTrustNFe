@@ -52,7 +52,7 @@ later (LGPLv2+)",
     long_description_content_type="text/markdown",
     install_requires=[
         "Jinja2 >= 2.8",
-        "pyOpenSSL >= 16.0.0, < 18",
+        "pyOpenSSL == 19.1.0",
         "signxml >= 2.4.0",
         "lxml >= 3.5.0, < 5",
         "suds-jurko >= 0.6",
