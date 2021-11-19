@@ -1,0 +1,18 @@
+<CancelarNfseEnvio xmlns="http://www.agili.com.br/nfse_v_1.00.xsd">
+  <UnidadeGestora>{{ cancelamento.cnpj_prefeitura }}</UnidadeGestora>
+  <PedidoCancelamento>
+    <IdentificacaoNfse>
+      <Numero>{{ cancelamento.numero_nfse }}</Numero>
+      <IdentificacaoPrestador>
+        <ChaveDigital>{{ cancelamento.assinatura }}</ChaveDigital>
+        <CpfCnpj>
+          <Cnpj>{{ cancelamento.cnpj_prestador }}</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>{{ cancelamento.inscricao_municipal }}</InscricaoMunicipal>
+      </IdentificacaoPrestador>
+    </IdentificacaoNfse>
+    <CodigoCancelamento>{{ cancelamento.codigo_cancelamento }}</CodigoCancelamento>
+    <JustificativaCancelamento>{{ cancelamento.motivo }}</JustificativaCancelamento>
+    <Versao>1.00</Versao>
+  </PedidoCancelamento>
+</CancelarNfseEnvio>

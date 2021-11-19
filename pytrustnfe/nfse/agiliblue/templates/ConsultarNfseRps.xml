@@ -1,0 +1,16 @@
+<ConsultarNfseRpsEnvio xmlns="http://www.agili.com.br/nfse_v_1.00.xsd">
+  <UnidadeGestora>{{ consulta.cnpj_prefeitura }}</UnidadeGestora>
+  <IdentificacaoRps>
+    <Numero>{{ consulta.nfse_rps_numero }}</Numero>
+    <Serie>{{ consulta.nfse_rps_serie }}</Serie>
+    <Tipo>{{ consulta.nfse_rps_tipo }}</Tipo>
+  </IdentificacaoRps>
+  <IdentificacaoPrestador>
+    <ChaveDigital>{{ consulta.assinatura }}</ChaveDigital>
+    <CpfCnpj>
+      <Cnpj>{{ consulta.cnpj_prestador }}</Cnpj>
+    </CpfCnpj>
+    <InscricaoMunicipal>{{ consulta.inscricao_municipal }}</InscricaoMunicipal>
+  </IdentificacaoPrestador>
+  <Versao>1.00</Versao>
+</ConsultarNfseRpsEnvio>

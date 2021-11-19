@@ -25,6 +25,7 @@ NFSe - Cidades atendidas
 * [Simpliss](cidades/simpliss.md) - 18 cidade atendidas
 * [GINFES](cidaes/ginfes.md) - 79 cidades atendidas
 * [DSF](cidades/dsf.md) - 7 cidades atendidas
+* [AgiliBlue](cidades/agiliblue.md) - 1 cidade atendida
 
 Roadmap
 --------------

@@ -1,0 +1,20 @@
+<EnviarLoteRpsEnvio xmlns="http://www.agili.com.br/nfse_v_1.00.xsd">
+  <UnidadeGestora>{{ nfse.cnpj_prefeitura }}</UnidadeGestora>
+  <LoteRps Id="lote:{{ nfse.numero_lote }}">
+    <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
+    <IdentificacaoPrestador>
+      <ChaveDigital>{{ nfse.assinatura }}</ChaveDigital>
+      <CpfCnpj>
+        <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+      </CpfCnpj>
+      <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+    </IdentificacaoPrestador>
+    <QuantidadeRps>{{ nfse.lista_rps|length }}</QuantidadeRps>
+    <ListaRps>
+        {% for rps in nfse.lista_rps -%}
+        {% include 'Rps.xml' %}
+        {% endfor %}
+    </ListaRps>
+  </LoteRps>
+  <Versao>1.00</Versao>
+</EnviarLoteRpsEnvio>
