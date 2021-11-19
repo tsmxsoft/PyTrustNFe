@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConsultarRequerimentoCancelamentoEnvio xmlns="http://www.agili.com.br/nfse_v_1.00.xsd">
+  <UnidadeGestora>{{ consulta.cnpj_prefeitura }}</UnidadeGestora>
+  <IdentificacaoPrestador>
+    <ChaveDigital>{{ consulta.assinatura }}</ChaveDigital>
+    <CpfCnpj>
+      <Cnpj>{{ consulta.cnpj_prestador }}</Cnpj>
+    </CpfCnpj>
+    <InscricaoMunicipal>{{ consulta.inscricao_municipal }}</InscricaoMunicipal>
+  </IdentificacaoPrestador>
+  <Protocolo>{{ consulta.protocolo }}</Protocolo>
+  <Versao>1.00</Versao>
+</ConsultarRequerimentoCancelamentoEnvio>
