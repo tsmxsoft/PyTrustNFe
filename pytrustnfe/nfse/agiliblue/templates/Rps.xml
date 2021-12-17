@@ -1,6 +1,6 @@
 <DeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
     <IdentificacaoPrestador>
-        <ChaveDigital>{{ rps.assinatura }}</ChaveDigital>
+        <ChaveDigital>{{ rps.chave_digital }}</ChaveDigital>
         <CpfCnpj>
             <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
         </CpfCnpj>

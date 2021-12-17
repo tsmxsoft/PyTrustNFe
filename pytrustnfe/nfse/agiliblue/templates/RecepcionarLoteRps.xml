@@ -3,7 +3,7 @@
   <LoteRps Id="lote:{{ nfse.numero_lote }}">
     <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
     <IdentificacaoPrestador>
-      <ChaveDigital>{{ nfse.assinatura }}</ChaveDigital>
+      <ChaveDigital>{{ nfse.chave_digital }}</ChaveDigital>
       <CpfCnpj>
         <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
       </CpfCnpj>
