@@ -1,188 +1,182 @@
-<DeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
-    <IdentificacaoPrestador>
-        <ChaveDigital>{{ rps.chave_digital }}</ChaveDigital>
-        <CpfCnpj>
-            <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
-        </CpfCnpj>
-        <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
-    </IdentificacaoPrestador>
-    <NfseSubstituida>0</NfseSubstituida>
-    <Rps>
-        <IdentificacaoRps>
-            <Numero>{{ rps.numero }}</Numero>
-            <Serie>{{ rps.serie }}</Serie>
-            <Tipo>{{ rps.tipo_rps }}</Tipo>
-        </IdentificacaoRps>
-        <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
-    </Rps>
-    <DadosTomador>
-        <IdentificacaoTomador>
-            <CpfCnpj>
-                {% if rps.tomador.cpf_cnpj|length == 14  %}
-                <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+        <DeclaracaoPrestacaoServico>
+          <IdentificacaoPrestador>
+              <ChaveDigital>{{ nfse.chave_digital }}</ChaveDigital>
+              <CpfCnpj>
+                  <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+              </CpfCnpj>
+              <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+          </IdentificacaoPrestador>
+          <NfseSubstituida>0</NfseSubstituida>
+          <Rps>
+              <IdentificacaoRps>
+                  <Numero>{{ item.numero }}</Numero>
+                  <Serie>{{ item.serie }}</Serie>
+                  <Tipo>{{ item.tipo_rps }}</Tipo>
+              </IdentificacaoRps>
+              {% set datatempo = item.data_emissao.split('T') %}
+              <DataEmissao>{{ datatempo[0] }}</DataEmissao>
+          </Rps>
+          <DadosTomador>
+              <IdentificacaoTomador>
+                  <CpfCnpj>
+                      {% if item.tomador.cpf_cnpj|length == 14  %}
+                      <Cnpj>{{ item.tomador.cpf_cnpj }}</Cnpj>
+                      {% endif %}
+                      {% if item.tomador.cpf_cnpj|length == 11  %}
+                      <Cpf>{{ item.tomador.cpf_cnpj }}</Cpf>
+                      {% endif %}
+                  </CpfCnpj>
+                  {% if item.tomador.inscricao_municipal is defined -%}
+                  <InscricaoMunicipal>{{ item.tomador.inscricao_municipal }}</InscricaoMunicipal>
+                  {% endif %}
+              </IdentificacaoTomador>
+              <RazaoSocial>{{ item.tomador.razao_social }}</RazaoSocial>
+              <LocalEndereco>1</LocalEndereco>
+              <Endereco>
+                  {% set tipo_logradouro = item.tomador.endereco.split(' ') %}
+                  <TipoLogradouro>{{ tipo_logradouro[0] }}</TipoLogradouro>
+                  <Logradouro>{{ item.tomador.endereco }}</Logradouro>
+                  <Numero>{{ item.tomador.numero }}</Numero>
+                  <Complemento>{{ item.tomador.complemento }}</Complemento>
+                  <Bairro>{{ item.tomador.bairro }}</Bairro>
+                  <Municipio>
+                      <CodigoMunicipioIBGE>{{ item.servico.codigo_municipio }}</CodigoMunicipioIBGE>
+                      <Descricao>{{ item.tomador.cidade }}</Descricao>
+                      <Uf>{{ item.tomador.uf }}</Uf>
+                  </Municipio>
+                  <Pais>
+                      <CodigoPaisBacen>1058</CodigoPaisBacen>
+                      <Descricao>Brasil</Descricao>
+                  </Pais>
+                  <Cep>{{ item.tomador.cep }}</Cep>
+              </Endereco>
+              <Contato>
+                  {% if item.tomador.telefone is defined -%}
+                  <Telefone>{{ item.tomador.telefone }}</Telefone>
+                  {% endif %}
+                  {% if item.tomador.email is defined -%}
+                  <Email>{{ item.tomador.email }}</Email>
+                  {% endif %}
+              </Contato>
+              <InscricaoEstadual>{{ item.tomador.inscricao_estadual }}</InscricaoEstadual>
+          </DadosTomador>
+          {% if item.intermediario is defined -%}
+          <DadosIntermediario>
+              <IdentificacaoIntermediario>
+                  <CpfCnpj>
+                      <Cnpj>{{ item.intermediario.cnpj }}</Cnpj>
+                  </CpfCnpj>
+                  <InscricaoMunicipal>{{ item.intermediario.inscricao_municipal }}</InscricaoMunicipal>
+              </IdentificacaoIntermediario>
+              <RazaoSocial>{{ item.intermediario.razao_social }}</RazaoSocial>
+          </DadosIntermediario>
+          {% endif %}
+          {% if item.construcao_civil is defined -%}
+          <DadosMaterialUsado>
+              <CodigoObra>{{ item.construcao_civil.codigo_obra }}</CodigoObra>
+              <Art>{{ item.construcao_civil.art }}</Art>
+          </DadosMaterialUsado>
+          {% endif %}
+          <OptanteSimplesNacional>{{ item.optante_simples }}</OptanteSimplesNacional>
+          {% if not item.optante_mei_simei %}
+          <OptanteMEISimei>0</OptanteMEISimei>
+          {% else %}
+          <OptanteMEISimei>{{ item.optante_mei_simei }}</OptanteMEISimei>
+          {% endif %}
+          <ISSQNRetido>{{ item.servico.iss_retido }}</ISSQNRetido>
+          <ResponsavelISSQN>
+            <Codigo>-3</Codigo>
+            <Descricao>Prestador do serviço</Descricao>
+          </ResponsavelISSQN>
+          {% if item.servico.codigo_servico is defined -%}
+          <CodigoAtividadeEconomica>{{ item.servico.codigo_servico }}</CodigoAtividadeEconomica>
+          {% endif %}
+          {% if item.servico.cnae_servico is defined -%}
+          <CodigoCnaeAtividadeEconomica>{{ item.servico.cnae_servico }}</CodigoCnaeAtividadeEconomica>
+          {% endif %}
+          <ItemLei116AtividadeEconomica>{{ item.codigo_atividade }}</ItemLei116AtividadeEconomica>
+          <ExigibilidadeISSQN>
+              <Codigo>{{ item.iss_exigibilidade_cod|default("-1", true) }}</Codigo>
+          </ExigibilidadeISSQN>
+          {% if item.beneficio_processo is defined -%}
+          <BeneficioProcesso>{{ item.beneficio_processo }}</BeneficioProcesso>
+          {% endif %}
+          <MunicipioIncidencia>
+                <CodigoMunicipioIBGE>{{ item.servico.codigo_municipio }}</CodigoMunicipioIBGE>
+          </MunicipioIncidencia>
+          <ValorServicos>{{ item.servico.valor_servico }}</ValorServicos>
+          {% if item.servico.valor_descontos is defined -%}
+          <ValorDescontos>{{ item.servico.valor_descontos }}</ValorDescontos>
+          {% endif %}
+          {% if item.servico.pis is defined -%}
+          <ValorPis>{{ item.servico.pis }}</ValorPis>
+          {% endif %}
+          {% if item.servico.cofins is defined -%}
+          <ValorCofins>{{ item.servico.cofins }}</ValorCofins>
+          {% endif %}
+          {% if item.servico.inss is defined -%}
+          <ValorInss>{{ item.servico.inss }}</ValorInss>
+          {% endif %}
+          {% if item.servico.ir is defined -%}
+          <ValorIrrf>{{ item.servico.ir }}</ValorIrrf>
+          {% endif %}
+          {% if item.servico.csll is defined -%}
+          <ValorCsll>{{ item.servico.csll }}</ValorCsll>
+          {% endif %}
+          {% if item.servico.retencoes is defined -%}
+          <ValorOutrasRetencoes>{{ item.servico.retencoes }}</ValorOutrasRetencoes>
+          {% endif %}
+          {% if item.servico.base_calculo is defined -%}
+          <ValorBaseCalculoISSQN>{{ item.servico.base_calculo }}</ValorBaseCalculoISSQN>
+          {% endif %}
+          {% if item.servico.aliquota is defined -%}
+          <AliquotaISSQN>{{ item.servico.aliquota }}</AliquotaISSQN>
+          {% endif %}
+          {% if item.servico.iss is defined -%}
+          <ValorISSQNCalculado>{{ item.servico.iss }}</ValorISSQNCalculado>
+          {% endif %}
+          <PercAbatimento>0.00</PercAbatimento>
+          {% if item.servico.iss_retido is defined -%}
+          <ValorISSQNRecolher>{{ item.servico.iss_retido }}</ValorISSQNRecolher>
+          {% endif %}
+          <ValorDeducaoConstCivil>0.00</ValorDeducaoConstCivil>
+          <ValorLiquido>{{ item.servico.valor_servico }}</ValorLiquido>
+          <ListaServico>
+            <DadosServico>
+                <Discriminacao>{{ item.servico.discriminacao }}</Discriminacao>
+                <CodigoCnae>{{ item.servico.cnae_servico }}</CodigoCnae>
+                <ItemLei116>{{ item.servico.codigo_servico }}</ItemLei116>
+                <Quantidade>{{ item.servico.quantidade|default('1',true) }}</Quantidade>
+                <ValorServico>{{ item.servico.valor_servico }}</ValorServico>
+                <ValorDesconto>{{ item.servico.valor_desconto }}</ValorDesconto>
+                {% if item.servico.prof_parceiro is defined -%}
+                <DadosProfissionalParceiro>
+                    <IdentificacaoProfissionalParceiro>
+                        <CpfCnpj>
+                            <Cnpj>{{ item.servico.prof_parceiro.cnpj }}</Cnpj>
+                        </CpfCnpj>
+                        <InscricaoMunicipal>{{ item.servico.prof_parceiro.inscricao_municipal }}</InscricaoMunicipal>
+                    </IdentificacaoProfissionalParceiro>
+                    <RazaoSocial>{{ item.servico.prof_parceiro.razao_social }}</RazaoSocial>
+                    <PercentualProfissionalParceiro>{{ item.servico.prof_parceiro.percentual }}</PercentualProfissionalParceiro>
+                </DadosProfissionalParceiro>
                 {% endif %}
-                {% if rps.tomador.cpf_cnpj|length == 11  %}
-                <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
-                {% endif %}
-            </CpfCnpj>
-            {% if rps.tomador.inscricao_municipal is defined -%}
-            <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
-            {% endif %}
-        </IdentificacaoTomador>
-        <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
-        <LocalEndereco>1</LocalEndereco>
-        <Endereco>
-            <TipoLogradouro>{{ rps.tomador.tipo_logradouro }}</TipoLogradouro>
-            <Logradouro>{{ rps.tomador.logradouro }}</Logradouro>
-            <Numero>{{ rps.tomador.numero }}</Numero>
-            <Complemento>{{ rps.tomador.complemento }}</Complemento>
-            <Bairro>{{ rps.tomador.bairro }}</Bairro>
-            <Municipio>
-                <CodigoMunicipioIBGE>{{ rps.tomador.codigo_municipio }}</CodigoMunicipioIBGE>
-                <Descricao>{{ rps.tomador.cidade }}</Descricao>
-                <Uf>{{ rps.tomador.uf }}</Uf>
-            </Municipio>
-            <Pais>
-                <CodigoPaisBacen>1058</CodigoPaisBacen>
-                <Descricao>Brasil</Descricao>
-            </Pais>
-            <Cep>{{ rps.tomador.cep }}</Cep>
-        </Endereco>
-        <Contato>
-            {% if rps.tomador.telefone is defined -%}
-            <Telefone>{{ rps.tomador.telefone }}</Telefone>
-            {% endif %}
-            {% if rps.tomador.email is defined -%}
-            <Email>{{ rps.tomador.email }}</Email>
-            {% endif %}
-        </Contato>
-        <InscricaoEstadual>{{ rps.tomador.inscricao_estadual }}</InscricaoEstadual>
-    </DadosTomador>
-    {% if rps.intermediario is defined -%}
-    <DadosIntermediario>
-        <IdentificacaoIntermediario>
-            <CpfCnpj>
-                <Cnpj>{{ rps.intermediario.cnpj }}</Cnpj>
-            </CpfCnpj>
-            <InscricaoMunicipal>{{ rps.intermediario.inscricao_municipal }}</InscricaoMunicipal>
-        </IdentificacaoIntermediario>
-        <RazaoSocial>{{ rps.intermediario.razao_social }}</RazaoSocial>
-    </DadosIntermediario>
-    {% endif %}
-    {% if rps.construcao_civil is defined -%}
-    <DadosMaterialUsado>
-        <CodigoObra>{{ rps.construcao_civil.codigo_obra }}</CodigoObra>
-        <Art>{{ rps.construcao_civil.art }}</Art>
-    </DadosMaterialUsado>
-    {% endif %}
-    <RegimeEspecialTributacao>
-        <Codigo>{{ rps.regime_tributacao }}</Codigo>
-    </RegimeEspecialTributacao>
-    <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
-    <OptanteMEISimei>{{ rps.optante_mei_simei }}</OptanteMEISimei>
-    <ISSQNRetido>{{ rps.iss_retido }}</ISSQNRetido>
-    {% if rps.iss_cod_responsavel is defined -%}
-    <ResponsavelISSQN>
-        <Codigo>{{ rps.iss_cod_responsavel }}</Codigo>
-    </ResponsavelISSQN>
-    {% endif %}
-    {% if rps.codigo_servico is defined -%}
-    <CodigoAtividadeEconomica>{{ rps.codigo_servico }}</CodigoAtividadeEconomica>
-    {% endif %}
-    {% if rps.cnae_servico is defined -%}
-    <CodigoCnaeAtividadeEconomica>{{ rps.cnae_servico }}</CodigoCnaeAtividadeEconomica>
-    {% endif %}
-    {% if rps.itemlei116_atividade_economica is defined -%}
-    <ItemLei116AtividadeEconomica>{{ rps.itemlei116_atividade_economica }}</ItemLei116AtividadeEconomica>
-    {% endif %}
-    <ExigibilidadeISSQN>
-        <Codigo>{{ rps.iss_exigibilidade_cod }}</Codigo>
-    </ExigibilidadeISSQN>
-    {% if rps.beneficio_processo is defined -%}
-    <BeneficioProcesso>{{ rps.beneficio_processo }}</BeneficioProcesso>
-    {% endif %}
-    <MunicipioIncidencia>
-        <CodigoMunicipioIBGE>{{ rps.tomador.codigo_municipio }}</CodigoMunicipioIBGE>
-        <Descricao>{{ rps.tomador.cidade }}</Descricao>
-        <Uf>{{ rps.tomador.uf }}</Uf>
-    </MunicipioIncidencia>
-    <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
-    {% if rps.servico.valor_descontos is defined -%}
-    <ValorDescontos>{{ rps.servico.valor_descontos }}</ValorDescontos>
-    {% endif %}
-    {% if rps.servico.pis is defined -%}
-    <ValorPis>{{ rps.servico.pis }}</ValorPis>
-    {% endif %}
-    {% if rps.servico.cofins is defined -%}
-    <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
-    {% endif %}
-    {% if rps.servico.inss is defined -%}
-    <ValorInss>{{ rps.servico.inss }}</ValorInss>
-    {% endif %}
-    {% if rps.servico.ir is defined -%}
-    <ValorIrrf>{{ rps.servico.ir }}</ValorIrrf>
-    {% endif %}
-    {% if rps.servico.csll is defined -%}
-    <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
-    {% endif %}
-    {% if rps.servico.retencoes is defined -%}
-    <ValorOutrasRetencoes>{{ rps.servico.retencoes }}</ValorOutrasRetencoes>
-    {% endif %}
-    {% if rps.servico.base_calculo is defined -%}
-    <ValorBaseCalculoISSQN>{{ rps.servico.base_calculo }}</ValorBaseCalculoISSQN>
-    {% endif %}
-    {% if rps.servico.aliquota is defined -%}
-    <AliquotaISSQN>{{ rps.servico.aliquota }}</AliquotaISSQN>
-    {% endif %}
-    {% if rps.servico.iss is defined -%}
-    <ValorISSQNCalculado>{{ rps.servico.iss }}</ValorISSQNCalculado>
-    {% endif %}
-    {% if rps.servico.iss_retido is defined -%}
-    <ValorISSQNRecolher>{{ rps.servico.iss_retido }}</ValorISSQNRecolher>
-    {% endif %}
-    <ValorLiquido>{{ rps.servico.valor_servico }}</ValorLiquido>
-    {% if rps.servico.observacao is defined -%}
-    <Observacao>{{ rps.servico.observacao }}</Observacao>
-    {% endif %}
-    <ListaServico>
-        {% for item in rps.itens_servico -%}
-        <DadosServico>
-            <Discriminacao>{{ item.name|normalize|escape }}</Discriminacao>
-            <CodigoCnae>{{ item.cnae }}</CodigoCnae>
-            <ItemLei116>ItemLei1161</ItemLei116>
-            <Quantidade>{{ item.quantidade }}</Quantidade>
-            <ValorServico>{{ item.valor_total }}</ValorServico>
-            {% if item.desconto is defined -%}
-            <ValorDesconto>{{ item.desconto }}</ValorDesconto>
-            {% endif %}
-            {% if item.prof_parceiro is defined -%}
-            <DadosProfissionalParceiro>
-                <IdentificacaoProfissionalParceiro>
-                    <CpfCnpj>
-                        <Cnpj>{{ item.prof_parceiro.cnpj }}</Cnpj>
-                    </CpfCnpj>
-                    <InscricaoMunicipal>{{ item.prof_parceiro.inscricao_municipal }}</InscricaoMunicipal>
-                </IdentificacaoProfissionalParceiro>
-                <RazaoSocial>{{ item.prof_parceiro.razao_social }}</RazaoSocial>
-                <PercentualProfissionalParceiro>{{ item.prof_parceiro.percentual }}</PercentualProfissionalParceiro>
-            </DadosProfissionalParceiro>
-            {% endif %}
-        </DadosServico>
-        {% endfor %}
-    </ListaServico>
-    {% if rps.correcao is defined -%}
-    <ListaCartaCorrecao>
-        {% for i, carta in rps.correcao -%}
-        <DadosCartaCorrecao>
-            <Sequencia>{{ i }}</Sequencia>
-            <DataHora>{{ carta.datahora }}</DataHora>
-            <CampoCorrigido>
-                <Codigo>{{ carta.codigo }}</Codigo>
-            </CampoCorrigido>
-            <ConteudoCorrigido>{{ carta.conteudo }}</ConteudoCorrigido>
-        </DadosCartaCorrecao>
-        {% endfor %}
-    </ListaCartaCorrecao>
-    {% endif %}
-    <Versao>1.00</Versao>
-</DeclaracaoPrestacaoServico>
+            </DadosServico>
+          </ListaServico>
+          {% if item.correcao is defined -%}
+          <ListaCartaCorrecao>
+              {% for i, carta in item.correcao -%}
+              <DadosCartaCorrecao>
+                  <Sequencia>{{ i }}</Sequencia>
+                  <DataHora>{{ carta.datahora }}</DataHora>
+                  <CampoCorrigido>
+                      <Codigo>{{ carta.codigo }}</Codigo>
+                  </CampoCorrigido>
+                  <ConteudoCorrigido>{{ carta.conteudo }}</ConteudoCorrigido>
+              </DadosCartaCorrecao>
+              {% endfor %}
+          </ListaCartaCorrecao>
+          {% endif %}
+          <Versao>1.00</Versao>
+      </DeclaracaoPrestacaoServico>
+

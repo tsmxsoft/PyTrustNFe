@@ -57,6 +57,7 @@ def format_date(value):
     Format date
     """
     dt_format = "%Y-%m-%d"
+    print(value)
     if isinstance(value, date):
         return value.strftime(dt_format)
     return value
