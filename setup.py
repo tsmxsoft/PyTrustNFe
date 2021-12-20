@@ -42,7 +42,7 @@ later (LGPLv2+)",
             "nfse/mga/templates/*xml",
             "nfse/aparecida/templates/*xml",
             "nfse/natal/templates/*xml",
-            "nfse/acu/templates/*xml",
+            "nfse/agiliblue/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
