@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
+	<soapenv:Header/>
+    <soapenv:Body>
+        <{{ method }} xmlns="{{ soap_ns }}">
+        {{ soap_body }}
+        </{{ method }}>
+    </soapenv:Body>
+</soapenv:Envelope>
