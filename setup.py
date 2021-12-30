@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = "1.0.46"
+VERSION = "1.0.47"
 
 
 setup(
@@ -43,6 +43,7 @@ later (LGPLv2+)",
             "nfse/aparecida/templates/*xml",
             "nfse/natal/templates/*xml",
             "nfse/agiliblue/templates/*xml",
+            "nfse/tinus/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },

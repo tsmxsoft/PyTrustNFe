@@ -2,9 +2,7 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from lxml import etree
-
-from lxml import objectify
+from lxml import etree,objectify
 from jinja2 import Environment, FileSystemLoader
 from . import filters
 
