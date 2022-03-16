@@ -40,6 +40,15 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado, "EnviarLoteRps", **kwargs)
 
 
+def xml_gerar_nfse(certificado, **kwargs):
+    return _render(certificado, "GerarNfse", **kwargs)
+
+def gerar_nfse(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_gerar_nfse(certificado, **kwargs)
+    return _send(certificado, "GerarNfse", **kwargs)
+
+
 def xml_consultar_lote_rps(certificado, **kwargs):
     return _render(certificado, "ConsultarLoteRps", **kwargs)
 

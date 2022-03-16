@@ -16,6 +16,6 @@
         {% include 'Rps.xml' %}
         {% endfor %}
     </ListaRps>
-    </LoteRps>
+  </LoteRps>
   <Versao>1.00</Versao>
 </EnviarLoteRpsEnvio>
