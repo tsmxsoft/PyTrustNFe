@@ -1,0 +1,4 @@
+<GerarNfseEnvio xmlns="http://www.agili.com.br/nfse_v_1.00.xsd">
+  <UnidadeGestora>{{ nfse.cnpj_prefeitura }}</UnidadeGestora>
+  {% include 'Rps.xml' %}
+</GerarNfseEnvio>

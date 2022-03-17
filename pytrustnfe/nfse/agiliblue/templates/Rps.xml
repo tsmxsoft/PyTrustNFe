@@ -6,7 +6,6 @@
       </CpfCnpj>
       <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
   </IdentificacaoPrestador>
-  <NfseSubstituida>0</NfseSubstituida>
   <Rps>
       <IdentificacaoRps>
           <Numero>{{ item.numero }}</Numero>
@@ -85,12 +84,14 @@
   {% endif %}
   <ISSQNRetido>{{ item.servico.iss_retido }}</ISSQNRetido>
   <ResponsavelISSQN>
+    {% if item.servico.iss_retido == 0 %}
     <Codigo>-3</Codigo>
     <Descricao>Prestador do serviço</Descricao>
+    {% else %}
+    <Codigo>-1</Codigo>
+    <Descricao>Tomador do serviço</Descricao>
+    {%}
   </ResponsavelISSQN>
-  {% if item.servico.codigo_servico is defined -%}
-  <CodigoAtividadeEconomica>{{ item.servico.codigo_servico }}</CodigoAtividadeEconomica>
-  {% endif %}
   {% if item.servico.cnae_servico is defined -%}
   <CodigoCnaeAtividadeEconomica>{{ item.servico.cnae_servico }}</CodigoCnaeAtividadeEconomica>
   {% endif %}
@@ -144,8 +145,7 @@
   <ListaServico>
     <DadosServico>
         <Discriminacao>{{ item.servico.discriminacao }}</Discriminacao>
-        <CodigoCnae>{{ item.servico.cnae_servico }}</CodigoCnae>
-        <ItemLei116>{{ item.servico.codigo_servico }}</ItemLei116>
+        <ItemLei116>{{ item.servico.codigo_atividade }}</ItemLei116>
         <Quantidade>{{ item.servico.quantidade|default('1',true) }}</Quantidade>
         <ValorServico>{{ item.servico.valor_servico }}</ValorServico>
         <ValorDesconto>{{ item.servico.valor_desconto }}</ValorDesconto>

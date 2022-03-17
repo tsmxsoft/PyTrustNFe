@@ -110,12 +110,21 @@ cidades = {
         "version": "1.00",
         "msgns": "http://www2.tinus.com.br/WSNFSE",
         "soapns": "http://www2.tinus.com.br"
-    }
+    },
+    "2401453": {
+        "municipio": "Barauna",
+        "uf": "RN",
+        "homologacao": "http://www2.tinus.com.br/csp/testebar/WSNFSE.",
+        "producao": "http://www.tinus.com.br/csp/barauna/WSNFSE.",
+        "version": "1.00",
+        "msgns": "http://www2.tinus.com.br/WSNFSE",
+        "soapns": "http://www2.tinus.com.br"
+    },
 }
 
 def _render_xml(certificado, method, **kwargs):
     kwargs['method'] = method
-    if kwargs['ambiente'] == "producao":
+    if kwargs['ambiente'] == "homologacao":
         kwargs['soap_ns'] = "http://www2.tinus.com.br"
     else:
         kwargs['soap_ns'] = "http://www.tinus.com.br"
@@ -125,10 +134,7 @@ def _render_xml(certificado, method, **kwargs):
     )
     signer = Assinatura(certificado.pfx, certificado.password)
 
-    lote = ""
     referencia = ""
-
-
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
 
     # xml object
@@ -162,7 +168,6 @@ def _send(certificado, method, **kwargs):
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    print(xml_send)
     soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "soap_ns": tinus['soapns']})
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
@@ -178,11 +183,8 @@ def _send(certificado, method, **kwargs):
     }
 
     request = requests.post(base_url, data=soap, headers=headers)
-    print(request.content)
     response, obj = sanitize_response(request.content)
-    print(response)
-    print(obj)
-    return {"sent_xml": str(xml_send), "received_xml": str(response), "object": obj.Body }
+    return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
