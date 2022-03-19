@@ -131,7 +131,8 @@
   <ValorBaseCalculoISSQN>{{ item.servico.base_calculo }}</ValorBaseCalculoISSQN>
   {% endif %}
   {% if item.servico.aliquota is defined -%}
-  <AliquotaISSQN>{{ item.servico.aliquota }}</AliquotaISSQN>
+  {% set aliquota = "{:.2f}".format(item.servico.aliquota*100) %}
+  <AliquotaISSQN>{{ aliquota }}</AliquotaISSQN>
   {% endif %}
   {% if item.servico.iss is defined -%}
   <ValorISSQNCalculado>{{ item.servico.iss }}</ValorISSQNCalculado>
