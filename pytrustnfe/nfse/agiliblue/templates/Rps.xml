@@ -84,18 +84,12 @@
   {% endif %}
   <ISSQNRetido>{{ item.servico.iss_retido }}</ISSQNRetido>
   <ResponsavelISSQN>
-    {% if item.servico.iss_retido == 0 %}
     <Codigo>-3</Codigo>
     <Descricao>Prestador do serviço</Descricao>
-    {% else %}
-    <Codigo>-1</Codigo>
-    <Descricao>Tomador do serviço</Descricao>
-    {%}
   </ResponsavelISSQN>
   {% if item.servico.cnae_servico is defined -%}
-  <CodigoCnaeAtividadeEconomica>{{ item.servico.cnae_servico }}</CodigoCnaeAtividadeEconomica>
+  <CodigoCnaeAtividadeEconomica>{{ item.servico.codigo_servico }}</CodigoCnaeAtividadeEconomica>
   {% endif %}
-  <ItemLei116AtividadeEconomica>{{ item.codigo_atividade }}</ItemLei116AtividadeEconomica>
   <ExigibilidadeISSQN>
       <Codigo>{{ item.iss_exigibilidade_cod|default("-1", true) }}</Codigo>
   </ExigibilidadeISSQN>
@@ -131,8 +125,7 @@
   <ValorBaseCalculoISSQN>{{ item.servico.base_calculo }}</ValorBaseCalculoISSQN>
   {% endif %}
   {% if item.servico.aliquota is defined -%}
-  {% set aliquota = "{:.2f}".format(item.servico.aliquota*100) %}
-  <AliquotaISSQN>{{ aliquota }}</AliquotaISSQN>
+  <AliquotaISSQN>{{ item.servico.aliquota }}</AliquotaISSQN>
   {% endif %}
   {% if item.servico.iss is defined -%}
   <ValorISSQNCalculado>{{ item.servico.iss }}</ValorISSQNCalculado>
