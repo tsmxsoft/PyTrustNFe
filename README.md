@@ -26,6 +26,7 @@ NFSe - Cidades atendidas
 * [GINFES](cidaes/ginfes.md) - 79 cidades atendidas
 * [DSF](cidades/dsf.md) - 7 cidades atendidas
 * [AgiliBlue](cidades/agiliblue.md) - 16 cidades atendidas
+* **Cariacica** - Cariacica/ES
 
 Roadmap
 --------------
