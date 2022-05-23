@@ -1,13 +1,15 @@
-<EnviarLoteRpsSincronoEnvio xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
-    <LoteRps  Id="lote1" versao="2.02">
-        <NumeroLote>2012021</NumeroLote>
+<EnviarLoteRpsSincrono xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
+    <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.02">
+        <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <CpfCnpj>
-            <Cnpj>45111111111100</Cnpj>
+            <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
         </CpfCnpj>
-        <InscricaoMunicipal>123498</InscricaoMunicipal>
-        <QuantidadeRps>1</QuantidadeRps>
+        <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+        <QuantidadeRps>{{ nfse.lista_rps|length }}</QuantidadeRps>
         <ListaRps>
-            {% include 'rps.xml' %}
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
         </ListaRps>
     </LoteRps>
-</EnviarLoteRpsSincronoEnvio>
+</EnviarLoteRpsSincrono>
