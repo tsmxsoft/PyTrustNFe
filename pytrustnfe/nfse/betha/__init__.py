@@ -9,58 +9,45 @@ from base64 import b64encode
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.client import get_authenticated_client
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfse.assinatura import Assinatura
-
-
-def sign_tag(certificado, **kwargs):
-    pkcs12 = crypto.load_pkcs12(certificado.pfx, certificado.password)
-    key = pkcs12.get_privatekey()
-    if "nfse" in kwargs:
-        for item in kwargs["nfse"]["lista_rps"]:
-            signed = crypto.sign(key, item["assinatura"], "SHA1")
-            item["assinatura"] = b64encode(signed)
-    if "cancelamento" in kwargs:
-        signed = crypto.sign(key, kwargs["cancelamento"]["assinatura"], "SHA1")
-        kwargs["cancelamento"]["assinatura"] = b64encode(signed)
+from pytrustnfe.nfe.assinatura import Assinatura
+from lxml import etree
 
 
 def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    if method in (
-        "GerarNfse",
-        "RecepcionarLoteRps",
-        "RecepcionarLoteRpsSincrono",
-        "CancelarNfse",
-        "SubstituirNfse",
-    ):
-        sign_tag(certificado, **kwargs)
 
-    if kwargs["ambiente"] == "producao":
+    if kwargs["ambiente"] == "homologacao":
         url = "http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl"
     else:
         url = "http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl"
 
-    xml_send = render_xml(path, "%s.xml" % method, False, **kwargs)
+    xml_string_send = render_xml(path, "%s.xml" % method, False, **kwargs)
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
     client = get_authenticated_client(url, cert, key)
 
-    pfx_path = certificado.save_pfx()
-    signer = Assinatura(pfx_path, certificado.password)
-    xml_send = signer.assina_xml(xml_send, "")
+    parser = etree.XMLParser(
+        remove_blank_text=True, remove_comments=True, strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+    xml_send = etree.fromstring(
+        xml_string_send, parser=parser)
+    for item in kwargs["nfse"]["lista_rps"]:
+        signer.assina_xml(xml_send, "rps:"+str(item["numero"])+str(item["serie"])) 
+    xml_signed_send = signer.assina_xml(xml_send, "lote:"+str(kwargs["nfse"]["numero_lote"])).rstrip("\n")
 
     try:
-        response = getattr(client.service, method)(1, xml_send)
+        response = getattr(client.service, method)(1, xml_signed_send)
     except suds.WebFault as e:
         return {
-            "sent_xml": xml_send,
+            "sent_xml": xml_signed_send,
             "received_xml": e.fault.faultstring,
             "object": None,
         }
 
     response, obj = sanitize_response(response)
-    return {"sent_xml": xml_send, "received_xml": response, "object": obj}
+    return {"sent_xml": xml_signed_send, "received_xml": response, "object": obj}
 
 
 def gerar_nfse(certificado, **kwargs):

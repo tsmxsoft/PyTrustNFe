@@ -1,78 +1,97 @@
 <Rps>
-    <InfDeclaracaoPrestacaoServico  Id="rps1">
+    <InfDeclaracaoPrestacaoServico  Id="rps:{{ rps.numero }}{{ rps.serie }}">
         <Rps>
             <IdentificacaoRps>
-                <Numero>25</Numero>
-                <Serie>A1</Serie>
-                <Tipo>1</Tipo>
+                <Numero>{{ rps.numero }}</Numero>
+                <Serie>{{ rps.serie }}</Serie>
+                <Tipo>{{ rps.tipo_rps }}</Tipo>
             </IdentificacaoRps>
-            <DataEmissao>2014-12-06</DataEmissao>
-            <Status>1</Status>
+            {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
+            <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
+            <Status>{{ rps.status }}</Status>
         </Rps>
-        <Competencia>2014-12-01</Competencia>
+        <Competencia>{{ datatempo[0] }}-{{ datatempo[1] }}-01</Competencia>
         <Servico>
             <Valores>
-                <ValorServicos>100</ValorServicos>
-                <ValorDeducoes>0</ValorDeducoes>
-                <ValorPis>0</ValorPis>
-                <ValorCofins>0</ValorCofins>
-                <ValorInss>0</ValorInss>
-                <ValorIr>0</ValorIr>
-                <ValorCsll>0</ValorCsll>
-                <OutrasRetencoes>0</OutrasRetencoes>
-                <DescontoIncondicionado>0</DescontoIncondicionado>
-                <DescontoCondicionado>0</DescontoCondicionado>
+                <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+                <ValorDeducoes>{{ rps.servico.valor_descontos|default("0", true) }}</ValorDeducoes>
+                <ValorPis>{{ rps.servico.pis|default("0", true) }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins|default("0", true) }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss|default("0", true) }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir|default("0", true) }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll|default("0", true) }}</ValorCsll>
+                <OutrasRetencoes>{{ rps.servico.retencoes|default("0", true) }}</OutrasRetencoes>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default("0", true) }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0", true) }}</DescontoCondicionado>
             </Valores>
-            <IssRetido>2</IssRetido>
-            <ItemListaServico>0702</ItemListaServico>
-            <CodigoTributacaoMunicipio>2525</CodigoTributacaoMunicipio>
-            <Discriminacao>Prog.</Discriminacao>
-            <CodigoMunicipio>4204608</CodigoMunicipio>
-            <ExigibilidadeISS>1</ExigibilidadeISS>
-            <MunicipioIncidencia>4204608</MunicipioIncidencia>
+            <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+            <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+            <ExigibilidadeISS>{{ rps.iss_exigibilidade_cod|default("1", true) }}</ExigibilidadeISS>
         </Servico>
         <Prestador>
             <CpfCnpj>
-                <Cnpj>45111111111100</Cnpj>
+              <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
             </CpfCnpj>
-            <InscricaoMunicipal>123498</InscricaoMunicipal>
+            <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
         <Tomador>
             <IdentificacaoTomador>
-                <CpfCnpj>
-                    <Cnpj>83787494000123</Cnpj>
+                 <CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
+                    {% endif %}
                 </CpfCnpj>
             </IdentificacaoTomador>
-            <RazaoSocial>INSTITUICAO FINANCEIRA</RazaoSocial>
+            <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
-                <Endereco>AV. 7 DE SETEMBRO</Endereco>
-                <Numero>1505</Numero>
-                <Complemento>AO LADO DO JOAO AUTOMOVEIS</Complemento>
-                <Bairro>CENTRO</Bairro>
-                <CodigoMunicipio>4201406</CodigoMunicipio>
-                <Uf>SC</Uf>
-                <Cep>88900000</Cep>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
+                <Numero>{{ rps.tomador.numero }}</Numero>
+                {% if rps.tomador.complemento is defined -%}
+                <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                {% endif %}
+                <Bairro>{{ rps.tomador.bairro }}</Bairro>
+                <CodigoMunicipio>{{ rps.servico.codigo_municipio}}</CodigoMunicipio>
+                <Uf>{{ rps.tomador.uf }}</Uf>
+                <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
             <Contato>
-                <Telefone>4835220026</Telefone>
-                <Email>luiz.alves@cxpostal.com</Email>
+                {% if rps.tomador.telefone is defined -%}
+                <Telefone>{{ rps.tomador.telefone }}</Telefone>
+                {% endif %}
+                <Email>{{ rps.tomador.email }}</Email>
             </Contato>
         </Tomador>
+        {% if rps.intermediario is defined -%}
         <Intermediario>
             <IdentificacaoIntermediario>
                 <CpfCnpj>
-                    <Cnpj>06410987065144</Cnpj>
+                    {% if rps.intermediario.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.intermediario.cpf_cnpj }}</Cnpj>
+                    {% endif %}
+                    {% if rps.intermediario.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.intermediario.cpf_cnpj }}</Cpf>
+                    {% endif %}
                 </CpfCnpj>
-                <InscricaoMunicipal>22252</InscricaoMunicipal>
+                <InscricaoMunicipal>{{ item.intermediario.inscricao_municipal }}</InscricaoMunicipal>
             </IdentificacaoIntermediario>
-            <RazaoSocial>CONSTRUTORA TERRA FIRME</RazaoSocial>
+            <RazaoSocial>{{ item.intermediario.razao_social }}</RazaoSocial>
         </Intermediario>
+        {% endif %}
+        {% if rps.construcao_civil is defined -%}
         <ConstrucaoCivil>
-            <CodigoObra>142</CodigoObra>
-            <Art>1/2014</Art>
+            <CodigoObra>{{ rps.construcao_civil.codigo_obra}}</CodigoObra>
+            <Art>{{ rps.construcao_civil.art}}</Art>
         </ConstrucaoCivil>
-        <RegimeEspecialTributacao>3</RegimeEspecialTributacao>
-        <OptanteSimplesNacional>2</OptanteSimplesNacional>
-        <IncentivoFiscal>2</IncentivoFiscal>
+        {% endif %}
+        {% if rps.regime_tributacao is defined -%}
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% endif %}
+        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
+        <IncentivoFiscal>{{ rps.incentivo_fiscal|default("2", true) }}</IncentivoFiscal>
     </InfDeclaracaoPrestacaoServico>
 </Rps>
