@@ -1,3 +1,4 @@
 <GerarNfseEnvio xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
+    {% set rps = nfse %}
     {% include 'rps.xml' %}
 </GerarNfseEnvio>

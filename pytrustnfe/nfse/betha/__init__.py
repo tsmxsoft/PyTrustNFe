@@ -4,8 +4,6 @@
 
 import os
 import suds
-from OpenSSL import crypto
-from base64 import b64encode
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.client import get_authenticated_client
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
@@ -33,10 +31,15 @@ def _send(certificado, method, **kwargs):
     signer = Assinatura(certificado.pfx, certificado.password)
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
-    for item in kwargs["nfse"]["lista_rps"]:
-        signer.assina_xml(xml_send, "rps:"+str(item["numero"])+str(item["serie"])) 
-    xml_signed_send = signer.assina_xml(xml_send, "lote:"+str(kwargs["nfse"]["numero_lote"])).rstrip("\n")
-
+    
+    if method in ['RecepcionarLoteRps','RecepcionarLoteRpsSincrono']:
+        for item in kwargs["nfse"]["lista_rps"]:
+            signer.assina_xml(xml_send, "rps:"+str(item["numero"])+str(item["serie"])) 
+        xml_signed_send = signer.assina_xml(xml_send, "lote:"+str(kwargs["nfse"]["numero_lote"])).rstrip("\n")
+    elif method == 'CancelarNfse':
+        xml_signed_send = signer.assina_xml(xml_send, "1").rstrip("\n")
+    elif method == 'GerarNfse':
+        xml_signed_send = signer.assina_xml(xml_send, "rps:"+str(kwargs["nfse"]["numero"])+str(kwargs["nfse"]["serie"])) 
     try:
         response = getattr(client.service, method)(1, xml_signed_send)
     except suds.WebFault as e:

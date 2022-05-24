@@ -1,4 +1,4 @@
-<EnviarLoteRpsSincrono xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
+<EnviarLoteRpsSincronoEnvio xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
     <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.02">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <CpfCnpj>
@@ -12,4 +12,4 @@
             {% endfor %}
         </ListaRps>
     </LoteRps>
-</EnviarLoteRpsSincrono>
+</EnviarLoteRpsSincronoEnvio>
