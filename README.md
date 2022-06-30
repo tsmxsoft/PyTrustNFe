@@ -26,6 +26,8 @@ NFSe - Cidades atendidas
 * [GINFES](cidaes/ginfes.md) - 79 cidades atendidas
 * [DSF](cidades/dsf.md) - 7 cidades atendidas
 * [AgiliBlue](cidades/agiliblue.md) - 16 cidades atendidas
+* [Betha](cidades/betha.md) - 81 cidades atendidas 
+* **SIASP (Publica)** - Assú/RN
 * **Cariacica** - Cariacica/ES
 
 Roadmap
@@ -33,7 +35,6 @@ Roadmap
 Teste unitários
 
 Implementar novos provedores de NFSe
-* [Betha](cidades/betha.md) - 81 cidades atendidas  WIP
 * [WebISS](cidades/webiss.md) - 51 cidades atendidas
 * [ISSIntel](cidades/issintel.md) - 32 cidades atendidas
 * [ISSNET](cidades/issnet.md) - 32 cidades atendidas
