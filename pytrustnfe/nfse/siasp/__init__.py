@@ -13,27 +13,24 @@ from requests.packages.urllib3 import disable_warnings
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfse.assinatura import Assinatura
+from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
 
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    cert, key = extract_cert_and_key_from_pfx(
-        certificado.pfx, certificado.password)
-    cert, key = save_cert_key(cert, key)
-    signer = Assinatura(cert, key, certificado.password)
+    parser = etree.XMLParser(
+        remove_blank_text=True, remove_comments=True, strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
 
     # xml object
-    xml_signed_send = ""
+    xml_send = etree.fromstring(
+        xml_string_send, parser=parser)
 
-    for item in kwargs["nfse"]["lista_rps"]:
-        reference = "rps:{0}{1}".format(
-            item.get('numero'), item.get('serie'))
-
-        xml_signed_send = signer.assina_xml(xml_string_send, reference)
+    xml_signed_send = signer.assina_xml(xml_send, None)
 
     return xml_signed_send
 

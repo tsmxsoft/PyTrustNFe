@@ -1,5 +1,5 @@
 <Rps>
-    <InfRps Id="rps:{{ rps.numero }}{{ rps.serie }}">
+    <InfRps id="rps:{{ rps.numero }}{{ rps.serie }}">
         <IdentificacaoRps>
             <Numero>{{ rps.numero }}</Numero>
             <Serie>{{ rps.serie }}</Serie>
@@ -7,32 +7,24 @@
         </IdentificacaoRps>
         <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
         <NaturezaOperacao>{{ rps.natureza_operacao }}</NaturezaOperacao>
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivadorCultural>{{ rps.incentivador_cultural }}</IncentivadorCultural>
         <Status>{{ rps.status }}</Status>
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos> 
-                <ValorPis>{{ rps.servico.pis }}</ValorPis>
-                <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
-                <ValorInss>{{ rps.servico.inss }}</ValorInss>
-                <ValorIr>{{ rps.servico.ir }}</ValorIr>
-                <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
                 <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
                 <BaseCalculo>{{ rps.servico.base_calculo }}</BaseCalculo>
                 <Aliquota>{{ rps.servico.aliquota }}</Aliquota> 
+                <ValorLiquidoNfse>{{ rps.servico.valor_servico }}</ValorLiquidoNfse>
             </Valores>
-            <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
-            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae> 
+            <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
         </Servico>
         <Prestador>
             <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
-            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
             <RazaoSocial>{{ rps.prestador.razaosocial }}</RazaoSocial>
             <NomeFantasia>{{ rps.prestador.fantasia }}</NomeFantasia>
             <Endereco>
