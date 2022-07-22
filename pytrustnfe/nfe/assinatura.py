@@ -34,13 +34,17 @@ class Assinatura(object):
 
         ref_uri = ('#%s' % reference) if reference else None
 
-        element = xml_element.find(".//*[@Id='%s']" % reference)
+        element = xml_element.find(".//*[@id='%s']" % (reference))
+        if element is None:
+            element = xml_element.find(".//*[@Id='%s']" % (reference))
         signed_root = signer.sign(
             element, key=key.encode(), cert=cert.encode(),
             reference_uri=ref_uri)
 
         if reference:
-            element_signed = xml_element.find(".//*[@Id='%s']" % reference)
+            element_signed = xml_element.find(".//*[@id='%s']" % (reference))
+            if element_signed is None:
+                element_signed = xml_element.find(".//*[@Id='%s']" % (reference))
             signature = signed_root.findall(
                 ".//{http://www.w3.org/2000/09/xmldsig#}Signature"
             )[-1]

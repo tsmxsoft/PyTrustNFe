@@ -21,14 +21,29 @@ from datetime import datetime, timedelta
 import requests 
 
 cidades = {
+    "2402006": {
+        "municipio": "Caicó",
+        "uf": "RN",
+        "homologacao": "http://www2.tinus.com.br/csp/testecai/WSNFSE.",
+        "producao": "http://www.tinus.com.br/csp/caico/WSNFSE.",
+        "version": "1.00",
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
+    },
+    "2403103": {
+        "municipio": "Currais Novos",
+        "uf": "RN",
+        "homologacao": "http://www2.tinus.com.br/csp/testecur/WSNFSE.",
+        "producao": "http://www.tinus.com.br/csp/curraisnovos/WSNFSE.",
+        "version": "1.00",
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
+    },
     "2403251": {
         "municipio": "Parnamirim",
         "uf": "RN",
         "homologacao": "http://www2.tinus.com.br/csp/testepar/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/parnamirim/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2408003": {
         "municipio": "Mossoró",
@@ -36,8 +51,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testemos/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/mossoro/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2412005": {
         "municipio": "São Goncalo",
@@ -45,8 +59,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testegon/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/saogoncalo/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2607901": {
         "municipio": "Jaboatão dos Guararapes",
@@ -54,8 +67,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testejab/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/jaboatao/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2609600": {
         "municipio": "Olinda",
@@ -63,8 +75,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testeoli/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/olinda/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2503209": {
         "municipio": "Cabedelo",
@@ -72,8 +83,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testecbd/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/cabedelo/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2603454": {
         "municipio": "Camaragibe",
@@ -81,8 +91,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testecam/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/camaragibe/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2407104": {
         "municipio": "Macaiba",
@@ -90,8 +99,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testemac/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/macaiba/WSNFSE",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2602902": {
         "municipio": "Cabo de Santo Agostinho",
@@ -99,8 +107,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testecab/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/cabo/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2606002": {
         "municipio": "Garanhuns",
@@ -108,8 +115,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testegar/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/garanhuns/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
     "2401453": {
         "municipio": "Barauna",
@@ -117,8 +123,7 @@ cidades = {
         "homologacao": "http://www2.tinus.com.br/csp/testebar/WSNFSE.",
         "producao": "http://www.tinus.com.br/csp/barauna/WSNFSE.",
         "version": "1.00",
-        "msgns": "http://www2.tinus.com.br/WSNFSE",
-        "soapns": "http://www2.tinus.com.br"
+        "msgns": "http://www2.tinus.com.br/WSNFSE"
     },
 }
 
@@ -146,7 +151,7 @@ def _render_xml(certificado, method, **kwargs):
         for item in kwargs["nfse"]["lista_rps"]:
             reference = "rps:{0}{1}".format(
                 item.get('numero'), item.get('serie'))
-
+            
             signer.assina_xml(xml_send, reference)
 
         xml_signed_send = signer.assina_xml(
@@ -163,12 +168,14 @@ def _send(certificado, method, **kwargs):
         tinus = cidades[kwargs['codigo_municipio']]
     if kwargs["ambiente"] == "producao":
         base_url = "%s%s.cls" %(tinus['producao'],method)
+        soap_ns = "http://www.tinus.com.br"
     else:
         base_url = "%s%s.cls" %(tinus['homologacao'],method)
+        soap_ns = "http://www2.tinus.com.br"
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "soap_ns": tinus['soapns']})
+    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "soap_ns": soap_ns})
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)

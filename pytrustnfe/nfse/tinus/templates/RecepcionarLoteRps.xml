@@ -1,5 +1,5 @@
 <Arg>
-    <LoteRps Id="lote:{{ nfse.numero_lote }}">
+    <LoteRps id="lote:{{ nfse.numero_lote }}">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
         <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
