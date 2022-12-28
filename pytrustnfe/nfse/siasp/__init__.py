@@ -35,8 +35,7 @@ def _render(certificado, method, **kwargs):
         referencia = 'rps:%s%s' % (kwargs.get("nfse").get("numero"), 
                                    kwargs.get("nfse").get("serie"))
 
-    xml_signed_send = signer.assina_xml(
-        xml_send, referencia)
+    xml_signed_send = signer.assina_xml(xml_send, referencia)
 
     return xml_signed_send
 
