@@ -44,6 +44,7 @@ later (LGPLv2+)",
             "nfse/natal/templates/*xml",
             "nfse/agiliblue/templates/*xml",
             "nfse/tinus/templates/*xml",
+            "nfse/siasp/templates/*xml",
             "nfse/cariacica/templates/*xml"
             "xml/schemas/*xsd",
         ]
