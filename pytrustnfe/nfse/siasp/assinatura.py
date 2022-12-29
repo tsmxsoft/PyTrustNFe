@@ -24,7 +24,7 @@ class Assinatura(object):
         return cert.decode(), key.decode()
 
     def assina_xml(self, xml):
-        cert, key = self.extract_cert_key(self.cert, self.key)
+        cert, key = self.extract_cert_key()
 
         # retira acentos
         # xml_str = remover_acentos(etree.tostring(xml, encoding="unicode", pretty_print=False))
@@ -45,10 +45,9 @@ class Assinatura(object):
         signed_root = signer.sign(xml, cert=cert, key=key)
         
         ns = {'ns': self.NAMESPACE_SIG}
-        # coloca o certificado na tag X509Data/X509Certificate
-        tagX509Data = signed_root.find('.//ns:X509Data', namespaces=ns)
-        etree.SubElement(tagX509Data, 'X509Certificate').text = cert
-        
+        X509Certificate = signed_root.find('.//ns:X509Certificate', namespaces=ns)
+        X509Certificate.text = cert
+
         encoding = 'utf8'
         if sys.version_info[0] > 2:
             encoding = str
