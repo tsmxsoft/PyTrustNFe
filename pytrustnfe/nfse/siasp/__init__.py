@@ -21,11 +21,11 @@ def _render(certificado, method, **kwargs):
     parser = etree.XMLParser(remove_blank_text=True, 
                              remove_comments=True, 
                              strip_cdata=False)
-                             
+
     signer = Assinatura(certificado.pfx, certificado.password)
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     xml_send = etree.fromstring(xml_string_send, parser=parser)
-    xml_signed_send = signer.assina_xml(xml_send, None)
+    xml_signed_send = signer.assina_xml(xml_send)
 
     return xml_signed_send
 
