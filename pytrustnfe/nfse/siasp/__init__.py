@@ -39,8 +39,7 @@ def _send(certificado, method, **kwargs):
         #caso nenhum selecionado, escolher Assú/RN
         base_url = "https://nfse-assu.e-publica.net/assu_nfse_integracao/Services?wsdl"
 
-    cert, key = extract_cert_and_key_from_pfx(
-        certificado.pfx, certificado.password)
+    cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
     disable_warnings()
