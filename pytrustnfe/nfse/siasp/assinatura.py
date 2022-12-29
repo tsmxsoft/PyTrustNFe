@@ -6,6 +6,7 @@ from OpenSSL import crypto
 import signxml
 from lxml import etree
 from signxml import XMLSigner
+import sys
 
 class Assinatura(object):
 
@@ -33,8 +34,10 @@ class Assinatura(object):
 
         signed_root = signer.sign(xml, key=key, cert=cert)
 
-        ns = {'ns': 'http://www.w3.org/2000/09/xmldsig#'}
-        X509Certificate = signed_root.find('.//ns:X509Certificate', namespaces=ns)
-        X509Certificate.text = cert
+        print ('--- pytrustnfe signed xml ---')
+        print (signed_root)
         
-        return etree.tostring(signed_root, encoding="unicode", pretty_print=False)
+        if sys.version_info[0] > 2:
+            return etree.tostring(signed_root, encoding=str)
+        else:
+            return etree.tostring(signed_root, encoding="utf8")
