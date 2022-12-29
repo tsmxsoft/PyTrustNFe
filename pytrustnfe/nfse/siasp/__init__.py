@@ -13,7 +13,7 @@ from requests.packages.urllib3 import disable_warnings
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfe.assinatura import Assinatura
+from pytrustnfe.nfse.siasp.assinatura import Assinatura
 from lxml import etree
 
 
@@ -29,13 +29,13 @@ def _render(certificado, method, **kwargs):
     # xml object
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
+    xml_signed_send = ""
 
-    referencia = None
-    if method == "RecepcionarLoteRps":
-        referencia = 'rps:%s%s' % (kwargs.get("nfse").get("numero"), 
-                                   kwargs.get("nfse").get("serie"))
+    for item in kwargs["nfse"]["lista_rps"]:
+        reference = "rps:{0}{1}".format(
+            item.get('numero'), item.get('serie'))
 
-    xml_signed_send = signer.assina_xml(xml_send, referencia)
+        xml_signed_send = signer.assina_xml(xml_send, reference)
 
     return xml_signed_send
 
