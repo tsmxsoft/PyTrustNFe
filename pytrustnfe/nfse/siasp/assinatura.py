@@ -6,11 +6,8 @@ from OpenSSL import crypto
 import signxml
 from lxml import etree
 from signxml import XMLSigner
-import sys
 
 class Assinatura(object):
-
-    NAMESPACE_SIG = 'http://www.w3.org/2000/09/xmldsig#'
 
     def __init__(self, cert, key):
         self.cert = cert
@@ -26,14 +23,6 @@ class Assinatura(object):
     def assina_xml(self, xml):
         cert, key = self.extract_cert_key()
 
-        # retira acentos
-        # xml_str = remover_acentos(etree.tostring(xml, encoding="unicode", pretty_print=False))
-        # xml = etree.fromstring(xml_str)
-
-        for element in xml.iter("*"):
-            if element.text is not None and not element.text.strip():
-                element.text = None
-
         signer = XMLSigner(method=signxml.methods.enveloped, 
                            signature_algorithm="rsa-sha1",
                            digest_algorithm='sha1',
@@ -42,14 +31,10 @@ class Assinatura(object):
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
-        signed_root = signer.sign(xml, cert=cert, key=key)
-        
-        ns = {'ns': self.NAMESPACE_SIG}
+        signed_root = signer.sign(xml, key=key, cert=cert)
+
+        ns = {'ns': 'http://www.w3.org/2000/09/xmldsig#'}
         X509Certificate = signed_root.find('.//ns:X509Certificate', namespaces=ns)
         X509Certificate.text = cert
-
-        encoding = 'utf8'
-        if sys.version_info[0] > 2:
-            encoding = str
-
-        return etree.tostring(signed_root, encoding=encoding, pretty_print=False)
+        
+        return etree.tostring(signed_root, encoding="unicode", pretty_print=False)
