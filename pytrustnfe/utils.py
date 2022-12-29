@@ -6,6 +6,7 @@
 import re
 from datetime import date, datetime
 import lxml.etree as ET
+from unicodedata import normalize
 
 
 class ChaveNFe(object):
@@ -103,3 +104,7 @@ def gerar_nfeproc_cancel(nfe_proc, cancelamento):
         return b""
     docEnvio.append(ev_cancelamento)
     return ET.tostring(docEnvio)
+
+
+def remover_acentos(txt):
+    return normalize('NFKD', txt).encode('ASCII','ignore').decode('ASCII')

@@ -8,49 +8,45 @@ from pytrustnfe.certificado import extract_cert_and_key_from_pfx
 from signxml import XMLSigner
 import sys
 
-
 class Assinatura(object):
 
-    def __init__(self, arquivo, senha):
-        self.arquivo = arquivo
-        self.senha = senha
+    NAMESPACE_SIG = 'http://www.w3.org/2000/09/xmldsig#'
 
-    def assina_xml(self, xml_element, reference, getchildren=False):
-        cert, key = extract_cert_and_key_from_pfx(self.arquivo, self.senha)
+    def __init__(self, cert, key):
+        self.cert = cert
+        self.key = key
 
-        for element in xml_element.iter("*"):
+    def assina_xml(self, xml):
+        # busca tag que tem id(reference_uri), logo nao importa se tem namespace
+        reference = xml.find(".//*[@Id]").attrib['Id']
+
+        # retira acentos
+        # xml_str = remover_acentos(etree.tostring(xml, encoding="unicode", pretty_print=False))
+        # xml = etree.fromstring(xml_str)
+
+        for element in xml.iter("*"):
             if element.text is not None and not element.text.strip():
                 element.text = None
 
         signer = XMLSigner(
-            method=signxml.methods.enveloped,
-            signature_algorithm="rsa-sha1",
+            method=signxml.methods.enveloped, signature_algorithm="rsa-sha1",
             digest_algorithm='sha1',
-            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
-        )
+            c14n_algorithm='http://www.w3.org/TR/2001/REC-xml-c14n-20010315')
 
-        ns = {}
-        ns[None] = signer.namespaces['ds']
+        ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
         ref_uri = ('#%s' % reference) if reference else None
-
-        element = xml_element.find(".//*[@id='%s']" % reference)
         signed_root = signer.sign(
-            element, key=key.encode(), cert=cert.encode(),
-            reference_uri=ref_uri)
+            xml, key=self.key, cert=self.cert, reference_uri=ref_uri)
 
-        if reference:
-            element_signed = xml_element.find(".//*[@id='%s']" % reference)
-            signature = signed_root.findall(
-                ".//{http://www.w3.org/2000/09/xmldsig#}Signature"
-            )[-1]
-
-            if element_signed is not None and signature is not None:
-                parent = element_signed.getparent()
-                parent.append(signature)
-
+        ns = {'ns': self.NAMESPACE_SIG}
+        # coloca o certificado na tag X509Data/X509Certificate
+        tagX509Data = signed_root.find('.//ns:X509Data', namespaces=ns)
+        etree.SubElement(tagX509Data, 'X509Certificate').text = self.cert
+        
+        encoding = 'utf8'
         if sys.version_info[0] > 2:
-            return etree.tostring(xml_element, encoding=str)
-        else:
-            return etree.tostring(xml_element, encoding="utf8")
+            encoding = str
+
+        return etree.tostring(signed_root, encoding=encoding, pretty_print=False)

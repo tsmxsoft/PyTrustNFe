@@ -16,33 +16,21 @@ from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfse.siasp.assinatura import Assinatura
 from lxml import etree
 
-
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    parser = etree.XMLParser(
-        remove_blank_text=True, remove_comments=True, strip_cdata=False
-    )
+    parser = etree.XMLParser(remove_blank_text=True, 
+                             remove_comments=True, 
+                             strip_cdata=False)
     signer = Assinatura(certificado.pfx, certificado.password)
-
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
-
-    # xml object
-    xml_send = etree.fromstring(
-        xml_string_send, parser=parser)
-    xml_signed_send = ""
-
-    for item in kwargs["nfse"]["lista_rps"]:
-        reference = "rps:{0}{1}".format(
-            item.get('numero'), item.get('serie'))
-
-        xml_signed_send = signer.assina_xml(xml_send, reference)
+    xml_send = etree.fromstring(xml_string_send, parser=parser)
+    xml_signed_send = signer.assina_xml(xml_send, None)
 
     return xml_signed_send
 
-
-
 def _send(certificado, method, **kwargs):
     base_url = ""
+    
     if kwargs["ambiente"] == "homologacao":
         base_url = "http://nfse-teste.publica.inf.br/homologa_nfse_integracao/Services?wsdl"
     elif "base_url" in kwargs:
@@ -71,22 +59,18 @@ def _send(certificado, method, **kwargs):
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
-
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
     return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
-
 def xml_consultar_lote_rps(certificado, **kwargs):
     return _render(certificado, "ConsultarLoteRps", **kwargs)
-
 
 def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_lote_rps(certificado, **kwargs)
     return _send(certificado, "ConsultarLoteRps", **kwargs)
-
 
 def xml_cancelar_nfse(certificado, **kwargs):
     return _render(certificado, "cancelarNfse", **kwargs)
