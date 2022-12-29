@@ -4,7 +4,6 @@
 
 import signxml
 from lxml import etree
-from pytrustnfe.certificado import extract_cert_and_key_from_pfx
 from signxml import XMLSigner
 import sys
 
@@ -17,9 +16,6 @@ class Assinatura(object):
         self.key = key
 
     def assina_xml(self, xml):
-        # busca tag que tem id(reference_uri), logo nao importa se tem namespace
-        reference = xml.find(".//*[@Id]").attrib['Id']
-
         # retira acentos
         # xml_str = remover_acentos(etree.tostring(xml, encoding="unicode", pretty_print=False))
         # xml = etree.fromstring(xml_str)
@@ -36,10 +32,8 @@ class Assinatura(object):
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
-        ref_uri = ('#%s' % reference) if reference else None
-        signed_root = signer.sign(
-            xml, key=self.key, cert=self.cert, reference_uri=ref_uri)
-
+        signed_root = signer.sign(xml, key=self.key, cert=self.cert)
+        
         ns = {'ns': self.NAMESPACE_SIG}
         # coloca o certificado na tag X509Data/X509Certificate
         tagX509Data = signed_root.find('.//ns:X509Data', namespaces=ns)
