@@ -2,10 +2,10 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from OpenSSL import crypto
 import signxml
 from lxml import etree
 from signxml import XMLSigner
-from pytrustnfe.certificado import extract_cert_and_key_from_pfx
 import sys
 
 class Assinatura(object):
@@ -16,8 +16,15 @@ class Assinatura(object):
         self.cert = cert
         self.key = key
 
+    def extract_cert_key(self):
+        pfx = crypto.load_pkcs12(self.cert, self.key)
+        key = crypto.dump_privatekey(crypto.FILETYPE_PEM, pfx.get_privatekey())
+        cert = crypto.dump_certificate(crypto.FILETYPE_PEM, pfx.get_certificate())
+
+        return cert.decode(), key.decode()
+
     def assina_xml(self, xml):
-        cert, key = extract_cert_and_key_from_pfx(self.cert, self.key)
+        cert, key = extract_cert_key(self.cert, self.key)
 
         # retira acentos
         # xml_str = remover_acentos(etree.tostring(xml, encoding="unicode", pretty_print=False))
