@@ -21,6 +21,7 @@ def _render(certificado, method, **kwargs):
     parser = etree.XMLParser(remove_blank_text=True, 
                              remove_comments=True, 
                              strip_cdata=False)
+                             
     signer = Assinatura(certificado.pfx, certificado.password)
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     xml_send = etree.fromstring(xml_string_send, parser=parser)
@@ -54,7 +55,6 @@ def _send(certificado, method, **kwargs):
     response, obj = sanitize_response(response)
     return {"sent_xml": kwargs["xml"], "received_xml": response, "object": obj}
 
-
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
@@ -73,7 +73,6 @@ def consultar_lote_rps(certificado, **kwargs):
 
 def xml_cancelar_nfse(certificado, **kwargs):
     return _render(certificado, "cancelarNfse", **kwargs)
-
 
 def cancelar_nfse(certificado, **kwargs):
     if "xml" not in kwargs:
