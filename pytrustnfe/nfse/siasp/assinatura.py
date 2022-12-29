@@ -24,7 +24,7 @@ class Assinatura(object):
         return cert.decode(), key.decode()
 
     def assina_xml(self, xml):
-        cert, key = extract_cert_key(self.cert, self.key)
+        cert, key = self.extract_cert_key(self.cert, self.key)
 
         # retira acentos
         # xml_str = remover_acentos(etree.tostring(xml, encoding="unicode", pretty_print=False))
@@ -34,10 +34,10 @@ class Assinatura(object):
             if element.text is not None and not element.text.strip():
                 element.text = None
 
-        signer = XMLSigner(
-            method=signxml.methods.enveloped, signature_algorithm="rsa-sha1",
-            digest_algorithm='sha1',
-            c14n_algorithm='http://www.w3.org/TR/2001/REC-xml-c14n-20010315')
+        signer = XMLSigner(method=signxml.methods.enveloped, 
+                           signature_algorithm="rsa-sha1",
+                           digest_algorithm='sha1',
+                           c14n_algorithm='http://www.w3.org/TR/2001/REC-xml-c14n-20010315')
 
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
