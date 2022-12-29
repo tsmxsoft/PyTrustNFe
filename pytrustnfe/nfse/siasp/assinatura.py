@@ -34,10 +34,13 @@ class Assinatura(object):
 
         signed_root = signer.sign(xml, key=key, cert=cert)
 
+        encoding = "utf8"        
+        if sys.version_info[0] > 2:
+            encoding = str
+            
+        xml_output = etree.tostring(signed_root, encoding=encoding)
+
         print ('--- pytrustnfe signed xml ---')
         print (signed_root)
-        
-        if sys.version_info[0] > 2:
-            return etree.tostring(signed_root, encoding=str)
-        else:
-            return etree.tostring(signed_root, encoding="utf8")
+
+        return xml_output
