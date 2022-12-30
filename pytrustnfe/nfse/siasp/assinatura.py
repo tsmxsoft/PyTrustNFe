@@ -32,15 +32,12 @@ class Assinatura(object):
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
-        signed_root = signer.sign(xml, key=key, cert=cert)
+        signed_root = signer.sign(xml, key=key.encode(), cert=cert.encode())
 
         encoding = "utf8"        
         if sys.version_info[0] > 2:
             encoding = str
             
         xml_output = etree.tostring(signed_root, encoding=encoding)
-
-        print ('--- pytrustnfe signed xml ---')
-        print (signed_root)
 
         return xml_output
