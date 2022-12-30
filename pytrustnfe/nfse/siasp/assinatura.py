@@ -19,7 +19,7 @@ class Assinatura(object):
         key = crypto.dump_privatekey(crypto.FILETYPE_PEM, pfx.get_privatekey())
         cert = crypto.dump_certificate(crypto.FILETYPE_PEM, pfx.get_certificate())
 
-        return cert.decode(), key.decode()
+        return cert, key
 
     def assina_xml(self, xml):
         cert, key = self.extract_cert_key()
@@ -32,7 +32,7 @@ class Assinatura(object):
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
-        signed_root = signer.sign(xml, key=key.encode(), cert=cert.encode())
+        signed_root = signer.sign(xml, key=key, cert=cert)
 
         encoding = "utf8"        
         if sys.version_info[0] > 2:
