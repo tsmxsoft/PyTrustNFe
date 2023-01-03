@@ -20,7 +20,7 @@
                 <ValorIr>{{ rps.servico.ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
-                <ValTotTributos>?</ValTotTributos>
+                <ValTotTributos>{{ rps.servico.valor_tributos }}</ValTotTributos>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
                 <Aliquota>{{ rps.servico.aliquota }}</Aliquota>
                 <DescontoIncondicionado>0</DescontoIncondicionado>
@@ -30,11 +30,9 @@
             <ResponsavelRetencao>1</ResponsavelRetencao>
             <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
-            <CodigoTributacaoMunicipio>?</CodigoTributacaoMunicipio>
-            <CodigoNbs>?</CodigoNbs>
+            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
-            <CodigoPais>?</CodigoPais>
         </Servico>
         <Prestador>
             <CpfCnpj>
