@@ -15,7 +15,7 @@ class Assinatura(object):
         self.arquivo = arquivo
         self.senha = senha
 
-    def assina_xml(self, xml_element, reference, getchildren=False):
+    def assina_xml(self, xml_element, reference, getchildren=False, **kwargs):
         cert, key = extract_cert_and_key_from_pfx(self.arquivo, self.senha)
 
         for element in xml_element.iter("*"):
@@ -28,35 +28,36 @@ class Assinatura(object):
             digest_algorithm='sha1',
             c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",)
 
-        ns = {None: signer.namespaces['ds']}
+        ns = {}
+        ns[None] = signer.namespaces['ds']
         signer.namespaces = ns
+
+        ref_uri = ('#%s' % reference) if reference else None
 
         element = xml_element.find(".//*[@id='%s']" % (reference))
         if element is None:
             element = xml_element.find(".//*[@Id='%s']" % (reference))
-
-        ref_uri = ('#%s' % reference) if reference else None
-        
-        signed_root = signer.sign(element, 
-                                  key=key.encode(), 
-                                  cert=cert.encode(), 
-                                  reference_uri=ref_uri)
+        signed_root = signer.sign(
+            element, key=key.encode(), cert=cert.encode(),
+            reference_uri=ref_uri)
 
         if reference:
             element_signed = xml_element.find(".//*[@id='%s']" % (reference))
             if element_signed is None:
                 element_signed = xml_element.find(".//*[@Id='%s']" % (reference))
-            
             signature = signed_root.findall(".//{http://www.w3.org/2000/09/xmldsig#}Signature")[-1]
+
+            if kwargs.get('include_ref'):
+                signature.set(kwargs['include_ref'], reference)
 
             if element_signed is not None and signature is not None:
                 parent = element_signed.getparent()
                 parent.append(signature)
 
-        encoding = "utf8"        
-        if sys.version_info[0] > 2:
-            encoding = str
-            
-        xml_output = etree.tostring(xml_element, encoding=encoding)
+            if kwargs.get('remove_attrib'):
+                element_signed.attrib.pop(kwargs['remove_attrib'], None)
 
-        return xml_output
+        if sys.version_info[0] > 2:
+            return etree.tostring(xml_element, encoding=str)
+        else:
+            return etree.tostring(xml_element, encoding="utf8")

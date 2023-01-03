@@ -18,24 +18,32 @@ from lxml import etree
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    parser = etree.XMLParser(remove_blank_text=True, 
-                             remove_comments=True, 
-                             strip_cdata=False)
+    parser = etree.XMLParser(
+        remove_blank_text=True, remove_comments=True, strip_cdata=False
+    )
     signer = Assinatura(certificado.pfx, certificado.password)
-    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
-    xml_send = etree.fromstring(xml_string_send, parser=parser)
-
-    for item in kwargs["nfse"]["lista_rps"]:
-        reference = "rps:{0}{1}".format(
-            item.get('numero'), item.get('serie'))
-
-        signer.assina_xml(xml_send, reference)
 
     referencia = ""
     if method == "RecepcionarLoteRps":
         referencia = kwargs.get("nfse").get("numero_lote")
 
-    xml_signed_send = signer.assina_xml(xml_send, "lote:{0}".format(referencia))
+    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+
+    # xml object
+    xml_send = etree.fromstring(
+        xml_string_send, parser=parser)
+
+    for item in kwargs["nfse"]["lista_rps"]:
+        reference = "rps:{0}{1}".format(
+            item.get('numero'), item.get('serie'))
+
+        signer.assina_xml(xml_send, reference, remove_attrib='Id')
+
+    xml_signed_send = signer.assina_xml(
+        xml_send, "lote:{0}".format(referencia), include_ref='Id')
+
+    print ('--- xml ---')
+    print (xml_signed_send)
 
     return xml_signed_send
 
@@ -47,6 +55,8 @@ def _send(certificado, method, **kwargs):
     else:
         base_url = "https://www.issnetonline.com.br/apresentacao/df/webservicenfse204/nfse.asmx"
 
+    base_url = "https://www.issnetonline.com.br/apresentacao/df/webservicenfse204/nfse.asmx"
+
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
@@ -56,7 +66,7 @@ def _send(certificado, method, **kwargs):
     session.verify = False
     transport = Transport(session=session)
 
-    client = Client(wsdl=base_url, transport=transport)
+    client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
     xml_send = {
         "nfseDadosMsg": kwargs["xml"],
         "nfseCabecMsg": """<?xml version="1.0"?>
@@ -65,10 +75,19 @@ def _send(certificado, method, **kwargs):
         </cabecalho>""",
     }
 
-    # fix erro url relativa
-    client.service._binding_options["address"] = base_url
+    def get_service(client, translation):
+        if translation:
+            service_binding = client.service._binding.name
+            service_address = client.service._binding_options['address']
+            
+            return client.create_service(service_binding,
+                                         service_address.replace(*translation))
+        else:
+            return client.service
 
-    response = client.service[method](**xml_send)
+    service = get_service(client=client, translation=('nfse.asmx', base_url))
+
+    response = service[method](**xml_send)
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
