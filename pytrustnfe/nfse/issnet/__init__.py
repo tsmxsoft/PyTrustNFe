@@ -43,9 +43,9 @@ def _render(certificado, method, **kwargs):
 def _send(certificado, method, **kwargs):
     base_url = ""
     if kwargs["ambiente"] == "producao":
-        base_url = "https://df.issnetonline.com.br/webservicenfse204/nfse.asmx?wsdl"
+        base_url = "https://df.issnetonline.com.br/webservicenfse204/nfse.asmx"
     else:
-        base_url = "https://www.issnetonline.com.br/apresentacao/df/webservicenfse204/nfse.asmx?wsdl"
+        base_url = "https://www.issnetonline.com.br/apresentacao/df/webservicenfse204/nfse.asmx"
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
@@ -65,7 +65,19 @@ def _send(certificado, method, **kwargs):
         </cabecalho>""",
     }
 
-    response = client.service[method](**xml_send)
+    def get_service(client, translation):
+        if translation:
+            service_binding = client.service._binding.name
+            service_address = client.service._binding_options['address']
+            return client.create_service(
+                service_binding,
+                service_address.replace(*translation, 1))
+        else:
+            return client.service
+
+    service = get_service(client=client, translation=('nfse.asmx', base_url))
+
+    response = service[method](**xml_send)
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
