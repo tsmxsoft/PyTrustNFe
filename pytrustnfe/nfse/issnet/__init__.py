@@ -65,19 +65,10 @@ def _send(certificado, method, **kwargs):
         </cabecalho>""",
     }
 
-    def get_service(client, translation):
-        if translation:
-            service_binding = client.service._binding.name
-            service_address = client.service._binding_options['address']
-            return client.create_service(
-                service_binding,
-                service_address.replace(*translation, 1))
-        else:
-            return client.service
+    # fix erro url relativa
+    client.service._binding_options["address"] = base_url
 
-    service = get_service(client=client, translation=('nfse.asmx', base_url))
-
-    response = service[method](**xml_send)
+    response = client.service[method](**xml_send)
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
