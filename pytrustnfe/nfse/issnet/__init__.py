@@ -57,10 +57,17 @@ def _send(certificado, method, **kwargs):
     transport = Transport(session=session)
 
     client = Client(wsdl=base_url, transport=transport)
+    xml_send = {
+        "nfseDadosMsg": kwargs["xml"],
+        "nfseCabecMsg": """<?xml version="1.0"?>
+        <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
+	    <versaoDados>2.04</versaoDados>
+        </cabecalho>""",
+    }
 
-    response = client.service[method](kwargs["xml"])
+    response = client.service[method](**xml_send)
     response, obj = sanitize_response(response)
-    return {"sent_xml": kwargs["xml"], "received_xml": response, "object": obj}
+    return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
