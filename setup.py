@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = "1.0.57"
+VERSION = "1.0.58"
 
 
 setup(
@@ -45,7 +45,8 @@ later (LGPLv2+)",
             "nfse/agiliblue/templates/*xml",
             "nfse/tinus/templates/*xml",
             "nfse/siasp/templates/*xml",
-            "nfse/cariacica/templates/*xml"
+            "nfse/cariacica/templates/*xml",
+            "nfse/issnet/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
