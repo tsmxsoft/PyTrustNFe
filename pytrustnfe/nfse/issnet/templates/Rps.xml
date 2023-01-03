@@ -52,7 +52,7 @@
                 </CpfCnpj>
                 <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
             </IdentificacaoTomador>
-            <RazaoSocial{{ rps.tomador.razao_social }}</RazaoSocial>
+            <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
                 <Endereco>{{ rps.tomador.endereco }}</Endereco>
                 <Numero>{{ rps.tomador.numero }}</Numero>
