@@ -26,7 +26,7 @@
                 <DescontoIncondicionado>0</DescontoIncondicionado>
                 <DescontoCondicionado>0</DescontoCondicionado>
             </Valores>
-            <IssRetido>{{ rps.servico.iss_retido }</IssRetido>
+            <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             <ResponsavelRetencao>1</ResponsavelRetencao>
             <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
