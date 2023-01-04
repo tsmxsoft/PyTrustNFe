@@ -9,30 +9,30 @@
             <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
             <Status>{{ rps.status }}</Status>
         </Rps>
-        <Competencia>{{ rps.data_emissao }}</Competencia>
+        <Competencia>{{ rps.data_competencia }}</Competencia>
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
-                <ValorDeducoes></ValorDeducoes>
+                <ValorDeducoes>{{ rps.servico.deducoes }}</ValorDeducoes>
                 <ValorPis>{{ rps.servico.pis }}</ValorPis>
                 <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
                 <ValorInss>{{ rps.servico.inss }}</ValorInss>
                 <ValorIr>{{ rps.servico.ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
-                <ValTotTributos>{{ rps.servico.valor_tributos }}</ValTotTributos>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
                 <Aliquota>{{ rps.servico.aliquota }}</Aliquota>
-                <DescontoIncondicionado>0</DescontoIncondicionado>
-                <DescontoCondicionado>0</DescontoCondicionado>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incodicionado }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_codicionado }}</DescontoCondicionado>
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
-            <ResponsavelRetencao>1</ResponsavelRetencao>
             <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
-            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
+            <CodigoTributacaoMunicipio>{{ rps.servico.codigo_tributacao_municio }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+            <ExigibilidadeISS>{{ rps.eligibilidade_iss }}</ExigibilidadeISS>
+            <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
         </Servico>
         <Prestador>
             <CpfCnpj>
@@ -50,7 +50,9 @@
                     <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
                     {% endif %}
                 </CpfCnpj>
+                {% if rps.tomador.inscricao_municipal is defined -%}
                 <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+                {% endif %}
             </IdentificacaoTomador>
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
@@ -70,28 +72,8 @@
                 <Email>{{ rps.tomador.email }}</Email>
                 {% endif %}
             </Contato>
-            {% if rps.tomador.orgao_gerador is defined -%}
-            <OrgaoGerador>
-                <CodigoMunicipio>{{ rps.tomador.orgao_gerador.codigo_municipio }}</CodigoMunicipio>
-                <Uf>{{ rps.tomador.orgao_gerador.uf }}</Uf>
-            </OrgaoGerador>
-            {% endif %}
         </TomadorServico>
-        {% if rps.intermediario is defined -%}
-        <Intermediario>
-            <IdentificacaoIntermediario>
-                <CpfCnpj>
-                    <Cnpj>{{ rps.intermediario.cnpj }}</Cnpj>
-                </CpfCnpj>
-                <InscricaoMunicipal>{{ rps.intermediario.inscricao_municipal }}</InscricaoMunicipal>
-            </IdentificacaoIntermediario>
-            <RazaoSocial>{{ rps.intermediario.razao_social }}</RazaoSocial>
-            <CodigoMunicipio>{{ rps.intermediario.codigo_municipio }}</CodigoMunicipio>
-        </Intermediario>
-        {% endif %}
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
-        <IncentivoFiscal>2</IncentivoFiscal>
-        <InformacoesComplementares></InformacoesComplementares>
+        <InformacoesComplementares>{{ rps.servico.informacao_complementar }}</InformacoesComplementares>
     </InfDeclaracaoPrestacaoServico>
 </Rps>
