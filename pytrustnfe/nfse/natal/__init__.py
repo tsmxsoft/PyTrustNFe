@@ -13,7 +13,7 @@ from requests.packages.urllib3 import disable_warnings
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfe.assinatura import Assinatura
+from pytrustnfe.nfse.natal.assinatura import Assinatura
 from lxml import etree
 
 
