@@ -29,7 +29,7 @@
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
-            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municio }}</CodigoTributacaoMunicipio>
+            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             <ExigibilidadeISS>{{ rps.eligibilidade_iss }}</ExigibilidadeISS>
