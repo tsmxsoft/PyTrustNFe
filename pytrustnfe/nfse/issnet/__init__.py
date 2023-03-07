@@ -40,7 +40,7 @@ def _render(certificado, method, **kwargs):
         signer.assina_xml(xml_send, reference, remove_attrib='Id')
 
     xml_signed_send = signer.assina_xml(
-        xml_send, "lote:{0}".format(referencia), include_ref='Id')
+        xml_send, "lote:{0}".format(referencia), remove_attrib='Id')
 
     print ('--- xml ---')
     print (xml_signed_send)
