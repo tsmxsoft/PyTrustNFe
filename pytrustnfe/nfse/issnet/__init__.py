@@ -65,7 +65,7 @@ def _send(certificado, method, **kwargs):
     transport = Transport(session=session)
 
     client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
-    with client.settings(raw_response=True, strict=False):
+    with client.settings(strict=False):
         xml_send = {
             "nfseDadosMsg": kwargs["xml"],
             "nfseCabecMsg": """<?xml version="1.0"?>
