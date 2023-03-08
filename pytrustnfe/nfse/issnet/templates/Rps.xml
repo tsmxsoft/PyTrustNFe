@@ -74,7 +74,7 @@
                 {% endif %}
             </Contato>
         </TomadorServico>
-        <Intermediario>
+        <!-- <Intermediario>
             <IdentificacaoIntermediario>
                 <CpfCnpj>
                     {% if rps.intermediador.cpf_cnpj|length == 14  %}
@@ -88,7 +88,7 @@
             </IdentificacaoIntermediario>
             <RazaoSocial>{{ rps.intermediador.razao_social }}</RazaoSocial>
             <CodigoMunicipio>{{ rps.intermediador.codigo_municipio }}</CodigoMunicipio>
-        </Intermediario>
+        </Intermediario> -->
         <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
