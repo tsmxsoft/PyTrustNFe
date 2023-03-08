@@ -77,17 +77,17 @@
         <Intermediario>
             <IdentificacaoIntermediario>
                 <CpfCnpj>
-                    {% if rps.intermediario.cpf_cnpj|length == 14  %}
-                    <Cnpj>{{ rps.intermediario.cpf_cnpj }}</Cnpj>
+                    {% if rps.intermediador.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.intermediador.cpf_cnpj }}</Cnpj>
                     {% endif %}
-                    {% if rps.intermediario.cpf_cnpj|length == 11  %}
-                    <Cpf>{{ rps.intermediario.cpf_cnpj }}</Cpf>
+                    {% if rps.intermediador.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.intermediador.cpf_cnpj }}</Cpf>
                     {% endif %}
                 </CpfCnpj>
-                <InscricaoMunicipal>{{ rps.intermediario.inscricao_municipal }}</InscricaoMunicipal>
+                <InscricaoMunicipal>{{ rps.intermediador.inscricao_municipal }}</InscricaoMunicipal>
             </IdentificacaoIntermediario>
-            <RazaoSocial>{{ rps.intermediario.razao_social }}</RazaoSocial>
-            <CodigoMunicipio>{{ rps.intermediario.codigo_municipio }}</CodigoMunicipio>
+            <RazaoSocial>{{ rps.intermediador.razao_social }}</RazaoSocial>
+            <CodigoMunicipio>{{ rps.intermediador.codigo_municipio }}</CodigoMunicipio>
         </Intermediario>
         <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
