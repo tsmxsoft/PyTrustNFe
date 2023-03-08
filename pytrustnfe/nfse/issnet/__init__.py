@@ -84,8 +84,10 @@ def _send(certificado, method, **kwargs):
             return client.service
 
     service = get_service(client=client, translation=('nfse.asmx', base_url))
+    print ('------ response 1 ------')
+    print (service[method])
     response = service[method](**xml_send)
-    print ('------ response ------')
+    print ('------ response 2 ------')
     print (response.__dict__)
 
     response, obj = sanitize_response(response)
