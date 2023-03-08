@@ -88,7 +88,7 @@ def _send(certificado, method, **kwargs):
         response = service[method](**xml_send)
 
         print ('--- response ---')
-        print (response)
+        print (response.__dict__)
         
         xml = response.__dict__['__values__']['outputXML']
         obj = None
