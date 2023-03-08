@@ -64,19 +64,33 @@ def _send(certificado, method, **kwargs):
     session.verify = False
     transport = Transport(session=session)
 
-    client = Client(wsdl=base_url, transport=transport)
-    xml_send = {}
+    client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
     xml_send = {
         "nfseDadosMsg": kwargs["xml"],
         "nfseCabecMsg": """<?xml version="1.0"?>
-        <cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" versao="1" xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
-        <versaoDados>1</versaoDados>
+        <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
+	    <versaoDados>2.04</versaoDados>
         </cabecalho>""",
     }
 
-    response = client.service[method](**xml_send)
+    def get_service(client, translation):
+        if translation:
+            service_binding = client.service._binding.name
+            service_address = client.service._binding_options['address']
+            
+            return client.create_service(service_binding,
+                                         service_address.replace(*translation))
+        else:
+            return client.service
+
+    service = get_service(client=client, translation=('nfse.asmx', base_url))
+    response = service[method](**xml_send)
+    print ('------ response ------')
+    print (response.__dict__)
+
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
+    
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
