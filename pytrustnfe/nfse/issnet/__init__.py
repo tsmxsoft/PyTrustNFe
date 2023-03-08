@@ -64,34 +64,17 @@ def _send(certificado, method, **kwargs):
     session.verify = False
     transport = Transport(session=session)
 
-    client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
+    client = Client(wsdl=base_url, transport=transport)
+    xml_send = {}
     xml_send = {
         "nfseDadosMsg": kwargs["xml"],
         "nfseCabecMsg": """<?xml version="1.0"?>
-        <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
-	    <versaoDados>2.04</versaoDados>
+        <cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" versao="1" xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
+        <versaoDados>1</versaoDados>
         </cabecalho>""",
     }
 
-    def get_service(client, translation):
-        if translation:
-            service_binding = client.service._binding.name
-            service_address = client.service._binding_options['address']
-            
-            return client.create_service(service_binding,
-                                         service_address.replace(*translation))
-        else:
-            return client.service
-
-    service = get_service(client=client, translation=('nfse.asmx', base_url))
-
-    if method == 'EnviarLoteRpsResposta':
-        method = 'RecepcionarLoteRpsSincrono'
-
-    response = service[method](**xml_send)
-    print ('--- response ---')
-    print (response.__dict__)
-
+    response = client.service[method](**xml_send)
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
