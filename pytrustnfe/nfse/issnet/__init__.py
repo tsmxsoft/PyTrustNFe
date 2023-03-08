@@ -65,33 +65,30 @@ def _send(certificado, method, **kwargs):
     transport = Transport(session=session)
 
     client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
-    xml_send = {
-        "nfseDadosMsg": kwargs["xml"],
-        "nfseCabecMsg": """<?xml version="1.0"?>
-        <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
-	    <versaoDados>2.04</versaoDados>
-        </cabecalho>""",
-    }
+    with client.settings(raw_response=True, strict=False):
+        xml_send = {
+            "nfseDadosMsg": kwargs["xml"],
+            "nfseCabecMsg": """<?xml version="1.0"?>
+            <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
+            <versaoDados>2.04</versaoDados>
+            </cabecalho>""",
+        }
 
-    def get_service(client, translation):
-        if translation:
-            service_binding = client.service._binding.name
-            service_address = client.service._binding_options['address']
-            
-            return client.create_service(service_binding,
-                                         service_address.replace(*translation))
-        else:
-            return client.service
+        def get_service(client, translation):
+            if translation:
+                service_binding = client.service._binding.name
+                service_address = client.service._binding_options['address']
+                
+                return client.create_service(service_binding,
+                                            service_address.replace(*translation))
+            else:
+                return client.service
 
-    service = get_service(client=client, translation=('nfse.asmx', base_url))
-    print ('------ response 1 ------')
-    print (service[method])
-    response = service[method](**xml_send)
-    print ('------ response 2 ------')
-    print (response.__dict__)
+        service = get_service(client=client, translation=('nfse.asmx', base_url))
+        response = service[method](**xml_send)
 
-    response, obj = sanitize_response(response)
-    return {"sent_xml": xml_send, "received_xml": response, "object": obj}
+        response, obj = sanitize_response(response)
+        return {"sent_xml": xml_send, "received_xml": response, "object": obj}
     
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
