@@ -93,7 +93,7 @@ def _send(certificado, method, **kwargs):
     
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRps", **kwargs)
+    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
