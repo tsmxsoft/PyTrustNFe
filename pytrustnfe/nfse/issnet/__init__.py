@@ -86,10 +86,17 @@ def _send(certificado, method, **kwargs):
 
         service = get_service(client=client, translation=('nfse.asmx', base_url))
         response = service[method](**xml_send).__dict__
-        response = response['__values__']['outputXML']
 
-        response, obj = sanitize_response(response)
-        return {"sent_xml": xml_send, "received_xml": response, "object": obj}
+        print ('--- response ---')
+        print (response)
+        
+        xml = response.__dict__['__values__']['outputXML']
+        obj = None
+
+        if xml:
+            xml, obj = sanitize_response(xml)
+
+        return {"sent_xml": xml_send, "received_xml": xml, "object": obj}
     
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
