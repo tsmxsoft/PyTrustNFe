@@ -65,7 +65,7 @@ def _send(certificado, method, **kwargs):
     transport = Transport(session=session)
 
     client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
-    with client.settings(strict=False):
+    with client.settings(strict=False, raw_response=True):
         xml_send = {
             "nfseDadosMsg": kwargs["xml"],
             "nfseCabecMsg": """<?xml version="1.0"?>
@@ -85,7 +85,7 @@ def _send(certificado, method, **kwargs):
                 return client.service
 
         service = get_service(client=client, translation=('nfse.asmx', base_url))
-        response = service[method](**xml_send).__dict__
+        response = service[method](**xml_send)
 
         print ('--- response ---')
         print (response)
