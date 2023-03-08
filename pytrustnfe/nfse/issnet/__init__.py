@@ -84,8 +84,9 @@ def _send(certificado, method, **kwargs):
             return client.service
 
     service = get_service(client=client, translation=('nfse.asmx', base_url))
-    print ('--- service ---')
-    print (service.__dict__)
+
+    if method == 'EnviarLoteRpsResposta':
+        method = 'RecepcionarLoteRpsSincrono'
 
     response = service[method](**xml_send)
     print ('--- response ---')
