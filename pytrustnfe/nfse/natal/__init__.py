@@ -47,6 +47,23 @@ def _render(certificado, method, **kwargs):
     return xml_signed_send
 
 
+def _render_single(certificado, method, **kwargs):
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    parser = etree.XMLParser(remove_blank_text=True, 
+                             remove_comments=True, 
+                             strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+
+    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+    xml_send = etree.fromstring(xml_string_send, parser=parser)
+    reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
+                                    kwargs["nfse"]['rps']['serie'])
+    xml_signed_send = signer.assina_xml(xml_send, reference, remove_attrib='Id')
+
+    return xml_signed_send
+
+
 def _send(certificado, method, **kwargs):
     base_url = ""
     if kwargs["ambiente"] == "producao":
@@ -54,8 +71,7 @@ def _send(certificado, method, **kwargs):
     else:
         base_url = "https://wsnfsev1homologacao.natal.rn.gov.br:8443/axis2/services/NfseWSServiceV1?wsdl"
 
-    cert, key = extract_cert_and_key_from_pfx(
-        certificado.pfx, certificado.password)
+    cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
     disable_warnings()
@@ -91,6 +107,16 @@ def recepcionar_lote_rps(certificado, **kwargs):
 
 def xml_consultar_lote_rps(certificado, **kwargs):
     return _render(certificado, "ConsultarLoteRps", **kwargs)
+
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+    return _send(certificado, "ConsultarNfsePorRps", **kwargs)
+
+
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render_single(certificado, "ConsultarNfsePorRps", **kwargs)
 
 
 def consultar_lote_rps(certificado, **kwargs):

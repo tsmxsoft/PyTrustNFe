@@ -15,7 +15,7 @@ class Assinatura(object):
         self.arquivo = arquivo
         self.senha = senha
 
-    def assina_xml(self, xml_element, reference, getchildren=False):
+    def assina_xml(self, xml_element, reference, getchildren=False, **kwargs):
         cert, key = extract_cert_and_key_from_pfx(self.arquivo, self.senha)
 
         for element in xml_element.iter("*"):
@@ -52,6 +52,9 @@ class Assinatura(object):
             if element_signed is not None and signature is not None:
                 parent = element_signed.getparent()
                 parent.append(signature)
+
+                if kwargs.get('remove_attrib'):
+                    element_signed.attrib.pop(kwargs['remove_attrib'], None)
 
         if sys.version_info[0] > 2:
             return etree.tostring(xml_element, encoding=str)
