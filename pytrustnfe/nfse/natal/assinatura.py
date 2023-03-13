@@ -34,14 +34,18 @@ class Assinatura(object):
 
         ref_uri = ('#%s' % reference) if reference else None
 
-        element = xml_element.find(".//*[@id='%s']" % (reference))
-        if element is None:
-            element = xml_element.find(".//*[@Id='%s']" % (reference))
+        if ref_uri:
+            element = xml_element.find(".//*[@id='%s']" % (reference))
+            if not element:
+                element = xml_element.find(".//*[@Id='%s']" % (reference))
+        else:
+            element = xml_element
+
         signed_root = signer.sign(
             element, key=key.encode(), cert=cert.encode(),
             reference_uri=ref_uri)
 
-        if reference:
+        if ref_uri:
             element_signed = xml_element.find(".//*[@id='%s']" % (reference))
             if element_signed is None:
                 element_signed = xml_element.find(".//*[@Id='%s']" % (reference))
@@ -55,6 +59,11 @@ class Assinatura(object):
 
                 if kwargs.get('remove_attrib'):
                     element_signed.attrib.pop(kwargs['remove_attrib'], None)
+        else:
+            signature = signed_root.findall(
+                ".//{http://www.w3.org/2000/09/xmldsig#}Signature"
+            )[-1]
+            xml_element.append(signature)
 
         if sys.version_info[0] > 2:
             return etree.tostring(xml_element, encoding=str)

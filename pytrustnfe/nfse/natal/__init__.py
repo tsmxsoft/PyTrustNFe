@@ -55,13 +55,14 @@ def _render_single(certificado, method, **kwargs):
     )
     signer = Assinatura(certificado.pfx, certificado.password)
 
-    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
-    xml_send = etree.fromstring(xml_string_send, parser=parser)
+    xml = render_xml(path, "%s.xml" % method, True, **kwargs)
+
     reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
                                     kwargs["nfse"]['rps']['serie'])
-    xml_signed_send = signer.assina_xml(xml_send, reference, remove_attrib='Id')
+    xml_send = etree.fromstring(xml, parser=parser)
+    xml = signer.assina_xml(xml_send, None, remove_attrib='Id')
 
-    return xml_signed_send
+    return xml
 
 
 def _send(certificado, method, **kwargs):
