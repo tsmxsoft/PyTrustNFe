@@ -117,8 +117,6 @@ def consultar_nfse_por_rps(certificado, **kwargs):
     response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
     xml = None
 
-    print (response)
-
     try:
         xml_element = response['object'].find('.//Nfse')
 
