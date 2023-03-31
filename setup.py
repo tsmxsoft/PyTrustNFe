@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = "1.0.99"
+VERSION = "1.0.100"
 
 
 setup(
