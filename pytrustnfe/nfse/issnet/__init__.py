@@ -61,9 +61,7 @@ def _render_unsigned(certificado, method, **kwargs):
     reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
                                     kwargs["nfse"]['rps']['serie'])
     xml_send = etree.fromstring(xml, parser=parser)
-    xml = signer.assina_xml(xml_send, reference, remove_attrib='rps')
-
-    print (xml)
+    xml = signer.assina_xml(xml_send, reference, remove_attrib='Id')
 
     return xml
 
@@ -143,6 +141,7 @@ def cancelar_nfse(certificado, **kwargs):
 def consultar_nfse_por_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+        print (xml)
 
     response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
     xml = None
