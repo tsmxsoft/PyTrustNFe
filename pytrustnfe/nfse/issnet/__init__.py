@@ -141,8 +141,9 @@ def cancelar_nfse(certificado, **kwargs):
 def consultar_nfse_por_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
-        print (xml)
 
+    print (kwargs["xml"])
+    
     response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
     xml = None
 
