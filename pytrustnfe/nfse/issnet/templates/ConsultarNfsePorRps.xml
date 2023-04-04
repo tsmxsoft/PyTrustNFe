@@ -6,7 +6,9 @@
             <Tipo>{{nfse.rps.tipo}}</Tipo>
         </IdentificacaoRps>
 		<Prestador>
-            <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+            <CpfCnpj>
+                <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+            </CpfCnpj>
             <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
 	</Pedido>
