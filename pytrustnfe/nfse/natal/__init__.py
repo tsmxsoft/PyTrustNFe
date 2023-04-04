@@ -57,12 +57,10 @@ def _render_unsigned(certificado, method, **kwargs):
 
     xml = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
-                                    kwargs["nfse"]['rps']['serie'])
-    xml_send = etree.fromstring(xml, parser=parser)
-    xml = signer.assina_xml(xml_send, reference, remove_attrib='rps')
-
-    print (xml)
+    # reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
+    #                                 kwargs["nfse"]['rps']['serie'])
+    # xml_send = etree.fromstring(xml, parser=parser)
+    # xml = signer.assina_xml(xml_send, None, remove_attrib='Id')
 
     return xml
 
