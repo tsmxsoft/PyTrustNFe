@@ -62,6 +62,8 @@ def _render_unsigned(certificado, method, **kwargs):
     xml_send = etree.fromstring(xml, parser=parser)
     xml = signer.assina_xml(xml_send, reference, remove_attrib='rps')
 
+    print (xml)
+
     return xml
 
 
