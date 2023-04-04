@@ -1,5 +1,5 @@
 <ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
-	<Pedido>
+	<Pedido Id="rps:{{nfse.rps.numero}}{{nfse.rps.serie}}">
 		<IdentificacaoRps>
             <Numero>{{nfse.rps.numero}}</Numero>
             <Serie>{{nfse.rps.serie}}</Serie>
