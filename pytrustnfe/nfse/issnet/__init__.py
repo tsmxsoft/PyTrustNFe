@@ -15,6 +15,7 @@ from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
+import sys
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -24,7 +25,7 @@ def _render(certificado, method, **kwargs):
     signer = Assinatura(certificado.pfx, certificado.password)
 
     referencia = ""
-    if method == "RecepcionarLoteRps":
+    if method == "RecepcionarLoteRpsSincrono":
         referencia = kwargs.get("nfse").get("numero_lote")
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
@@ -47,6 +48,22 @@ def _render(certificado, method, **kwargs):
 
     return xml_signed_send
 
+def _render_unsigned(certificado, method, **kwargs):
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    parser = etree.XMLParser(remove_blank_text=True, 
+                             remove_comments=True, 
+                             strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+
+    xml = render_xml(path, "%s.xml" % method, True, **kwargs)
+
+    reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
+                                    kwargs["nfse"]['rps']['serie'])
+    xml_send = etree.fromstring(xml, parser=parser)
+    xml = signer.assina_xml(xml_send, reference, remove_attrib='Id')
+
+    return xml
 
 def _send(certificado, method, **kwargs):
     base_url = ""
@@ -98,12 +115,12 @@ def _send(certificado, method, **kwargs):
     
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRps", **kwargs)
+    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "RecepcionarLoteRps", **kwargs)
+    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def xml_consultar_lote_rps(certificado, **kwargs):
     return _render(certificado, "ConsultarLoteRps", **kwargs)
@@ -120,3 +137,30 @@ def cancelar_nfse(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
     return _send(certificado, "cancelarNfse", **kwargs)
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+
+    print (kwargs["xml"])
+    
+    response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
+    xml = None
+
+    try:
+        xml_element = response['object'].find('.//Nfse')
+
+        if sys.version_info[0] > 2:
+            xml = str(etree.tostring(xml_element, encoding=str))
+        else:
+            xml = str(etree.tostring(xml_element, encoding="utf8"))
+            
+        xml = xml.replace('&#13;', '')
+    except:
+        pass
+
+    return xml
+
+
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render_unsigned(certificado, "ConsultarNfsePorRps", **kwargs)
