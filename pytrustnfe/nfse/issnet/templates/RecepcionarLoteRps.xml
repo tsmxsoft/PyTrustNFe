@@ -1,4 +1,4 @@
-<EnviarLoteRpsSincronoEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+<EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
     <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.04">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <Prestador>
@@ -14,4 +14,4 @@
             {% endfor %}
         </ListaRps>
     </LoteRps>
-</EnviarLoteRpsSincronoEnvio>
+</EnviarLoteRpsEnvio>
