@@ -58,11 +58,9 @@ def _render_once(certificado, method, **kwargs):
 
     xml = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    print ('reference', reference)
-
     if reference:
         xml_send = etree.fromstring(xml, parser=parser)
-        xml = signer.assina_xml(xml_send, reference, remove_attrib='Id')
+        xml = signer.assina_xml(xml_send, reference)
 
     return xml
 
