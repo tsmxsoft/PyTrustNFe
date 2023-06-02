@@ -54,12 +54,15 @@ def _render_once(certificado, method, **kwargs):
                              strip_cdata=False
     )
     signer = Assinatura(certificado.pfx, certificado.password)
+    reference = kwargs.get('reference', None)
 
     xml = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    if kwargs.get('reference', None):
+    print ('reference', reference)
+
+    if reference:
         xml_send = etree.fromstring(xml, parser=parser)
-        xml = signer.assina_xml(xml_send, kwargs["reference"], remove_attrib='Id')
+        xml = signer.assina_xml(xml_send, reference, remove_attrib='Id')
 
     return xml
 
