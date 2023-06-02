@@ -130,6 +130,7 @@ def consultar_nfse_por_rps(certificado, **kwargs):
 
     return xml
 
+
 def xml_consultar_nfse_por_rps(certificado, **kwargs):
     return _render_once(certificado, "ConsultarNfsePorRps", **kwargs)
 
@@ -143,9 +144,10 @@ def consultar_lote_rps(certificado, **kwargs):
 def xml_cancelar_nfse(certificado, **kwargs):
     reference = "rps:{0}{1}".format(kwargs["nfse"]['numero'], 
                                     kwargs["nfse"]['serie'])
-    kwargs["reference"] = reference
+    dados = kwargs
+    dados["reference"] = reference
 
-    return _render_once(certificado, "CancelarNfse", **kwargs)
+    return _render_once(certificado, "CancelarNfse", **dados)
 
 
 def cancelar_nfse(certificado, **kwargs):
