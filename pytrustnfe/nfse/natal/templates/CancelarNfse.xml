@@ -1,6 +1,6 @@
 <CancelarNfseEnvio xmlns="http://nfse.abrasf.org.br">
     <Pedido>
-        <InfPedidoCancelamento Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <InfPedidoCancelamento Id="rps:{{ nfse.rps.numero }}{{ nfse.rps.serie }}">
             <IdentificacaoNfse>
                 <Numero>{{nfse.rps.numero}}</Numero>
                 <CpfCnpj>
