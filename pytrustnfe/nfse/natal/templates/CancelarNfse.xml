@@ -5,7 +5,7 @@
                 <Numero>{{nfse.rps.numero}}</Numero>
                 <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
                 <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
-                <CodigoMunicipio>{{ cancelamento.cidade }}</CodigoMunicipio>
+                <CodigoMunicipio>{{ nfse.codigo_municipio }}</CodigoMunicipio>
             </IdentificacaoNfse>
             <CodigoCancelamento>{{ nfse.codigo_cancelamento }}</CodigoCancelamento>
         </InfPedidoCancelamento>
