@@ -10,7 +10,6 @@
                 <CodigoMunicipio>{{ nfse.codigo_municipio }}</CodigoMunicipio>
             </IdentificacaoNfse>
             <CodigoCancelamento>{{ nfse.codigo_cancelamento }}</CodigoCancelamento>
-            <MotivoCancelamento>{{ nfse.motivo_cancelamento }}</MotivoCancelamento>
         </InfPedidoCancelamento>
     </Pedido>
 </CancelarNfseEnvio>
