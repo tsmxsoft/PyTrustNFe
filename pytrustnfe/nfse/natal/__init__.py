@@ -59,7 +59,7 @@ def _render_once(certificado, method, **kwargs):
 
     if kwargs.get('reference', None):
         xml_send = etree.fromstring(xml, parser=parser)
-        xml = signer.assina_xml(xml_send, None, kwargs["reference"], remove_attrib='Id')
+        xml = signer.assina_xml(xml_send, kwargs["reference"], remove_attrib='Id')
 
     return xml
 
