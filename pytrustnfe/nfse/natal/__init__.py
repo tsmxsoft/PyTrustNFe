@@ -143,7 +143,7 @@ def consultar_lote_rps(certificado, **kwargs):
 
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return _render(certificado, "cancelarNfse", **kwargs)
+    return _render_unsigned(certificado, "cancelarNfse", **kwargs)
 
 
 def cancelar_nfse(certificado, **kwargs):
