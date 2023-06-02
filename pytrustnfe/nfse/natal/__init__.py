@@ -47,7 +47,7 @@ def _render(certificado, method, **kwargs):
     return xml_signed_send
 
 
-def _render_unsigned(certificado, method, **kwargs):
+def _render_once(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
     parser = etree.XMLParser(remove_blank_text=True, 
                              remove_comments=True, 
@@ -57,10 +57,9 @@ def _render_unsigned(certificado, method, **kwargs):
 
     xml = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    # reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
-    #                                 kwargs["nfse"]['rps']['serie'])
-    # xml_send = etree.fromstring(xml, parser=parser)
-    # xml = signer.assina_xml(xml_send, None, remove_attrib='Id')
+    if kwargs.get('reference', None):
+        xml_send = etree.fromstring(xml, parser=parser)
+        xml = signer.assina_xml(xml_send, None, kwargs["reference"], remove_attrib='Id')
 
     return xml
 
@@ -131,9 +130,8 @@ def consultar_nfse_por_rps(certificado, **kwargs):
 
     return xml
 
-
 def xml_consultar_nfse_por_rps(certificado, **kwargs):
-    return _render_unsigned(certificado, "ConsultarNfsePorRps", **kwargs)
+    return _render_once(certificado, "ConsultarNfsePorRps", **kwargs)
 
 
 def consultar_lote_rps(certificado, **kwargs):
@@ -143,7 +141,11 @@ def consultar_lote_rps(certificado, **kwargs):
 
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return _render_unsigned(certificado, "CancelarNfse", **kwargs)
+    reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
+                                    kwargs["nfse"]['rps']['serie'])
+    kwargs["reference"] = reference
+
+    return _render_once(certificado, "CancelarNfse", **kwargs)
 
 
 def cancelar_nfse(certificado, **kwargs):
