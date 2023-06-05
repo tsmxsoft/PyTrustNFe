@@ -1,4 +1,4 @@
-<CancelarNfseEnvio xmlns="http://nfse.abrasf.org.br">
+<CancelarNfseEnvio http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#>
     <Pedido>
         <InfPedidoCancelamento Id="rps:{{ nfse.rps.numero }}">
             <IdentificacaoNfse>
