@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NFCom xmlns="http://www.portalfiscal.inf.br/nfcom">
+    <infNFCom>
+        <versao>1.00</versao>
+        <Id>{{ id }}NFCom</Id>
+        <ide>
+            <cUF>{{ ide.ufEmit }}</cUF>
+            <tpAmb>{{ ide.tpAmb }}</tpAmb>
+            <mod>62</mod>
+            <serie>{{ ide.serie or 0 }}</serie>
+            <nNF>{{ ide.nNF }}</nNF>
+            <cDV>{{ ide.cDV }}</cDV>
+            <dhEmi>{{ ide.dhEmi }}</dhEmi>
+            <tpEmis>{{ ide.tpEmis }}</tpEmis>
+            <nSiteAutoriz>{{ ide.nSiteAutoriz }}</nSiteAutoriz>
+            <cMunFG>{{ ide.cMungFG }}</cMunFg>
+            <finNFCom>{{ ide.finNFCom }}</finNFCom>
+            <tpFat>{{ ide.tpFat }}</tpFat>
+            <verProc>{{ ide.verProc }}</verProc>
+            <indPrePago>{{ ide.indPrePago }}</indPrePago>
+            <indCessaoMeiosRede>{{ ide.indCessaoMeiosRede }}</indCessaoMeiosRede>
+            <dhCont>{{ ide.dhCont }}</dhCont>
+            <xJust>{{ ide.xJust }}</xJust>
+        </ide>
+        <emit>
+            <CNPJ>{{ emit.emit.CNPJ }}</CNPJ>
+            <IE>{{ emit.IE }}</IE>
+            <IEUFDest>{{ emit.IEUFDest }}</IEUFDest>
+            <CRT>{{ emit.CRT }}</CRT>
+            <xNome>{{ emit.xNome }}</xNome>
+            <xFant>{{ emit.xFant }}</xFant>
+            <enderEmit>
+                <xLgr>{{ emit.xLGR }}</xLgr>
+                <nro>{{ emit.nro }}</nro>
+                <xCpl>{{ emit.xCpl }}</xCpl>
+                <xBairro>{{ emit.xBairro }}</xBairro>
+                <cMun>{{ emit.cMun }}</cMun>
+                <xMun>{{ emit.xMun }}</xMun>
+                <CEP>{{ emit.CEP }}</CEP>
+                <UF>{{ emit.UF }}</UF>
+                <fone>{{ emit.fone }}</fone>
+                <email>{{ emit.email }}</email>
+            </enderEmit>
+        </emit>
+        <dest>
+            <xNome>{{ dest.xNome }}</xNome>
+            <CNPJ>{{ dest.CNPJ }}</CNPJ>
+            <CPF>{{ dest.CPF }}</CPF>
+            <idOutros>{{ dest.idOutros }}</idOutros>
+            <indIEDest>{{ dest.indIEDest }}</indIEDest>
+            <IE>{{ dest.IE }}</IE>
+            <IM>{{ dest.IM }}</IM>
+            <enderDest>
+                <xLgr>{{ dest.xLGR }}</xLgr>
+                <nro>{{ dest.nro }}</nro>
+                <xCpl>{{ dest.xCpl }}</xCpl>
+                <xBairro>{{ dest.xBairro }}</xBairro>
+                <cMun>{{ dest.cMun }}</cMun>
+                <xMun>{{ dest.xMun }}</xMun>
+                <CEP>{{ dest.CEP }}</CEP>
+                <UF>{{ dest.UF }}</UF>
+                <fone>{{ dest.fone }}</fone>
+                <email>{{ dest.email }}</email>
+            </enderDest>
+        </dest>
+        <assinante>
+            <iCodAssinante>{{ assinante.iCodAssinante }}</iCodAssinante>
+            <tpAssinante>{{ assinante.tpAssinante }}</tpAssinante>
+            <tpServUtil>{{ assinante.tpServUtil }}</tpServUtil>
+            <nContrato>{{ assinante.nContrato }}</nContrato>
+            <dContratoIni>{{ assinante.dContratoIni }}</dContratoIni>
+            <dContratoFim>{{ assinante.dContratoFim }}</dContratoFim>
+            <NroTermPrinc>{{ assinante.NroTermPrinc }}</NroTermPrinc>
+            <cUF>{{ assinante.cUF }}</cUF>
+        </assinante>
+        {% if gSub is defined -%}
+        <gSub>
+            <chNFCom>{{ gSub.chNFCom }}</chNFCom>
+            <gNF>
+                <CNPJ>{{ gSub.gNF.CNPJ }}</CNPJ>
+                <mod>{{ gSub.gNF.mod }}</mod>
+                <serie>{{ gSub.gNF.serie }}</serie>
+                <nNF>{{ gSub.gNF.nNF }}</nNF>
+                <CompetEmis>{{ gSub.gNF.CompetEmis }}</CompetEmis>
+                <hash115>{{ gSub.gNF.hash115 }}</hash115>
+            </gNF>
+            <motSub>{{ gSub.motSub }}</motSub>
+        </gsub>
+        {% endif %}
+        {% if gCoFat is defined -%}
+        <gCoFat>
+            <chNFComLocal>{{ gCoFat.chNFComLocal }}</chNFComLocal>
+        </gCoFat>
+        {% endif %}
+        {% for det in dets %}
+        <det>
+            <nItem>{{ det.nItem }}</nItem>
+            <chNFComAnt>{{ det.chNFComAnt }}</chNFComAnt>
+            <nItemAnt>{{ det.nItemAnt }}</nItemAnt>
+            <prod>
+                <cProd>{{ det.prod.cProd }}</cProd>
+                <xProd>{{ det.prod.xProd }}</xProd>
+                <cClass>{{ det.prod.cClass }}</cClass>
+                <CFOP>{{ det.prod.CFOP }}</CFOP>
+                <CNPJLD>{{ det.prod.CNPJLD }}</CNPJLD>
+                <uMed>{{ det.prod.uMed }}</uMed>
+                <qFaturada>{{ det.prod.qFaturada }}</qFaturada>
+                <vItem>{{ det.prod.vItem }}</vItem>
+                <vDesc>{{ det.prod.vDesc }}</vDesc>
+                <vOutro>{{ det.prod.vOutro }}</vOutro>
+                <vProd>{{ det.prod.vProd }}</vProd>
+                <dExpiracao>{{ det.prod.dExpiracao }}</dExpiracao>
+                <indDevolucao>{{ det.prod.indDevolucao }}</indDevolucao>
+            </prod>
+            <imposto>
+                {% if det.imposto.ICMS00 is defined -%}
+                <ICMS00>
+                    <CST>{{ det.imposto.ICMS00.CST }}</CST>
+                    <vBC>{{ det.imposto.ICMS00.vBC }}</vBC>
+                    <pICMS>{{ det.imposto.ICMS00.pICMS }}</pICMS>
+                    <vICMS>{{ det.imposto.ICMS00.vICMS }}</vICMS>
+                    <pFCP>{{ det.imposto.ICMS00.pFCP }}</pFCP>
+                    <vFCP>{{ det.imposto.ICMS00.vFCP }}</vFCP>
+                </ICMS00>
+                {% endif %}
+                {% if det.imposto.ICMS20 is defined -%}
+                <ICMS20>
+                    <CST>{{ det.imposto.ICMS20.CST }}</CST>
+                    <pRedBC>{{ det.imposto.ICMS20.pRedBC }}</pRedBC>
+                    <vBC>{{ det.imposto.ICMS20.vBC }}</vBC>
+                    <pICMS>{{ det.imposto.ICMS20.pICMS }}</pICMS>
+                    <vICMS>{{ det.imposto.ICMS20.vICMS }}</vICMS>
+                    <vICMSDeson>{{ det.imposto.ICMS20.vICMSDeson }}</vICMSDeson>
+                    <cBenef>{{ det.imposto.ICMS20.cBenef }}</cBenef>
+                    <pFCP>{{ det.imposto.ICMS20.pFCP }}</pFCP>
+                    <vFCP>{{ det.imposto.ICMS20.vFCP }}</vFCP>
+                </ICMS20>
+                {% endif %}
+                {% if det.imposto.ICMS40 is defined -%}
+                <ICMS40>
+                    <CST>{{ det.imposto.ICMS40.CST }}</CST>
+                    <vICMSDeson>{{ det.imposto.ICMS40.vICMSDeson }}</vICMSDeson>
+                    <cBenef>{{ det.imposto.ICMS
+                {% endif %}
+                {% if det.imposto.ICMS51 is defined -%}
+                <ICMS51>
+                    <CST>{{ det.imposto.ICMS51.CST }}</CST>
+                    <vICMSDeson>{{ det.imposto.ICMS51.vICMSDeson }}</vICMSDeson>
+                    <cBenef>{{ det.imposto.ICMS51.cBenef }}</cBenef>
+                </ICMS51>
+                {% endif %}
+                {% if det.imposto.ICMS90 is defined -%}
+                <ICMS90>
+                    <CST>{{ det.imposto.ICMS90.CST }}</CST>
+                    <vBC>{{ det.imposto.ICMS90.vBC }}</vBC>
+                    <pICMS>{{ det.imposto.ICMS90.pICMS }}</pICMS>
+                    <vICMS>{{ det.imposto.ICMS90.vICMS }}</vICMS>
+                </ICMS90>
+                {% endif %}
+                {% if det.imposto.ICMSSN is defined -%}
+                <ICMSSN>
+                    <CST>{{ CST }}</CST>
+                    <indSN>{{ indSN }}</indSN>
+                </ICMSSN>
+                {% for icmsufdest in ICMSUFDests %}
+                <ICMSUFDest>
+                    <cUFDest>{{ cUFDest }}</cUFDest>
+                    <vBCUFDest>{{ vBCUFDest }}</vBCUFDest>
+                    <pFCPUFDest>{{ pFCPUFDest }}</pFCPUFDest>
+                    <pICMSUFDest>{{ pICMSUFDest }}</pICMSUFDest>
+                    <vFCPUFDest>{{ vFCPUFDest }}</vFCPUFDest>
+                    <vICMSUFDest>{{ vICMSUFDest }}</vICMSUFDest>
+                    <vICMSUFEmi>{{ vICMSUFEmi }}</vICMSUFEmi>
+                </ICMSUFDest>
+                {% endfor %}
+                <PIS>
+                    <CST>{{ CST }}</CST>
+                    <vBC>{{ vBC }}</vBC>
+                    <pPIS>{{ pPIS }}</pPIS>
+                    <vPIS>{{ vPIS }}</vPIS>
+                </PIS>ß
+                <COFINS>
+                    <CST>{{ CST }}</CST>
+                    <vBC>{{ vBC }}</vBC>
+                    <pCOFINS>{{ pCOFINS }}</pCOFINS>
+                    <vCOFINS>{{ vCOFINS }}</vCOFINS>
+                </COFINS>
+                <FUST>
+                    <vBC>{{ vBC }}</vBC>
+                    <pFUST>{{ pFUST }}</pFUST>
+                    <vFUTS>{{ vFUST }}</vFUST>
+                </FUST>
+                <FUNTTEL>
+                    <vBC>{{ vBC }}</vBC>
+                    <pFUNTTEL>{{ pFUNTTEL }}</pFUNTTEL>
+                    <vFUNTTEL>{{ vFUNTTEL }}</vFUNTTEL>
+                </FUNTTEL>
+                <retTrib>
+                    <vRetPIS>{{ vRetPIS }}</vRetPis>
+                    <vRetCofins>{{ vRetCofins }}</vRetCofins>
+                    <vRetCSLL>{{ vRetCSLL }}</vRetCSLL>
+                    <vBCIRRF>{{ vBCIRRF }}</vBCIRRF>
+                    <vIRRF>{{ vIRRF }}</vIRRF>
+                </retTrib>
+            </imposto>
+            <gProcRef>
+                <vItem>{{ vItem }}</vItem>
+                <qFaturada>{{ qFaturada }}</qFaturada>
+                <vProd>{{ vProd }}</vProd>
+                <vDesc>{{ vDesc }}</vDesc>
+                <vOutro>{{ vOutro }}</vOutro>
+                <indDevolucao>{{ indDevolucao }}</indDevolucao>
+                <vBC>{{ vBC }}</vBC>
+                <pICMS>{{ pICMS }}</pICMS>
+                <vICMS>{{ vICMS }}</vICMS>
+                <vPIS>{{ vPIS }}</vPIS>
+                <vCOFINS>{{ vCOFINS }}</vCOFINS>
+                {% for gproc in gProcs %}
+                <gProc>
+                    <tpProc>{{ tpProc }}</tpProc>
+                    <nProcesso>{{ nProcesso }}</nProcesso>
+                </gProc>
+                {% endfor %}
+            </gProcRef>
+            <gRessarc>
+                <tpRessarc>{{ tpRessarc }}</tpRessarc>
+                <dRef>{{ dRef }}</dRef>
+                <nProcesso>{{ nProcesso }}</nProcesso>
+                <nProtReclama>{{ nProtReclama }}</nProtReclama>
+                <xObs>{{ xObs }}</xObs>
+            </gRessarc>
+            <infAdProd>{{ infAdProd }}</infAdProd>
+        </det>
+        {% endfor %}
+        <total>
+            <vProd>{{ vProd }}</vProd>
+            <ICMSTot>
+                <vBC>{{ vBC }}</vBC>
+                <vICMS>{{ vICMS }}</vICMS>
+                <vICMSDeson>{{ vICMSDeson }}</vICMSDeson>
+                <vFCP>{{ vFCP }}</vFCP>
+            </ICMSTot>
+            <vCOFINS>{{ vCOFINS }}</vCOFINS>
+            <vPIS>{{ vPIS }}</vPIS>
+            <vFUNTTEL>{{ vFUNTTEL }}</vFUNTTEL>
+            <vFUST>{{ vFUST }}</vFUST>
+            <vRetTribTot>
+                <vRetPIS>{{ vRetPIS }}</vRetPIS>
+                <vRetCofins>{{ vRetCofins }}</vRetCofins>
+                <vRetCSLL>{{ vRetCSLL }}</vRetCSLL>
+                <vIRRF>{{ vIRRF }}</vIRRF>
+            </vRetTribTot>
+            <vDesc>{{ vDesc }}</vDesc>
+            <vOutro>{{ vOutro }}</vOutro>
+            <vNF>{{ vNF }}</vNF>
+        </total>
+        <gFidelidade>
+            <qtdSaldoPts>{{ qtdSaldoPts }}</qtdSaldoPts>
+            <dRefSaldoPts>{{ dRefSaldoPts }}</dRefSaldoPts>
+            <qtdPtsResg>{{ qtdPtsResg }}</qtdPtsResg>
+            <dRefResgPts>{{ dRefResgPts }}</dRefResgPts>
+        </gFidelidade>
+        <gFat>
+            <CompetFat>{{ CompetFat }}</CompetFat>
+            <dVencFat>{{ dVencFat }}</dVencFat>
+            <dPerUsoIni>{{ dPerUsoIni }}</dPerUsoIni>
+            <dPerUsoFim>{{ dPerUsoFim }}</dPerUsoFim>
+            <codBarras>{{ codBarras }}</codBarras>
+            <codDebAuto>{{ codDebAuto }}</codDebAuto>
+            <codBanco>{{ codBanco }}</codBanco>
+            <codAgencia>{{ codAgencia }}</codAgencia>
+            <enderCorresp>
+                <xLgr>{{ xLGR }}</xLgr>
+                <nro>{{ nro }}</nro>
+                <xCpl>{{ xCpl }}</xCpl>
+                <xBairro>{{ xBairro }}</xBairro>
+                <cMun>{{ cMun }}</cMun>
+                <xMun>{{ xMun }}</xMun>
+                <CEP>{{ CEP }}</CEP>
+                <UF>{{ UF }}</UF>
+                <fone>{{ fone }}</fone>
+                <email>{{ email }}</email>
+            </enderCorresp>
+            <gPIX>
+                <urlQRCodePix>{{ urlQRCodePix }}</urlQRCodePix>
+            </gPIX>
+        </gFat>
+        <gFatCentral>
+            <CNPJ>{{ CNPJ }}</CNPJ>
+            <cUF>{{ cUF }}</cUF>
+        </gFatCentral>
+        {% for aut in AutsXML %}
+        <autXML>
+            <CNPJ>{{ CNPJ }}</CNPJ>
+            <CPF>{{ CPF }}</CPF>
+        </autXML>
+        {% endfor %}
+        <infAdic>
+            <infAdFisco>{{ infAdFisco }}</infAdFisco>
+            <infCpl>{{ infCpl }}</infCpl>
+        </infAdic>
+        <gRespTec>
+            <CNPJ>{{ CNPJ }}</CNPJ>
+            <xContato>{{ xContato }}</xContato>
+            <email>{{ email }}</email>
+            <fone>{{ fone }}</fone>
+            <idCSRT>{{ idCSRT }}</idCSRT>
+            <hashCSRT>{{ hashCSRT }}</hashCSRT>
+        </gRespTec>
+    </infNFCom>
+    <infNFComSupl>
+        <qrCodNFCom>{{ qrCodNFCom }}</qrCodNFCom>
+    </infNFComSupl>
+</NFCom>
