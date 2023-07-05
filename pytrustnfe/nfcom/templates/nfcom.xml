@@ -23,7 +23,7 @@
             <xJust>{{ ide.xJust }}</xJust>
         </ide>
         <emit>
-            <CNPJ>{{ emit.emit.CNPJ }}</CNPJ>
+            <CNPJ>{{ emit.cnpj_cpf }}</CNPJ>
             <IE>{{ emit.IE }}</IE>
             <IEUFDest>{{ emit.IEUFDest }}</IEUFDest>
             <CRT>{{ emit.CRT }}</CRT>
@@ -44,9 +44,15 @@
         </emit>
         <dest>
             <xNome>{{ dest.xNome }}</xNome>
-            <CNPJ>{{ dest.CNPJ }}</CNPJ>
+            {% if dest.tipo == 'person' -%}
             <CPF>{{ dest.CPF }}</CPF>
-            <idOutros>{{ dest.idOutros |  }}</idOutros>
+            {% endif %}
+            {% if dest.tipo == 'company' -%}
+            <CNPJ>{{ dest.CNPJ }}</CNPJ>
+            {% endif %}
+            {% if dest.CPF == '' -%}
+            <idOutros>{{ dest.idOutros }}</idOutros>
+            {% endif %}
             <indIEDest>{{ dest.indIEDest }}</indIEDest>
             {% if dest.indIEDest == '2' -%}
             <IE>ISENTO</IE>
