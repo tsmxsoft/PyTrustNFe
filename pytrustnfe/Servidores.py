@@ -20,6 +20,12 @@ WS_NFCE_CONSULTA_DESTINADAS = "NfeConsultaDest"
 WS_DFE_DISTRIBUICAO = "NFeDistribuicaoDFe"
 WS_DOWNLOAD_NFE = "nfeDistDFeInteresse"
 
+# NFCom
+WS_NFCOM_CONSULTA = "NFComConsulta"
+WS_NFCOM_RECEPCAO = "NFComRecepcao"
+WS_NFCOM_RECEPCAO_EVENTO = "NFComRecepcaoEvento"
+WS_NFCOM_STATUS_SERVICO = "NFComStatusServico"
+
 # Códigos do ambiente de homologação e produção
 AMBIENTE_PRODUCAO = 1
 AMBIENTE_HOMOLOGACAO = 2
@@ -27,6 +33,7 @@ AMBIENTE_HOMOLOGACAO = 2
 # Modelos dos documentos eletrônicos
 NFE_MODELO = "55"
 NFCE_MODELO = "65"
+NFCOM_MODELO = "62"
 
 SIGLA_ESTADO = {
     "12": "AC",
@@ -61,7 +68,14 @@ SIGLA_ESTADO = {
 
 
 def localizar_url(servico, estado, mod="55", ambiente=2):
-    sigla = SIGLA_ESTADO[estado]
+    
+    # Implementação inicial do NFCom
+    # Todos estados utilizam o servidor SVRS
+    if mod == NFCOM_MODELO:
+        sigla = SIGLA_ESTADO["43"]
+    else:
+        sigla = SIGLA_ESTADO[estado]
+    
     ws = ESTADO_WS[sigla]
 
     if servico in (WS_DFE_DISTRIBUICAO, WS_DOWNLOAD_NFE):
@@ -160,6 +174,22 @@ SVRS = {
             WS_NFCE_QR_CODE: "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx?",
         },
     },
+    NFCOM_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfcom.svrs.rs.gov.br",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "nfcom-homologacao.svrs.rs.gov.br",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx",
+        },
+    }
 }
 
 SVAN = {
