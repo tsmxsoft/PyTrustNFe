@@ -10,6 +10,36 @@ from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
 
+def _render(certificado, method, **kwargs):
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    parser = etree.XMLParser(
+        remove_blank_text=True, remove_comments=True, strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+
+    referencia = ""
+    if method == "RecepcionarLoteRpsSincrono":
+        referencia = kwargs.get("nfse").get("numero_lote")
+
+    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+
+    # xml object
+    xml_send = etree.fromstring(
+        xml_string_send, parser=parser)
+
+    for item in kwargs["nfse"]["lista_rps"]:
+        reference = "rps:{0}{1}".format(
+            item.get('numero'), item.get('serie'))
+
+        signer.assina_xml(xml_send, reference, remove_attrib='Id')
+
+    xml_signed_send = signer.assina_xml(
+        xml_send, "lote:{0}".format(referencia), remove_attrib='Id')
+
+    print ('--- xml ---')
+    print (xml_signed_send)
+
+    return xml_signed_send
 
 def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -52,6 +82,13 @@ def _send(certificado, method, **kwargs):
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_signed_send, "received_xml": response, "object": obj}
 
+def xml_recepcionar_lote_rps(certificado, **kwargs):
+    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+
+def recepcionar_lote_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
+    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def gerar_nfse(certificado, **kwargs):
     return _send(certificado, "GerarNfse", **kwargs)
