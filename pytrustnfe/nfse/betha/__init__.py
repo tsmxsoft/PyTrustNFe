@@ -3,12 +3,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import os
-import suds
 from pytrustnfe.xml import render_xml, sanitize_response
-from pytrustnfe.client import get_authenticated_client
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
+from zeep.transports import Transport
+from requests import Session
+import requests
+from datetime import datetime, timedelta
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -36,9 +38,6 @@ def _render(certificado, method, **kwargs):
     xml_signed_send = signer.assina_xml(
         xml_send, "lote:{0}".format(referencia), remove_attrib='Id')
 
-    print ('--- xml ---')
-    print (xml_signed_send)
-
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
@@ -49,38 +48,25 @@ def _send(certificado, method, **kwargs):
     else:
         url = "http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl"
 
-    xml_string_send = render_xml(path, "%s.xml" % method, False, **kwargs)
+    xml_send = kwargs["xml"]
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
-    client = get_authenticated_client(url, cert, key)
+    session = Session()
+    session.cert = (cert, key)
+    session.verify = False
+    action = "%s" %(method)
+    headers = {
+        "Content-Type": "text/xml;charset=UTF-8",
+        "SOAPAction": action,
+        "Content-length": str(len(soap))
+    }
 
-    parser = etree.XMLParser(
-        remove_blank_text=True, remove_comments=True, strip_cdata=False
-    )
-    signer = Assinatura(certificado.pfx, certificado.password)
-    xml_send = etree.fromstring(
-        xml_string_send, parser=parser)
-    
-    if method in ['RecepcionarLoteRps','RecepcionarLoteRpsSincrono']:
-        for item in kwargs["nfse"]["lista_rps"]:
-            signer.assina_xml(xml_send, "rps:"+str(item["numero"])+str(item["serie"])) 
-        xml_signed_send = signer.assina_xml(xml_send, "lote:"+str(kwargs["nfse"]["numero_lote"])).rstrip("\n")
-    elif method == 'CancelarNfse':
-        xml_signed_send = signer.assina_xml(xml_send, "1").rstrip("\n")
-    elif method == 'GerarNfse':
-        xml_signed_send = signer.assina_xml(xml_send, "rps:"+str(kwargs["nfse"]["numero"])+str(kwargs["nfse"]["serie"])) 
-    try:
-        response = getattr(client.service, method)(1, xml_signed_send)
-    except suds.WebFault as e:
-        return {
-            "sent_xml": xml_signed_send,
-            "received_xml": e.fault.faultstring,
-            "object": None,
-        }
-
-    response, obj = sanitize_response(response)
-    return {"sent_xml": xml_signed_send, "received_xml": response, "object": obj}
+    request = requests.post(url, data=soap, headers=headers)
+    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
