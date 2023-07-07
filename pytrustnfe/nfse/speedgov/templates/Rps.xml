@@ -1,0 +1,110 @@
+<p1:Rps>
+    <p1:InfRps Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <p1:IdentificacaoRps>
+            <p1:Numero>{{ rps.numero }}</p1:Numero>
+            <p1:Serie>{{ rps.serie }}</p1:Serie>
+            <p1:Tipo>{{ rps.tipo_rps }}</p1:Tipo>
+        </p1:IdentificacaoRps>
+        <p1:DataEmissao>{{ rps.data_emissao }}</p1:DataEmissao>
+        <p1:NaturezaOperacao>{{ rps.natureza_operacao }}</p1:NaturezaOperacao>
+        <p1:RegimeEspecialTributacao>{{ rps.regime_tributacao }}</p1:RegimeEspecialTributacao>
+        <p1:OptanteSimplesNacional>{{ rps.optante_simples }}</p1:OptanteSimplesNacional>
+        <p1:IncentivadorCultural>{{ rps.incentivador_cultural }}</p1:IncentivadorCultural>
+        <p1:Status>{{ rps.status }}</p1:Status>
+        <p1:Servico>
+            <p1:Valores>
+                <p1:ValorServicos>{{ rps.servico.valor_servico }}</p1:ValorServicos> 
+                <p1:ValorPis>{{ rps.servico.pis }}</p1:ValorPis>
+                <p1:ValorCofins>{{ rps.servico.cofins }}</p1:ValorCofins>
+                <p1:ValorInss>{{ rps.servico.inss }}</p1:ValorInss>
+                <p1:ValorIr>{{ rps.servico.ir }}</p1:ValorIr>
+                <p1:ValorCsll>{{ rps.servico.csll }}</p1:ValorCsll>
+                <p1:IssRetido>{{ rps.servico.iss_retido }}</p1:IssRetido>
+                <p1:ValorIss>{{ rps.servico.iss }}</p1:ValorIss>
+                <p1:OutrasRetencoes>{{ rps.servico.retencoes }}</p1:OutrasRetencoes>
+                <p1:BaseCalculo>{{ rps.servico.base_calculo }}</p1:BaseCalculo>
+                <p1:Aliquota>{{ rps.servico.aliquota }}</p1:Aliquota> 
+            </p1:Valores>
+            <p1:ItemListaServico>{{ rps.servico.codigo_atividade }}</p1:ItemListaServico>
+            <p1:Discriminacao>{{ rps.servico.discriminacao }}</p1:Discriminacao>
+            <p1:CodigoMunicipio>{{ rps.servico.codigo_municipio }}</p1:CodigoMunicipio>
+        </p1:Servico>
+        <p1:Prestador>
+            <p1:Cnpj>{{ rps.prestador.cnpj }}</p1:Cnpj>
+            <p1:InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</p1:InscricaoMunicipal>
+            <p1:RazaoSocial>{{ rps.prestador.razaosocial }}</p1:RazaoSocial>
+            <p1:NomeFantasia>{{ rps.prestador.fantasia }}</p1:NomeFantasia>
+            <p1:Endereco>
+                <p1:Endereco>{{ rps.prestador.endereco }}</p1:Endereco>
+                <p1:Numero>{{ rps.prestador.numero }}</p1:Numero>
+                <p1:Complemento>{{ rps.prestador.complemento }}</p1:Complemento>
+                <p1:Bairro>{{ rps.prestador.bairro }}</p1:Bairro>
+                <p1:CodigoMunicipio>{{ rps.prestador.codigomunicipal }}</p1:CodigoMunicipio>
+                <p1:Uf>{{ rps.prestador.uf }}</p1:Uf>
+                <p1:Cep>{{ rps.prestador.cep }}</p1:Cep>
+            </p1:Endereco>
+            <p1:Contato> 
+                {% if rps.prestador.telefone is defined -%}
+                <p1:Telefone>{{ rps.prestador.telefone }}</p1:Telefone>
+                {% endif %}
+                {% if rps.prestador.email is defined -%}
+                <p1:Email>{{ rps.prestador.email }}</p1:Email>
+                {% endif %}
+            </p1:Contato>
+        </p1:Prestador>
+        <p1:Tomador>
+            <p1:IdentificacaoTomador>
+                <p1:CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <p1:Cnpj>{{ rps.tomador.cpf_cnpj }}</p1:Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <p1:Cpf>{{ rps.tomador.cpf_cnpj }}</p1:Cpf>
+                    {% endif %}
+                </p1:CpfCnpj>
+                {% if rps.tomador.inscricao_municipal is defined -%}
+                <p1:InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</p1:InscricaoMunicipal>
+                {% endif %}
+            </p1:IdentificacaoTomador>
+            <p1:RazaoSocial>{{ rps.tomador.razao_social }}</p1:RazaoSocial>
+            <p1:Endereco>
+                <p1:Endereco>{{ rps.tomador.endereco }}</p1:Endereco>
+                <p1:Numero>{{ rps.tomador.numero }}</p1:Numero>
+                <p1:Complemento>{{ rps.tomador.complemento }}</p1:Complemento>
+                <p1:Bairro>{{ rps.tomador.bairro }}</p1:Bairro>
+                <p1:CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</p1:CodigoMunicipio>
+                <p1:Uf>{{ rps.tomador.uf }}</p1:Uf>
+                <p1:Cep>{{ rps.tomador.cep }}</p1:Cep>
+            </p1:Endereco>
+            <p1:Contato>
+                {% if rps.tomador.telefone is defined -%}
+                <p1:Telefone>{{ rps.tomador.telefone }}</p1:Telefone>
+                {% endif %}
+                {% if rps.tomador.email is defined -%}
+                <p1:Email>{{ rps.tomador.email }}</p1:Email>
+                {% endif %}
+            </p1:Contato>
+            {% if rps.tomador.orgao_gerador is defined -%}
+            <p1:OrgaoGerador>
+                <p1:CodigoMunicipio>{{ rps.tomador.orgao_gerador.codigo_municipio }}</p1:CodigoMunicipio>
+                <p1:Uf>{{ rps.tomador.orgao_gerador.uf }}</p1:Uf>
+            </p1:OrgaoGerador>
+            {% endif %}
+        </p1:Tomador>
+        {% if rps.intermediario is defined -%}
+        <p1:IntermediarioServico>
+            <p1:RazaoSocial>{{ rps.intermediario.razao_social }}</p1:RazaoSocial>
+            <p1:CpfCnpj>
+                <p1:Cnpj>{{ rps.intermediario.cnpj }}</p1:Cnpj>
+            </p1:CpfCnpj>
+            <p1:InscricaoMunicipal>{{ rps.intermediario.inscricao_municipal }}</p1:InscricaoMunicipal>
+        </p1:IntermediarioServico>
+        {% endif %}
+        {% if rps.construcao_civil is defined -%}
+        <p1:ContrucaoCivil>
+            <p1:CodigoObra>{{ rps.construcao_civil.codigo_obra }}</p1:CodigoObra>
+            <p1:Art>{{ rps.construcao_civil.art }}</p1:Art>
+        </p1:ContrucaoCivil>
+        {% endif %}
+    </p1:InfRps> 
+</p1:Rps>
