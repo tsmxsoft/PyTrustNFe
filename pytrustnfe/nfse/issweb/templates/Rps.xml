@@ -109,5 +109,5 @@
             </Contato>
         </IntermediarioServico>
         {% endif %}
-    </InfDeclaracaoPrestacaoServico> 
+    </InfDeclaracaoPrestacaoServico>
 </Rps>
