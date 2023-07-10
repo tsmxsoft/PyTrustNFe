@@ -1,0 +1,13 @@
+<p:EnviarLoteRpsEnvio xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:p="http://ws.speedgov.com.br/enviar_lote_rps_envio_v1.xsd" xmlns:p1="http://ws.speedgov.com.br/tipos_v1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.speedgov.com.br/enviar_lote_rps_envio_v1.xsd enviar_lote_rps_envio_v1.xsd ">
+    <p:LoteRps Id="lote:{{ nfse.numero_lote }}">
+        <p1:NumeroLote>{{ nfse.numero_lote }}</p1:NumeroLote>
+        <p1:Cnpj>{{ nfse.cnpj_prestador }}</p1:Cnpj>
+        <p1:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</p1:InscricaoMunicipal>
+        <p1:QuantidadeRps>{{ nfse.lista_rps|length }}</p1:QuantidadeRps>
+        <p1:ListaRps>
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
+        </p1:ListaRps>
+    </p:LoteRps>
+</p:EnviarLoteRpsEnvio>
