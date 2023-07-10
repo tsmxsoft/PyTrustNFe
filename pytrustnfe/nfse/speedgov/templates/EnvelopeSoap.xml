@@ -2,7 +2,7 @@
    <soapenv:Header/>
    <soapenv:Body>
       <nfse:RecepcionarLoteRps>
-        <header>{{ '&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;p:cabecalho versao=&quot;1&quot; xmlns:ds=&quot;http://www.w3.org/2000/09/xmldsig#&quot; xmlns:p=&quot;http://ws.speedgov.com.br/cabecalho_v1.xsd&quot; xmlns:p1=&quot;http://ws.speedgov.com.br/tipos_v1.xsd&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://ws.speedgov.com.br/cabecalho_v1.xsd cabecalho_v1.xsd &quot;&gt;&lt;versaoDados&gt;1&lt;/versaoDados&gt;&lt;/p:cabecalho&gt;' | e }}</header>
+        <header><p:cabecalho versao="1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:p="http://ws.speedgov.com.br/cabecalho_v1.xsd" xmlns:p1="http://ws.speedgov.com.br/tipos_v1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.speedgov.com.br/cabecalho_v1.xsd cabecalho_v1.xsd "><versaoDados>1</versaoDados></p:cabecalho></header>
         <parameters>{% include 'RecepcionarLoteRps.xml' %}</parameters> 
       </nfse:RecepcionarLoteRps>
    </soapenv:Body>

@@ -12,25 +12,28 @@
         <p1:Status>{{ rps.status }}</p1:Status>
         <p1:Servico>
             <p1:Valores>
-                <p1:ValorServicos>{{ rps.servico.valor_servico }}</p1:ValorServicos> 
+                {% set valor_servicos = rps.servico.valor_servico | float %}
+                <p1:ValorServicos>{{ valor_servicos }}</p1:ValorServicos> 
                 <p1:ValorDeducoes>{{ rps.servico.valor_descontos|default("0.0", true) }}</p1:ValorDeducoes>
-                <p1:ValorPis>{{ rps.servico.pis }}</p1:ValorPis>
-                <p1:ValorCofins>{{ rps.servico.cofins }}</p1:ValorCofins>
-                <p1:ValorInss>{{ rps.servico.inss }}</p1:ValorInss>
-                <p1:ValorIr>{{ rps.servico.ir }}</p1:ValorIr>
-                <p1:ValorCsll>{{ rps.servico.csll }}</p1:ValorCsll>
+                <p1:ValorPis>{{ rps.servico.pis | default("0.0",true) }}</p1:ValorPis>
+                <p1:ValorCofins>{{ rps.servico.cofins | default("0.0",true) }}</p1:ValorCofins>
+                <p1:ValorInss>{{ rps.servico.inss | default("0.0",true) }}</p1:ValorInss>
+                <p1:ValorIr>{{ rps.servico.ir | default("0.0",true) }}</p1:ValorIr>
+                <p1:ValorCsll>{{ rps.servico.csll | default("0.0",true) }}</p1:ValorCsll>
                 <p1:IssRetido>{{ rps.servico.iss_retido }}</p1:IssRetido>
-                <p1:ValorIss>{{ rps.servico.iss }}</p1:ValorIss>
-                <p1:ValorIssRetido>?</p1:ValorIssRetido>
-                <p1:OutrasRetencoes>{{ rps.servico.retencoes }}</p1:OutrasRetencoes>
+                {% set valor_iss = rps.servico.iss | float %}
+                <p1:ValorIss>{{ valor_iss | default("0.0",true) }}</p1:ValorIss>
+                <p1:ValorIssRetido>{{ rps.servico.valor_iss_retido | default("0.0",true) }}</p1:ValorIssRetido>
+                <p1:OutrasRetencoes>{{ rps.servico.retencoes | default("0.0",true) }}</p1:OutrasRetencoes>
                 <p1:BaseCalculo>{{ rps.servico.base_calculo }}</p1:BaseCalculo>
                 <p1:Aliquota>{{ rps.servico.aliquota }}</p1:Aliquota>
+                <p1:ValorLiquidoNfse>{{ valor_servicos - valor_iss }}</p1:ValorLiquidoNfse>
                 <p1:DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0.0", true) }}</p1:DescontoCondicionado>
                 <p1:DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default("0.0", true) }}</p1:DescontoIncondicionado>
             </p1:Valores>
             <p1:ItemListaServico>{{ rps.servico.codigo_atividade }}</p1:ItemListaServico>
             <p1:CodigoCnae>{{ rps.servico.cnae_servico }}</p1:CodigoCnae>
-            <p1:CodigoTributacaoMunicipio>{{ rps.servico.cnae_servico }}</p1:CodigoTributacaoMunicipio>
+            <p1:CodigoTributacaoMunicipio>{{ rps.servico.codigo_tributacao_municipio }}</p1:CodigoTributacaoMunicipio>
             <p1:Discriminacao>{{ rps.servico.discriminacao }}</p1:Discriminacao>
             <p1:CodigoMunicipio>{{ rps.servico.codigo_municipio }}</p1:CodigoMunicipio>
         </p1:Servico>
@@ -48,15 +51,12 @@
                     <p1:Cpf>{{ rps.tomador.cpf_cnpj }}</p1:Cpf>
                     {% endif %}
                 </p1:CpfCnpj>
-                {% if rps.tomador.inscricao_municipal is defined -%}
-                <p1:InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</p1:InscricaoMunicipal>
-                {% endif %}
             </p1:IdentificacaoTomador>
             <p1:RazaoSocial>{{ rps.tomador.razao_social }}</p1:RazaoSocial>
             <p1:Endereco>
                 <p1:Endereco>{{ rps.tomador.endereco }}</p1:Endereco>
-                <p1:Numero>{{ rps.tomador.numero }}</p1:Numero>
-                <p1:Complemento>{{ rps.tomador.complemento }}</p1:Complemento>
+                <p1:Numero>{{ rps.tomador.numero | default("SN", true) }}</p1:Numero>
+                <p1:Complemento>{{ rps.tomador.complemento | default("SEM COMPLEMENTO", true) }}</p1:Complemento>
                 <p1:Bairro>{{ rps.tomador.bairro }}</p1:Bairro>
                 <p1:CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</p1:CodigoMunicipio>
                 <p1:Uf>{{ rps.tomador.uf }}</p1:Uf>
