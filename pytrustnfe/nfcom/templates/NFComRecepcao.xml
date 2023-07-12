@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <NFCom xmlns="http://www.portalfiscal.inf.br/NFCom">
-    <infNFCom>
-        <versao>1.00</versao>
-        <Id>{{ id }}NFCom</Id>
+    <infNFCom versao="1.00" Id="{{ id }}">
         <ide>
             <cUF>{{ ide.ufEmit }}</cUF>
             <tpAmb>{{ ide.tpAmb }}</tpAmb>
@@ -103,10 +101,7 @@
         </gCoFat>
         {% endif %}
         {% for det in dets %}
-        <det>
-            <nItem>{{ det.nItem }}</nItem>
-            <chNFComAnt>{{ det.chNFComAnt }}</chNFComAnt>
-            <nItemAnt>{{ det.nItemAnt }}</nItemAnt>
+        <det nItem="{{ det.nItem }}" chNFComAnt="{{ det.chNFComAnt }}" nItemAnt="{{ det.nItemAnt }}">
             <prod>
                 <cProd>{{ det.prod.cProd }}</cProd>
                 <xProd>{{ det.prod.xProd }}</xProd>
@@ -178,8 +173,7 @@
                 {% endif %}
                 {% endif %}
                 {% for icmsufdest in det.imposto.ICMSUFDests %}
-                <ICMSUFDest>
-                    <cUFDest>{{ icmsufdest.cUFDest }}</cUFDest>
+                <ICMSUFDest cUFDest="{{ icmsufdest.cUFDest }}">
                     <vBCUFDest>{{ icmsufdest.vBCUFDest }}</vBCUFDest>
                     <pFCPUFDest>{{ icmsufdest.pFCPUFDest }}</pFCPUFDest>
                     <pICMSUFDest>{{ icmsufdest.pICMSUFDest }}</pICMSUFDest>

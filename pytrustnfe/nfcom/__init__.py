@@ -47,12 +47,9 @@ def _render(certificado, method, sign, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
     xmlElem_send = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    modelo = xmlElem_send.find(".//{http://www.portalfiscal.inf.br/nfe}mod")
-    modelo = modelo.text if modelo is not None else "55"
-
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
-        if method == "NfeInutilizacao":
+        if method == "NFComRecepcao":
             xml_send = signer.assina_xml(xmlElem_send, kwargs["obj"]["id"])
         if method == "NfeAutorizacao":
             xml_send = signer.assina_xml(
@@ -125,14 +122,13 @@ def _send_zeep(first_operation, client, xml_send):
 
 
 def xml_autorizar_nfcom(certificado, **kwargs):
-    _generate_nfcom_id(**kwargs)
-    return _render(certificado, "NfeAutorizacao", True, **kwargs)
+    return _render(certificado, "NFComRecepcao", True, **kwargs)
 
 
-def autorizar_nfe(certificado, **kwargs):  # Assinar
+def autorizar_nfcom(certificado, **kwargs):  # Assinar
     if "xml" not in kwargs:
-        kwargs["xml"] = xml_autorizar_nfe(certificado, **kwargs)
-    return _send(certificado, "NfeAutorizacao", **kwargs)
+        kwargs["xml"] = xml_autorizar_nfcom(certificado, **kwargs)
+    return _send(certificado, "NFComRecepcao", **kwargs)
 
 
 def xml_retorno_autorizar_nfe(certificado, **kwargs):
