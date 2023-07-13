@@ -2,16 +2,17 @@
 <NFCom xmlns="http://www.portalfiscal.inf.br/NFCom">
     <infNFCom versao="1.00" Id="{{ id }}">
         <ide>
-            <cUF>{{ ide.ufEmit }}</cUF>
+            <cUF>{{ ide.cUF }}</cUF>
             <tpAmb>{{ ide.tpAmb }}</tpAmb>
-            <mod>62</mod>
+            <mod>{{ ide.mod }}</mod>
             <serie>{{ ide.serie or 0 }}</serie>
             <nNF>{{ ide.nNF }}</nNF>
+            <cNF>{{ ide.cNF }}</cNF>
             <cDV>{{ ide.cDV }}</cDV>
             <dhEmi>{{ ide.dhEmi }}</dhEmi>
             <tpEmis>{{ ide.tpEmis }}</tpEmis>
             <nSiteAutoriz>{{ ide.nSiteAutoriz }}</nSiteAutoriz>
-            <cMunFG>{{ ide.cMungFG }}</cMunFg>
+            <cMunFG>{{ ide.cMungFG }}</cMunFG>
             <finNFCom>{{ ide.finNFCom }}</finNFCom>
             <tpFat>{{ ide.tpFat }}</tpFat>
             <verProc>{{ ide.verProc }}</verProc>
@@ -25,19 +26,19 @@
             <IE>{{ emit.IE }}</IE>
             <IEUFDest>{{ emit.IEUFDest }}</IEUFDest>
             <CRT>{{ emit.CRT }}</CRT>
-            <xNome>{{ emit.xNome }}</xNome>
-            <xFant>{{ emit.xFant }}</xFant>
+            <xNome>{{ emit.xNome|normalize|escape }}</xNome>
+            <xFant>{{ emit.xFant|normalize|escape }}</xFant>
             <enderEmit>
-                <xLgr>{{ emit.xLGR }}</xLgr>
-                <nro>{{ emit.nro }}</nro>
-                <xCpl>{{ emit.xCpl }}</xCpl>
-                <xBairro>{{ emit.xBairro }}</xBairro>
-                <cMun>{{ emit.cMun }}</cMun>
-                <xMun>{{ emit.xMun }}</xMun>
-                <CEP>{{ emit.CEP }}</CEP>
-                <UF>{{ emit.UF }}</UF>
-                <fone>{{ emit.fone }}</fone>
-                <email>{{ emit.email }}</email>
+                <xLgr>{{ emit.enderEmit.xLgr }}</xLgr>
+                <nro>{{ emit.enderEmit.nro }}</nro>
+                <xCpl>{{ emit.enderEmit.xCpl }}</xCpl>
+                <xBairro>{{ emit.enderEmit.xBairro }}</xBairro>
+                <cMun>{{ emit.enderEmit.cMun }}</cMun>
+                <xMun>{{ emit.enderEmit.xMun }}</xMun>
+                <CEP>{{ emit.enderEmit.CEP }}</CEP>
+                <UF>{{ emit.enderEmit.UF }}</UF>
+                <fone>{{ emit.enderEmit.fone }}</fone>
+                <email>{{ emit.enderEmit.email }}</email>
             </enderEmit>
         </emit>
         <dest>
@@ -59,16 +60,16 @@
             {% endif %}
             <IM>{{ dest.IM }}</IM>
             <enderDest>
-                <xLgr>{{ dest.xLGR }}</xLgr>
-                <nro>{{ dest.nro }}</nro>
-                <xCpl>{{ dest.xCpl }}</xCpl>
-                <xBairro>{{ dest.xBairro }}</xBairro>
-                <cMun>{{ dest.cMun }}</cMun>
-                <xMun>{{ dest.xMun }}</xMun>
-                <CEP>{{ dest.CEP }}</CEP>
-                <UF>{{ dest.UF }}</UF>
-                <fone>{{ dest.fone }}</fone>
-                <email>{{ dest.email }}</email>
+                <xLgr>{{ dest.enderDest.xLgr }}</xLgr>
+                <nro>{{ dest.enderDest.nro }}</nro>
+                <xCpl>{{ dest.enderDest.xCpl }}</xCpl>
+                <xBairro>{{ dest.enderDest.xBairro }}</xBairro>
+                <cMun>{{ dest.enderDest.cMun }}</cMun>
+                <xMun>{{ dest.enderDest.xMun }}</xMun>
+                <CEP>{{ dest.enderDest.CEP }}</CEP>
+                <UF>{{ dest.enderDest.UF }}</UF>
+                <fone>{{ dest.enderDest.fone }}</fone>
+                <email>{{ dest.enderDest.email }}</email>
             </enderDest>
         </dest>
         <assinante>

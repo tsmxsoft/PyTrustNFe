@@ -76,7 +76,7 @@ def validar_nfcom_dv(chave,dv):
         i += 1
     return dv == (11-(sum%11))
 
-def gerar_chave_nfcom(obj_chave, prefix=None):
+def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"
     obj_chave.validar()
     chave_parcial = "%s%s%s%s%s%s%d%d%s" % (
@@ -93,7 +93,9 @@ def gerar_chave_nfcom(obj_chave, prefix=None):
     chave_parcial = re.sub("[^0-9]", "", chave_parcial)
     soma = sum(a*b for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
     dv = 11 - (soma%11)
-    return chave_parcial + dv
+    if suffix:
+        return chave_parcial + dv + suffix
+    return chave_parcial + str(dv)
 
 
 def gerar_chave(obj_chave, prefix=None):
