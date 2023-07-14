@@ -21,31 +21,34 @@ import requests
 def _render_xml(certificado, method, **kwargs):
     kwargs['method'] = method
     path = os.path.join(os.path.dirname(__file__), "templates")
-    #parser = etree.XMLParser(
-        #remove_blank_text=True, remove_comments=True, strip_cdata=False
-    #)
-    #signer = Assinatura(certificado.pfx, certificado.password)
+    parser = etree.XMLParser(
+        remove_blank_text=True, remove_comments=True, strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
 
-    #referencia = ""
+    referencia = ""
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     # xml object
-    #xml_send = etree.fromstring(
-        #xml_string_send, parser=parser)
+    xml_send = etree.fromstring(
+        xml_string_send, parser=parser)
 
-    #if method == "recepcionarLoteRps":
-        #referencia = kwargs.get("nfse").get("numero_lote")
-        #for item in kwargs["nfse"]["lista_rps"]:
-            #reference = "rps:{0}{1}".format(
-                #item.get('numero'), item.get('serie'))
+    if method == "recepcionarLoteRps":
+        referencia = kwargs.get("nfse").get("numero_lote")
+        for item in kwargs["nfse"]["lista_rps"]:
+            reference = "rps:{0}{1}".format(
+                item.get('numero'), item.get('serie'))
             
-            #signer.assina_xml(xml_send, reference)
+            signer.assina_xml(xml_send, reference)
 
-        #xml_signed_send = signer.assina_xml(
-             #xml_send, "lote:{0}".format(referencia))
-    #else:
-        #xml_signed_send = etree.tostring(xml_send)
+        xml_signed_send = signer.assina_xml(
+             xml_send, "lote:{0}".format(referencia))
+    else:
+        xml_signed_send = etree.tostring(xml_send)
 
-    return xml_string_send
+    if kwargs['ambiente'] == "homologacao":
+        return xml_string_send
+    
+    return xml_signed_send
 
 def _send(certificado, method, **kwargs):
     if kwargs["ambiente"] == "homologacao":
@@ -55,7 +58,7 @@ def _send(certificado, method, **kwargs):
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "username": kwargs["nfse"].usuario, "password": kwargs["nfse"].senha })
+    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "username": kwargs["nfse"]["usuario"], "password": kwargs["nfse"]["senha"] })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
