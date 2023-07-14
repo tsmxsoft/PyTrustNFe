@@ -55,7 +55,7 @@ def _send(certificado, method, **kwargs):
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "username": kwargs["nfse"][0]["usuario"], "password": kwargs["nfse"][0]["senha"] })
+    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "username": kwargs["nfse"].usuario, "password": kwargs["nfse"].senha })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
