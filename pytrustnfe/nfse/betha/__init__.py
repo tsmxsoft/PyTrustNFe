@@ -5,7 +5,7 @@
 import os
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfe.assinatura import Assinatura
+from pytrustnfe.nfse.betha.assinatura import Assinatura
 from lxml import etree
 from zeep.transports import Transport
 from requests import Session
@@ -33,10 +33,7 @@ def _render(certificado, method, **kwargs):
         reference = "rps:{0}{1}".format(
             item.get('numero'), item.get('serie'))
 
-        signer.assina_xml(xml_send, reference)
-
-    xml_signed_send = signer.assina_xml(
-        xml_send, "lote:{0}".format(referencia))
+        xml_signed_send = signer.assina_xml(xml_send, reference)
 
     return xml_signed_send
 
