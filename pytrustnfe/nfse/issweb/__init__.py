@@ -14,7 +14,7 @@ from requests import Session
 from zeep.transports import Transport
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfe.assinatura import Assinatura
+from pytrustnfe.nfse.siasp.assinatura import Assinatura
 
 from datetime import datetime, timedelta
 import requests 
@@ -34,14 +34,13 @@ def _render_xml(certificado, method, **kwargs):
 
     if method == "recepcionarLoteRps":
         referencia = kwargs.get("nfse").get("numero_lote")
-        for item in kwargs["nfse"]["lista_rps"]:
-            reference = "rps:{0}{1}".format(
-                item.get('numero'), item.get('serie'))
+        #for item in kwargs["nfse"]["lista_rps"]:
+            #reference = "rps:{0}{1}".format(
+                #item.get('numero'), item.get('serie'))
             
-            signer.assina_xml(xml_send, reference)
+            #signer.assina_xml(xml_send, reference)
 
-        xml_signed_send = signer.assina_xml(
-             xml_send, "lote:{0}".format(referencia))
+        xml_signed_send = signer.assina_xml(xml_send)
     else:
         xml_signed_send = etree.tostring(xml_send)
 
