@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = "1.0.148"
+VERSION = "1.0.149"
 
 
 setup(
@@ -49,6 +49,7 @@ later (LGPLv2+)",
             "nfse/issnet/templates/*xml",
             "nfse/issweb/templates/*xml",
             "nfse/speedgov/templates/*xml",
+            "nfse/webiss/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
