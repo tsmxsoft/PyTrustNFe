@@ -724,6 +724,22 @@ UFRS = {
             WS_NFCE_QR_CODE: "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx",
         },
     },
+    NFCOM_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfcom.svrs.rs.gov.br",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx?wsdl",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "nfcom-homologacao.svrs.rs.gov.br",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx?wsdl",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
+        },
+    },
 }
 UFRS[CTE_MODELO] = copy(SVRS[CTE_MODELO])
 
