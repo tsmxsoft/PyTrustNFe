@@ -1,0 +1,356 @@
+<NFCom xmlns="http://www.portalfiscal.inf.br/nfcom">
+    <infNFCom Id="{{ Id }}" versao="1.00">
+        <ide>
+            <cUF>{{ ide.cUF }}</cUF>
+            <tpAmb>{{ ide.tpAmb }}</tpAmb>
+            <mod>{{ ide.mod }}</mod>
+            <serie>{{ ide.serie or 0 }}</serie>
+            <nNF>{{ ide.nNF }}</nNF>
+            <cNF>{{ ide.cNF }}</cNF>
+            <cDV>{{ ide.cDV }}</cDV>
+            <dhEmi>{{ ide.dhEmi }}</dhEmi>
+            <tpEmis>{{ ide.tpEmis }}</tpEmis>
+            <nSiteAutoriz>{{ ide.nSiteAutoriz }}</nSiteAutoriz>
+            <cMunFG>{{ ide.cMunFG }}</cMunFG>
+            <finNFCom>{{ ide.finNFCom }}</finNFCom>
+            <tpFat>{{ ide.tpFat }}</tpFat>
+            <verProc>{{ ide.verProc }}</verProc>
+            <indPrePago>{{ ide.indPrePago }}</indPrePago>
+            <indCessaoMeiosRede>{{ ide.indCessaoMeiosRede }}</indCessaoMeiosRede>
+            <dhCont>{{ ide.dhCont }}</dhCont>
+            <xJust>{{ ide.xJust }}</xJust>
+        </ide>
+        <emit>
+            <CNPJ>{{ emit.cnpj_cpf }}</CNPJ>
+            <IE>{{ emit.IE }}</IE>
+            <IEUFDest>{{ emit.IEUFDest }}</IEUFDest>
+            <CRT>{{ emit.CRT }}</CRT>
+            <xNome>{{ emit.xNome|normalize|escape }}</xNome>
+            <xFant>{{ emit.xFant|normalize|escape }}</xFant>
+            <enderEmit>
+                <xLgr>{{ emit.enderEmit.xLgr }}</xLgr>
+                <nro>{{ emit.enderEmit.nro }}</nro>
+                <xCpl>{{ emit.enderEmit.xCpl }}</xCpl>
+                <xBairro>{{ emit.enderEmit.xBairro }}</xBairro>
+                <cMun>{{ emit.enderEmit.cMun }}</cMun>
+                <xMun>{{ emit.enderEmit.xMun }}</xMun>
+                <CEP>{{ emit.enderEmit.CEP }}</CEP>
+                <UF>{{ emit.enderEmit.UF }}</UF>
+                <fone>{{ emit.enderEmit.fone }}</fone>
+                <email>{{ emit.enderEmit.email }}</email>
+            </enderEmit>
+        </emit>
+        <dest>
+            <xNome>{{ dest.xNome }}</xNome>
+            {% if dest.tipo == 'person' -%}
+            <CPF>{{ dest.CPF }}</CPF>
+            {% endif %}
+            {% if dest.tipo == 'company' -%}
+            <CNPJ>{{ dest.CNPJ }}</CNPJ>
+            {% endif %}
+            {% if dest.CPF == '' -%}
+            <idOutros>{{ dest.idOutros }}</idOutros>
+            {% endif %}
+            <indIEDest>{{ dest.indIEDest }}</indIEDest>
+            {% if dest.indIEDest == 2 -%}
+            <IE>ISENTO</IE>
+            {% else %}
+            <IE>{{ dest.IE }}</IE>
+            {% endif %}
+            <IM>{{ dest.IM }}</IM>
+            <enderDest>
+                <xLgr>{{ dest.enderDest.xLgr }}</xLgr>
+                <nro>{{ dest.enderDest.nro }}</nro>
+                <xCpl>{{ dest.enderDest.xCpl }}</xCpl>
+                <xBairro>{{ dest.enderDest.xBairro }}</xBairro>
+                <cMun>{{ dest.enderDest.cMun }}</cMun>
+                <xMun>{{ dest.enderDest.xMun }}</xMun>
+                <CEP>{{ dest.enderDest.CEP }}</CEP>
+                <UF>{{ dest.enderDest.UF }}</UF>
+                <fone>{{ dest.enderDest.fone }}</fone>
+                <email>{{ dest.enderDest.email }}</email>
+            </enderDest>
+        </dest>
+        <assinante>
+            <iCodAssinante>{{ assinante.iCodAssinante }}</iCodAssinante>
+            <tpAssinante>{{ assinante.tpAssinante }}</tpAssinante>
+            <tpServUtil>{{ assinante.tpServUtil }}</tpServUtil>
+            <nContrato>{{ assinante.nContrato }}</nContrato>
+            <dContratoIni>{{ assinante.dContratoIni }}</dContratoIni>
+            <dContratoFim>{{ assinante.dContratoFim }}</dContratoFim>
+            <NroTermPrinc>{{ assinante.NroTermPrinc }}</NroTermPrinc>
+            <cUF>{{ assinante.cUF }}</cUF>
+        </assinante>
+        {% if gSub is defined -%}
+        <gSub>
+            <chNFCom>{{ gSub.chNFCom }}</chNFCom>
+            <gNF>
+                <CNPJ>{{ gSub.gNF.CNPJ }}</CNPJ>
+                <mod>{{ gSub.gNF.mod }}</mod>
+                <serie>{{ gSub.gNF.serie }}</serie>
+                <nNF>{{ gSub.gNF.nNF }}</nNF>
+                <CompetEmis>{{ gSub.gNF.CompetEmis }}</CompetEmis>
+                <hash115>{{ gSub.gNF.hash115 }}</hash115>
+            </gNF>
+            <motSub>{{ gSub.motSub }}</motSub>
+        </gsub>
+        {% endif %}
+        {% if gCoFat is defined -%}
+        <gCoFat>
+            <chNFComLocal>{{ gCoFat.chNFComLocal }}</chNFComLocal>
+        </gCoFat>
+        {% endif %}
+        {% for det in dets %}
+        {% if det.chNFComAnt is defined -%}
+        <det nItem="{{ det.nItem }}" chNFComAnt="{{ det.chNFComAnt }}" nItemAnt="{{ det.nItemAnt }}">
+        {% else %}
+        <det nItem="{{ det.nItem }}">
+        {% endif %}
+            <prod>
+                <cProd>{{ det.prod.cProd }}</cProd>
+                <xProd>{{ det.prod.xProd }}</xProd>
+                <cClass>{{ det.prod.cClass }}</cClass>
+                {% if det.imposto.indSemCST is not defined -%}
+                <CFOP>{{ det.prod.CFOP }}</CFOP>
+                {% endif %}
+                <CNPJLD>{{ det.prod.CNPJLD }}</CNPJLD>
+                <uMed>{{ det.prod.uMed }}</uMed>
+                <qFaturada>{{ det.prod.qFaturada }}</qFaturada>
+                <vItem>{{ det.prod.vItem }}</vItem>
+                <vDesc>{{ det.prod.vDesc }}</vDesc>
+                <vOutro>{{ det.prod.vOutro }}</vOutro>
+                <vProd>{{ det.prod.vProd }}</vProd>
+                <dExpiracao>{{ det.prod.dExpiracao }}</dExpiracao>
+                <indDevolucao>{{ det.prod.indDevolucao }}</indDevolucao>
+            </prod>
+            <imposto>
+                {% if det.imposto.indSemCST is not defined -%}
+                {% if det.imposto.ICMS.CST == '00' -%}
+                <ICMS00>
+                    <CST>{{ det.imposto.ICMS.CST }}</CST>
+                    <vBC>{{ det.imposto.ICMS.vBC }}</vBC>
+                    <pICMS>{{ det.imposto.ICMS.pICMS }}</pICMS>
+                    <vICMS>{{ det.imposto.ICMS.vICMS }}</vICMS>
+                    <pFCP>{{ det.imposto.ICMS.pFCP }}</pFCP>
+                    <vFCP>{{ det.imposto.ICMS.vFCP }}</vFCP>
+                </ICMS00>
+                {% endif %}
+                {% if det.imposto.ICMS.CST == '20' -%}
+                <ICMS20>
+                    <CST>{{ det.imposto.ICMS.CST }}</CST>
+                    <pRedBC>{{ det.imposto.ICMS.pRedBC }}</pRedBC>
+                    <vBC>{{ det.imposto.ICMS.vBC }}</vBC>
+                    <pICMS>{{ det.imposto.ICMS.pICMS }}</pICMS>
+                    <vICMS>{{ det.imposto.ICMS.vICMS }}</vICMS>
+                    <vICMSDeson>{{ det.imposto.ICMS.vICMSDeson }}</vICMSDeson>
+                    <cBenef>{{ det.imposto.ICMS.cBenef }}</cBenef>
+                    <pFCP>{{ det.imposto.ICMS.pFCP }}</pFCP>
+                    <vFCP>{{ det.imposto.ICMS.vFCP }}</vFCP>
+                </ICMS20>
+                {% endif %}
+                {% if det.imposto.ICMS.CST == '40' -%}
+                <ICMS40>
+                    <CST>{{ det.imposto.ICMS.CST }}</CST>
+                    <vICMSDeson>{{ det.imposto.ICMS.vICMSDeson }}</vICMSDeson>
+                    <cBenef>{{ det.imposto.ICMS.cBenef }}</cBenef>
+                {% endif %}
+                {% if det.imposto.ICMS.CST == '51' -%}
+                <ICMS51>
+                    <CST>{{ det.imposto.ICMS.CST }}</CST>
+                    <vICMSDeson>{{ det.imposto.ICMS.vICMSDeson }}</vICMSDeson>
+                    <cBenef>{{ det.imposto.ICMS.cBenef }}</cBenef>
+                </ICMS51>
+                {% endif %}
+                {% if det.imposto.ICMS.CST == '90' -%}
+                <ICMS90>
+                    <CST>{{ det.imposto.ICMS.CST }}</CST>
+                    <vBC>{{ det.imposto.ICMS.vBC }}</vBC>
+                    <pICMS>{{ det.imposto.ICMS.pICMS }}</pICMS>
+                    <vICMS>{{ det.imposto.ICMS.vICMS }}</vICMS>
+                </ICMS90>
+                {% endif %}
+                {% if det.imposto.ICMSSN is defined -%}
+                <ICMSSN>
+                    <CST>{{ det.imposto.ICMSSN.CST }}</CST>
+                    <indSN>{{ det.imposto.ICMSSN.indSN }}</indSN>
+                </ICMSSN>
+                {% endif %}
+                {% endif %}
+                {% for icmsufdest in det.imposto.ICMSUFDests %}
+                <ICMSUFDest cUFDest="{{ icmsufdest.cUFDest }}">
+                    <vBCUFDest>{{ icmsufdest.vBCUFDest }}</vBCUFDest>
+                    <pFCPUFDest>{{ icmsufdest.pFCPUFDest }}</pFCPUFDest>
+                    <pICMSUFDest>{{ icmsufdest.pICMSUFDest }}</pICMSUFDest>
+                    <vFCPUFDest>{{ icmsufdest.vFCPUFDest }}</vFCPUFDest>
+                    <vICMSUFDest>{{ icmsufdest.vICMSUFDest }}</vICMSUFDest>
+                    <vICMSUFEmi>{{ icmsufdest.vICMSUFEmi }}</vICMSUFEmi>
+                </ICMSUFDest>
+                {% endfor %}
+                <indSemCST>{{ det.imposto.indSemCST }}</indSemCST>
+                {% if det.imposto.PIS is defined -%}
+                <PIS>
+                    <CST>{{ det.imposto.PIS.CST }}</CST>
+                    <vBC>{{ det.imposto.PIS.vBC }}</vBC>
+                    <pPIS>{{ det.imposto.PIS.pPIS }}</pPIS>
+                    <vPIS>{{ det.imposto.PIS.vPIS }}</vPIS>
+                </PIS>
+                {% endif %}
+                {% if det.imposto.COFINS is defined -%}
+                <COFINS>
+                    <CST>{{ det.imposto.COFINS.CST }}</CST>
+                    <vBC>{{ det.imposto.COFINS.vBC }}</vBC>
+                    <pCOFINS>{{ det.imposto.COFINS.pCOFINS }}</pCOFINS>
+                    <vCOFINS>{{ det.imposto.COFINS.vCOFINS }}</vCOFINS>
+                </COFINS>
+                {% endif %}
+                {% if det.imposto.FUST is defined -%}
+                <FUST>
+                    <vBC>{{ det.imposto.FUST.vBC }}</vBC>
+                    <pFUST>{{ det.imposto.FUST.pFUST }}</pFUST>
+                    <vFUTS>{{ det.imposto.FUST.vFUST }}</vFUST>
+                </FUST>
+                {% endif %}
+                {% if det.imposto.FUNTTEL is defined -%}
+                <FUNTTEL>
+                    <vBC>{{ det.imposto.FUNTTEL.vBC }}</vBC>
+                    <pFUNTTEL>{{ det.imposto.FUNTTEL.pFUNTTEL }}</pFUNTTEL>
+                    <vFUNTTEL>{{ det.imposto.FUNTTEL.vFUNTTEL }}</vFUNTTEL>
+                </FUNTTEL>
+                {% endif %}
+                {% if det.imposto.retTrib is defined -%}
+                <retTrib>
+                    <vRetPIS>{{ det.imposto.retTrib.vRetPIS }}</vRetPis>
+                    <vRetCofins>{{ det.imposto.retTrib.vRetCofins }}</vRetCofins>
+                    <vRetCSLL>{{ det.imposto.retTrib.vRetCSLL }}</vRetCSLL>
+                    <vBCIRRF>{{ det.imposto.retTrib.vBCIRRF }}</vBCIRRF>
+                    <vIRRF>{{ det.imposto.retTrib.vIRRF }}</vIRRF>
+                </retTrib>
+                {% endif %}
+            </imposto>
+            {% if det.gProcRef is defined -%}
+            <gProcRef>
+                <vItem>{{ det.gProcRef.vItem }}</vItem>
+                <qFaturada>{{ det.gProcRef.qFaturada }}</qFaturada>
+                <vProd>{{ det.gProcRef.vProd }}</vProd>
+                <vDesc>{{ det.gProcRef.vDesc }}</vDesc>
+                <vOutro>{{ det.gProcRef.vOutro }}</vOutro>
+                <indDevolucao>{{ det.gProcRef.indDevolucao }}</indDevolucao>
+                <vBC>{{ det.gProcRef.vBC }}</vBC>
+                <pICMS>{{ det.gProcRef.pICMS }}</pICMS>
+                <vICMS>{{ det.gProcRef.vICMS }}</vICMS>
+                <vPIS>{{ det.gProcRef.vPIS }}</vPIS>
+                <vCOFINS>{{ det.gProcRef.vCOFINS }}</vCOFINS>
+                {% for gproc in det.gProcRef.gProcs %}
+                <gProc>
+                    <tpProc>{{ gproc.tpProc }}</tpProc>
+                    <nProcesso>{{ gproc.nProcesso }}</nProcesso>
+                </gProc>
+                {% endfor %}
+            </gProcRef>
+            {% endif %}
+            {% if det.gRessarc is defined -%}
+            <gRessarc>
+                <tpRessarc>{{ det.gRessarc.tpRessarc }}</tpRessarc>
+                <dRef>{{ det.gRessarc.dRef }}</dRef>
+                <nProcesso>{{ det.gRessarc.nProcesso }}</nProcesso>
+                <nProtReclama>{{ det.gRessarc.nProtReclama }}</nProtReclama>
+                <xObs>{{ det.gRessarc.xObs }}</xObs>
+            </gRessarc>
+            {% endif %}
+            <infAdProd>{{ det.infAdProd }}</infAdProd>
+        </det>
+        {% endfor %}
+        <total>
+            <vProd>{{ total.vProd }}</vProd>
+            <ICMSTot>
+                <vBC>{{ total.ICMSTot.vBC }}</vBC>
+                <vICMS>{{ total.ICMSTot.vICMS }}</vICMS>
+                <vICMSDeson>{{ total.ICMSTot.vICMSDeson }}</vICMSDeson>
+                <vFCP>{{ total.ICMSTot.vFCP }}</vFCP>
+            </ICMSTot>
+            <vCOFINS>{{ total.vCOFINS }}</vCOFINS>
+            <vPIS>{{ total.vPIS }}</vPIS>
+            <vFUNTTEL>{{ total.vFUNTTEL }}</vFUNTTEL>
+            <vFUST>{{ total.vFUST }}</vFUST>
+            <vRetTribTot>
+                <vRetPIS>{{ total.vRetTribTot.vRetPIS }}</vRetPIS>
+                <vRetCofins>{{ total.vRetTribTot.vRetCofins }}</vRetCofins>
+                <vRetCSLL>{{ total.vRetTribTot.vRetCSLL }}</vRetCSLL>
+                <vIRRF>{{ total.vRetTribTot.vIRRF }}</vIRRF>
+            </vRetTribTot>
+            <vDesc>{{ total.vDesc }}</vDesc>
+            <vOutro>{{ total.vOutro }}</vOutro>
+            <vNF>{{ total.vNF }}</vNF>
+        </total>
+        {% if gFidelidade is defined -%}
+        <gFidelidade>
+            <qtdSaldoPts>{{ gFidelidade.qtdSaldoPts }}</qtdSaldoPts>
+            <dRefSaldoPts>{{ gFidelidade.dRefSaldoPts }}</dRefSaldoPts>
+            <qtdPtsResg>{{ gFidelidade.qtdPtsResg }}</qtdPtsResg>
+            <dRefResgPts>{{ gFidelidade.dRefResgPts }}</dRefResgPts>
+        </gFidelidade>
+        {% endif %}
+        {% if gFat is defined -%}
+        <gFat>
+            <CompetFat>{{ gFat.CompetFat }}</CompetFat>
+            <dVencFat>{{ gFat.dVencFat }}</dVencFat>
+            <dPerUsoIni>{{ gFat.dPerUsoIni }}</dPerUsoIni>
+            <dPerUsoFim>{{ gFat.dPerUsoFim }}</dPerUsoFim>
+            <codBarras>{{ gFat.codBarras }}</codBarras>
+            <codDebAuto>{{ gFat.codDebAuto }}</codDebAuto>
+            <codBanco>{{ gFat.codBanco }}</codBanco>
+            <codAgencia>{{ gFat.codAgencia }}</codAgencia>
+            {% if gFat.enderCorresp is defined -%}
+            <enderCorresp>
+                <xLgr>{{ gFat.enderCorresp.xLGR }}</xLgr>
+                <nro>{{ gFat.enderCorresp.nro }}</nro>
+                <xCpl>{{ gFat.enderCorresp.xCpl }}</xCpl>
+                <xBairro>{{ gFat.enderCorresp.xBairro }}</xBairro>
+                <cMun>{{ gFat.enderCorresp.cMun }}</cMun>
+                <xMun>{{ gFat.enderCorresp.xMun }}</xMun>
+                <CEP>{{ gFat.enderCorresp.CEP }}</CEP>
+                <UF>{{ gFat.enderCorresp.F }}</UF>
+                <fone>{{ gFat.enderCorresp.fone }}</fone>
+                <email>{{ gFat.enderCorresp.email }}</email>
+            </enderCorresp>
+            {% endif %}
+            {% if gFat.gPix is defined -%}
+            <gPIX>
+                <urlQRCodePix>{{ gFat.gPix.urlQRCodePix }}</urlQRCodePix>
+            </gPIX>
+            {% endif %}
+        </gFat>
+        {% endif %}
+        {% if gFatCentral is defined -%}
+        <gFatCentral>
+            <CNPJ>{{ gFatCentral.CNPJ }}</CNPJ>
+            <cUF>{{ gFatCentral.cUF }}</cUF>
+        </gFatCentral>
+        {% endif %}
+        {% for aut in AutXMLS %}
+        <autXML>
+            <CNPJ>{{ aut.CNPJ }}</CNPJ>
+            <CPF>{{ aut.CPF }}</CPF>
+        </autXML>
+        {% endfor %}
+        {% if infAdic is defined -%}
+        <infAdic>
+            <infAdFisco>{{ infAdic.infAdFisco }}</infAdFisco>
+            <infCpl>{{ infAdic.infCpl }}</infCpl>
+        </infAdic>
+        {% endif %}
+        {% if gRespTec is defined -%}
+        <gRespTec>
+            <CNPJ>{{ CNPJ }}</CNPJ>
+            <xContato>{{ xContato }}</xContato>
+            <email>{{ email }}</email>
+            <fone>{{ fone }}</fone>
+            <idCSRT>{{ idCSRT }}</idCSRT>
+            <hashCSRT>{{ hashCSRT }}</hashCSRT>
+        </gRespTec>
+        {% endif %}
+    </infNFCom>
+    <infNFComSupl>
+        <qrCodNFCom>{{ qrCodNFCom }}</qrCodNFCom>
+    </infNFComSupl>
+</NFCom>

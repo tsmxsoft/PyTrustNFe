@@ -8,6 +8,7 @@ import csv
 from datetime import date, datetime
 import lxml.etree as ET
 from unicodedata import normalize
+from pytrustnfe.Servidores import ESTADO_WS,SIGLA_ESTADO
 
 
 def ibge2siafi(ibge_or_cnpj):
@@ -87,6 +88,13 @@ class ChaveNFCom(object):
         assert self.site_aut != "", "Site Autorizador necessário para criar chave NFCom"
         assert self.codigo != "", "Código necessário para criar chave NFCom"
 
+def nfcom_valor(valor):
+    return str("%.2f" %(round(valor,2)))
+
+def nfcom_qrcode(chNFCom, tpAmb, sigla, offline=False, assinatura=""):
+    if offline:
+        return "https://%s/Nfcom/QrCode?chNFCom=%s&tpAmb=%d&amp;sign=%s" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["servidor"],chNFCom,tpAmb,assinatura)
+    return "https://%s/Nfcom/QrCode?chNFCom=%s&amp;tpAmb=%d" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["servidor"],chNFCom,tpAmb)
 
 def date_tostring(data):
     assert isinstance(data, date), "Objeto date requerido"
@@ -110,7 +118,7 @@ def validar_nfcom_dv(chave,dv):
         i += 1
     return dv == (11-(sum%11))
 
-def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
+def gerar_chave_nfcom(obj_chave, prefix="NFCom"):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"
     obj_chave.validar()
     chave_parcial = "%s%s%s%s%s%s%d%d%s" % (
@@ -118,17 +126,17 @@ def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
         obj_chave.emissao,
         obj_chave.cnpj,
         obj_chave.modelo,
-        obj_chave.serie.zfill(3),
+        str(obj_chave.serie).zfill(3),
         str(obj_chave.numero).zfill(9),
         obj_chave.site_aut,
         obj_chave.tipo,
         obj_chave.codigo,
     )
     chave_parcial = re.sub("[^0-9]", "", chave_parcial)
-    soma = sum(a*b for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
+    soma = sum(int(a)*int(b) for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
     dv = 11 - (soma%11)
-    if suffix:
-        return chave_parcial + dv + suffix
+    if prefix:
+        return prefix + chave_parcial + str(dv)
     return chave_parcial + str(dv)
 
 def gerar_chave_cte(obj_chave, prefix=None):
