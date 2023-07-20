@@ -1,4 +1,4 @@
-<EnviarLoteRpsSincronoEnvio xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
+<EnviarLoteRpsSincronoEnvio xmlns = "http://www.abrasf.org.br/nfse.xsd">
     <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.02">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <CpfCnpj>

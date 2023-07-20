@@ -1,13 +1,8 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">
-	<soapenv:Header/>
-	<soapenv:Body>
-		<e:{{ method }}>
-			<nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02">
-					<versaoDados>2.02</versaoDados>
-				</cabecalho>]]>
-			</nfseCabecMsg>
-			<nfseDadosMsg><![CDATA[{{ soap_body }}]]></nfseDadosMsg>
-		</e:{{ method }}>
-</soapenv:Body>
-</soapenv:Envelope>
+<soap:Envelope xmlns:e="http://nfse.abrasf.org.br" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<soap:Body>
+		<e:{{ method }}Request xmlns="http://nfse.abrasf.org.br">
+			<nfseCabecMsg><![CDATA[<cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>]]></nfseCabecMsg>
+			<nfseDadosMsg><![CDATA[<?xml version="1.0" encoding="utf-8"?>{{ soap_body }}]]></nfseDadosMsg>
+		</e:{{ method }}Request>
+	</soap:Body>
+</soap:Envelope>
