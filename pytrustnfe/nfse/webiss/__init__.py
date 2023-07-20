@@ -67,12 +67,12 @@ def _send(certificado, method, **kwargs):
     return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRps", **kwargs)
+    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "RecepcionarLoteRps", **kwargs)
+    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def gerar_nfse(certificado, **kwargs):
     return _send(certificado, "GerarNfse", **kwargs)

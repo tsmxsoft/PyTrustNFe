@@ -14,21 +14,26 @@
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
-                <ValorDeducoes>{{ rps.servico.valor_descontos|default("0", true) }}</ValorDeducoes>
-                <ValorPis>{{ rps.servico.pis|default("0", true) }}</ValorPis>
-                <ValorCofins>{{ rps.servico.cofins|default("0", true) }}</ValorCofins>
-                <ValorInss>{{ rps.servico.inss|default("0", true) }}</ValorInss>
-                <ValorIr>{{ rps.servico.ir|default("0", true) }}</ValorIr>
-                <ValorCsll>{{ rps.servico.csll|default("0", true) }}</ValorCsll>
-                <OutrasRetencoes>{{ rps.servico.retencoes|default("0", true) }}</OutrasRetencoes>
-                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default("0", true) }}</DescontoIncondicionado>
-                <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0", true) }}</DescontoCondicionado>
+                <ValorDeducoes>{{ rps.servico.valor_descontos }}</ValorDeducoes>
+                <ValorPis>{{ rps.servico.pis }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss }}</ValorInss>
+                <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
+                <ValorIr>{{ rps.servico.ir }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
+                <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
+            <CodigoTributacaoMunicipio>{{ rps.servico.codigo_atividade }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             <ExigibilidadeISS>{{ rps.iss_exigibilidade_cod|default("1", true) }}</ExigibilidadeISS>
+            <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
         </Servico>
         <Prestador>
             <CpfCnpj>

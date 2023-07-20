@@ -1,4 +1,4 @@
-<EnviarLoteRpsEnvio xmlns = "http://www.abrasf.org.br/nfse.xsd">
+<EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.02">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <CpfCnpj>
