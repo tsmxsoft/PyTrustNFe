@@ -5,12 +5,13 @@
 import os
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfse.betha.assinatura import Assinatura
+from pytrustnfe.nfse.webiss.assinatura import Assinatura
 from lxml import etree
 from zeep.transports import Transport
 from requests import Session
 import requests
 from datetime import datetime, timedelta
+
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -33,9 +34,9 @@ def _render(certificado, method, **kwargs):
         reference = "rps:{0}{1}".format(
             item.get('numero'), item.get('serie'))
 
-        signer.assina_xml(xml_send, reference)
+        xml_signed_send = signer.assina_xml(xml_send, reference)
 
-    xml_signed_send = signer.assina_xml(xml_send, "lote:{0}".format(referencia))
+    signer.assina_xml(xml_send, "lote:{0}".format(referencia))
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
@@ -59,6 +60,7 @@ def _send(certificado, method, **kwargs):
     headers = {
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
+        "Operation": method,
         "Content-length": str(len(soap))
     }
 

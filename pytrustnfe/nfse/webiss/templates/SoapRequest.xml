@@ -1,8 +1,9 @@
-<soap:Envelope xmlns:e="http://nfse.abrasf.org.br" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<soap:Body>
-		<e:{{ method }}Request xmlns="http://nfse.abrasf.org.br">
-			<nfseCabecMsg><![CDATA[<cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>]]></nfseCabecMsg>
-			<nfseDadosMsg><![CDATA[<?xml version="1.0" encoding="utf-8"?>{{ soap_body }}]]></nfseDadosMsg>
-		</e:{{ method }}Request>
-	</soap:Body>
-</soap:Envelope>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfse="http://nfse.abrasf.org.br">
+   <soapenv:Header/>
+   <soapenv:Body>
+		<nfse:{{ method }}Request>
+	         <nfseCabecMsg><![CDATA[ <cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho> ]]></nfseCabecMsg>
+			<nfseDadosMsg><![CDATA[ {{ soap_body }} ]]></nfseDadosMsg>
+		</nfse:{{ method }}Request>
+	</soapenv:Body>
+</soapenv:Envelope>
