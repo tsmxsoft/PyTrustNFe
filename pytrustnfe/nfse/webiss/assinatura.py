@@ -5,7 +5,7 @@
 from OpenSSL import crypto
 import signxml
 from lxml import etree
-from signxml import XMLSigner
+from signxml import XMLSigner,XMLVerifier
 import sys
 
 class Assinatura(object):
@@ -29,10 +29,7 @@ class Assinatura(object):
                            digest_algorithm='sha1',
                            c14n_algorithm='http://www.w3.org/TR/2001/REC-xml-c14n-20010315')
 
-        ns = {}
-        ns[None] = signer.namespaces['ds']
-        signer.namespaces = ns
-
+        signer.namespaces = {None: signxml.namespaces.ds}
         ref_uri = ('#%s' % reference) if reference else None
 
         element = xml_element.find(".//*[@id='%s']" % (reference))
@@ -41,7 +38,6 @@ class Assinatura(object):
         signed_root = signer.sign(
             element, key=key.encode(), cert=cert.encode(),
             reference_uri=ref_uri)
-
         if reference:
             element_signed = xml_element.find(".//*[@id='%s']" % (reference))
             if element_signed is None:

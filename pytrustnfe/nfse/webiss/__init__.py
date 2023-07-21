@@ -24,7 +24,7 @@ def _render(certificado, method, **kwargs):
     if method == "RecepcionarLoteRpsSincrono" or method == "RecepcionarLoteRps":
         referencia = kwargs["nfse"]["numero_lote"]
 
-    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+    xml_string_send = render_xml(path, "%s.xml" % method, True, False, **kwargs)
 
     # xml object
     xml_send = etree.fromstring(
@@ -34,9 +34,9 @@ def _render(certificado, method, **kwargs):
         reference = "rps:{0}{1}".format(
             item.get('numero'), item.get('serie'))
 
-        xml_signed_send = signer.assina_xml(xml_send, reference)
+        signer.assina_xml(xml_send, reference)
 
-    signer.assina_xml(xml_send, "lote:{0}".format(referencia))
+    xml_signed_send = signer.assina_xml(xml_send, "lote:{0}".format(referencia))
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
@@ -49,7 +49,7 @@ def _send(certificado, method, **kwargs):
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method })
+    soap = render_xml(path, "SoapRequest.xml", False, False, **{"soap_body":xml_send, "method": method })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)

@@ -60,7 +60,7 @@
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 {% endif %}
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
-                <CodigoMunicipio>{{ rps.servico.codigo_municipio}}</CodigoMunicipio>
+                <CodigoMunicipio>{{ rps.tomador.codigo_municipio}}</CodigoMunicipio>
                 <Uf>{{ rps.tomador.uf }}</Uf>
                 <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
