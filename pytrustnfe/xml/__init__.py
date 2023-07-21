@@ -15,7 +15,7 @@ def recursively_empty(e):
     return all((recursively_empty(c) for c in e.iterchildren()))
 
 
-def render_xml(path, template_name, remove_empty, **nfe):
+def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     nfe = recursively_normalize(nfe)
     env = Environment(loader=FileSystemLoader(
         path), extensions=["jinja2.ext.with_"])
@@ -27,7 +27,9 @@ def render_xml(path, template_name, remove_empty, **nfe):
     env.filters["comma"] = filters.format_with_comma
 
     template = env.get_template(template_name)
-    xml = template.render(**nfe).replace("\n", "")
+    xml = template.render(**nfe)
+    if remove_newline:
+        xml = xml.replace("\n", "")
     parser = etree.XMLParser(
         remove_blank_text=True, remove_comments=True, strip_cdata=False
     )
