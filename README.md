@@ -1,9 +1,9 @@
 # PyTrustNFe
 Biblioteca Python que tem por objetivo enviar NFe, NFCe e NFSe no Brasil
 
-[![Coverage Status](https://coveralls.io/repos/danimaribeiro/PyTrustNFe/badge.svg?branch=master3)](https://coveralls.io/r/danimaribeiro/PyTrustNFe?branch=master3)
-[![Code Health](https://landscape.io/github/danimaribeiro/PyTrustNFe/master3/landscape.svg?style=flat)](https://landscape.io/github/danimaribeiro/PyTrustNFe/master3)
-[![Build Status](https://travis-ci.org/danimaribeiro/PyTrustNFe.svg?branch=master3)](https://travis-ci.org/danimaribeiro/PyTrustNFe)
+[![Coverage Status](https://coveralls.io/repos/thiagosm/PyTrustNFe/badge.svg?branch=master3)](https://coveralls.io/r/thiagosm/PyTrustNFe?branch=master3)
+[![Code Health](https://landscape.io/github/thiagosm/PyTrustNFe/master3/landscape.svg?style=flat)](https://landscape.io/github/thiagosm/PyTrustNFe/master3)
+[![Build Status](https://travis-ci.org/thiagosm/PyTrustNFe.svg?branch=master3)](https://travis-ci.org/thiagosm/PyTrustNFe)
 [![PyPI version](https://badge.fury.io/py/PyTrustNFe3.svg)](https://badge.fury.io/py/PyTrustNFe3)
 
 Dependências:
@@ -14,32 +14,36 @@ Dependências:
 * suds-jurko-requests
 * reportlab
 * Jinja2
+* requests
+* zeep
 
 
-NFSe - Cidades atendidas
+NFSe - Empresas Atendidas
 -----------------------------
 * **Paulistana** - São Paulo/SP
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Imperial** - Petrópolis/RH
-* [Susesu](cidades/susesu.md) - 3 cidades atendidas
-* [Simpliss](cidades/simpliss.md) - 18 cidade atendidas
-* [GINFES](cidaes/ginfes.md) - 79 cidades atendidas
-* [DSF](cidades/dsf.md) - 7 cidades atendidas
-* [AgiliBlue](cidades/agiliblue.md) - 16 cidades atendidas
-* [Betha](cidades/betha.md) - 81 cidades atendidas 
-* [ISSNET](cidades/issnet.md) - 32 cidades atendidas
-* **SIASP (Publica)** - Assú/RN
+* **Susesu**
+* **Simpliss**
+* **GINFES**
+* **DSF**
+* **Agiliblue**
+* **Betha**
+* **ISSNET**
+* **WebISS**
+* **SIASP (Publica)**
 * **Cariacica** - Cariacica/ES
+* **Directa** - Natal/RN
 
 Roadmap
 --------------
-Teste unitários
+* Teste unitários
+* Objeto padronizado de retorno (Padronização e implementação)
+* NFCom (NF Modelo 62)
 
-Implementar novos provedores de NFSe
-* [WebISS](cidades/webiss.md) - 51 cidades atendidas
-* [ISSIntel](cidades/issintel.md) - 32 cidades atendidas
-* [Saatri](cidades/saatri.md) - 31 cidades atendidas
-
+Padronizações
+--------------
+* As integrações contém URL direta para ambiente de homologação, porém para ambiente de produção, é necessário passar o parâmetro **kwargs["base_url"]**, pois alguns sistemas tem URL única em produção, outros possuem uma URL para cada cidade atendida, para abranger todos os casos, esse parâmetro foi implementado.
 
 Exemplos de uso da NFe
 -----------------------------

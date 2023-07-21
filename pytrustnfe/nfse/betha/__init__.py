@@ -43,7 +43,7 @@ def _send(certificado, method, **kwargs):
     if kwargs["ambiente"] == "homologacao":
         url = "http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl"
     else:
-        url = "http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl"
+        url = kwargs["base_url"]
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
