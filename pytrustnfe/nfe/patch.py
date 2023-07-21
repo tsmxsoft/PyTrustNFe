@@ -1,4 +1,4 @@
-from ..Servidores import SIGLA_ESTADO
+from ..Servidores import SIGLA_ESTADO,NFCOM_MODELO
 from pytrustnfe.xml import sanitize_response
 
 

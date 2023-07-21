@@ -30,6 +30,29 @@ class ChaveNFe(object):
         assert self.tipo != "", "Tipo necessário para criar chave NF-e"
         assert self.codigo != "", "Código necessário para criar chave NF-e"
 
+class ChaveNFCom(object):
+    def __init__(self, **kwargs):
+        self.estado = kwargs.pop("estado", "")
+        self.emissao = kwargs.pop("emissao", "")
+        self.cnpj = kwargs.pop("cnpj", "")
+        self.modelo = kwargs.pop("modelo", "")
+        self.serie = kwargs.pop("serie", "")
+        self.numero = kwargs.pop("numero", "")
+        self.tipo = kwargs.pop("tipo", "")
+        self.site_aut = kwargs.pop("site_aut", "")
+        self.codigo = kwargs.pop("codigo", "")
+
+    def validar(self):
+        assert self.cnpj != "", "CNPJ necessário para criar chave NFCom"
+        assert self.estado != "", "Estado necessário para criar chave NFCom"
+        assert self.emissao != "", "Emissão necessário para criar chave NFCom"
+        assert self.modelo != "", "Modelo necessário para criar chave NFCom"
+        assert self.serie != "", "Série necessária para criar chave NFCom"
+        assert self.numero != "", "Número necessário para criar chave NFCom"
+        assert self.tipo != "", "Tipo necessário para criar chave NFCom"
+        assert self.site_aut != "", "Site Autorizador necessário para criar chave NFCom"
+        assert self.codigo != "", "Código necessário para criar chave NFCom"
+
 
 def date_tostring(data):
     assert isinstance(data, date), "Objeto date requerido"
@@ -39,6 +62,40 @@ def date_tostring(data):
 def datetime_tostring(data):
     assert isinstance(data, datetime), "Objeto datetime requerido"
     return data.strftime("%d-%m-%y %H:%M:%S")
+
+def gerar_chave_nfcom(obj_chave):
+    assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFe"
+    
+
+def validar_nfcom_dv(chave,dv):
+    pesos = [4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2]
+    sum = 0
+    i = 0
+    for c in chave:
+        sum += int(c)*pesos[i]
+        i += 1
+    return dv == (11-(sum%11))
+
+def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
+    assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"
+    obj_chave.validar()
+    chave_parcial = "%s%s%s%s%s%s%d%d%s" % (
+        obj_chave.estado,
+        obj_chave.emissao,
+        obj_chave.cnpj,
+        obj_chave.modelo,
+        obj_chave.serie.zfill(3),
+        str(obj_chave.numero).zfill(9),
+        obj_chave.site_aut,
+        obj_chave.tipo,
+        obj_chave.codigo,
+    )
+    chave_parcial = re.sub("[^0-9]", "", chave_parcial)
+    soma = sum(a*b for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
+    dv = 11 - (soma%11)
+    if suffix:
+        return chave_parcial + dv + suffix
+    return chave_parcial + str(dv)
 
 
 def gerar_chave(obj_chave, prefix=None):
@@ -66,7 +123,6 @@ def gerar_chave(obj_chave, prefix=None):
     if prefix:
         return prefix + chave_parcial + str(dv)
     return chave_parcial + str(dv)
-
 
 def _find_node(xml, node):
     for item in xml.iterchildren("*"):
