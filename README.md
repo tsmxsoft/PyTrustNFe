@@ -20,26 +20,31 @@ Dependências:
 
 NFSe - Empresas Atendidas
 -----------------------------
-* **Paulistana** - São Paulo/SP
-* **Nota Carioca** - Rio de Janeiro/RJ
-* **Imperial** - Petrópolis/RH
-* **Susesu**
-* **Simpliss**
-* **GINFES**
-* **DSF**
 * **Agiliblue**
 * **Betha**
-* **ISSNET**
-* **WebISS**
-* **SIASP (Publica)**
 * **Cariacica** - Cariacica/ES
 * **Directa** - Natal/RN
+* **DSF**
+* **GINFES**
+* **Imperial** - Petrópolis/RH
+* **ISSNET**
+* **ISSWEB**
+* **Nota Carioca** - Rio de Janeiro/RJ
+* **Paulistana** - São Paulo/SP
+* **SIASP (Publica)**
+* **Speedgov**
+* **Susesu**
+* **Simpliss**
+* **Tinus Informatica**
+* **WebISS**
 
 Roadmap
 --------------
 * Teste unitários
 * Objeto padronizado de retorno (Padronização e implementação)
 * NFCom (NF Modelo 62)
+* NFSe Tributus
+* NFSe GSN - Salvador
 
 Padronizações
 --------------
