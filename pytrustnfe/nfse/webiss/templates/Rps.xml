@@ -27,6 +27,13 @@
                 <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+            {% if rps.servico.iss_retido == 1 -%}
+            {% if rps.intermediario is defined -%}
+            <ResponsavelRetencao>2</ResponsavelRetencao>
+            {% else -%}
+            <ResponsavelRetencao>1</ResponsavelRetencao>
+            {% endif %}
+            {% endif %}
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             <CodigoTributacaoMunicipio>{{ rps.servico.codigo_atividade }}</CodigoTributacaoMunicipio>
