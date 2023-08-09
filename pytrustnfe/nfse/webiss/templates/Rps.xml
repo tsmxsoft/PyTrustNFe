@@ -62,7 +62,7 @@
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
                 <Endereco>{{ rps.tomador.endereco }}</Endereco>
-                <Numero>{{ rps.tomador.numero }}</Numero>
+                <Numero>{{ rps.tomador.numero | default("0",true) }}</Numero>
                 {% if rps.tomador.complemento is defined -%}
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 {% endif %}
