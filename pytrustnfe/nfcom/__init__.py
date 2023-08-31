@@ -125,6 +125,7 @@ def _send(certificado, method, **kwargs):
     })
     session = _get_session(certificado)
     transport = Transport(session=session,timeout=300)
+    print(base_url)
     first_op, client = _get_client(base_url, transport)
     return _send_zeep(first_op, client, xml_send, method == "NFComRecepcao")
 
