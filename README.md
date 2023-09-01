@@ -36,6 +36,7 @@ NFSe - Empresas Atendidas
 * **Susesu**
 * **Simpliss**
 * **Tinus Informatica**
+* **Tecnos**
 * **WebISS**
 
 Roadmap
