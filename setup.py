@@ -50,6 +50,8 @@ later (LGPLv2+)",
             "nfse/issweb/templates/*xml",
             "nfse/speedgov/templates/*xml",
             "nfse/webiss/templates/*xml",
+            "nfse/recife/templates/*xml",
+            "nfse/ecidade/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
