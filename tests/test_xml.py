@@ -11,6 +11,7 @@ from pytrustnfe.xml.filters import strip_line_feed
 from pytrustnfe.xml.filters import format_percent
 from pytrustnfe.xml.filters import format_date
 from pytrustnfe.xml.filters import format_datetime
+from pytrustnfe.xml.filters import format_datetime_dmy
 
 
 class test_xmlfilters(unittest.TestCase):
@@ -24,6 +25,7 @@ class test_xmlfilters(unittest.TestCase):
         dt = datetime(2016, 9, 17, 12, 12, 12)
         self.assertEqual("2016-09-17", format_date(dt.date()))
         self.assertEqual("2016-09-17T12:12:12", format_datetime(dt))
+        self.assertEqual("17/09/2016",format_datetime_dmy(dt))
 
         word = strip_line_feed("olá\ncomo vai\r senhor ")
         self.assertEqual(word, "olá como vai senhor")

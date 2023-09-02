@@ -1,0 +1,65 @@
+<nfe>
+    {% for rps in nfse.lista_rps -%}
+    <notaFiscal>
+        <dadosPrestador>
+            <dataEmissao>{{ rps.data_emissao | format_date_dmy }}</dataEmissao>
+            <im>{{ nfse.inscricao_municipal }}</im>
+            <numeroRps>{{ rps.numero }}</numeroRps>
+        </dadosPrestador>
+        <dadosServico>
+            <bairro>{{ rps.prestador.bairro }}</bairro>
+            <cep>{{ rps.prestador.cep }}</cep>
+            <cidade>{{ rps.prestador.cidade }}</cidade>
+            <complemento>{{ rps.prestador.complemento }}</complemento>
+            <logradouro>{{ rps.prestador.endereco }}</logradouro>
+            <numero>{{ rps.prestador.numero }}</numero>
+            <pais>BRASIL</pais>
+            <uf>{{ rps.prestador.uf }}</uf>
+        </dadosServico>
+        <dadosTomador>
+            <bairro>{{ rps.tomador.bairro }}</bairro>
+            <cep>{{ rps.tomador.cep }}</cep>
+            <cidade>{{ rps.tomador.cidade }}</cidade>
+            <complemento>{{ rps.tomador.complemento }}</complemento>
+            <documento>{{ rps.tomador.cpf_cnpj }}</documento>
+            <email>{{ rps.tomador.email }}</email>
+            {% if rps.tomador.inscricao_estadual is defined -%}
+            <ie>{{ rps.tomador.inscricao_estadual }}</ie>
+            {% else %}
+            <ie>ISENTO</ie>
+            {% endif %}
+            <logradouro>{{ rps.tomador.endereco }}</logradouro>
+            <nomeTomador>{{ rps.tomador.razao_social }}</nomeTomador>
+            <numero>{{ rps.tomador.numero }}</numero>
+            <pais>BRASIL</pais>
+            {% if rps.tomador.cpf_cnpj|length == 11 %}
+            <tipoDoc>F</tipoDoc>
+            {% else %}
+            <tipoDoc>J</tipoDoc>
+            {% endif %}
+            <uf>{{ rps.tomador.uf }}</uf>
+        </dadosTomador>
+        <detalheServico>
+            <cofins>{{ rps.servico.cofins }}</cofins>
+            <csll>{{ rps.servico.csll }}</csll>
+            <deducaoMaterial>{{ rps.servico.desconto_condicionado }}</deducaoMaterial>
+            <descontoIncondicional>{{ rps.servico.desconto_incodicionado }}</descontoIncondicional>
+            <inss>{{ rps.servico.inss }}</inss>
+            <ir>{{ rps.servico.iss }}</ir>
+            {% if rps.servico.iss_retido == 2%}
+            <issRetido>0</issRetido>
+            {% else %}
+            <issRetido>1</issRetido>
+            {% endif %}
+            <item>
+                <aliquota>{{ rps.servico.aliquota }}</aliquota>
+                <codigo>{{ rps.servico.codigo_servico }}</codigo>
+                <descricao>{{ rps.servico.discriminacao }}</descricao>
+                <valor>{{ rps.servico.valor_servico }}</valor>
+            </item>
+            <obs>{{ rps.servico.discriminacao }}</obs>
+            <pisPasep>{{ rps.servico.pis }}</pisPasep>
+        </detalheServico>
+    </notaFiscal>
+    {% endfor %}
+</nfe>

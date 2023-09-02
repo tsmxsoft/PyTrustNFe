@@ -51,6 +51,15 @@ def format_datetime(value):
         return value.strftime(dt_format)
     return value
 
+def format_datetime_dmy(value):
+    """
+    format datetime string 
+    to day/month/year string
+    """
+    obj = datetime.strptime(value,"%Y-%m-%dT%H:%M:%S")
+    if isinstance(value, str):
+        return obj.strftime("%d/%m/%Y")
+    return value
 
 def format_date(value):
     """
