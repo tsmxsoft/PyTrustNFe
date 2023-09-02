@@ -2,7 +2,7 @@
     {% for rps in nfse.lista_rps -%}
     <notaFiscal>
         <dadosPrestador>
-            <dataEmissao>{{ rps.data_emissao | format_date_dmy }}</dataEmissao>
+            <dataEmissao>{{ rps.data_emissao|format_datetime_dmy }}</dataEmissao>
             <im>{{ nfse.inscricao_municipal }}</im>
             <numeroRps>{{ rps.numero }}</numeroRps>
         </dadosPrestador>
