@@ -43,17 +43,17 @@ def _send(certificado, method, **kwargs):
 
     request = requests.post(base_url, data=xml_send, headers=headers)
     response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
-    return {"sent_xml": str(xml_send), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+    return {"sent_xml": str(xml_send), "received_xml": str(response.encode('utf8')), "object": obj }
 
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render_xml(certificado, "Envio", **kwargs)
+    return _render_xml(certificado, "Emissao", **kwargs)
 
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado,"Envio", **kwargs)
+    return _send(certificado,"Emissao", **kwargs)
 
 
 def xml_consultar_situacao_lote(certificado, **kwargs):
