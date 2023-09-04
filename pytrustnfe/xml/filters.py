@@ -65,7 +65,7 @@ def format_cep(value):
     to 99999-999 string
     """
     cep = str(value)
-    if len(cep) > 8:
+    if len(cep) == 8:
         return cep[:5] + "-" + cep[5:]
     return cep
 
