@@ -59,6 +59,16 @@ def format_datetime_dmy(value):
     obj = datetime.strptime(value,"%Y-%m-%dT%H:%M:%S")
     return obj.strftime("%d/%m/%Y")
 
+def format_cep(value):
+    """
+    format CEP (ZIP Code Brazil) int (or string)
+    to 99999-999 string
+    """
+    cep = str(value)
+    if len(cep) > 8:
+        return cep[:5] + "-" + cep[5:]
+    return cep
+
 def format_date(value):
     """
     Format date

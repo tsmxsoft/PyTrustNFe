@@ -24,6 +24,7 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     env.filters["format_percent"] = filters.format_percent
     env.filters["format_datetime"] = filters.format_datetime
     env.filters["format_datetime_dmy"] = filters.format_datetime_dmy
+    env.filters["format_cep"] = filters.format_cep
     env.filters["format_date"] = filters.format_date
     env.filters["comma"] = filters.format_with_comma
 
