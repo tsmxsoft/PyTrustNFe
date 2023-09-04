@@ -38,7 +38,7 @@ def _send(certificado, method, **kwargs):
         "Content-Type": "application/xml;charset=UTF-8",
         "Content-length": str(len(xml_send)),
         "Cache-Control": "no-cache",
-        "Authorization": kwargs["nfse"]["chave_digital"],
+        "Authorization": kwargs["nfse"]["inscricao_municipal"] + "-" + kwargs["nfse"]["chave_digital"],
     }
 
     request = requests.post(base_url, data=xml_send, headers=headers)
