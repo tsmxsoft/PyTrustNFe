@@ -8,7 +8,7 @@
         </dadosPrestador>
         <dadosServico>
             <bairro>{{ rps.prestador.bairro }}</bairro>
-            <cep>{{ rps.prestador.cep }}</cep>
+            <cep>{{ rps.prestador.cep | format_cep }}</cep>
             <cidade>{{ rps.prestador.cidade }}</cidade>
             <complemento>{{ rps.prestador.complemento }}</complemento>
             <logradouro>{{ rps.prestador.endereco }}</logradouro>
@@ -18,16 +18,12 @@
         </dadosServico>
         <dadosTomador>
             <bairro>{{ rps.tomador.bairro }}</bairro>
-            <cep>{{ rps.tomador.cep }}</cep>
+            <cep>{{ rps.tomador.cep | format_cep }}</cep>
             <cidade>{{ rps.tomador.cidade }}</cidade>
             <complemento>{{ rps.tomador.complemento }}</complemento>
             <documento>{{ rps.tomador.cpf_cnpj }}</documento>
             <email>{{ rps.tomador.email }}</email>
-            {% if rps.tomador.inscricao_estadual is defined -%}
             <ie>{{ rps.tomador.inscricao_estadual }}</ie>
-            {% else %}
-            <ie>ISENTO</ie>
-            {% endif %}
             <logradouro>{{ rps.tomador.endereco }}</logradouro>
             <nomeTomador>{{ rps.tomador.razao_social }}</nomeTomador>
             <numero>{{ rps.tomador.numero }}</numero>
@@ -40,25 +36,24 @@
             <uf>{{ rps.tomador.uf }}</uf>
         </dadosTomador>
         <detalheServico>
-            <cofins>{{ rps.servico.cofins }}</cofins>
-            <csll>{{ rps.servico.csll }}</csll>
-            <deducaoMaterial>{{ rps.servico.desconto_condicionado }}</deducaoMaterial>
-            <descontoIncondicional>{{ rps.servico.desconto_incodicionado }}</descontoIncondicional>
-            <inss>{{ rps.servico.inss }}</inss>
-            <ir>{{ rps.servico.iss }}</ir>
-            {% if rps.servico.iss_retido == 2%}
+            <cofins>{{ rps.servico.cofins | default("0.00", True) }}</cofins>
+            <csll>{{ rps.servico.csll | default("0.00", True) }}</csll>
+            <deducaoMaterial>{{ rps.servico.desconto_condicionado | default("0.00", True) }}</deducaoMaterial>
+            <descontoIncondicional>{{ rps.servico.desconto_incodicionado | default("0.00", True) }}</descontoIncondicional>
+            <inss>{{ rps.servico.inss | default("0.00", True) }}</inss>
+            <ir>{{ rps.servico.iss | default("0.00", True) }}</ir>
+            {% if rps.servico.iss_retido == "2" %}
             <issRetido>0</issRetido>
             {% else %}
             <issRetido>1</issRetido>
             {% endif %}
             <item>
-                <aliquota>{{ rps.servico.aliquota }}</aliquota>
-                <codigo>{{ rps.servico.codigo_servico }}</codigo>
+                <aliquota>{{ rps.servico.aliquota | float * 100 }}</aliquota>
+                <codigo>{{ rps.servico.codigo_atividade }}</codigo>
                 <descricao>{{ rps.servico.discriminacao }}</descricao>
                 <valor>{{ rps.servico.valor_servico }}</valor>
             </item>
-            <obs>{{ rps.servico.discriminacao }}</obs>
-            <pisPasep>{{ rps.servico.pis }}</pisPasep>
+            <pisPasep>{{ rps.servico.pis | default("0.00", True) }}</pisPasep>
         </detalheServico>
     </notaFiscal>
     {% endfor %}
