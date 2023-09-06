@@ -66,6 +66,7 @@ def _send(certificado, method, **kwargs):
     headers = {
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
+        "Operation": method,
         "Content-length": str(len(soap))
     }
 

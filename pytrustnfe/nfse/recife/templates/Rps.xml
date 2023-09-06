@@ -20,30 +20,13 @@
                 <ValorLiquidoNfse>{{ rps.servico.valor_servico }}</ValorLiquidoNfse>
             </Valores>
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <CodigoTributacaoMunicipio>{{ rps.servico.codigo_cnae }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
         </Servico>
         <Prestador>
             <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
-            <RazaoSocial>{{ rps.prestador.razaosocial }}</RazaoSocial>
-            <NomeFantasia>{{ rps.prestador.fantasia }}</NomeFantasia>
-            <Endereco>
-                <Endereco>{{ rps.prestador.endereco }}</Endereco>
-                <Numero>{{ rps.prestador.numero }}</Numero>
-                <Complemento>{{ rps.prestador.complemento }}</Complemento>
-                <Bairro>{{ rps.prestador.bairro }}</Bairro>
-                <CodigoMunicipio>{{ rps.prestador.codigomunicipal }}</CodigoMunicipio>
-                <Uf>{{ rps.prestador.uf }}</Uf>
-                <Cep>{{ rps.prestador.cep }}</Cep>
-            </Endereco>
-            <Contato> 
-                {% if rps.prestador.telefone is defined -%}
-                <Telefone>{{ rps.prestador.telefone }}</Telefone>
-                {% endif %}
-                {% if rps.prestador.email is defined -%}
-                <Email>{{ rps.prestador.email }}</Email>
-                {% endif %}
-            </Contato>
+            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
         <Tomador>
             <IdentificacaoTomador>
