@@ -31,6 +31,7 @@ NFSe - Empresas Atendidas
 * **ISSWEB**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
+* **Recife** - Recife/PE
 * **SIASP (Publica)**
 * **Speedgov**
 * **Susesu**
