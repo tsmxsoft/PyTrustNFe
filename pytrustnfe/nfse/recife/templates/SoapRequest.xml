@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://nfse.recife.pe.gov.br/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <{{ method }}Request>
+         <inputXML>{{ soap_body }}</inputXML>
+      </{{ method }}Request>
+   </soapenv:Body>
+</soapenv:Envelope>
