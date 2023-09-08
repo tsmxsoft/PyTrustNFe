@@ -51,7 +51,7 @@ def _render_xml(certificado, method, **kwargs):
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
-    base_url = "https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx"
+    base_url = "https://nfse.recife.pe.gov.br/WSNacional/nfse_v01.asmx?WSDL"
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -69,10 +69,13 @@ def _send(certificado, method, **kwargs):
         "Operation": method,
         "Content-length": str(len(soap))
     }
+    transport = Transport(session=session)
 
-    request = requests.post(base_url, data=soap, headers=headers)
-    response, obj = sanitize_response(request.content)
-    return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
+    client = Client(wsdl=base_url, transport=transport)
+
+    response = client.service[method](xml_send)
+    response, obj = sanitize_response(response)
+    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf-8')), "object": obj }
 
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
