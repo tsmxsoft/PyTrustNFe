@@ -32,25 +32,6 @@
         <Prestador>
             <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
             <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
-            <RazaoSocial>{{ rps.prestador.razaosocial }}</RazaoSocial>
-            <NomeFantasia>{{ rps.prestador.fantasia }}</NomeFantasia>
-            <Endereco>
-                <Endereco>{{ rps.prestador.endereco }}</Endereco>
-                <Numero>{{ rps.prestador.numero }}</Numero>
-                <Complemento>{{ rps.prestador.complemento }}</Complemento>
-                <Bairro>{{ rps.prestador.bairro }}</Bairro>
-                <CodigoMunicipio>{{ rps.prestador.codigomunicipal }}</CodigoMunicipio>
-                <Uf>{{ rps.prestador.uf }}</Uf>
-                <Cep>{{ rps.prestador.cep }}</Cep>
-            </Endereco>
-            <Contato> 
-                {% if rps.prestador.telefone is defined -%}
-                <Telefone>{{ rps.prestador.telefone }}</Telefone>
-                {% endif %}
-                {% if rps.prestador.email is defined -%}
-                <Email>{{ rps.prestador.email }}</Email>
-                {% endif %}
-            </Contato>
         </Prestador>
         <Tomador>
             <IdentificacaoTomador>
