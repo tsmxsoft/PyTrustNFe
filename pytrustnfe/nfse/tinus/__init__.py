@@ -190,7 +190,11 @@ def _send(certificado, method, **kwargs):
     }
 
     request = requests.post(base_url, data=soap, headers=headers)
-    response, obj = sanitize_response(request.content)
+    try:
+        response, obj = sanitize_response(request.content)
+    except Exception as e:
+        return {"sent_xml": str(soap), "received_xml": str(e), "object": None}
+
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 
