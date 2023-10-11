@@ -1,11 +1,11 @@
 <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:loterpswsdl">
    <soapenv:Header/>
    <soapenv:Body>
-      <urn:tm_lote_rps_service.importarLoteRPS soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+      <urn:tm_lote_rps_service.{{method}} soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
          <xml xsi:type="xsd:string">{{ soap_body }}</xml>
          <codMunicipio xsi:type="xsd:string">{{ cod_mun }}</codMunicipio>
          <cnpjPrestador xsi:type="xsd:string">{{ cnpj_prestador }}</cnpjPrestador>
          <hashValidador xsi:type="xsd:string">{{ chave_prestador }}</hashValidador>
-      </urn:tm_lote_rps_service.importarLoteRPS>
+      </urn:tm_lote_rps_service.{{method}}>
    </soapenv:Body>
 </soapenv:Envelope>

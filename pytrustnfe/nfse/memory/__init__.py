@@ -46,19 +46,21 @@ def _send(certificado, method, **kwargs):
         "chave_prestador": kwargs["nfse"]["chave_digital"],
         "cnpj_prestador": kwargs["nfse"]["cnpj_prestador"]})
 
-    action = base_url + "/nfse/ws/lote_rps_service.php"
+    action = "urn:loterpswsdl#tm_lote_rps_service." + method
     headers = {
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
         "Content-length": str(len(soap))
     }
 
-    request = requests.post(base_url + '/nfse/ws/lote_rps_service.php?wsdl', data=soap, headers=headers)
+    request = requests.post(base_url + '/nfse/ws/lote_rps_service.php', data=soap, headers=headers)
     try:
         response, obj = sanitize_response(request.content)
     except Exception as e:
         return {"sent_xml": str(soap), "received_xml": request.content, "object": None}
-
+    print(str(soap))
+    print(str(response))
+    print(obj)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 
