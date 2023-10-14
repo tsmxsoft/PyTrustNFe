@@ -132,6 +132,7 @@ def _send(certificado, method, **kwargs):
 
 def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
     #Base64 encode
+    print(xml_send_raw)
     xml_send = ""
     if b64_encode:
         ###
