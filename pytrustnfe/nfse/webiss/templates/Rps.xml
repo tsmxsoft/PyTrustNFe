@@ -10,7 +10,8 @@
             <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
             <Status>{{ rps.status }}</Status>
         </Rps>
-        <Competencia>{{ datatempo[0] }}-{{ datatempo[1] }}-01</Competencia>
+        {% set datacomp = rps.data_competencia.split('T')[0].split('-') %}
+        <Competencia>{{ datacomp[0] }}-{{ datacomp[1] }}-01</Competencia>
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
