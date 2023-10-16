@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfe="http://www.nfe.com.br">
+   <soapenv:Header/>
+   <soapenv:Body>
+		<nfe:{{ method }}Request>
+			<nfe:inputXML><![CDATA[{{ soap_body }}]]></nfe:inputXML>
+		</nfe:{{ method }}Request>
+	</soapenv:Body>
+</soapenv:Envelope>
