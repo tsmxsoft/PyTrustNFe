@@ -25,6 +25,7 @@ NFSe - Empresas Atendidas
 * **Cariacica** - Cariacica/ES
 * **Directa** - Natal/RN
 * **DSF**
+* **Equiplano** 
 * **GINFES**
 * **Imperial** - Petrópolis/RH
 * **ISSNET**
