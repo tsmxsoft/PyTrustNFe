@@ -1,0 +1,54 @@
+<rps>
+    <nrRps>{{ rps.numero }}</nrRps>
+    <nrEmissorRps>{{ rps.serie }}</nrEmissorRps>
+    <dtEmissaoRps>{{ rps.data_emissao }}</dtEmissaoRps>
+    <stRps>1</stRps>
+    <tpTributacao>1</tpTributacao>
+    <isIssRetido>{{ rps.servico.iss_retido }}</isIssRetido>
+    <tomador>
+        <documento>
+            <nrDocumento>{{ rps.tomador.cpf_cnpj }}</nrDocumento>
+            {% if rps.tomador.cpf_cnpj|length == 14  %}
+            <tpDocumento>2</tpDocumento>
+            {% endif %}
+            {% if rps.tomador.cpf_cnpj|length == 11  %}
+            <tpDocumento>1</tpDocumento>
+            {% endif %}
+        </documento>
+        <nmTomador>{{ rps.tomador.razao_social }}</nmTomador>
+        <dsEmail>{{ rps.tomador.email }}</dsEmail>
+        <nrInscricaoEstadual>{{ rps.tomador.inscricao_estadual }}</nrInscricaoEstadual>
+        <dsEndereco>{{ rps.tomador.endereco }}</dsEndereco>
+        <nrEndereco>{{ rps.tomador.numero }}</nrEndereco>
+        <dsComplemento>{{ rps.tomador.complemento }}</dsComplemento>
+        <nmBairro>{{ rps.tomador.bairro }}</nmBairro>
+        <nrCidadeIbge>{{ rps.tomador.codigo_municipio }}</nrCidadeIbge>
+        <nmUf>{{ rps.tomador.uf }}</nmUf>
+        <nmPais>Brasil</nmPais>
+        <nrTelefone>{{ rps.tomador.telefone }}</nrTelefone>
+    </tomador>
+    <listaServicos>
+        <servico>
+            {% set codigo_atividade = rps.servico.codigo_atividade.split('.') %}
+            <nrServicoItem>{{ codigo_atividade[0] }}</nrServicoItem>
+            <nrServicoSubItem>{{ codigo_atividade[1] }}</nrServicoSubItem>
+            <vlServico>{{ rps.servico.valor_servico }}</vlServico>
+            <vlAliquota>{{ rps.servico.aliquota|float * 100.00 }}</vlAliquota>
+            <vlBaseCalculo>{{ rps.servico.base_calculo }}</vlBaseCalculo>
+            <vlIssServico>{{ rps.servico.iss }}</vlIssServico>
+            <dsDiscriminacaoServico>{{ rps.servico.discriminacao }}</dsDiscriminacaoServico>
+        </servico>
+    </listaServicos>
+    <vlTotalRps>{{ rps.servico.valor_servico }}</vlTotalRps>
+    <vlLiquidoRps>{{ rps.servico.valor_servico }}</vlLiquidoRps>
+    <retencoes>
+        <vlCofins>{{ rps.servico.cofins }}</vlCofins>
+        <vlCsll>{{ rps.servico.csll }}</vlCsll>
+        <vlInss>{{ rps.servico.inss }}</vlInss>
+        <vlIrrf>{{ rps.servico.ir }}</vlIrrf>
+        <vlPis>{{ rps.servico.pis }}</vlPis>
+        {% if rps.servico.iss_retido == 1 %}
+        <vlIss>{{ rps.servico.iss }}</vlIss>
+        {% endif %}
+    </retencoes>
+</rps>

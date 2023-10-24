@@ -1,0 +1,20 @@
+<es:enviarLoteRpsEnvio xmlns:es="http://www.equiplano.com.br/esnfs"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.equiplano.com.br/enfs esRecepcionarLoteRpsEnvio_v01.xsd">
+	<lote>
+		<nrLote>{{ nfse.numero_lote }}</nrLote>
+		<qtRps>{{ nfse.lista_rps|length }}</qtRps>
+		<nrVersaoXml>1</nrVersaoXml>
+		<prestador>
+			<nrCnpj>{{ nfse.cnpj_prestador }}</nrCnpj>
+			<nrInscricaoMunicipal>{{ nfse.inscricao_municipal }}</nrInscricaoMunicipal>
+			<isOptanteSimplesNacional>{{ nfse.lista_rps[0].optante_simples }}</isOptanteSimplesNacional>
+			<idEntidade>{{ nfse.chave_digital }}</idEntidade>
+		</prestador>
+		<listaRps>
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
+		</listaRps>
+	</lote>
+</es:enviarLoteRpsEnvio>
