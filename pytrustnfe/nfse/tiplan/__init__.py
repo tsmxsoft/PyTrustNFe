@@ -7,6 +7,7 @@ from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfse.webiss.assinatura import Assinatura
 from lxml import etree
+from zeep import Client
 from zeep.transports import Transport
 from requests import Session
 import requests
@@ -45,8 +46,8 @@ def _send(certificado, method, **kwargs):
     url = kwargs["base_url"]
 
     xml_send = kwargs["xml"]
-    path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, False, **{"soap_body":xml_send, "method": method }) 
+#    path = os.path.join(os.path.dirname(__file__), "templates")
+#    soap = render_xml(path, "SoapRequest.xml", False, False, **{"soap_body":xml_send, "method": method })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
@@ -58,20 +59,26 @@ def _send(certificado, method, **kwargs):
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
         "Operation": method,
-        "Content-length": str(len(soap))
+        "Content-length": str(len(xml_send))
     }
+    transport = Transport(session=session)
 
-    request = requests.post(url, data=soap, headers=headers)
-    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
-    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+    client = Client(wsdl=url, transport=transport)
+
+    response = client.service[method](xml_send)
+    response, obj = sanitize_response(response)
+    return {"sent_xml": str(xml_send), "received_xml": str(response.encode('utf-8')), "object": obj }
+#    request = requests.post(url, data=soap, headers=headers)
+#    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+#    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 def gerar_nfse(certificado, **kwargs):
     return _send(certificado, "GerarNfse", **kwargs)
