@@ -16,7 +16,7 @@
                 <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
                 <BaseCalculo>{{ rps.servico.base_calculo }}</BaseCalculo>
-                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota> 
+                <Aliquota>{{ rps.servico.aliquota }}</Aliquota> 
                 <ValorLiquidoNfse>{{ rps.servico.valor_servico }}</ValorLiquidoNfse>
             </Valores>
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
