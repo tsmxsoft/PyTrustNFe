@@ -1,16 +1,18 @@
 <Rps>
-    <InfDeclaracaoPrestacaoServico  Id="rps:{{ rps.numero }}{{ rps.serie }}">
-        <Rps>
-            <IdentificacaoRps>
-                <Numero>{{ rps.numero }}</Numero>
-                <Serie>{{ rps.serie }}</Serie>
-                <Tipo>{{ rps.tipo_rps }}</Tipo>
-            </IdentificacaoRps>
-            {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
-            <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
-            <Status>{{ rps.status }}</Status>
-        </Rps>
-        <Competencia>{{ datatempo[0] }}-{{ datatempo[1] }}-01</Competencia>
+    <InfRps  Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <IdentificacaoRps>
+            <Numero>{{ rps.numero }}</Numero>
+            <Serie>{{ rps.serie }}</Serie>
+            <Tipo>{{ rps.tipo_rps }}</Tipo>
+        </IdentificacaoRps>
+        <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
+        <NaturezaOperacao>{{ rps.natureza_operacao }}</NaturezaOperacao>
+        {% if rps.regime_tributacao is defined -%}
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% endif %}
+        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
+        <IncentivadorCultural>{{ rps.incentivador_cultural|default("2", true) }}</IncentivadorCultural>
+        <Status>{{ rps.status }}</Status>
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
@@ -18,34 +20,22 @@
                 <ValorPis>{{ rps.servico.pis }}</ValorPis>
                 <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
                 <ValorInss>{{ rps.servico.inss }}</ValorInss>
-                <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
                 <ValorIr>{{ rps.servico.ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
+                <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+                <ValorIss>{{ rps.servico.iss }}</ValorIss>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
+                <Aliquota>{{ rps.servico.aliquota }}</Aliquota>
                 <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</DescontoIncondicionado>
                 <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
             </Valores>
-            <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
-            {% if rps.servico.iss_retido == 1 -%}
-            {% if rps.intermediario is defined -%}
-            <ResponsavelRetencao>2</ResponsavelRetencao>
-            {% else -%}
-            <ResponsavelRetencao>1</ResponsavelRetencao>
-            {% endif %}
-            {% endif %}
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
-            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
-            <CodigoTributacaoMunicipio>{{ rps.servico.codigo_atividade }}</CodigoTributacaoMunicipio>
+            <CodigoTributacaoMunicipio>{{ rps.servico.cnae_servico }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
-            <ExigibilidadeISS>{{ rps.iss_exigibilidade_cod|default("1", true) }}</ExigibilidadeISS>
-            <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
         </Servico>
         <Prestador>
-            <CpfCnpj>
-              <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
-            </CpfCnpj>
+            <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
             <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
         <Tomador>
@@ -100,10 +90,5 @@
             <Art>{{ rps.construcao_civil.art}}</Art>
         </ConstrucaoCivil>
         {% endif %}
-        {% if rps.regime_tributacao is defined -%}
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
-        {% endif %}
-        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
-        <IncentivoFiscal>{{ rps.incentivo_fiscal|default("2", true) }}</IncentivoFiscal>
-    </InfDeclaracaoPrestacaoServico>
+    </InfRps>
 </Rps>
