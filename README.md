@@ -37,6 +37,7 @@ NFSe - Empresas Atendidas
 * **Speedgov**
 * **Susesu**
 * **Simpliss**
+* **Tiplan**
 * **Tinus Informatica**
 * **Tecnos**
 * **WebISS**
