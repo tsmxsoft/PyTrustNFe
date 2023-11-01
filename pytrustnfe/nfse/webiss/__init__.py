@@ -69,23 +69,23 @@ def _send(certificado, method, **kwargs):
     return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 def gerar_nfse(certificado, **kwargs):
     return _send(certificado, "GerarNfse", **kwargs)
 
 
-def envio_lote_rps_assincrono(certificado, **kwargs):
-    return _send(certificado, "RecepcionarLoteRps", **kwargs)
+def envio_lote_rps_sincrono(certificado, **kwargs):
+    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 
 def envio_lote_rps(certificado, **kwargs):
-    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 
 def cancelar_nfse(certificado, **kwargs):
