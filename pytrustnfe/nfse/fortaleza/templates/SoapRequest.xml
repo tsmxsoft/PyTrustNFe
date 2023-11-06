@@ -2,7 +2,9 @@
     <soapenv:Header/>
     <soapenv:Body>
         <prod:{{method}}>
+            {% if method != "CancelarNfse" -%}
             <Cabecalho></Cabecalho>
+            {% endif %}
             <{{op}}><![CDATA[{{soap_body}}]]></{{op}}>
         </prod:{{method}}>
     </soapenv:Body>
