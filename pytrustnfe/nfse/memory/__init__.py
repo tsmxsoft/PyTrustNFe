@@ -35,7 +35,7 @@ def _send(certificado, method, **kwargs):
     if kwargs["ambiente"] == "producao":
         base_url = "https://nfsebrasil.net.br"
     else:
-        base_url = "http://web1.memory.com.br:81"
+        base_url = "https://web1.memory.com.br"
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -48,6 +48,7 @@ def _send(certificado, method, **kwargs):
 
     action = "urn:loterpswsdl#tm_lote_rps_service." + method
     headers = {
+        "User-Agent": "PyTrustNFE3",
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
         "Content-length": str(len(soap))
@@ -58,11 +59,7 @@ def _send(certificado, method, **kwargs):
         response, obj = sanitize_response(request.content)
     except Exception as e:
         return {"sent_xml": str(soap), "received_xml": request.content, "object": None}
-    print(str(soap))
-    print(str(response))
-    print(obj)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
-
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render_xml(certificado, "importarLoteRPS", **kwargs)
