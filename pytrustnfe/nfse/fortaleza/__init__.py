@@ -55,7 +55,7 @@ def _send(certificado, method, **kwargs):
         "Content-length": str(len(soap))
     }
 
-    request = requests.post(base_url, data=soap, headers=headers)
+    request = requests.post(base_url, data=soap, headers=headers,verify=False,cert=(cert, key))
     try:
         response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
     except Exception as e:
