@@ -1,0 +1,84 @@
+<ns3:Rps>
+    <ns3:InfRps Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <ns3:IdentificacaoRps>
+            <ns3:Numero>{{ rps.numero }}</ns3:Numero>
+            <ns3:Serie>{{ rps.serie }}</ns3:Serie>
+            <ns3:Tipo>{{ rps.tipo_rps }}</ns3:Tipo>
+        </ns3:IdentificacaoRps>
+        <ns3:DataEmissao>{{ rps.data_emissao }}</ns3:DataEmissao>
+        <ns3:NaturezaOperacao>{{ rps.natureza_operacao }}</ns3:NaturezaOperacao>
+        <ns3:RegimeEspecialTributacao>{{ rps.regime_tributacao }}</ns3:RegimeEspecialTributacao>
+        <ns3:OptanteSimplesNacional>{{ rps.optante_simples }}</ns3:OptanteSimplesNacional>
+        <ns3:IncentivadorCultural>{{ rps.incentivador_cultural }}</ns3:IncentivadorCultural>
+        <ns3:Status>{{ rps.status }}</ns3:Status>
+        <ns3:Servico>
+            <ns3:Valores>
+                <ns3:ValorServicos>{{ rps.servico.valor_servico }}</ns3:ValorServicos> 
+                <ns3:ValorDeducoes></ns3:ValorDeducoes>
+                <ns3:ValorPis>{{ rps.servico.pis }}</ns3:ValorPis>
+                <ns3:ValorCofins>{{ rps.servico.cofins }}</ns3:ValorCofins>
+                <ns3:ValorInss>{{ rps.servico.inss }}</ns3:ValorInss>
+                <ns3:ValorIr>{{ rps.servico.ir }}</ns3:ValorIr>
+                <ns3:ValorCsll>{{ rps.servico.csll }}</ns3:ValorCsll>
+                <ns3:IssRetido>{{ rps.servico.iss_retido }}</ns3:IssRetido>
+                <ns3:ValorIss>{{ rps.servico.iss }}</ns3:ValorIss>
+                <ns3:ValorIssRetido>{{ rps.servico.valor_iss_retido }}</ns3:ValorIssRetido>
+                <ns3:OutrasRetencoes>{{ rps.servico.retencoes }}</ns3:OutrasRetencoes>
+                <ns3:BaseCalculo>{{ rps.servico.base_calculo }}</ns3:BaseCalculo>
+                <ns3:Aliquota>{{ rps.servico.aliquota }}</ns3:Aliquota>
+                <ns3:ValorLiquidoNfse>{{ rps.servico.valor_liquido_nfse }}</ns3:ValorLiquidoNfse>
+                <ns3:DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</ns3:DescontoIncondicionado>
+                <ns3:DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</ns3:DescontoCondicionado>
+            </ns3:Valores>
+            <ns3:ItemListaServico>{{ rps.servico.codigo_atividade }}</ns3:ItemListaServico>
+            <ns3:CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</ns3:CodigoTributacaoMunicipio>
+            <ns3:Discriminacao>{{ rps.servico.discriminacao }}</ns3:Discriminacao>
+            <ns3:CodigoMunicipio>{{ rps.servico.codigo_municipio }}</ns3:CodigoMunicipio>
+        </ns3:Servico>
+        <ns3:Prestador>
+            <ns3:Cnpj>{{ rps.prestador.cnpj }}</ns3:Cnpj>
+            <ns3:InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</ns3:InscricaoMunicipal>
+        </ns3:Prestador>
+        <ns3:Tomador>
+            <ns3:IdentificacaoTomador>
+                <ns3:CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <ns3:Cnpj>{{ rps.tomador.cpf_cnpj }}</ns3:Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <ns3:Cpf>{{ rps.tomador.cpf_cnpj }}</ns3:Cpf>
+                    {% endif %}
+                </ns3:CpfCnpj>
+                {% if rps.tomador.inscricao_municipal is defined -%}
+                {% if rps.tomador.codigo_municipio|int == 2304400 -%}
+                <ns3:InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</ns3:InscricaoMunicipal>
+                {% endif %}
+                {% endif %}
+            </ns3:IdentificacaoTomador>
+            <ns3:RazaoSocial>{{ rps.tomador.razao_social }}</ns3:RazaoSocial>
+            <ns3:Endereco>
+                <ns3:Endereco>{{ rps.tomador.endereco }}</ns3:Endereco>
+                <ns3:Numero>{{ rps.tomador.numero }}</ns3:Numero>
+                <ns3:Complemento>{{ rps.tomador.complemento }}</ns3:Complemento>
+                <ns3:Bairro>{{ rps.tomador.bairro }}</ns3:Bairro>
+                <ns3:CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</ns3:CodigoMunicipio>
+                <ns3:Uf>{{ rps.tomador.uf }}</ns3:Uf>
+                <ns3:Cep>{{ rps.tomador.cep }}</ns3:Cep>
+            </ns3:Endereco>
+            <ns3:Contato>
+                {% if rps.tomador.telefone is defined -%}
+                <ns3:Telefone>{{ rps.tomador.telefone }}</ns3:Telefone>
+                {% endif %}
+                {% if rps.tomador.email is defined -%}
+                <ns3:Email>{{ rps.tomador.email }}</ns3:Email>
+                {% endif %}
+            </ns3:Contato>
+            {% if rps.tomador.orgao_gerador is defined -%}
+            <ns3:OrgaoGerador>
+                <ns3:CodigoMunicipio>{{ rps.tomador.orgao_gerador.codigo_municipio }}</ns3:CodigoMunicipio>
+                <ns3:Uf>{{ rps.tomador.orgao_gerador.uf }}</ns3:Uf>
+            </ns3:OrgaoGerador>
+            {% endif %}
+        </ns3:Tomador>
+    </ns3:InfRps> 
+</ns3:Rps>

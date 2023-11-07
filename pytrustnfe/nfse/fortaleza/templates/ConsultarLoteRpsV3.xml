@@ -1,0 +1,7 @@
+<ns2:ConsultarLoteRpsEnvio xmlns:ns2="http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd" xmlns:ns3="http://www.w3.org/2000/09/xmldsig#">
+	<ns2:Prestador>
+		<ns4:Cnpj>{{ nfse.cnpj_prestador }}</ns4:Cnpj> <!-- Tag obrigatória. CNPJ do prestador -->
+		<ns4:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</ns4:InscricaoMunicipal> <!-- Tag obrigatória. Não coloque o dígito verificador e não é necessário colocar zero à esquerda -->
+	</ns2:Prestador>
+	<ns2:Protocolo>{{ nfse.protocolo }}</ns2:Protocolo> 
+</ns2:ConsultarLoteRpsEnvio>

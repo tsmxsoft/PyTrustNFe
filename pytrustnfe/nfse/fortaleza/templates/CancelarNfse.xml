@@ -1,0 +1,7 @@
+<tns:CancelarNfseEnvio xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:n1="http://www.altova.com/samplexml/other-namespace" xmlns:tipos="http://www.ginfes.com.br/tipos" xmlns:tns="http://www.ginfes.com.br/servico_cancelar_nfse_envio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ginfes.com.br/servico_cancelar_nfse_envio_v02.xsd">
+    <tns:Prestador>
+        <tipos:Cnpj>{{ nfse.cnpj_prestador }}</tipos:Cnpj> 
+        <tipos:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</tipos:InscricaoMunicipal> 
+    </tns:Prestador>
+    <tns:NumeroNfse>{{ nfse.numero_nfse }}</tns:NumeroNfse>
+</tns:CancelarNfseEnvio>

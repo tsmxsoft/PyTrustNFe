@@ -26,6 +26,7 @@ NFSe - Empresas Atendidas
 * **Directa** - Natal/RN
 * **DSF**
 * **Equiplano** 
+* **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
 * **Imperial** - Petrópolis/RH
 * **ISSNET**

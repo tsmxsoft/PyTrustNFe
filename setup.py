@@ -54,6 +54,7 @@ later (LGPLv2+)",
             "nfse/ecidade/templates/*xml",
             "nfse/equiplano/templates/*xml",
             "nfse/tiplan/templates/*xml",
+            "nfse/fortaleza/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
