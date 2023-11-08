@@ -52,6 +52,7 @@ later (LGPLv2+)",
             "nfse/webiss/templates/*xml",
             "nfse/recife/templates/*xml",
             "nfse/ecidade/templates/*xml",
+            "nfse/memory/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
