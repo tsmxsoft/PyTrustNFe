@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prod="http://producao.issfortaleza.com.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <prod:{{method}}>
+            {% if method != "CancelarNfse" -%}
+            <Cabecalho></Cabecalho>
+            {% endif %}
+            <{{op}}><![CDATA[{{soap_body}}]]></{{op}}>
+        </prod:{{method}}>
+    </soapenv:Body>
+</soapenv:Envelope>

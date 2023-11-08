@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://services.enfsws.es">
+   <soap:Header/>
+   <soap:Body>
+      <ser:es{{method}}>
+         <ser:nrVersaoXml>1</ser:nrVersaoXml>
+         <ser:xml><![CDATA[{{ soap_body }}]]></ser:xml>
+      </ser:es{{method}}>
+   </soap:Body>
+</soap:Envelope>

@@ -25,6 +25,8 @@ NFSe - Empresas Atendidas
 * **Cariacica** - Cariacica/ES
 * **Directa** - Natal/RN
 * **DSF**
+* **Equiplano** 
+* **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
 * **Imperial** - Petrópolis/RH
 * **ISSNET**
@@ -37,6 +39,7 @@ NFSe - Empresas Atendidas
 * **Speedgov**
 * **Susesu**
 * **Simpliss**
+* **Tiplan**
 * **Tinus Informatica**
 * **Tecnos**
 * **WebISS**

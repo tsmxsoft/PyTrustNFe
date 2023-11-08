@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = "1.0.159"
+VERSION = "1.0.169"
 
 
 setup(
@@ -52,6 +52,9 @@ later (LGPLv2+)",
             "nfse/webiss/templates/*xml",
             "nfse/recife/templates/*xml",
             "nfse/ecidade/templates/*xml",
+            "nfse/equiplano/templates/*xml",
+            "nfse/tiplan/templates/*xml",
+            "nfse/fortaleza/templates/*xml",
             "nfse/memory/templates/*xml",
             "xml/schemas/*xsd",
         ]
