@@ -11,7 +11,7 @@
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
-                <ValorDeducoes>{{ rps.servico.valor_descontos }}</ValorDeducoes>
+                <ValorDeducoes>{{ rps.servico.valor_descontos|default('0.00') }}</ValorDeducoes>
                 <ValorPis>{{ rps.servico.pis }}</ValorPis>
                 <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
                 <ValorInss>{{ rps.servico.inss }}</ValorInss>
@@ -21,15 +21,13 @@
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
                 <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
-                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</DescontoIncondicionado>
-                <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default('0.00') }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default('0.00') }}</DescontoCondicionado>
             </Valores>
             <CodigoTributacaoMunicipio>{{ rps.servico.codigo_atividade }}</CodigoTributacaoMunicipio>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             {% if rps.servico.discriminacao is defined -%}
-            <Discriminacao>
-                <![CDATA[ {{ rps.servico.discriminacao }} ]]>
-            </Discriminacao>
+            <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             {% endif %}
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
         </Servico>
@@ -49,21 +47,15 @@
                 </CpfCnpj>
             </IdentificacaoTomador>
             {% if rps.tomador.razao_social is defined -%}
-            <RazaoSocial>
-                <![CDATA[ {{ rps.tomador.razao_social }} ]]>
-            </RazaoSocial>
+            <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             {% endif %}
             <Endereco>
                 {% if rps.tomador.endereco is defined -%}
-                <Endereco>
-                    <![CDATA[ {{ rps.tomador.endereco }} ]]>
-                </Endereco>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
                 {% endif %}
                 <Numero>{{ rps.tomador.numero | default("0",true) }}</Numero>
                 {% if rps.tomador.bairro is defined -%}
-                <Bairro>
-                    <![CDATA[ {{ rps.tomador.bairro }} ]]>
-                </Bairro>
+                <Bairro>{{ rps.tomador.bairro }}</Bairro>
                 {% endif %}
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
@@ -71,9 +63,7 @@
                 <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
             {% if rps.tomador.email is defined -%}
-            <Email>
-                <![CDATA[ {{ rps.tomador.email }} ]]>
-            </Email>
+            <Email>{{ rps.tomador.email }}</Email>
             {% endif %}
             <Telefone>{{ rps.tomador.telefone }}</Telefone>
         </Tomador>

@@ -37,14 +37,22 @@ def _send(certificado, method, **kwargs):
     else:
         base_url = "https://web1.memory.com.br"
 
-    xml_send = kwargs["xml"]
+    xml_send = ""
+    if "xml" in kwargs:
+        xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{
+    params = {
         "soap_body":xml_send, 
         "method": method,
         "cod_mun": kwargs["nfse"]["lista_rps"][0]["servico"]["codigo_municipio"],
         "chave_prestador": kwargs["nfse"]["chave_digital"],
-        "cnpj_prestador": kwargs["nfse"]["cnpj_prestador"]})
+        "cnpj_prestador": kwargs["nfse"]["cnpj_prestador"]
+    }
+    if method == "consultarLoteRPS":
+        params["protocolo"] = kwargs["nfse"]["protocolo"]
+    elif method == "cancelarNFSE":
+        params["numeroNFSE"] = kwargs["nfse"]["numero_nfse"]
+    soap = render_xml(path, "SoapRequest.xml", False, **params)
 
     action = "urn:loterpswsdl#tm_lote_rps_service." + method
     headers = {
@@ -85,14 +93,8 @@ def consultar_nfse_por_rps(certificado, **kwargs):
     return _send(None, "ConsultarNfsePorRps", **kwargs)
 
 
-def xml_consultar_lote_rps(certificado, **kwargs):
-    return _render_xml(certificado, "ConsultarLoteRps", **kwargs)
-
-
 def consultar_lote_rps(certificado, **kwargs):
-    if "xml" not in kwargs:
-        kwargs["xml"] = xml_consultar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "ConsultarLoteRps", **kwargs)
+    return _send(certificado, "consultarLoteRPS", **kwargs)
 
 
 def xml_consultar_nfse(certificado, **kwargs):
@@ -103,14 +105,8 @@ def consultar_nfse(certificado, **kwargs):
     return _send("ConsultarNfse", **kwargs)
 
 
-def xml_cancelar_nfse(certificado, **kwargs):
-    return _render_xml(certificado, "CancelarNfse", **kwargs)
-
-
 def cancelar_nfse(certificado, **kwargs):
-    if "xml" not in kwargs:
-        kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
-    return _send("CancelarNfse", **kwargs)
+    return _send(certificado, "cancelarNFSE", **kwargs)
 
 
 def xml_gerar_nfse(certificado, **kwargs):

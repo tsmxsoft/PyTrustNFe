@@ -2,7 +2,15 @@
    <soapenv:Header/>
    <soapenv:Body>
       <urn:tm_lote_rps_service.{{method}} soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-         <xml xsi:type="xsd:string">{{ soap_body }}</xml>
+         {% if method == "importarLoteRPS" %}
+         <xml xsi:type="xsd:string"><![CDATA[{{ soap_body }}]]></xml>
+         {% endif %}
+         {% if method == "consultarLoteRPS" %}
+         <protocolo xsi:type="xsd:string">{{ protocolo }}</protocolo>
+         {% endif %}
+         {% if method == "cancelarNFSE" %}
+         <numeroNFSE xsi:type="xsd:string">{{ numeroNFSE }}</numeroNFSE>
+         {% endif %}
          <codMunicipio xsi:type="xsd:string">{{ cod_mun }}</codMunicipio>
          <cnpjPrestador xsi:type="xsd:string">{{ cnpj_prestador }}</cnpjPrestador>
          <hashValidador xsi:type="xsd:string">{{ chave_prestador }}</hashValidador>
