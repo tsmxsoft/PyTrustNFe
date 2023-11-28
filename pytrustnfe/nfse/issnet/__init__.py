@@ -25,7 +25,7 @@ def _render(certificado, method, **kwargs):
     signer = Assinatura(certificado.pfx, certificado.password)
 
     referencia = ""
-    if method == "RecepcionarLoteRpsSincrono":
+    if method == "RecepcionarLoteRpsSincrono" or method == "RecepcionarLoteRps":
         referencia = kwargs.get("nfse").get("numero_lote")
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
@@ -41,7 +41,7 @@ def _render(certificado, method, **kwargs):
         signer.assina_xml(xml_send, reference, remove_attrib='Id')
 
     xml_signed_send = signer.assina_xml(
-        xml_send, "lote:{0}".format(referencia), remove_attrib='Id')
+        xml_send, "lote:{0}".format(referencia))
 
     print ('--- xml ---')
     print (xml_signed_send)

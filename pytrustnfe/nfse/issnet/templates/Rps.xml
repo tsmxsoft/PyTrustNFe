@@ -27,11 +27,17 @@
                 <DescontoCondicionado>{{ rps.servico.desconto_codicionado }}</DescontoCondicionado>
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+            {% if rps.servico.iss_retido == 1 -%}
+            <ResponsavelRetencao>{% if rps.intermediario is defined -%}2{% else %}1{% endif %}</ResponsavelRetencao>
+            {% endif %}
             <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+            {% if rps.servico.codigo_municipio == 9999999 -%}
+            <CodigoPais>rps.tomador.codigo_pais</CodigoPais>
+            {% endif %}
             <ExigibilidadeISS>{{ rps.eligibilidade_iss }}</ExigibilidadeISS>
             <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
         </Servico>
