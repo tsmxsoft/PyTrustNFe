@@ -1,0 +1,13 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:san="SantaremRPS">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <san:{{ method }}.Execute>
+            <san:Cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd">
+                <Versao>1.0</Versao>
+                <versaoDados>2.03</versaoDados>
+            </san:Cabecalho>
+            {{soap_body}}
+        </san:{{ method }}.Execute>
+    </soapenv:Body>
+</soapenv:Envelope>
+       

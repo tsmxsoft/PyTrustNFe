@@ -1,0 +1,85 @@
+<Rps>
+    <InfDeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <Id>rps:{{ rps.numero }}{{ rps.serie }}</Id>
+        <Rps>
+            <IdentificacaoRps>
+                <Numero>{{ rps.numero }}</Numero>
+                <Serie>{{ rps.serie }}</Serie>
+                <Tipo>{{ rps.tipo_rps }}</Tipo>
+            </IdentificacaoRps>
+            {% set dataemi = rps.data_emissao.split('T') %}
+            <DataEmissao>{{ dataemi[0] }}</DataEmissao>
+            <Status>{{ rps.status }}</Status>
+        </Rps>
+        {% set datacomp = rps.data_competencia.split('T') %}
+        <Competencia>{{ datacomp[0] }}</Competencia>
+        <Servico>
+            <Valores>
+                <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos> 
+                <ValorPis>{{ rps.servico.pis }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
+                <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
+                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota> 
+            </Valores>
+            <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+            <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
+            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
+            <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+            <ExigibilidadeISS>{{ rps.eligibilidade_iss }}</ExigibilidadeISS>
+            <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
+        </Servico>
+        <Prestador>
+            <CpfCnpj>
+                <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
+            </CpfCnpj>
+            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
+        </Prestador>
+        <TomadorServico>
+            <IdentificacaoTomador>
+                <CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
+                    {% endif %}
+                </CpfCnpj>
+                {% if rps.tomador.inscricao_municipal is defined -%}
+                <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+                {% endif %}
+            </IdentificacaoTomador>
+            <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
+            <Endereco>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
+                <Numero>{{ rps.tomador.numero }}</Numero>
+                <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                <Bairro>{{ rps.tomador.bairro }}</Bairro>
+                <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
+                <Uf>{{ rps.tomador.uf }}</Uf>
+                <Cep>{{ rps.tomador.cep }}</Cep>
+            </Endereco>
+            <Contato>
+                {% if rps.tomador.telefone is defined -%}
+                <Telefone>{{ rps.tomador.telefone }}</Telefone>
+                {% endif %}
+                {% if rps.tomador.email is defined -%}
+                <Email>{{ rps.tomador.email }}</Email>
+                {% endif %}
+            </Contato>
+            {% if rps.tomador.orgao_gerador is defined -%}
+            <OrgaoGerador>
+                <CodigoMunicipio>{{ rps.tomador.orgao_gerador.codigo_municipio }}</CodigoMunicipio>
+                <Uf>{{ rps.tomador.orgao_gerador.uf }}</Uf>
+            </OrgaoGerador>
+            {% endif %}
+        </TomadorServico>
+        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
+        <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
+    </InfDeclaracaoPrestacaoServico> 
+</Rps>
