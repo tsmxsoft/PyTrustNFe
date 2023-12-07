@@ -47,6 +47,7 @@
                     <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
                     {% endif %}
                 </CpfCnpj>
+                <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
             </IdentificacaoTomador>
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
