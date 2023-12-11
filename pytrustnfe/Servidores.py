@@ -26,14 +26,24 @@ WS_NFCOM_RECEPCAO = "NFComRecepcao"
 WS_NFCOM_RECEPCAO_EVENTO = "NFComRecepcaoEvento"
 WS_NFCOM_STATUS_SERVICO = "NFComStatusServico"
 
+#CTe 4.0
+WS_CTE400_RECEPCAO_SINC   = "CTeRecepcaoSincV4"
+WS_CTE400_RECEPCAO_GTVE   = "CTeRecepcaoGTVeV4"
+WS_CTE400_RECEPCAO_OSV    = "CTeRecepcaoOSV4"
+WS_CTE400_RECEPCAO_EVENTO = "CTeRecepcaoEventoV4"
+WS_CTE400_CONSULTA        = "CTeConsultaV4"
+WS_CTE400_STATUS_SERVICO  = "CTeStatusServicoV4"
+WS_CTE400_QRCODE          = "QRCode"
+
 # Códigos do ambiente de homologação e produção
 AMBIENTE_PRODUCAO = 1
 AMBIENTE_HOMOLOGACAO = 2
 
 # Modelos dos documentos eletrônicos
-NFE_MODELO = "55"
-NFCE_MODELO = "65"
+NFE_MODELO   = "55"
+NFCE_MODELO  = "65"
 NFCOM_MODELO = "62"
+CTE_MODELO   = "57"
 
 SIGLA_ESTADO = {
     "12": "AC",
@@ -189,6 +199,28 @@ SVRS = {
             WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx",
             WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx",
         },
+    },
+    CTE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "cte.svrs.rs.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "ws/CTeRecepcaoSincV4/CTeRecepcaoSincV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "ws/CTeRecepcaoGTVeV4/CTeRecepcaoGTVeV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "ws/CTeRecepcaoOSV4/CTeRecepcaoOSV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeConsultaV4/CTeConsultaV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeStatusServicoV4/CTeStatusServicoV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "ws/CTeRecepcaoEventoV4/CTeRecepcaoEventoV4.asmx?wsdl",
+            WS_CTE400_QRCODE: "https://dfe-portal.svrs.rs.gov.br/cte/qrCode",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "cte-homologacao.svrs.rs.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "ws/CTeRecepcaoSincV4/CTeRecepcaoSincV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "ws/CTeRecepcaoGTVeV4/CTeRecepcaoGTVeV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "ws/CTeRecepcaoOSV4/CTeRecepcaoOSV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeConsultaV4/CTeConsultaV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeStatusServicoV4/CTeStatusServicoV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "ws/CTeRecepcaoEventoV4/CTeRecepcaoEventoV4.asmx?wsdl",
+            WS_CTE400_QRCODE: "https://dfe-portal.svrs.rs.gov.br/cte/qrCode",
+        }
     }
 }
 
@@ -212,6 +244,7 @@ SVAN = {
         WS_NFE_RET_AUTORIZACAO: "NFeRetAutorizacao4/NFeRetAutorizacao4.asmx?wsdl",  # noqa
     },
 }
+SVAN[CTE_MODELO] = SVRS[CTE_MODELO]
 
 SVC_AN = {
     AMBIENTE_PRODUCAO: {
@@ -263,52 +296,6 @@ AN = {
         WS_DFE_DISTRIBUICAO: "NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx?wsdl",
         WS_DOWNLOAD_NFE: "NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx?wsdl",
         WS_NFE_RECEPCAO_EVENTO: "NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx?Wsdl",  # noqa
-    },
-}
-
-UFAM = {
-    NFE_MODELO: {
-        AMBIENTE_PRODUCAO: {
-            "servidor": "nfe.sefaz.am.gov.br",
-            WS_NFE_INUTILIZACAO: "services2/services/NfeInutilizacao4?wsdl",
-            WS_NFE_CONSULTA: "services2/services/NfeConsulta4?wsdl",
-            WS_NFE_SITUACAO: "services2/services/NfeStatusServico4?wsdl",
-            WS_NFE_RECEPCAO_EVENTO: "services2/services/RecepcaoEvento4?wsdl",
-            WS_NFE_AUTORIZACAO: "services2/services/NfeAutorizacao4?wsdl",
-            WS_NFE_RET_AUTORIZACAO: "services2/services/NfeRetAutorizacao4?wsdl",  # noqa
-            WS_NFE_CADASTRO: "services2/services/cadconsultacadastro2?wsdl",
-        },
-        AMBIENTE_HOMOLOGACAO: {
-            "servidor": "homnfe.sefaz.am.gov.br",
-            WS_NFE_INUTILIZACAO: "services2/services/NfeInutilizacao4?wsdl",
-            WS_NFE_CONSULTA: "services2/services/NfeConsulta4?wsdl",
-            WS_NFE_SITUACAO: "services2/services/NfeStatusServico4?wsdl",
-            WS_NFE_RECEPCAO_EVENTO: "services2/services/RecepcaoEvento4?wsdl",
-            WS_NFE_AUTORIZACAO: "services2/services/NfeAutorizacao4?wsdl",
-            WS_NFE_RET_AUTORIZACAO: "services2/services/NfeRetAutorizacao4?wsdl",  # noqa
-            WS_NFE_CADASTRO: "services2/services/cadconsultacadastro2?wsdl",
-        },
-    },
-    NFCE_MODELO: {
-        AMBIENTE_PRODUCAO: {
-            "servidor": "nfce.sefaz.am.gov.br",
-            WS_NFE_RECEPCAO_EVENTO: "nfce-services/services/RecepcaoEvento4?wsdl",
-            WS_NFE_AUTORIZACAO: "nfce-services/services/NfeAutorizacao4?wsdl",
-            WS_NFE_RET_AUTORIZACAO: "nfce-services/services/NfeRetAutorizacao4?wsdl",
-            WS_NFE_INUTILIZACAO: "nfce-services/services/NfeInutilizacao4?wsdl",
-            WS_NFE_CONSULTA: "nfce-services/services/NfeConsulta4?wsdl",
-            WS_NFE_SITUACAO: "nfce-services/services/NfeStatusServico4?wsdl",
-        },
-        AMBIENTE_HOMOLOGACAO: {
-            "servidor": "homnfce.sefaz.am.gov.br",
-            WS_NFE_RECEPCAO_EVENTO: "nfce-services/services/RecepcaoEvento4?wsdl",
-            WS_NFE_AUTORIZACAO: "nfce-services/services/NfeAutorizacao4?wsdl",
-            WS_NFE_RET_AUTORIZACAO: "nfce-services/services/NfeRetAutorizacao4?wsdl",
-            WS_NFE_INUTILIZACAO: "nfce-services/services/NfeInutilizacao4?wsdl",
-            WS_NFE_CONSULTA: "nfce-services/services/NfeConsulta4?wsdl",
-            WS_NFE_SITUACAO: "nfce-services/services/NfeStatusServico4?wsdl",
-            WS_NFCE_QR_CODE: "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp",
-        },
     },
 }
 
@@ -381,6 +368,7 @@ UFCE = {
         WS_NFE_CADASTRO: "nfe4/services/CadConsultaCadastro4?wsdl",
     },
 }
+UFCE[CTE_MODELO] = SVRS[CTE_MODELO]
 
 
 UFGO = {
@@ -405,6 +393,7 @@ UFGO = {
         WS_NFE_CADASTRO: "nfe/services/CadConsultaCadastro4?wsdl",
     },
 }
+UFGO[CTE_MODELO] = SVRS[CTE_MODELO]
 
 
 UFMT = {
@@ -452,6 +441,28 @@ UFMT = {
             WS_NFCE_QR_CODE: "http://www.sefaz.mt.gov.br/nfce/consultanfce",
         },
     },
+    CTE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "cte.sefaz.mt.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "ctews2/services/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "ctews2/services/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "ctews/services/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ctews2/services/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ctews2/services/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "ctews2/services/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "https://www.sefaz.mt.gov.br/cte/qrcode",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homologacao.sefaz.mt.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "ctews2/services/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "ctews2/services/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "ctews/services/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ctews2/services/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ctews2/services/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "ctews2/services/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "https://www.sefaz.mt.gov.br/cte/qrcode",
+        }
+    }
 }
 
 UFMS = {
@@ -501,6 +512,28 @@ UFMS = {
             WS_NFCE_QR_CODE: "www.dfe.ms.gov.br/nfce/qrcode?",
         },
     },
+    CTE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "producao.cte.ms.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "ws/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "ws/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "ws/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "ws/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "http://www.dfe.ms.gov.br/cte/qrcode",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homologacao.cte.ms.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "ws/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "ws/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "ws/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "ws/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "ws/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "http://www.dfe.ms.gov.br/cte/qrcode",
+        }
+    }
 }
 
 UFMG = {
@@ -548,6 +581,28 @@ UFMG = {
             WS_NFCE_QR_CODE: "nfce.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml?",
         },
     },
+    CTE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "cte.fazenda.mg.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "cte/services/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "cte/services/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "cte/services/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte/services/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte/services/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "cte/services/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "https://cte.fazenda.mg.gov.br/portalcte/sistema/qrcode.xhtml",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "hcte.fazenda.mg.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "cte/services/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "cte/services/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "cte/services/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte/services/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte/services/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "cte/services/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "https://cte.fazenda.mg.gov.br/portalcte/sistema/qrcode.xhtml",
+        }
+    }
 }
 
 UFPR = {
@@ -597,31 +652,29 @@ UFPR = {
             WS_NFCE_QR_CODE: "www.fazenda.pr.gov.br/nfce/qrcode?",
         },
     },
+    CTE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "cte.fazenda.pr.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "cte4/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "cte4/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "cte4/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte4/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte4/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "cte4/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "http://www.fazenda.pr.gov.br/cte/qrcode",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homologacao.cte.fazenda.pr.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "cte4/CTeRecepcaoSincV4?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "cte4/CTeRecepcaoGTVeV4?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "cte4/CTeRecepcaoOSV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte4/CTeConsultaV4?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cte4/CTeStatusServicoV4?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "cte4/CTeRecepcaoEventoV4?wsdl",
+            WS_CTE400_QRCODE: "http://www.fazenda.pr.gov.br/cte/qrcode",
+        }
+    }
 }
-
-UFPE = {
-    AMBIENTE_PRODUCAO: {
-        "servidor": "nfe.sefaz.pe.gov.br",
-        WS_NFE_INUTILIZACAO: "nfe-service/services/NFeInutilizacao4?wsdl",
-        WS_NFE_CONSULTA: "nfe-service/services/NFeConsultaProtocolo4?wsdl",
-        WS_NFE_SITUACAO: "nfe-service/services/NFeStatusServico4?wsdl",
-        WS_NFE_RECEPCAO_EVENTO: "nfe-service/services/NFeRecepcaoEvento4?wsdl",
-        WS_NFE_AUTORIZACAO: "nfe-service/services/NFeAutorizacao4?Wsdl",
-        WS_NFE_RET_AUTORIZACAO: "nfe-service/services/NFeRetAutorizacao4?wsdl",
-        WS_NFE_CADASTRO: "nfe-service/services/CadConsultaCadastro2?wsdl",
-    },
-    AMBIENTE_HOMOLOGACAO: {
-        "servidor": "nfehomolog.sefaz.pe.gov.br",
-        WS_NFE_INUTILIZACAO: "nfe-service/services/NFeInutilizacao4?wsdl",
-        WS_NFE_CONSULTA: "nfe-service/services/NFeConsultaProtocolo4?wsdl",
-        WS_NFE_SITUACAO: "nfe-service/services/NFeStatusServico4?wsdl",
-        WS_NFE_RECEPCAO_EVENTO: "nfe-service/services/NFeRecepcaoEvento4?wsdl",
-        WS_NFE_AUTORIZACAO: "nfe-service/services/NFeAutorizacao4?wsdl",
-        WS_NFE_RET_AUTORIZACAO: "nfe-service/services/NFeRetAutorizacao4?wsdl",
-        WS_NFE_CADASTRO: "nfe-service/services/CadConsultaCadastro2?wsdl",
-    },
-}
-
 
 UFRS = {
     NFE_MODELO: {
@@ -671,6 +724,7 @@ UFRS = {
         },
     },
 }
+UFRS[CTE_MODELO] = SVRS[CTE_MODELO]
 
 UFSP = {
     NFE_MODELO: {
@@ -719,7 +773,103 @@ UFSP = {
             WS_NFCE_QR_CODE: "https://homologacao.nfce.fazenda.sp.gov.br/NFCEConsultaPublica/Paginas/ConstultaQRCode.aspx",
         },
     },
+    CTE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfe.fazenda.sp.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "cteWS/WS/CTeRecepcaoSincV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "cteWS/WS/CTeRecepcaoGTVeV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "cteWS/WS/CTeRecepcaoOSV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cteWS/WS/CTeConsultaV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cteWS/WS/CTeStatusServicoV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "cteWS/WS/CTeRecepcaoEventoV4.asmx?wsdl",
+            WS_CTE400_QRCODE: "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homologacao.nfe.fazenda.sp.gov.br",
+            WS_CTE400_RECEPCAO_SINC: "cteWS/WS/CTeRecepcaoSincV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_GTVE: "cteWS/WS/CTeRecepcaoGTVeV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_OSV: "cteWS/WS/CTeRecepcaoOSV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cteWS/WS/CTeConsultaV4.asmx?wsdl",
+            WS_CTE400_STATUS_SERVICO: "cteWS/WS/CTeStatusServicoV4.asmx?wsdl",
+            WS_CTE400_RECEPCAO_EVENTO: "cteWS/WS/CTeRecepcaoEventoV4.asmx?wsdl",
+            WS_CTE400_QRCODE: "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode",
+        }
+    }
 }
+
+UFPE = {
+    AMBIENTE_PRODUCAO: {
+        "servidor": "nfe.sefaz.pe.gov.br",
+        WS_NFE_INUTILIZACAO: "nfe-service/services/NFeInutilizacao4?wsdl",
+        WS_NFE_CONSULTA: "nfe-service/services/NFeConsultaProtocolo4?wsdl",
+        WS_NFE_SITUACAO: "nfe-service/services/NFeStatusServico4?wsdl",
+        WS_NFE_RECEPCAO_EVENTO: "nfe-service/services/NFeRecepcaoEvento4?wsdl",
+        WS_NFE_AUTORIZACAO: "nfe-service/services/NFeAutorizacao4?Wsdl",
+        WS_NFE_RET_AUTORIZACAO: "nfe-service/services/NFeRetAutorizacao4?wsdl",
+        WS_NFE_CADASTRO: "nfe-service/services/CadConsultaCadastro2?wsdl",
+    },
+    AMBIENTE_HOMOLOGACAO: {
+        "servidor": "nfehomolog.sefaz.pe.gov.br",
+        WS_NFE_INUTILIZACAO: "nfe-service/services/NFeInutilizacao4?wsdl",
+        WS_NFE_CONSULTA: "nfe-service/services/NFeConsultaProtocolo4?wsdl",
+        WS_NFE_SITUACAO: "nfe-service/services/NFeStatusServico4?wsdl",
+        WS_NFE_RECEPCAO_EVENTO: "nfe-service/services/NFeRecepcaoEvento4?wsdl",
+        WS_NFE_AUTORIZACAO: "nfe-service/services/NFeAutorizacao4?wsdl",
+        WS_NFE_RET_AUTORIZACAO: "nfe-service/services/NFeRetAutorizacao4?wsdl",
+        WS_NFE_CADASTRO: "nfe-service/services/CadConsultaCadastro2?wsdl",
+    },
+}
+UFPE[CTE_MODELO] = UFSP[CTE_MODELO]
+
+UFRR = SVRS
+UFRR[CTE_MODELO] = UFSP[CTE_MODELO]
+
+UFAM = {
+    NFE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfe.sefaz.am.gov.br",
+            WS_NFE_INUTILIZACAO: "services2/services/NfeInutilizacao4?wsdl",
+            WS_NFE_CONSULTA: "services2/services/NfeConsulta4?wsdl",
+            WS_NFE_SITUACAO: "services2/services/NfeStatusServico4?wsdl",
+            WS_NFE_RECEPCAO_EVENTO: "services2/services/RecepcaoEvento4?wsdl",
+            WS_NFE_AUTORIZACAO: "services2/services/NfeAutorizacao4?wsdl",
+            WS_NFE_RET_AUTORIZACAO: "services2/services/NfeRetAutorizacao4?wsdl",  # noqa
+            WS_NFE_CADASTRO: "services2/services/cadconsultacadastro2?wsdl",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homnfe.sefaz.am.gov.br",
+            WS_NFE_INUTILIZACAO: "services2/services/NfeInutilizacao4?wsdl",
+            WS_NFE_CONSULTA: "services2/services/NfeConsulta4?wsdl",
+            WS_NFE_SITUACAO: "services2/services/NfeStatusServico4?wsdl",
+            WS_NFE_RECEPCAO_EVENTO: "services2/services/RecepcaoEvento4?wsdl",
+            WS_NFE_AUTORIZACAO: "services2/services/NfeAutorizacao4?wsdl",
+            WS_NFE_RET_AUTORIZACAO: "services2/services/NfeRetAutorizacao4?wsdl",  # noqa
+            WS_NFE_CADASTRO: "services2/services/cadconsultacadastro2?wsdl",
+        },
+    },
+    NFCE_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfce.sefaz.am.gov.br",
+            WS_NFE_RECEPCAO_EVENTO: "nfce-services/services/RecepcaoEvento4?wsdl",
+            WS_NFE_AUTORIZACAO: "nfce-services/services/NfeAutorizacao4?wsdl",
+            WS_NFE_RET_AUTORIZACAO: "nfce-services/services/NfeRetAutorizacao4?wsdl",
+            WS_NFE_INUTILIZACAO: "nfce-services/services/NfeInutilizacao4?wsdl",
+            WS_NFE_CONSULTA: "nfce-services/services/NfeConsulta4?wsdl",
+            WS_NFE_SITUACAO: "nfce-services/services/NfeStatusServico4?wsdl",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homnfce.sefaz.am.gov.br",
+            WS_NFE_RECEPCAO_EVENTO: "nfce-services/services/RecepcaoEvento4?wsdl",
+            WS_NFE_AUTORIZACAO: "nfce-services/services/NfeAutorizacao4?wsdl",
+            WS_NFE_RET_AUTORIZACAO: "nfce-services/services/NfeRetAutorizacao4?wsdl",
+            WS_NFE_INUTILIZACAO: "nfce-services/services/NfeInutilizacao4?wsdl",
+            WS_NFE_CONSULTA: "nfce-services/services/NfeConsulta4?wsdl",
+            WS_NFE_SITUACAO: "nfce-services/services/NfeStatusServico4?wsdl",
+            WS_NFCE_QR_CODE: "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp",
+        },
+    },
+}
+UFAM[CTE_MODELO] = SVRS[CTE_MODELO]
 
 
 ESTADO_WS = {
@@ -744,7 +894,7 @@ ESTADO_WS = {
     "RJ": SVRS,
     "RN": SVRS,
     "RO": SVRS,
-    "RR": SVRS,
+    "RR": UFRR,
     "RS": UFRS,
     "SC": SVRS,
     "SE": SVRS,

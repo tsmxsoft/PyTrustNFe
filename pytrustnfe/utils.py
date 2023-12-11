@@ -30,6 +30,27 @@ class ChaveNFe(object):
         assert self.tipo != "", "Tipo necessário para criar chave NF-e"
         assert self.codigo != "", "Código necessário para criar chave NF-e"
 
+class ChaveCTe(object):
+    def __init__(self, **kwargs):
+        self.cnpj = kwargs.pop("cnpj", "")
+        self.estado = kwargs.pop("estado", "")
+        self.emissao = kwargs.pop("emissao", "")
+        self.modelo = kwargs.pop("modelo", "")
+        self.serie = kwargs.pop("serie", "")
+        self.numero = kwargs.pop("numero", "")
+        self.tipo = kwargs.pop("tipo", "")
+        self.codigo = kwargs.pop("codigo", "")
+
+    def validar(self):
+        assert self.cnpj != "", "CNPJ necessário para criar chave CT-e"
+        assert self.estado != "", "Estado necessário para criar chave CT-e"
+        assert self.emissao != "", "Emissão necessário para criar chave CT-e"
+        assert self.modelo != "", "Modelo necessário para criar chave CT-e"
+        assert self.serie != "", "Série necessária para criar chave CT-e"
+        assert self.numero != "", "Número necessário para criar chave CT-e"
+        assert self.tipo != "", "Tipo necessário para criar chave CT-e"
+        assert self.codigo != "", "Código necessário para criar chave CT-e"
+
 class ChaveNFCom(object):
     def __init__(self, **kwargs):
         self.estado = kwargs.pop("estado", "")
@@ -95,6 +116,32 @@ def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
     dv = 11 - (soma%11)
     if suffix:
         return chave_parcial + dv + suffix
+    return chave_parcial + str(dv)
+
+def gerar_chave_cte(obj_chave, prefix=None):
+    assert isinstance(obj_chave, ChaveCTe), "Objeto deve ser do tipo ChaveCTe"
+    obj_chave.validar()
+    chave_parcial = "%s%s%s%s%s%s%d%s" % (
+        obj_chave.estado,
+        obj_chave.emissao,
+        obj_chave.cnpj,
+        obj_chave.modelo,
+        obj_chave.serie.zfill(3),
+        str(obj_chave.numero).zfill(9),
+        obj_chave.tipo,
+        obj_chave.codigo,
+    )
+    chave_parcial = re.sub("[^0-9]", "", chave_parcial)
+    soma = 0
+    contador = 2
+    for c in reversed(chave_parcial):
+        soma += int(c) * contador
+        contador += 1
+        if contador == 10:
+            contador = 2
+    dv = (11 - soma % 11) if (soma % 11 != 0 and soma % 11 != 1) else 0
+    if prefix:
+        return prefix + chave_parcial + str(dv)
     return chave_parcial + str(dv)
 
 
