@@ -42,7 +42,7 @@
             <CpfCnpj>
                 <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
             </CpfCnpj>
-            <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
         <Tomador>
             <IdentificacaoTomador>
