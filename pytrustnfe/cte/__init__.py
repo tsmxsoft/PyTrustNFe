@@ -4,9 +4,9 @@
 
 
 import os
+import sys
 import requests
 from lxml import etree
-from .patch import has_patch
 from .assinatura import Assinatura
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.utils import gerar_chave_cte, ChaveCTe
@@ -55,19 +55,15 @@ def _generate_cte_natural(**kwargs):
 
 def _render(certificado, method, sign, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    xmlElem_send = render_xml(path, "%s.xml" % method, True, **kwargs)
-
-    modelo = xmlElem_send.find(".//{http://www.portalfiscal.inf.br/cte}mod")
-    modelo = modelo.text if modelo is not None else "57"
-
+    xml_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+    
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
         if method == "CTeRecepcaoSincV4":
             xml_send = signer.assina_xml(
-                xmlElem_send, kwargs["CTes"][0]["infCTe"]["Id"]
+                xml_send, kwargs["CTes"][0]["infCTe"]["Id"]
             )
-    else:
-        xml_send = etree.tostring(xmlElem_send, encoding=str)
+    
     return xml_send
 
 
@@ -108,9 +104,9 @@ def _send_zeep(first_operation, client, xml_send):
     parser = etree.XMLParser(strip_cdata=False)
     xml = etree.fromstring(xml_send, parser=parser)
 
-    namespaceNFe = xml.find(".//{http://www.portalfiscal.inf.br/cte}CTe")
-    if namespaceNFe is not None:
-        namespaceNFe.set("xmlns", "http://www.portalfiscal.inf.br/cte")
+    namespaceCTe = xml.find(".//{http://www.portalfiscal.inf.br/cte}CTe")
+    if namespaceCTe is not None:
+        namespaceCTe.set("xmlns", "http://www.portalfiscal.inf.br/cte")
 
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     with client.settings(raw_response=True):
@@ -132,3 +128,25 @@ def recepcionar_cte_v4(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_cte_v4(certificado, **kwargs)
     return _send(certificado, "CTeRecepcaoSincV4", **kwargs)
+
+
+def xml_consulta_cte_v4(certificado, **kwargs):
+    return _render(certificado, "CTeConsultaV4", False, **kwargs)
+
+
+def consulta_cte_v4(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consulta_cte_v4(certificado,**kwargs)
+        kwargs["modelo"] = "57"
+    return _send(certificado, "CTeConsultaV4", **kwargs)
+
+
+def xml_status_servico_cte_v4(certificado, **kwargs):
+    return _render(certificado, "CTeStatusServicoV4", False, **kwargs)
+
+
+def status_servico_cte_v4(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_status_servico_cte_v4(certificado,**kwargs)
+        kwargs["modelo"] = "57"
+    return _send(certificado, "CTeStatusServicoV4", **kwargs)

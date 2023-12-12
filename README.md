@@ -2,7 +2,6 @@
 Biblioteca Python que tem por objetivo enviar NFe, NFCe e NFSe no Brasil
 
 [![Coverage Status](https://coveralls.io/repos/thiagosm/PyTrustNFe/badge.svg?branch=master3)](https://coveralls.io/r/thiagosm/PyTrustNFe?branch=master3)
-[![Code Health](https://landscape.io/github/thiagosm/PyTrustNFe/master3/landscape.svg?style=flat)](https://landscape.io/github/thiagosm/PyTrustNFe/master3)
 [![Build Status](https://travis-ci.org/thiagosm/PyTrustNFe.svg?branch=master3)](https://travis-ci.org/thiagosm/PyTrustNFe)
 [![PyPI version](https://badge.fury.io/py/PyTrustNFe3.svg)](https://badge.fury.io/py/PyTrustNFe3)
 
@@ -56,8 +55,8 @@ Roadmap
 -- CTeRecepcaoSincV4   (implementado, faltando testes)
 -- CTeRecepcaoGTVeV4   (TODO)
 -- CTeRecepcaoOSV4     (TODO)
--- CTeStatusServicoV4  (TODO)
--- CTeStatusServicoV4  (TODO)
+-- CTeConsultaV4       (implementado, funcional)
+-- CTeStatusServicoV4  (implementado, funcional)
 -- CTeRecepcaoEventoV4 (TODO)
 
 Padronizações

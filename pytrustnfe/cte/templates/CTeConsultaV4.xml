@@ -1,0 +1,5 @@
+<consSitCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="4.00">
+    <tpAmb>{{ obj.tpAmb }}</tpAmb>
+    <xServ>CONSULTAR</xServ>
+    <chCTe>{{ obj.chCTe }}</chCTe>
+</consSitCTe>

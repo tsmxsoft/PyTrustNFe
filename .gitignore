@@ -19,6 +19,7 @@ docs/_build
 *.pfx
 sent_xml.xml
 received_xml.xml
+cte-exemplo*.py
 nfse-exemplo*.py
 nfe-exemplo*.py
 nfcom-exemplo*.py

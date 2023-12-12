@@ -133,6 +133,11 @@
             <origCalc>{{ compl.origCalc }}</origCalc>
             <destCalc>{{ compl.destCalc }}</destCalc>
             <xObs>{{ compl.xObs }}</xObs>
+            {% for obs in compl.ObsCont %}
+            <ObsCont xCampo="{{obs.xCampo}}">
+                <xTexto>{{obs.xTexto}}</xTexto>
+            </ObsCont>
+            {% endfor %}
         </compl>
         {% endwith %}
         {% endif %}
@@ -283,12 +288,12 @@
             <vTPrest>{{ vprest.vTPrest }}</vTPrest>
             <vRec>{{ vprest.vRec }}</vRec>
             {% if vprest.Comp is defined -%}
-                {% for comp in vprest.Comp %}
-                <Comp>
-                    <xNome>{{ comp.xNome }}</xNome>
-                    <vComp>{{ comp.vComp }}</vComp>
-                </Comp>
-                {% endfor %}
+            {% for comp in vprest.Comp %}
+            <Comp>
+                <xNome>{{ comp.xNome }}</xNome>
+                <vComp>{{ comp.vComp }}</vComp>
+            </Comp>
+            {% endfor %}
             {% endif %}
             {% endwith %}
         </vPrest>
@@ -378,9 +383,9 @@
                     <cUnid>{{ infq.cUnid }}</cUnid>
                     <tpMed>{{ infq.tpMed }}</tpMed>
                     <qCarga>{{ infq.qCarga }}</qCarga>
-                    <vCargaAverb>{{ infq.vCargaAverb }}</vCargaAverb>
                 </infQ>
                 {% endfor %}
+                <vCargaAverb>{{ cteNorm.infCarga.vCargaAverb }}</vCargaAverb>
             </infCarga>
             {% if cteNorm.infDoc is defined -%}
             <infDoc>
@@ -393,7 +398,7 @@
             {% endif %}
             <infModal versaoModal="4.00">
                 <rodo>
-                    <RNTRC>{{ CTe.infCte.RNTRC }}</RNTRC>
+                    <RNTRC>{{ cteNorm.infModal.rodo.RNTRC }}</RNTRC>
                 </rodo>
             </infModal>
             {% endwith %}

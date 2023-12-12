@@ -1,0 +1,24 @@
+<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="4.00">
+    <infEvento>
+        <Id>
+        <cOrgao>
+        <tpAmb>
+        <CNPJ>
+        <CPF>
+        <chCTe>
+        <dhEvento>
+        <tpEvento>
+        <nSeqEvento>
+        <detEvento versaoEvento="4.00">
+            <any>
+        </detEvento>
+        <infSolicNFF>
+            <xSolic>
+        </infSolicNFF>
+        <infPAA>
+            <CNPJPAA>
+                <PAASignature></PAASignature>
+            </CNPJPAA>
+        </infPAA>
+    </infEvento>
+</eventoCTe>
