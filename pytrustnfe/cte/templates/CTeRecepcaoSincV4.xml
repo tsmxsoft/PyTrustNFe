@@ -32,7 +32,6 @@
             <retira>{{ ide.retira }}</retira>
             <xDetRetira>{{ ide.xDetRetira }}</xDetRetira>
             <indIEToma>{{ ide.indIEToma }}</indIEToma>
-
             {% if ide.toma3 is defined -%}
             <toma3>
                 <toma>{{ ide.toma3.toma }}</toma>

@@ -33,14 +33,24 @@ def _generate_cte_id(**kwargs):
             ),
             "modelo": item["infCte"]["ide"]["mod"],
             "serie": item["infCte"]["ide"]["serie"],
-            "numero": item["infCte"]["ide"]["nNF"],
+            "numero": item["infCte"]["ide"]["nCT"],
             "tipo": item["infCte"]["ide"]["tpEmis"],
-            "codigo": item["infCte"]["ide"]["cNF"],
+            "codigo": item["infCte"]["ide"]["cCT"],
         }
         chave_cte = ChaveCTe(**vals)
-        chave_cte = gerar_chave_cte(chave_cte, "NFe")
-        item["infCte"]["Id"] = chave_cte
-        item["infCte"]["ide"]["cDV"] = chave_cte[len(chave_cte) - 1 :]
+        chave_cte = gerar_chave_cte(chave_cte, "CTe")
+        item["infCte"]["ide"]["cCT"] = chave_cte
+        item["infCte"]["ide"]["cDV"] = chave_cte[len(chave_cte) - 1:]
+
+
+def _generate_cte_natural(**kwargs):
+    return "%s%s%s%s%s%s" % (
+        kwargs["CTe"]["infCte"]["ide"]["cUF"],
+        kwargs["CTe"]["infCte"]["emit"]["cnpj_cpf"],
+        kwargs["CTe"]["infCte"]["ide"]["serie"],
+        kwargs["CTe"]["infCte"]["ide"]["nCT"],
+        kwargs["CTe"]["infCte"]["ide"]["mod"],
+        kwargs["CTe"]["infCte"]["ide"]["tpEmis"])
 
 
 def _render(certificado, method, sign, **kwargs):
@@ -52,26 +62,18 @@ def _render(certificado, method, sign, **kwargs):
 
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
-        if method == "NfeInutilizacao":
-            xml_send = signer.assina_xml(xmlElem_send, kwargs["obj"]["id"])
         if method == "CTeRecepcaoSincV4":
             xml_send = signer.assina_xml(
                 xmlElem_send, kwargs["CTes"][0]["infCTe"]["Id"]
             )
-        elif method == "RecepcaoEvento":
-            xml_send = signer.assina_xml(xmlElem_send, kwargs["eventos"][0]["Id"])
-        elif method == "RecepcaoEventoManifesto":
-            xml_send = signer.assina_xml(
-                xmlElem_send, kwargs["manifesto"]["identificador"]
-            )
-
     else:
         xml_send = etree.tostring(xmlElem_send, encoding=str)
     return xml_send
 
 
 def _get_session(certificado):
-    cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
+    cert, key = extract_cert_and_key_from_pfx(
+        certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
     session = Session()
@@ -124,6 +126,7 @@ def _send_zeep(first_operation, client, xml_send):
 def xml_recepcionar_cte_v4(certificado, **kwargs):
     _generate_cte_id(**kwargs)
     return _render(certificado, "CTeRecepcaoSincV4", True, **kwargs)
+
 
 def recepcionar_cte_v4(certificado, **kwargs):
     if "xml" not in kwargs:
