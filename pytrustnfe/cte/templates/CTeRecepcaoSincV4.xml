@@ -40,8 +40,12 @@
             {% if ide.toma4 is defined -%}
             <toma4>
                 <toma>4</toma>
-                <CNPJ>{{ ide.toma4.CNPJ }}</CNPJ>
-                <CPF>{{ ide.toma4.CPF }}</CPF>
+                {% if ide.toma4.cnpj_cpf|length == 11 -%}
+                <CPF>{{ ide.toma4.cnpj_cpf }}</CPF>
+                {% endif %}
+                {% if ide.toma4.cnpj_cpf|length == 14 -%}
+                <CNPJ>{{ ide.toma4.cnpj_cpf }}</CNPJ>
+                {% endif %}
                 <IE>{{ ide.toma4.IE }}</IE>
                 <xNome>{{ ide.toma4.xNome }}</xNome>
                 <xFant>{{ ide.toma4.xFant }}</xFant>
@@ -183,21 +187,21 @@
             <xFant>{{ rem.xFant }}</xFant>
             <fone>{{ rem.fone }}</fone>
             <enderReme>
-                <xLgr>{{ rem.xLgr|normalize|escape }}</xLgr>
-                <nro>{{ rem.nro }}</nro>
-                <xCpl>{{ rem.xCpl|normalize|escape }}</xCpl>
-                <xBairro>{{ rem.xBairro|normalize|escape }}</xBairro>
-                <cMun>{{ rem.cMun }}</cMun>
-                <xMun>{{ rem.xMun|normalize }}</xMun>
-                <CEP>{{ rem.CEP }}</CEP>
-                <UF>{{ rem.UF }}</UF>
-                <cPais>{{ rem.cPais }}</cPais>
-                <xPais>{{ rem.xPais }}</xPais>
+                <xLgr>{{ rem.enderReme.xLgr|normalize|escape }}</xLgr>
+                <nro>{{ rem.enderReme.nro }}</nro>
+                <xCpl>{{ rem.enderReme.xCpl|normalize|escape }}</xCpl>
+                <xBairro>{{ rem.enderReme.xBairro|normalize|escape }}</xBairro>
+                <cMun>{{ rem.enderReme.cMun }}</cMun>
+                <xMun>{{ rem.enderReme.xMun|normalize }}</xMun>
+                <CEP>{{ rem.enderReme.CEP }}</CEP>
+                <UF>{{ rem.enderReme.UF }}</UF>
+                <cPais>{{ rem.enderReme.cPais }}</cPais>
+                <xPais>{{ rem.enderReme.xPais }}</xPais>
             </enderReme>
             {% endwith %}
         </rem>
         {% endif %}
-        {% if CTE.infCte.exped is defined -%}
+        {% if CTe.infCte.exped is defined -%}
         <exped>
             {% with exped = CTe.infCte.exped %}
             {% if exped.cnpj_cpf|length == 11 -%}
@@ -361,19 +365,19 @@
             {% endif %}
             <vTotTrib>{{ imposto.vTotTrib }}</vTotTrib>
             <ICMSUFFim>
-                <vBCUFFim>{{ imposto.vBCUFFim }}</vBCUFFim>
-                <pFCPUFFim>{{ imposto.pFCPUFFim }}</pFCPUFFim>
-                <pICMSUFFim>{{ imposto.pICMSUFFim }}</pICMSUFFim>
-                <pICMSInter>{{ imposto.pICMSInter }}</pICMSInter>
-                <vFCPUFFim>{{ imposto.vFCPUFFim }}</vFCPUFFim>
-                <vICMSUFFim>{{ imposto.vICMSUFFim }}</vICMSUFFim>
-                <vICMSUFIni>{{ imposto.vICMSUFIni }}</vICMSUFIni>
+                <vBCUFFim>{{ imposto.ICMSUFFim.vBCUFFim }}</vBCUFFim>
+                <pFCPUFFim>{{ imposto.ICMSUFFim.pFCPUFFim }}</pFCPUFFim>
+                <pICMSUFFim>{{ imposto.ICMSUFFim.pICMSUFFim }}</pICMSUFFim>
+                <pICMSInter>{{ imposto.ICMSUFFim.pICMSInter }}</pICMSInter>
+                <vFCPUFFim>{{ imposto.ICMSUFFim.vFCPUFFim }}</vFCPUFFim>
+                <vICMSUFFim>{{ imposto.ICMSUFFim.vICMSUFFim }}</vICMSUFFim>
+                <vICMSUFIni>{{ imposto.ICMSUFFim.vICMSUFIni }}</vICMSUFIni>
             </ICMSUFFim>
             {% endwith %}
         </imp>
-        {% if CTe.infCte.infCTENorm is defined -%}
+        {% if CTe.infCte.infCTeNorm is defined -%}
         <infCTeNorm>
-            {% with cteNorm = CTe.infCte.infCTENorm %}
+            {% with cteNorm = CTe.infCte.infCTeNorm %}
             <infCarga>
                 <vCarga>{{ cteNorm.infCarga.vCarga }}</vCarga>
                 <proPred>{{ cteNorm.infCarga.proPred }}</proPred>
@@ -393,7 +397,7 @@
                 <infNFe>
                     <chave>{{ infnfe.chave }}</chave>
                 </infNFe>
-                {% endif %}
+                {% endfor %}
             </infDoc>
             {% endif %}
             <infModal versaoModal="4.00">
@@ -405,7 +409,9 @@
         </infCTeNorm>
         {% endif %}
     </infCte>
+    {% if CTe.infCTeSupl is defined -%}
     <infCTeSupl>
-        <qrCodCTe>{{ CTe.infCte.qrCodCTe }}</qrCodCTe>
+        <qrCodCTe>{{ CTe.infCTeSupl.qrCodCTe }}</qrCodCTe>
     </infCTeSupl>
+    {% endif %}
 </CTe>

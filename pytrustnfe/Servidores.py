@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # © 2016 Danimar Ribeiro
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+from copy import copy
 
 # Consultas básicas da NF-e
 WS_NFE_INUTILIZACAO = "NfeInutilizacao"
@@ -220,8 +221,8 @@ SVRS = {
             WS_CTE400_STATUS_SERVICO: "ws/CTeStatusServicoV4/CTeStatusServicoV4.asmx?wsdl",
             WS_CTE400_RECEPCAO_EVENTO: "ws/CTeRecepcaoEventoV4/CTeRecepcaoEventoV4.asmx?wsdl",
             WS_CTE400_QRCODE: "https://dfe-portal.svrs.rs.gov.br/cte/qrCode",
-        }
-    }
+        },
+    },
 }
 
 SVAN = {
@@ -244,7 +245,7 @@ SVAN = {
         WS_NFE_RET_AUTORIZACAO: "NFeRetAutorizacao4/NFeRetAutorizacao4.asmx?wsdl",  # noqa
     },
 }
-SVAN[CTE_MODELO] = SVRS[CTE_MODELO]
+SVAN[CTE_MODELO] = copy(SVRS[CTE_MODELO])
 
 SVC_AN = {
     AMBIENTE_PRODUCAO: {
@@ -368,7 +369,7 @@ UFCE = {
         WS_NFE_CADASTRO: "nfe4/services/CadConsultaCadastro4?wsdl",
     },
 }
-UFCE[CTE_MODELO] = SVRS[CTE_MODELO]
+UFCE[CTE_MODELO] = copy(SVRS[CTE_MODELO])
 
 
 UFGO = {
@@ -393,7 +394,7 @@ UFGO = {
         WS_NFE_CADASTRO: "nfe/services/CadConsultaCadastro4?wsdl",
     },
 }
-UFGO[CTE_MODELO] = SVRS[CTE_MODELO]
+UFGO[CTE_MODELO] = copy(SVRS[CTE_MODELO])
 
 
 UFMT = {
@@ -724,7 +725,7 @@ UFRS = {
         },
     },
 }
-UFRS[CTE_MODELO] = SVRS[CTE_MODELO]
+UFRS[CTE_MODELO] = copy(SVRS[CTE_MODELO])
 
 UFSP = {
     NFE_MODELO: {
@@ -819,10 +820,10 @@ UFPE = {
         WS_NFE_CADASTRO: "nfe-service/services/CadConsultaCadastro2?wsdl",
     },
 }
-UFPE[CTE_MODELO] = UFSP[CTE_MODELO]
+UFPE[CTE_MODELO] = copy(UFSP[CTE_MODELO])
 
-UFRR = SVRS
-UFRR[CTE_MODELO] = UFSP[CTE_MODELO]
+UFRR = copy(SVRS)
+UFRR[CTE_MODELO] = copy(UFSP[CTE_MODELO])
 
 UFAM = {
     NFE_MODELO: {
@@ -869,7 +870,7 @@ UFAM = {
         },
     },
 }
-UFAM[CTE_MODELO] = SVRS[CTE_MODELO]
+UFAM[CTE_MODELO] = copy(SVRS[CTE_MODELO])
 
 
 ESTADO_WS = {

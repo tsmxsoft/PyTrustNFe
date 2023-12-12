@@ -10,10 +10,13 @@ from lxml import etree
 from .assinatura import Assinatura
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.utils import gerar_chave_cte, ChaveCTe
-from pytrustnfe.Servidores import localizar_url
+from pytrustnfe.Servidores import localizar_url, ESTADO_WS, SIGLA_ESTADO, SVRS
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
+#Crypto
+from OpenSSL import crypto
+from base64 import b64encode
 
 # Zeep
 from requests import Session
@@ -21,26 +24,44 @@ from zeep import Client
 from zeep.transports import Transport
 
 
-def _generate_cte_id(**kwargs):
-    for item in kwargs["CTes"]:
-        vals = {
-            "cnpj": item["infCte"]["emit"]["cnpj_cpf"],
-            "estado": item["infCte"]["ide"]["cUF"],
-            "emissao": "%s%s"
-            % (
-                item["infCte"]["ide"]["dhEmi"][2:4],
-                item["infCte"]["ide"]["dhEmi"][5:7],
-            ),
-            "modelo": item["infCte"]["ide"]["mod"],
-            "serie": item["infCte"]["ide"]["serie"],
-            "numero": item["infCte"]["ide"]["nCT"],
-            "tipo": item["infCte"]["ide"]["tpEmis"],
-            "codigo": item["infCte"]["ide"]["cCT"],
-        }
-        chave_cte = ChaveCTe(**vals)
-        chave_cte = gerar_chave_cte(chave_cte, "CTe")
-        item["infCte"]["ide"]["cCT"] = chave_cte
-        item["infCte"]["ide"]["cDV"] = chave_cte[len(chave_cte) - 1:]
+def _generate_cte_id(certificado,**kwargs):
+    cte = kwargs["CTe"]
+    vals = {
+        "cnpj": cte["infCte"]["emit"]["cnpj_cpf"],
+        "estado": cte["infCte"]["ide"]["cUF"],
+        "emissao": "%s%s"
+        % (
+            cte["infCte"]["ide"]["dhEmi"][2:4],
+            cte["infCte"]["ide"]["dhEmi"][5:7],
+        ),
+        "modelo": cte["infCte"]["ide"]["mod"],
+        "serie": cte["infCte"]["ide"]["serie"],
+        "numero": cte["infCte"]["ide"]["nCT"],
+        "tipo": cte["infCte"]["ide"]["tpEmis"],
+        "codigo": cte["infCte"]["ide"]["cCT"],
+    }
+    chave_cte = ChaveCTe(**vals)
+    chave_cte = gerar_chave_cte(chave_cte, "CTe")
+    cte["infCte"]["Id"] = chave_cte
+    cte["infCte"]["ide"]["cDV"] = chave_cte[len(chave_cte) - 1:]
+
+    cte["infCTeSupl"] = {}
+    print(kwargs["estado"])
+    print(SIGLA_ESTADO[kwargs["estado"]])
+    ws = ESTADO_WS[SIGLA_ESTADO[kwargs["estado"]]]
+
+    cte["infCTeSupl"]["qrCodCTe"] = \
+        ws[kwargs["modelo"]][kwargs["ambiente"]]["QRCode"] \
+    + "?chCTe=%s&amp;tpAmb=%s" %(chave_cte[3:],cte["infCte"]["ide"]["tpAmb"])
+    #Contingencia
+    if cte["infCte"]["ide"]["tpEmis"] == 2:
+        cte["infCTeSupl"]["qrCodCTe"] += "&amp;sign=%s" %_sign_rsa(certificado,chave_cte[3:])
+
+
+def _sign_rsa(certificado, data):
+    pfx = crypto.load_pkcs12(certificado.pfx, certificado.password)
+    signed = crypto.sign(pfx.get_privatekey(),data,"sha1")
+    return b64encode(signed)
 
 
 def _generate_cte_natural(**kwargs):
@@ -61,7 +82,7 @@ def _render(certificado, method, sign, **kwargs):
         signer = Assinatura(certificado.pfx, certificado.password)
         if method == "CTeRecepcaoSincV4":
             xml_send = signer.assina_xml(
-                xml_send, kwargs["CTes"][0]["infCTe"]["Id"]
+                etree.fromstring(xml_send), kwargs["CTe"]["infCte"]["Id"]
             )
     
     return xml_send
@@ -120,7 +141,7 @@ def _send_zeep(first_operation, client, xml_send):
 
 
 def xml_recepcionar_cte_v4(certificado, **kwargs):
-    _generate_cte_id(**kwargs)
+    _generate_cte_id(certificado,**kwargs)
     return _render(certificado, "CTeRecepcaoSincV4", True, **kwargs)
 
 
