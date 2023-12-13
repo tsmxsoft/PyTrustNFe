@@ -147,10 +147,10 @@
         {% endif %}
         <emit>
             {% with emit = CTe.infCte.emit %}
-            {% if emit.tipo == 'person' -%}
+            {% if emit.cnpj_cpf|length == 11 -%}
             <CPF>{{ emit.cnpj_cpf }}</CPF>
             {% endif %}
-            {% if emit.tipo == 'company' -%}
+            {% if emit.cnpj_cpf|length == 14 -%}
             <CNPJ>{{ emit.cnpj_cpf }}</CNPJ>
             {% endif %}
             {% if CTe.infCte.ide.tpEmis != "3" -%}
@@ -176,10 +176,10 @@
         {% if CTe.infCte.rem is defined -%}
         <rem>
             {% with rem = CTe.infCte.rem %}
-            {% if rem.tipo == 'person' -%}
+            {% if rem.cnpj_cpf|length == 11 -%}
             <CPF>{{ rem.cnpj_cpf }}</CPF>
             {% endif %}
-            {% if rem.tipo == 'company' -%}
+            {% if rem.cnpj_cpf|length == 14 -%}
             <CNPJ>{{ rem.cnpj_cpf }}</CNPJ>
             {% endif %}
             <IE>{{ rem.IE }}</IE>
@@ -271,7 +271,7 @@
             <fone>{{ dest.fone }}</fone>
             {% if dest.enderDest is defined %}
             <enderDest>
-                <xLgr> {{ dest.enderDest.xLgr|normalize|escape }}</xLgr>
+                <xLgr>{{ dest.enderDest.xLgr|normalize|escape }}</xLgr>
                 <nro>{{ dest.enderDest.nro }}</nro>
                 <xCpl>{{ dest.enderDest.xCpl|normalize|escape }}</xCpl>
                 <xBairro>{{ dest.enderDest.xBairro|normalize|escape }}</xBairro>

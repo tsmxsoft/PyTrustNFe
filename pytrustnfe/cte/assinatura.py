@@ -26,7 +26,7 @@ class Assinatura(object):
             method=signxml.methods.enveloped,
             signature_algorithm="rsa-sha1",
             digest_algorithm='sha1',
-            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",)
+            c14n_algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315",)
 
         ns = {}
         ns[None] = signer.namespaces['ds']

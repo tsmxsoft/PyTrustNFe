@@ -55,8 +55,8 @@ Roadmap
 -- CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
 -- CTeRecepcaoGTVeV4   (TODO)
 -- CTeRecepcaoOSV4     (TODO)
--- CTeConsultaV4       (implementado, funcional)
--- CTeStatusServicoV4  (implementado, funcional)
+-- CTeConsultaV4       (OK)
+-- CTeStatusServicoV4  (OK)
 -- CTeRecepcaoEventoV4 (TODO)
 
 Padronizações

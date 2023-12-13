@@ -13,6 +13,7 @@ from pytrustnfe.utils import gerar_chave_cte, ChaveCTe
 from pytrustnfe.Servidores import localizar_url, ESTADO_WS, SIGLA_ESTADO, SVRS
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from pytrustnfe import get_version
 
 #Crypto
 from OpenSSL import crypto
@@ -42,19 +43,18 @@ def _generate_cte_id(certificado,**kwargs):
     }
     chave_cte = ChaveCTe(**vals)
     chave_cte = gerar_chave_cte(chave_cte, "CTe")
+
     cte["infCte"]["Id"] = chave_cte
     cte["infCte"]["ide"]["cDV"] = chave_cte[len(chave_cte) - 1:]
+    cte["infCte"]["ide"]["verProc"] = "PyTrustNFe" + get_version()
 
     cte["infCTeSupl"] = {}
-    print(kwargs["estado"])
-    print(SIGLA_ESTADO[kwargs["estado"]])
     ws = ESTADO_WS[SIGLA_ESTADO[kwargs["estado"]]]
-
     cte["infCTeSupl"]["qrCodCTe"] = \
         ws[kwargs["modelo"]][kwargs["ambiente"]]["QRCode"] \
     + "?chCTe=%s&amp;tpAmb=%s" %(chave_cte[3:],cte["infCte"]["ide"]["tpAmb"])
     #Contingencia
-    if cte["infCte"]["ide"]["tpEmis"] == 2:
+    if cte["infCte"]["ide"]["tpEmis"] == 2 or cte["infCte"]["ide"]["tpEmis"] == 5:
         cte["infCTeSupl"]["qrCodCTe"] += "&amp;sign=%s" %_sign_rsa(certificado,chave_cte[3:])
 
 

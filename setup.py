@@ -1,13 +1,11 @@
 # coding=utf-8
 from setuptools import setup, find_packages
-
-
-VERSION = "1.0.174"
+from pytrustnfe import get_version
 
 
 setup(
     name="PyTrustNFe3",
-    version=VERSION,
+    version=get_version(),
     author="Danimar Ribeiro",
     author_email="danimaribeiro@gmail.com",
     keywords=["nfe", "mdf-e"],
