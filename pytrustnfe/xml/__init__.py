@@ -66,7 +66,14 @@ def sanitize_response(response):
         if i >= 0:
             elem.tag = elem.tag[i + 1:]
     objectify.deannotate(tree, cleanup_namespaces=True)
-    return response, objectify.fromstring(etree.tostring(tree))
+    xml_str = ""
+    xml_obj = None
+    try:
+        xml_str = etree.tostring(tree)
+        xml_obj = objectify.fromstring(xml_str)
+    except:
+        pass
+    return response, xml_obj
 
 
 def recursively_normalize(vals):
