@@ -63,7 +63,9 @@
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
                 <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
                 <Uf>{{ rps.tomador.uf }}</Uf>
+                {% if rps.tomador.codigo_municipio == 9999999 -%}
                 <CodigoPais>1058</CodigoPais>
+                {% endif %}
                 <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
             <Contato>
