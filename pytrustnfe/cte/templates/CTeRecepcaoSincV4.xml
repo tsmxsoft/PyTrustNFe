@@ -401,9 +401,7 @@
             </infDoc>
             {% endif %}
             <infModal versaoModal="4.00">
-                <rodo>
-                    <RNTRC>{{ cteNorm.infModal.rodo.RNTRC }}</RNTRC>
-                </rodo>
+                {{ cteNorm.infModal.xml }}
             </infModal>
             {% endwith %}
         </infCTeNorm>
