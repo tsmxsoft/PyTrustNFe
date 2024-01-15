@@ -21,7 +21,7 @@
                 <ValorCsll>{{ rps.servico.csll|default("0.00", true) }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes|default("0.00", true) }}</OutrasRetencoes>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <Aliquota>{{ rps.servico.aliquota }}</Aliquota> 
+                <Aliquota>{{ rps.servico.aliquota|float * 100.00 }}</Aliquota> 
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             {% if rps.servico.iss_retido == 1 -%}
@@ -42,7 +42,7 @@
             <CpfCnpj>
                 <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
             </CpfCnpj>
-            <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
         <Tomador>
             <IdentificacaoTomador>
@@ -63,7 +63,9 @@
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
                 <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
                 <Uf>{{ rps.tomador.uf }}</Uf>
+                {% if rps.tomador.codigo_municipio == 9999999 -%}
                 <CodigoPais>1058</CodigoPais>
+                {% endif %}
                 <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
             <Contato>

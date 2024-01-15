@@ -20,6 +20,8 @@
                 <ValorLiquidoNfse>{{ rps.servico.valor_servico }}</ValorLiquidoNfse>
             </Valores>
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <CodigoTributacaoMunicipio>{{ nfse.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
+            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
         </Servico>
