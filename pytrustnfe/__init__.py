@@ -5,6 +5,9 @@
 import requests
 
 
+def get_version():
+    return "1.0.174"
+
 class HttpClient(object):
     def __init__(self, url):
         self.url = url

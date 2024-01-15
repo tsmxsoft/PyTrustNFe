@@ -2,7 +2,6 @@
 Biblioteca Python que tem por objetivo enviar NFe, NFCe e NFSe no Brasil
 
 [![Coverage Status](https://coveralls.io/repos/thiagosm/PyTrustNFe/badge.svg?branch=master3)](https://coveralls.io/r/thiagosm/PyTrustNFe?branch=master3)
-[![Code Health](https://landscape.io/github/thiagosm/PyTrustNFe/master3/landscape.svg?style=flat)](https://landscape.io/github/thiagosm/PyTrustNFe/master3)
 [![Build Status](https://travis-ci.org/thiagosm/PyTrustNFe.svg?branch=master3)](https://travis-ci.org/thiagosm/PyTrustNFe)
 [![PyPI version](https://badge.fury.io/py/PyTrustNFe3.svg)](https://badge.fury.io/py/PyTrustNFe3)
 
@@ -52,10 +51,19 @@ Roadmap
 * NFCom (NF Modelo 62)
 * NFSe Tributus
 * NFSe GSN - Salvador
+* CT-e (mod 57) v4.0
+-- CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
+-- CTeRecepcaoGTVeV4   (TODO)
+-- CTeRecepcaoOSV4     (TODO)
+-- CTeConsultaV4       (OK)
+-- CTeStatusServicoV4  (OK)
+-- CTeRecepcaoEventoV4 (TODO)
 
 Padronizações
 --------------
 * As integrações contém URL direta para ambiente de homologação, porém para ambiente de produção, é necessário passar o parâmetro **kwargs["base_url"]**, pois alguns sistemas tem URL única em produção, outros possuem uma URL para cada cidade atendida, para abranger todos os casos, esse parâmetro foi implementado.
+
+* para distinção dos ambientes deve-se utilizar o parâmetro **kwargs["ambiente"]** com os textos "produção" ou "homologação" para escolha do ambiente adequado, tendo em vista que alguns sistemas NFS-e exigem a assinatura do XML em produção, e exigem a não-assinatura do XML em homologação, para cada ambiente a variável **kwargs["base_url"]** é levada em consideração.
 
 Exemplos de uso da NFe
 -----------------------------

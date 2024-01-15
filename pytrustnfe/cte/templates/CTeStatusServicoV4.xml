@@ -1,0 +1,5 @@
+<consStatServCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="4.00">
+    <tpAmb>{{ ambiente }}</tpAmb>
+    <cUF>{{ estado }}</cUF>
+    <xServ>STATUS</xServ>
+</consStatServCTe>

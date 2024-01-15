@@ -6,6 +6,7 @@ from decimal import Decimal
 from datetime import date
 from datetime import datetime
 from unicodedata import normalize
+import sys
 
 
 def normalize_str(string):
@@ -25,8 +26,12 @@ def normalize_str(string):
 
 def strip_line_feed(string):
     if string:
-        if not isinstance(string, str):
-            string = str(string, "utf-8", "replace")
+        if sys.version_info[0] > 2:
+            if not isinstance(string, str):
+                string = str(string, "utf-8", "replace")
+        else:
+            if not isinstance(string,unicode):
+                string = unicode(string, "utf-8")
         remap = {
             ord("\t"): " ",
             ord("\n"): " ",
