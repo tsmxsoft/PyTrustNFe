@@ -6,7 +6,7 @@ import requests
 
 
 def get_version():
-    return "1.0.194"
+    return "1.0.195"
 
 class HttpClient(object):
     def __init__(self, url):
