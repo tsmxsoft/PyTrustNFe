@@ -64,6 +64,7 @@ later (LGPLv2+)",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
     install_requires=[
+        "requests",
         "Jinja2 >= 2.8",
         "pyOpenSSL == 19.1.0",
         "signxml >= 2.4.0",
