@@ -75,6 +75,25 @@ class ChaveNFCom(object):
         assert self.codigo != "", "Código necessário para criar chave NFCom"
 
 
+class ChaveNFSe(object):
+    def __init__(self, **kwargs):
+        self.ibge_mun = kwargs.pop("ibge_mun", "")
+        self.ambiente = kwargs.pop("ambiente", "")
+        self.tipo_insc_fed = kwargs.pop("tipo_insc_fed", "") #1 = CPF, 2 = CNPJ
+        self.insc_fed = kwargs.pop("insc_fed", "") #Caso CPF, adicionar 000 antes
+        self.numero = kwargs.pop("numero", "")
+        self.dt_emissao = kwargs.pop("dt_emissao", "")
+        self.codigo = kwargs.pop("codigo", "")
+
+    def validar(self):
+        assert self.ibge_mun != "", "Código IBGE da Cidade é necessário para criar chave NFSe"
+        assert self.ambiente != "", "Ambiente Gerador é necessário para criar chave NFSe"
+        assert self.tipo_insc_fed != "", "Tipo de Inscrição Federal necessário para criar chave NFSe"
+        assert self.insc_fed != "", "Inscrição Federal necessário para criar chave NFSe"
+        assert self.numero != "", "Número da NFSe é necessário para criar chave NFSe"
+        assert self.dt_emissao != "", "Ano/Mês de emissão é necessário para criar chave NFSe"
+        assert self.codigo != "", "Código é necessário para criar chave NFSe"
+
 def date_tostring(data):
     assert isinstance(data, date), "Objeto date requerido"
     return data.strftime("%d-%m-%y")
