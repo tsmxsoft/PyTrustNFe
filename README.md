@@ -21,7 +21,6 @@ NFSe - Empresas Atendidas
 -----------------------------
 * **Agiliblue**
 * **Betha**
-* **Cariacica** - Cariacica/ES
 * **Directa** - Natal/RN
 * **DSF**
 * **Equiplano** 
@@ -34,6 +33,7 @@ NFSe - Empresas Atendidas
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
 * **Recife** - Recife/PE
+* **SmartAPD** - Cariacica/ES
 * **SIASP (Publica)**
 * **SIAP Sistemas**
 * **Speedgov**
@@ -52,12 +52,12 @@ Roadmap
 * NFSe Tributus
 * NFSe GSN - Salvador
 * CT-e (mod 57) v4.0
--- CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
--- CTeRecepcaoGTVeV4   (TODO)
--- CTeRecepcaoOSV4     (TODO)
--- CTeConsultaV4       (OK)
--- CTeStatusServicoV4  (OK)
--- CTeRecepcaoEventoV4 (TODO)
+** CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
+** CTeRecepcaoGTVeV4   (TODO)
+** CTeRecepcaoOSV4     (TODO)
+** CTeConsultaV4       (OK)
+** CTeStatusServicoV4  (OK)
+** CTeRecepcaoEventoV4 (TODO)
 
 Padronizações
 --------------
