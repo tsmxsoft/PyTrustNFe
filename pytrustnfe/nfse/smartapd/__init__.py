@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 # © 2019 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-# -*- coding: utf-8 -*-
 
 import os
+import sys
 from OpenSSL import crypto
 from base64 import b64encode
 
@@ -26,7 +27,8 @@ def _render(certificado, method, **kwargs):
 
     lote = ""
     referencia = ""
-    if method == "RecepcionarLoteRps":
+    kwargs["method"] = method
+    if method == "recepcionarLoteRps":
         referencia = kwargs.get("nfse").get("numero_lote")
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
@@ -35,25 +37,29 @@ def _render(certificado, method, **kwargs):
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
 
-    for item in kwargs["nfse"]["lista_rps"]:
-        reference = "rps:{0}{1}".format(
-            item.get('numero'), item.get('serie'))
+    if method == "recepcionarLoteRps":
+        for item in kwargs["nfse"]["lista_rps"]:
+            reference = "rps:{0}{1}".format(
+                item.get('numero'), item.get('serie'))
 
-        signer.assina_xml(xml_send, reference)
+            signer.assina_xml(xml_send, reference)
 
-    xml_signed_send = signer.assina_xml(
-        xml_send, "lote:{0}".format(referencia))
+        xml_signed_send = signer.assina_xml(
+            xml_send, "lote:{0}".format(referencia))
+    
+        return xml_signed_send
+    
+    if method == "cancelarNfse":
+        xml_signed_send = signer.assina_xml(xml_send, "1")
+        return xml_signed_send
 
-    return xml_signed_send
-
+    return xml_string_send
 
 def _send(certificado, method, **kwargs):
-    base_url = ""
-    if kwargs["ambiente"] == "producao":
-        base_url = "https://sistemas.cariacica.es.gov.br/tbw/services/Abrasf10?wsdl"
+    if kwargs["ambiente"] == "homologacao":
+        base_url = "https://servicos.cariacica.es.gov.br/tbwhomologacao/services/Abrasf23?wsdl"
     else:
-        base_url = "https://sistemas.cariacica.es.gov.br/tbw/services/Abrasf10?wsdl"
-
+        base_url = "https://sistemas.cariacica.es.gov.br/tbw/services/Abrasf23?wsdl"
     cert, key = extract_cert_and_key_from_pfx(
         certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
@@ -64,17 +70,10 @@ def _send(certificado, method, **kwargs):
     session.verify = False
     transport = Transport(session=session)
 
-    client = Client(wsdl=base_url, transport=transport)
-    xml_send = {}
-    xml_send = {
-        "nfseDadosMsg": kwargs["xml"],
-        "nfseCabecMsg": """<?xml version="1.0"?>
-        <cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" versao="1" xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
-        <versaoDados>1</versaoDados>
-        </cabecalho>""",
-    }
+    client = Client(base_url, transport=transport)
 
-    response = client.service[method](**xml_send)
+    xml_send = kwargs["xml"]
+    response = client.service[method](xml_send)
     response, obj = sanitize_response(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
@@ -96,7 +95,23 @@ def xml_consultar_lote_rps(certificado, **kwargs):
 def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "consultarLoteRps", **kwargs)
+
+    response = _send(certificado, "consultarLoteRps", **kwargs)
+    xml = None
+
+    try:
+        xml_element = response['object'].find('.//Nfse')
+
+        if sys.version_info[0] > 2:
+            xml = str(etree.tostring(xml_element, encoding=str))
+        else:
+            xml = str(etree.tostring(xml_element, encoding="utf8"))
+            
+        xml = xml.replace('&#13;', '')
+    except:
+        pass
+
+    return xml
 
 
 def xml_cancelar_nfse(certificado, **kwargs):
