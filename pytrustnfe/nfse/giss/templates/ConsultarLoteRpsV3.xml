@@ -1,0 +1,7 @@
+<ConsultarLoteRpsEnvio xmlns="http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd">
+	<Prestador>
+		<ns4:Cnpj>{{ consulta.cnpj_prestador }}</ns4:Cnpj>
+		<ns4:InscricaoMunicipal>{{ consulta.inscricao_municipal }}</ns4:InscricaoMunicipal>
+	</Prestador>
+	<Protocolo>{{ consulta.protocolo }}</Protocolo> 
+</ConsultarLoteRpsEnvio>
