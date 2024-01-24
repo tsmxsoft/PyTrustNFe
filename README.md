@@ -26,12 +26,15 @@ NFSe - Empresas Atendidas
 * **Equiplano** 
 * **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
+* **GISS** - (Fork Ginfes?)
 * **Imperial** - Petrópolis/RH
+* **IPM**
 * **ISSNET**
 * **ISSWEB**
 * **Memory (NFSe Brasil)**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
+* **Portal Fácil**
 * **Recife** - Recife/PE
 * **SmartAPD** - Cariacica/ES
 * **SIASP (Publica)**
