@@ -1,0 +1,13 @@
+<EnviarLoteRpsEnvio xmlns="http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd" xmlns:ns3="http://www.ginfes.com.br/tipos_v03.xsd">
+    <LoteRps Id="lote:{{nfse.numero_lote}}">
+        <ns3:NumeroLote>{{ nfse.numero_lote }}</ns3:NumeroLote>
+        <ns3:Cnpj>{{ nfse.cnpj_prestador }}</ns3:Cnpj>
+        <ns3:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</ns3:InscricaoMunicipal>
+        <ns3:QuantidadeRps>{{ nfse.lista_rps|length }}</ns3:QuantidadeRps>
+        <ns3:ListaRps>
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
+        </ns3:ListaRps>
+    </LoteRps>
+</EnviarLoteRpsEnvio>

@@ -1,3 +1,4 @@
+requests
 lxml >= 3.5.0, < 5
 coveralls
 Jinja2
