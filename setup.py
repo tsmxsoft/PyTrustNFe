@@ -58,6 +58,7 @@ later (LGPLv2+)",
             "nfse/portalfacil/templates/*xml",
             "nfse/giss/templates/*xml",
             "nfse/ipm/templates/*xml",
+            "nfse/saatri/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
