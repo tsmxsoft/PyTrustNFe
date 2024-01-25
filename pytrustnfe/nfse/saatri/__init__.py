@@ -8,7 +8,7 @@ from OpenSSL import crypto
 from base64 import b64encode
 
 from requests import Session
-from zeep import Client
+from zeep import Client, xsd
 from zeep.transports import Transport
 from zeep.wsse.username import UsernameToken
 from zeep.exceptions import Fault as ZeepFault
@@ -38,8 +38,6 @@ def _render(certificado, method, **kwargs):
     lote = ""
     referencia = ""
     kwargs["method"] = method
-    if method == "RecepcionarLoteRps":
-        referencia = kwargs.get("nfse").get("numero_lote")
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
 
@@ -48,6 +46,7 @@ def _render(certificado, method, **kwargs):
         xml_string_send, parser=parser)
 
     if method == "RecepcionarLoteRps":
+        referencia = kwargs.get("nfse").get("numero_lote")
         for item in kwargs["nfse"]["lista_rps"]:
             reference = "rps:{0}{1}".format(
                 item.get('numero'), item.get('serie'))
@@ -57,10 +56,6 @@ def _render(certificado, method, **kwargs):
         xml_signed_send = signer.assina_xml(
             xml_send, "lote:{0}".format(referencia))
     
-        return xml_signed_send
-    
-    if method == "CancelarNfse":
-        xml_signed_send = signer.assina_xml(xml_send, "1")
         return xml_signed_send
 
     return xml_string_send
@@ -116,24 +111,41 @@ def _send(certificado, method, **kwargs):
     elif method == "ConsultarLoteRps":
         usuario = kwargs["consulta"]["usuario"]
         senha = kwargs["consulta"]["senha"]
+    elif method == "CancelarNfse":
+        usuario = kwargs["cancelamento"]["usuario"]
+        senha = kwargs["cancelamento"]["senha"]
 
-    client = Client(wsdl=base_url + '?wsdl', transport=transport)
+    client = Client(wsdl=base_url + '?wsdl', transport=transport, wsse=UsernameToken(
+        usuario,
+        senha))
+    
+    security_header = xsd.Element('{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}Security', xsd.ComplexType([
+        xsd.Attribute('{http://schemas.xmlsoap.org/soap/envelope/}mustUnderstand', xsd.String()),
+        xsd.Element(
+            '{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken',
+            xsd.ComplexType([
+                xsd.Attribute('{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Id', xsd.String()),
+            ])),
+    ]))
+    security_header_value = security_header(
+        mustUnderstand='1',
+        UsernameToken={'Id': 'UsernameToken-2'})
 
     xml_send = {}
     xml_send = {
         "nfseDadosMsg": "<![CDATA[" + kwargs["xml"] + "]]>",
-        "nfseCabecMsg": """<![CDATA[<?xml version="1.0"?>
-        <cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.01">
-            <versaoDados>2.01</versaoDados>
+        "nfseCabecMsg": """<![CDATA[
+        <cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.03">
+            <versaoDados>2.03</versaoDados>
         </cabecalho>]]>""",
+        "_soapheaders": [security_header_value],
     }
     #No geral a Saatri não indica o service default
     service = client.bind('nfse', 'BasicHttpBinding_Infse')
 
     try:
         response = service[method](**xml_send)
-        #response, obj = sanitize_response(response)
-        obj = None
+        response, obj = sanitize_response(response)
     except ZeepFault as e:
         response = e.__dict__
         obj = None
@@ -181,10 +193,10 @@ def consultar_lote_rps(certificado, **kwargs):
 
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return _render(certificado, "cancelarNfse", **kwargs)
+    return _render(certificado, "CancelarNfse", **kwargs)
 
 
 def cancelar_nfse(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
-    return _send(certificado, "cancelarNfse", **kwargs)
+    return _send(certificado, "CancelarNfse", **kwargs)
