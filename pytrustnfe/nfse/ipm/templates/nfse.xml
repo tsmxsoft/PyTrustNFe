@@ -13,13 +13,13 @@
     </rps>
     <nf>
         <valor_total>{{ nfse.servico.valor_servico | comma }}</valor_total>
-        <valor_desconto>{{ nfse.servico.valor_descontos | comma | default("0,00") }}</valor_desconto>
-        <valor_ir>{{ nfse.servico.ir | comma | default("0,00") }}</valor_ir>
-        <valor_inss>{{ nfse.servico.inss | comma | default("0,00") }}</valor_inss>
-        <valor_contribuicao_social>{{ nfse.servico.csll | comma | default("0,00") }}</valor_contribuicao_social>
+        <valor_desconto>{{ nfse.servico.valor_descontos | default("0.00") | comma }}</valor_desconto>
+        <valor_ir>{{ nfse.servico.ir | default("0.00") | comma }}</valor_ir>
+        <valor_inss>{{ nfse.servico.inss | default("0.00") | comma }}</valor_inss>
+        <valor_contribuicao_social>{{ nfse.servico.csll | default("0.00") | comma }}</valor_contribuicao_social>
         <valor_rps>0,00</valor_rps>
-        <valor_pis>{{ nfse.servico.pis | comma | default("0,00") }}</valor_pis>
-        <valor_cofins>{{ nfse.servico.cofins | comma | default("0,00") }}</valor_cofins>
+        <valor_pis>{{ nfse.servico.pis | default("0.00") | comma }}</valor_pis>
+        <valor_cofins>{{ nfse.servico.cofins | default("0.00") | comma }}</valor_cofins>
     </nf>
     <prestador>
         <cpfcnpj>{{ nfse.prestador.cnpj }}</cpfcnpj>
@@ -51,7 +51,7 @@
             <codigo_local_prestacao_servico>{{ nfse.cidade_tom }}</codigo_local_prestacao_servico>
             <codigo_item_lista_servico>{{ nfse.servico.codigo_atividade }}</codigo_item_lista_servico>
             <descritivo>{{ nfse.servico.discriminacao }}</descritivo>
-            <aliquota_item_lista_servico>{{ nfse.servico.aliquota | float * 100 | comma }}</aliquota_item_lista_servico>
+            <aliquota_item_lista_servico>{{ "{:10.4f}".format(nfse.servico.aliquota | float * 100.00) | comma }}</aliquota_item_lista_servico>
             {% if nfse.servico.iss_retido == 1 %}
             <situacao_tributaria>2</situacao_tributaria>
             {% elif nfse.eligibilidade_iss == 3 %}
