@@ -62,9 +62,9 @@
             <situacao_tributaria>0</situacao_tributaria>
             {% endif %}
             <valor_tributavel>{{ nfse.servico.valor_servico | comma }}</valor_tributavel>
-            <valor_deducao>{{ nfse.servico.deducoes | comma }}</valor_deducao>
+            <valor_deducao>{{ nfse.servico.deducoes | default("0.00") | comma }}</valor_deducao>
             {% if nfse.servico.iss_retido == 2 %}
-            <valor_issrf>{{ nfse.servico.iss }}</valor_issrf>
+            <valor_issrf>{{ nfse.servico.iss | default("0.00") | comma }}</valor_issrf>
             {% else %}
             <valor_issrf>0,00</valor_issrf>
             {% endif %}
