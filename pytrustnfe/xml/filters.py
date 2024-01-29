@@ -6,6 +6,7 @@ from decimal import Decimal
 from datetime import date
 from datetime import datetime
 from unicodedata import normalize
+from jinja2.exceptions import UndefinedError
 import sys
 
 
@@ -116,17 +117,25 @@ def format_date(value):
     """
     Format date
     """
-    dt_format = "%Y-%m-%d"
-    if isinstance(value, date):
-        return value.strftime(dt_format)
-    return value
+    try:
+        dt_format = "%Y-%m-%d"
+        if isinstance(value, date):
+            return value.strftime(dt_format)
+        return value
+    except UndefinedError:
+        return ''
+    except Exception:
+        return value
 
 
 def format_with_comma(value):
-    if value is None:
+    try:
+        if isinstance(value, float):
+            return ("%.2f" % value).replace(".", ",")
+        else:
+            return ("%.2f" % float(value)).replace(".",",")
         return value
-    if isinstance(value, float):
-        return ("%.2f" % value).replace(".", ",")
-    else:
-        return ("%.2f" % float(value)).replace(".",",")
-    return value
+    except UndefinedError:
+        return ''
+    except Exception:
+        return value
