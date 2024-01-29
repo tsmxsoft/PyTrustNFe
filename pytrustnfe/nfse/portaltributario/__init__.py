@@ -82,45 +82,35 @@ def _send(certificado, method, **kwargs):
     transport = Transport(session=session)
 
     client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
-    with client.settings(strict=False, raw_response=True):
-        xml_send = {
-            "nfseDadosMsg": kwargs["xml"],
-            "nfseCabecMsg": """<?xml version="1.0"?>
-            <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
-            <versaoDados>2.04</versaoDados>
-            </cabecalho>""",
-        }
+    xml_send = {
+        "nfseDadosMsg": kwargs["xml"],
+        "nfseCabecMsg": """
+        <cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd">
+        <versaoDados>2.04</versaoDados>
+        </cabecalho>""",
+    }
 
-        def get_service(client, translation):
-            if translation:
-                service_binding = client.service._binding.name
-                service_address = client.service._binding_options['address']
-                
-                return client.create_service(service_binding,
-                                            service_address.replace(*translation))
-            else:
-                return client.service
+    xml = client.service[method](**xml_send)
+    obj = None
+    print('rapadura')
+    print(xml)
+    
+    if xml:
+        xml, obj = sanitize_response(xml)
 
-        service = get_service(client=client, translation=('nfse.asmx', base_url))
-        xml = service[method](**xml_send).__dict__.get('_content') or ""
-        obj = None
-        
-        if xml:
-            xml, obj = sanitize_response(xml)
+    print ('--- xml response ---')
+    print (xml)
 
-        print ('--- xml response ---')
-        print (xml)
-
-        return {"sent_xml": xml_send, "received_xml": xml, "object": obj}
+    return {"sent_xml": xml_send, "received_xml": xml, "object": obj}
     
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
+    return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 def xml_consultar_lote_rps(certificado, **kwargs):
     return _render(certificado, "ConsultarLoteRps", **kwargs)
