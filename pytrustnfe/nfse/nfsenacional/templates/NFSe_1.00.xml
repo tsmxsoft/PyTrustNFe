@@ -1,5 +1,5 @@
 <NFSe xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
-    <infNFSe Id="">
+    <infNFSe Id="{{ NFSe.infNFSe.Id }}">
         <xLocEmi></xLocEmi>
         <xLocPrestacao></xLocPrestacao>
         <nNFSe></nNFSe>
@@ -11,7 +11,7 @@
         <verAplic></verAplic>
         <ambGer></ambGer>
         <tpEmis></tpEmis>
-        <procEmi></procEmi>
+        <procEmi>1</procEmi>
         <cStat></cStat>
         <dhProc></dhProc>
         <nDFSe></nDFSe>
@@ -43,7 +43,7 @@
             <vLiq></vLiq>
             <xOutInf></xOutInf>
         </valores>
-        <DPS xmlns="http://www.sped.fazenda.gov.br/nfse">
+        <DPS>
             <infDPS Id="" versao="1.00">
                 <tpAmb></tpAmb>
                 <dhEmi></dhEmi>
