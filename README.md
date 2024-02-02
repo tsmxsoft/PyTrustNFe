@@ -20,6 +20,7 @@ Dependências:
 NFSe - Empresas Atendidas
 -----------------------------
 * **Agiliblue**
+* **Aspec**
 * **Betha**
 * **Directa** - Natal/RN
 * **DSF**
