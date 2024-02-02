@@ -35,7 +35,7 @@ NFSe - Empresas Atendidas
 * **Memory (NFSe Brasil)**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
-* **Portal Fácil**
+* **Portal Tributário (C3 Consultoria)**
 * **Recife** - Recife/PE
 * **Saatri**
 * **SmartAPD** - Cariacica/ES
