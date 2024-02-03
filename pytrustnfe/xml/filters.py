@@ -26,6 +26,13 @@ def normalize_str(string):
     return ""
 
 
+def zfill_str(string,qtd):
+    """
+    Adiciona Zero's a esquerda
+    """
+    return string.zfill(qtd)
+
+
 def strip_line_feed(string):
     if string:
         if not isinstance(string, str):

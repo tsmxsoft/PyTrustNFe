@@ -676,6 +676,7 @@ UFPR = {
         }
     }
 }
+UFPR[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFRS = {
     NFE_MODELO: {

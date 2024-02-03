@@ -239,9 +239,9 @@ def gerar_chave_nfcom(obj_chave, prefix="NFCom"):
         obj_chave.modelo,
         str(obj_chave.serie).zfill(3),
         str(obj_chave.numero).zfill(9),
-        obj_chave.site_aut,
         obj_chave.tipo,
-        obj_chave.codigo,
+        obj_chave.site_aut,
+        obj_chave.codigo.zfill(7),
     )
     chave_parcial = re.sub("[^0-9]", "", chave_parcial)
     soma = 0

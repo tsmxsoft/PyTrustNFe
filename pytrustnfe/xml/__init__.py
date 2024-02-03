@@ -37,6 +37,7 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     env.filters["format_date"] = filters.format_date
     env.filters["comma"] = filters.format_with_comma
     env.filters["ibge2siafi"] = filter_ibge2siafi
+    env.filters["zfill_str"] = filters.zfill_str
 
     template = env.get_template(template_name)
     xml = template.render(**nfe)

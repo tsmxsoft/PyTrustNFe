@@ -341,12 +341,12 @@
         {% endif %}
         {% if gRespTec is defined -%}
         <gRespTec>
-            <CNPJ>{{ CNPJ }}</CNPJ>
-            <xContato>{{ xContato }}</xContato>
-            <email>{{ email }}</email>
-            <fone>{{ fone }}</fone>
-            <idCSRT>{{ idCSRT }}</idCSRT>
-            <hashCSRT>{{ hashCSRT }}</hashCSRT>
+            <CNPJ>{{ gRespTec.CNPJ }}</CNPJ>
+            <xContato>{{ gRespTec.xContato }}</xContato>
+            <email>{{ gRespTec.email }}</email>
+            <fone>{{ gRespTec.fone }}</fone>
+            <idCSRT>{{ gRespTec.idCSRT }}</idCSRT>
+            <hashCSRT>{{ gRespTec.hashCSRT }}</hashCSRT>
         </gRespTec>
         {% endif %}
     </infNFCom>
