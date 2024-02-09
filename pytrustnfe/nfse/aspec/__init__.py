@@ -87,15 +87,18 @@ def _obj_send_parser(**kwargs):
             'cmu': rps["tomador"]["codigo_municipio"],
             'iba': bairroID,
         }
-    retlog = _consultar(kwargs.get('base_url'), 'Logradouros', logparams)
-    for log in retlog:
-        if log["nome"].lower().strip() == rps["tomador"]["endereco"].lower().strip():
-            logID = log["id"]
-            break
+        retlog = _consultar(kwargs.get('base_url'), 'Logradouros', logparams)
+        for log in retlog:
+            if log["nome"].lower().strip() == rps["tomador"]["endereco"].lower().strip():
+                logID = log["id"]
+                break
     if logID:
         rpsobj["logradouroId"] = logID
     else:
         rpsobj["logradouroEnderecoTomador"] = rps["tomador"]["endereco"]
+
+    if bairroID and not logID:
+        rpsobj.pop("bairroId")
 
     return rpsobj
 
