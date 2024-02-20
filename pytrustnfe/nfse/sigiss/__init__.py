@@ -3,8 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import os
-from OpenSSL import crypto
-from base64 import b64encode
 
 from requests import Session
 from zeep import Client
@@ -66,11 +64,8 @@ def _render_unsigned(certificado, method, **kwargs):
     return xml
 
 def _send(certificado, method, **kwargs):
-    base_url = ""
-    if kwargs["ambiente"] == "homologacao":
-        base_url = "https://ws.oportaltributario.com.br/colinas/homologacao/nfse.wsdl"
-    else:
-        base_url = "https://ws.oportaltributario.com.br/colinas/nfse.wsdl"
+
+    base_url = kwargs.get("base_url", None)
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)

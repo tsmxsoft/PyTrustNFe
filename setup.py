@@ -59,6 +59,7 @@ later (LGPLv2+)",
             "nfse/giss/templates/*xml",
             "nfse/ipm/templates/*xml",
             "nfse/saatri/templates/*xml",
+            "nfse/sigiss/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
