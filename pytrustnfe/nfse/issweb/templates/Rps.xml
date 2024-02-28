@@ -85,6 +85,7 @@
         </Tomador>
         <OptanteSimplesNacional>{{ rps.optante_simples | default("2", true) }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal | default("2", true) }}</IncentivoFiscal>
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         {% if rps.intermediario is defined -%}
         <IntermediarioServico>
             <IdentificacaoTomador>
