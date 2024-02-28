@@ -41,6 +41,7 @@ NFSe - Empresas Atendidas
 * **SmartAPD** - Cariacica/ES
 * **SIASP (Publica)**
 * **SIAP Sistemas**
+* **SIGISS**
 * **Speedgov**
 * **Susesu**
 * **Simpliss**
