@@ -38,7 +38,7 @@ def _render(certificado, method, **kwargs):
         reference = "rps:{0}{1}".format(
             item.get('numero'), item.get('serie'))
 
-        signer.assina_xml(xml_send, reference, remove_attrib='Id')
+        xml_signed_send = signer.assina_xml(xml_send, reference)
 
     xml_signed_send = signer.assina_xml(
         xml_send, "lote:{0}".format(referencia))
