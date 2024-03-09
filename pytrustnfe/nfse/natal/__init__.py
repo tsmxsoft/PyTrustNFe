@@ -35,17 +35,14 @@ def _render(certificado, method, **kwargs):
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
 
-    if method in ["RecepcionarLoteRps","CancelarNfse"]:
-        for item in kwargs["nfse"]["lista_rps"]:
-            reference = "rps:{0}{1}".format(
-                item.get('numero'), item.get('serie'))
+    for item in kwargs["nfse"]["lista_rps"]:
+        reference = "rps:{0}{1}".format(
+            item.get('numero'), item.get('serie'))
 
         signer.assina_xml(xml_send, reference)
 
-        xml_signed_send = signer.assina_xml(
-            xml_send, "lote:{0}".format(referencia))
-    else:
-        xml_signed_send = etree.tostring(xml_send)
+    xml_signed_send = signer.assina_xml(
+        xml_send, "lote:{0}".format(referencia))
 
     return xml_signed_send
 
