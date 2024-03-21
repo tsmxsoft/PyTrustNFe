@@ -6,10 +6,10 @@
                 <Serie>{{ rps.serie }}</Serie>
                 <Tipo>{{ rps.tipo_rps }}</Tipo>
             </IdentificacaoRps>
-            <DataEmissao>{{ rps.data_emissao.split('T')[0] }}</DataEmissao>
+            <DataEmissao>{{ rps.data_emissao | format_datetime_wslashes_ymd }}</DataEmissao>
             <Status>1</Status>
         </Rps>
-        <Competencia>{{ rps.data_emissao.split('T')[0] }}</Competencia>
+        <Competencia>{{ rps.data_emissao | format_datetime_wslashes_ymd  }}</Competencia>
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos> 
@@ -83,9 +83,9 @@
             </OrgaoGerador>
             {% endif %}
         </Tomador>
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples | default("2", true) }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal | default("2", true) }}</IncentivoFiscal>
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         {% if rps.intermediario is defined -%}
         <IntermediarioServico>
             <IdentificacaoTomador>

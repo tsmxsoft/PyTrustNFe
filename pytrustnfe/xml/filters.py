@@ -75,6 +75,14 @@ def format_datetime_ymd(value):
     obj = datetime.strptime(value,"%Y-%m-%dT%H:%M:%S")
     return obj.strftime("%Y-%m-%d")
 
+def format_datetime_wslashes_ymd(value):
+    """
+    format datetime string 
+    to day/month/year string
+    """
+    obj = datetime.strptime(value,"%Y%m%dT%H%M%S")
+    return obj.strftime("%Y-%m-%d")
+
 def format_numeric(value, digits, decimals = 2, has_dot = True, replace_comma = False):
     """
     format numeric (int or decimal)

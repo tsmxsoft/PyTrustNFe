@@ -19,6 +19,8 @@ from pytrustnfe.nfse.siasp.assinatura import Assinatura
 
 from datetime import datetime, timedelta
 import requests 
+
+
 def _render_xml(certificado, method, **kwargs):
     kwargs['method'] = method
     path = os.path.join(os.path.dirname(__file__), "templates")
