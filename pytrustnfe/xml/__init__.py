@@ -25,6 +25,7 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     env.filters["format_datetime"] = filters.format_datetime
     env.filters["format_datetime_dmy"] = filters.format_datetime_dmy
     env.filters["format_datetime_ymd"] = filters.format_datetime_ymd
+    env.filters["format_datetime_wslashes_ymd"] = filters.format_datetime_wslashes_ymd
     env.filters["format_datetime_hms"] = filters.format_datetime_hms
     env.filters["format_numeric"] = filters.format_numeric
     env.filters["format_cep"] = filters.format_cep
