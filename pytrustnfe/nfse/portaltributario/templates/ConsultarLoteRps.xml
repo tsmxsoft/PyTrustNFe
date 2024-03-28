@@ -1,11 +1,9 @@
-<ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
-  <IdentificacaoRps>
-    <Numero>{{nfse.rps.numero}}</Numero>
-    <Serie>{{nfse.rps.serie}}</Serie>
-    <Tipo>{{nfse.rps.tipo}}</Tipo>
-  </IdentificacaoRps>
-  <Prestador>
-    <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
-    <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
-  </Prestador>
-</ConsultarNfseRpsEnvio>
+<ConsultarLoteRpsEnvio xmlns="http://ws.oportaltributario.com.br/colinas/schema/nfse_v204.xsd">
+    <Prestador>
+        <CpfCnpj>
+            <Cnpj>{{nfse.cnpj_prestador}}</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>{{nfse.inscricao_municipal}}</InscricaoMunicipal>
+    </Prestador>
+    <Protocolo>{{nfse.protocolo}}</Protocolo>
+</ConsultarLoteRpsEnvio>
