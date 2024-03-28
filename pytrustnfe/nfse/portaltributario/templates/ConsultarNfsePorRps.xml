@@ -1,4 +1,4 @@
-<ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+<ConsultarNfseRpsEnvio xmlns="http://ws.oportaltributario.com.br/colinas/schema/nfse_v204.xsd">
 	<Pedido Id="rps:{{nfse.rps.numero}}{{nfse.rps.serie}}">
 		<IdentificacaoRps>
             <Numero>{{nfse.rps.numero}}</Numero>

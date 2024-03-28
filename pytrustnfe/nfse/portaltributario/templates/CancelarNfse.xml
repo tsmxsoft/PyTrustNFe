@@ -1,4 +1,4 @@
-<CancelarNfseEnvio xmlns="http://nfse.abrasf.org.br">
+<CancelarNfseEnvio xmlns="http://ws.oportaltributario.com.br/colinas/schema/nfse_v204.xsd">
     <Pedido>
         <InfPedidoCancelamento Id="1">
             <IdentificacaoNfse>
