@@ -31,6 +31,7 @@ XML_ERRADO = (
 
 class test_assinatura(unittest.TestCase):
 
+    __name__ = 'assinatura'
     caminho = os.path.dirname(__file__)
 
     def test_assinar_xml_senha_invalida(self):
@@ -57,6 +58,7 @@ class test_assinatura(unittest.TestCase):
 
     @unittest.skip
     def test_assinar_xml_valido(self):
+        print(self.caminho)
         pfx = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
         signer = Assinatura(pfx, "123456")
         xml = signer.assina_xml(

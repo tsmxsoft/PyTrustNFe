@@ -1,11 +1,14 @@
 # coding=utf-8
 
 import os.path
+import sys
 import unittest
 from lxml import etree
 from pytrustnfe.xml import render_xml
 from pytrustnfe.xml import sanitize_response
 
+if sys.version_info >= (3, 0):
+    unicode = str
 
 class test_xml_serializacao(unittest.TestCase):
     def test_serializacao_default(self):
@@ -22,9 +25,8 @@ class test_xml_serializacao(unittest.TestCase):
         xmlElem = render_xml(
             path, "jinja_template.xml", True, tag1="oi", tag2="ola", tag3="comovai"
         )
-        xml = etree.tostring(xmlElem, encoding=str)
         result = open(os.path.join(path, "jinja_remove_empty.xml"), "r").read()
-        self.assertEqual(xml + "\n", result)
+        self.assertEqual(xmlElem + "\n", result)
 
     def test_sanitize_response(self):
         path = os.path.join(os.path.dirname(__file__), "XMLs")

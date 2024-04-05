@@ -1,11 +1,14 @@
 # coding=utf-8
 
+import sys
 import tempfile
 import os.path
 import unittest
 from lxml import etree
 from pytrustnfe.nfe.danfe import danfe
 
+if sys.version_info >= (3, 0):
+    unicode = str
 
 class test_danfe(unittest.TestCase):
 

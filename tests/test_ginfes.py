@@ -9,6 +9,7 @@ from pytrustnfe.nfse.ginfes import consultar_situacao_lote
 
 class test_nfse_ginfes(unittest.TestCase):
 
+    __name__ = "nfse_ginfes"
     caminho = os.path.dirname(__file__)
 
     @unittest.skip
