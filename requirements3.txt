@@ -1,0 +1,21 @@
+setuptools == 69.2.0
+requests
+lxml >= 3.5.0, < 5
+coveralls
+Jinja2 < 3.1
+signxml
+urllib3 >= 1.22
+suds-community
+defusedxml >= 0.4.1, < 1
+eight >= 0.3.0, < 1
+cryptography >=38.0.0, != 40.0.0, != 40.0.1, <42
+pyopenssl==23.2.0
+certifi >= 2015.11.20.1
+xmlsec
+reportlab
+pytest>=4.1.1
+pytest-cov
+pytz
+zeep
+numpy>=1.16.6
+openvino-telemetry>=2023.2.1

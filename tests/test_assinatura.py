@@ -35,7 +35,8 @@ class test_assinatura(unittest.TestCase):
     caminho = os.path.dirname(__file__)
 
     def test_assinar_xml_senha_invalida(self):
-        pfx = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
+        file = open(os.path.join(self.caminho, "teste.pfx"), "rb")
+        pfx = file.read()
         signer = Assinatura(pfx, "123")
         self.assertRaises(
             Exception,
@@ -44,9 +45,11 @@ class test_assinatura(unittest.TestCase):
             etree.fromstring(XML_ASSINAR),
             "NFe43150602261542000143550010000000761792265342",
         )
+        file.close()
 
     def test_assinar_xml_invalido(self):
-        pfx = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
+        file = open(os.path.join(self.caminho, "teste.pfx"), "rb")
+        pfx = file.read()
         signer = Assinatura(pfx, "123456")
         self.assertRaises(
             Exception,
@@ -55,17 +58,21 @@ class test_assinatura(unittest.TestCase):
             etree.fromstring(XML_ERRADO),
             "NFe43150602261542000143550010000000761792265342",
         )
+        file.close()
 
     @unittest.skip
     def test_assinar_xml_valido(self):
-        print(self.caminho)
-        pfx = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
+        file = open(os.path.join(self.caminho, "teste.pfx"), "rb")
+        pfx = file.read()
         signer = Assinatura(pfx, "123456")
         xml = signer.assina_xml(
             etree.fromstring(XML_ASSINAR),
             "NFe43150602261542000143550010000000761792265342",
         )
-        xml_assinado = open(
+        file_assinado = open(
             os.path.join(self.caminho, "xml_valido_assinado.xml"), "r"
-        ).read()
+        )
+        xml_assinado = file_assinado.read()
         self.assertEqual(xml_assinado, xml, "Xml assinado é inválido")
+        file.close()
+        file_assinado.close()

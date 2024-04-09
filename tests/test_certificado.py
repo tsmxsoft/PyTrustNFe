@@ -53,28 +53,40 @@ class test_assinatura(unittest.TestCase):
     caminho = os.path.dirname(__file__)
 
     def test_preparar_pfx(self):
-        dir_pfx = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
+        file = open(os.path.join(self.caminho, "teste.pfx"), "rb")
+        dir_pfx = file.read()
         cert, key = extract_cert_and_key_from_pfx(dir_pfx, "123456")
         self.assertEqual(key, CHAVE, "Chave gerada inválida")
         self.assertEqual(cert, CERTIFICADO, "Certificado inválido")
+        file.close()
 
     def test_save_pfx(self):
-        pfx_source = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
+        file = open(os.path.join(self.caminho, "teste.pfx"), "rb")
+        pfx_source = file.read()
         pfx = Certificado(pfx_source, "123")
         path = pfx.save_pfx()
-        saved = open(path, "rb").read()
+        saved_file = open(path, "rb")
+        saved = saved_file.read()
         self.assertEqual(
             pfx_source, saved, "Arquivo pfx salvo não bate com arquivo lido"
         )
+        saved_file.close()
+        file.close()
 
     def test_save_cert_and_key(self):
-        dir_pfx = open(os.path.join(self.caminho, "teste.pfx"), "rb").read()
+        file = open(os.path.join(self.caminho, "teste.pfx"), "rb")
+        dir_pfx = file.read()
         cert, key = extract_cert_and_key_from_pfx(dir_pfx, "123456")
         cert_path, key_path = save_cert_key(cert, key)
-        cert_saved = open(cert_path, "r").read()
-        key_saved = open(key_path, "r").read()
+        cert_saved_file = open(cert_path, "r")
+        cert_saved = cert_saved_file.read()
+        key_saved_file = open(key_path, "r")
+        key_saved = key_saved_file.read()
         self.assertEqual(cert, cert_saved, "Certificado não corresponde ao original")
         self.assertEqual(key, key_saved, "Chave não corresponde ao original")
+        file.close()
+        cert_saved_file.close()
+        key_saved_file.close()
 
     def test_pfx_nao_existe(self):
         self.assertRaises(

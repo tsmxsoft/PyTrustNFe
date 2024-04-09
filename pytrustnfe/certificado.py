@@ -2,6 +2,7 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import sys
 import tempfile
 from OpenSSL import crypto
 
@@ -20,6 +21,8 @@ class Certificado(object):
 
 
 def extract_cert_and_key_from_pfx(pfx, password):
+    if sys.version_info[0] > 2:
+        password = str.encode(password)
     pfx = crypto.load_pkcs12(pfx, password)
     # PEM formatted private key
     key = crypto.dump_privatekey(crypto.FILETYPE_PEM, pfx.get_privatekey())
