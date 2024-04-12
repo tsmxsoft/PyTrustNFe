@@ -9,12 +9,27 @@ Dependências:
 * PyXmlSec
 * lxml
 * signxml
-* suds-jurko
-* suds-jurko-requests
+* certifi
+* numpy
+* pyopenssl
+* cryptography
+* eight
+* defusedxml
 * reportlab
 * Jinja2
 * requests
 * zeep
+
+
+Apple M1/M2/M3 Fixes (Arm)
+-----------------------------
+- https://stackoverflow.com/questions/76005401/cant-install-xmlsec-via-pip
+
+
+Ambientes
+-----------------------------
+Python2 (testado 2.7.18) - requirements.txt
+Python3 (testado 3.12.2) - requirements3.txt
 
 
 NFSe - Empresas Atendidas
@@ -43,7 +58,6 @@ NFSe - Empresas Atendidas
 * **SIAP Sistemas**
 * **SIGISS**
 * **Speedgov**
-* **Susesu**
 * **Simpliss**
 * **Tiplan**
 * **Tinus Informatica**
@@ -52,7 +66,7 @@ NFSe - Empresas Atendidas
 
 Roadmap
 --------------
-* Teste unitários
+* Teste unitários de cada NFSe
 * Objeto padronizado de retorno (Padronização e implementação)
 * NFCom (NF Modelo 62)
 * NFSe Tributus

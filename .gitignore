@@ -5,6 +5,7 @@
 .project
 .pydevproject
 .settings/*
+__pycache__
 
 # build artifacts from python setup.py build or python setup.py install
 build/

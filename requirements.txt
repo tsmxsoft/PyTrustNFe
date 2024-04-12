@@ -2,16 +2,12 @@ requests
 lxml >= 3.5.0, < 5
 coveralls
 Jinja2
-signxml
+signxml == 2.8.1
 urllib3 >= 1.22
-suds-jurko < 0.6
-suds-jurko-requests >= 1.1
-defusedxml >= 0.4.1, < 1
-eight >= 0.3.0, < 1
 cryptography >= 1.8, < 3
 pyOpenSSL == 19.1.0
 certifi >= 2015.11.20.1
-xmlsec >= 1.3.3
+xmlsec >= 1.3.7
 reportlab == 3.3.0
 pytest>=4.1.1
 pytest-cov
