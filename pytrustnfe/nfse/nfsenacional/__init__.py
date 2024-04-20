@@ -50,7 +50,7 @@ def _generate_nfse_id(**kwargs):
 
 
 def _generate_nfse_dps_id(**kwargs):
-    dps = kwargs["NFSe"]["infNFSe"]["DPS"]
+    dps = kwargs["NFSe"]["infNFSe"]["DPS"][0]
     vals = {
         "ibge_num": dps["cLocEmi"],
         "tipo_insc_fed": 1 if len(dps["prest"]["cnpj_cpf"]) == 11 else 2,
@@ -60,7 +60,7 @@ def _generate_nfse_dps_id(**kwargs):
     }
     chave_nfse_dps = ChaveNFSeNacionalDPS(**vals)
     chave_nfse_dps = gerar_chave_nfsenacional_dps(chave_nfse_dps, "DPS")
-    kwargs["NFSe"]["infNFSe"]["DPS"]["Id"] = chave_nfse_dps
+    kwargs["NFSe"]["infNFSe"]["DPS"][0]["Id"] = chave_nfse_dps
 
 
 def _render(certificado, method, sign, **kwargs):
@@ -70,8 +70,8 @@ def _render(certificado, method, sign, **kwargs):
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
         if method == "NFSe":
-            #Assina DPS
-            signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"]["Id"])
+            #Assina DPS (hoje 1-1, talvez amanhã 1-N)
+            #signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"]["Id"])
             #Assina NFSe
             xml_send = signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["Id"])
 

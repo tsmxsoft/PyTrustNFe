@@ -1,119 +1,137 @@
 <NFSe xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
     <infNFSe Id="{{ NFSe.infNFSe.Id }}">
-        <xLocEmi></xLocEmi>
-        <xLocPrestacao></xLocPrestacao>
-        <nNFSe></nNFSe>
-        <cLocIncid></cLocIncid>
-        <xLocIncid></xLocIncid>
-        <xTribNac></xTribNac>
-        <xTribMun></xTribMun>
-        <xNBS></xNBS>
-        <verAplic></verAplic>
-        <ambGer></ambGer>
-        <tpEmis></tpEmis>
-        <procEmi>1</procEmi>
-        <cStat></cStat>
-        <dhProc></dhProc>
-        <nDFSe></nDFSe>
+        <xLocEmi>{{ NFSe.infNFSe.xLocEmi }}</xLocEmi>
+        <xLocPrestacao>{{ NFSe.infNFSe.xLocPrestacao }}</xLocPrestacao>
+        <nNFSe>{{ NFSe.infNFSe.nNFSe }}</nNFSe>
+        <cLocIncid>{{ NFSe.infNFSe.cLocIncid }}</cLocIncid>
+        <xLocIncid>{{ NFSe.infNFSe.xLocIncid }}</xLocIncid>
+        <xTribNac>{{ NFSe.infNFSe.xTribNac }}</xTribNac>
+        <xTribMun>{{ NFSe.infNFSe.xTribMun }}</xTribMun>
+        <xNBS>{{ NFSe.infNFSe.xNBS }}</xNBS>
+        <verAplic>{{ NFSe.infNFSe.verAplic }}</verAplic>
+        <ambGer>{{ NFSe.infNFSe.ambGer }}</ambGer>
+        <tpEmis>{{ NFSe.infNFSe.tpEmis }}</tpEmis>
+        <procEmi>{{ NFSe.infNFSe.procEmi }}</procEmi>
+        <cStat>{{ NFSe.infNFSe.cStat }}</cStat>
+        <dhProc>{{ NFSe.infNFSe.dhProc }}</dhProc>
+        <nDFSe>{{ NFSe.infNFSe.nDFSe }}</nDFSe>
+        {% with emit = NFSe.infNFSe.emit %}
         <emit>
-            <CNPJ></CNPJ>
-            <IM></IM>
-            <xNome></xNome>
-            <xFant></xFant>
+            <CNPJ>{{ emi.CNPJ }}</CNPJ>
+            <IM>{{ emi.IM }}</IM>
+            <xNome>{{ emi.xNome }}</xNome>
+            <xFant>{{ emi.xFant }}</xFant>
             <enderNac>
-                <xLgr></xLgr>
-                <nro></nro>
-                <xCpl></xCpl>
-                <xBairro></xBairro>
-                <cMun></cMun>
-                <UF></UF>
-                <CEP></CEP>
+                <xLgr>{{ emi.xLgr }}</xLgr>
+                <nro>{{ emi.nro }}</nro>
+                <xCpl>{{ emi.xCpl }}</xCpl>
+                <xBairro>{{ emi.xBairro }}</xBairro>
+                <cMun>{{ emi.cMun }}</cMun>
+                <UF>{{ emi.UF }}</UF>
+                <CEP>{{ emi.CEP }}</CEP>
             </enderNac>
-            <fone></fone>
-            <email></email>
+            <fone>{{ emi.fone }}</fone>
+            <email>{{ emi.email }}</email>
         </emit>
+        {% endwith %}
+        {% with valores = NFSe.infNFSe.valores %}
         <valores>
-            <vCalcDR></vCalcDR>
-            <tpBM></tpBM>
-            <vCalcBM></vCalcBM>
-            <vBC></vBC>
-            <pAliqAplic></pAliqAplic>
-            <vISSQN></vISSQN>
-            <vTotalRet></vTotalRet>
-            <vLiq></vLiq>
-            <xOutInf></xOutInf>
+            <vCalcDR>{{ valores.vCalcDR }}</vCalcDR>
+            <tpBM>{{ valores.tpBM }}</tpBM>
+            <vCalcBM>{{ valores.vCalcBM }}</vCalcBM>
+            <vBC>{{ valores.vBC }}</vBC>
+            <pAliqAplic>{{ valores.pAliqAplic }}</pAliqAplic>
+            <vISSQN>{{ valores.vISSQN }}</vISSQN>
+            <vTotalRet>{{ valores.vTotalRet }}</vTotalRet>
+            <vLiq>{{ valores.vLiq }}</vLiq>
+            <xOutInf>{{ valores.xOutInf }}</xOutInf>
         </valores>
+        {% endwith %}
+        {% for dps in NFSe.infNFSe.DPS %}
         <DPS>
-            <infDPS Id="" versao="1.00">
-                <tpAmb></tpAmb>
-                <dhEmi></dhEmi>
-                <verAplic></verAplic>
-                <serie></serie>
-                <nDPS></nDPS>
-                <dCompet></dCompet>
-                <tpEmit></tpEmit>
-                <cLocEmi></cLocEmi>
+            <infDPS Id="{{ dps.infDPS.Id }}" versao="1.00">
+                <tpAmb>{{ dps.infDPS.tpAmb }}</tpAmb>
+                <dhEmi>{{ dps.infDPS.dhEmi }}</dhEmi>
+                <verAplic>{{ dps.infDPS.verAplic }}</verAplic>
+                <serie>{{ dps.infDPS.serie }}</serie>
+                <nDPS>{{ dps.infDPS.nDPS }}</nDPS>
+                <dCompet>{{ dps.infDPS.dCompet }}</dCompet>
+                <tpEmit>{{ dps.infDPS.tpEmit }}</tpEmit>
+                <cLocEmi>{{ dps.infDPS.cLocEmi }}</cLocEmi>
+                {% if dps.infDPS.subst is defined -%}
                 <subst>
-                    <chSubstda></chSubstda>
-                    <cMotivo></cMotivo>
-                    <xMotivo></xMotivo>
+                    <chSubstda>{{ dps.infDPS.subst.chSubstda }}</chSubstda>
+                    <cMotivo>{{ dps.infDPS.subst.cMotivo }}</cMotivo>
+                    <xMotivo>{{ dps.infDPS.subst.xMotivo }}</xMotivo>
                 </subst>
+                {% endif %}
+                {% with prest = dps.infDPS.prest %}
                 <prest>
-                    <CNPJ></CNPJ>
-                    <CAEPF></CAEPF>
-                    <IM></IM>
-                    <xNome></xNome>
+                    <CNPJ>{{ prest.CNPJ }}</CNPJ>
+                    <CAEPF>{{ prest.CAEPF }}</CAEPF>
+                    <IM>{{ prest.IM }}</IM>
+                    <xNome>{{ prest.xNome }}</xNome>
+                    {% with end = prest.end %}
                     <end>
                         <endNac>
-                            <cMun></cMun>
-                            <CEP></CEP>
+                            <cMun>{{ end.endNac.cMun }}</cMun>
+                            <CEP>{{ end.endNac.CEP }}</CEP>
                         </endNac>
-                        <xLgr></xLgr>
-                        <nro></nro>
-                        <xCpl></xCpl>
-                        <xBairro></xBairro>
+                        <xLgr>{{ end.xLgr }}</xLgr>
+                        <nro>{{ end.nro }}</nro>
+                        <xCpl>{{ end.xCpl }}</xCpl>
+                        <xBairro>{{ end.xBairro }}</xBairro>
                     </end>
-                    <fone></fone>
-                    <email></email>
+                    {% endwith %}
+                    <fone>{{ end.fone }}</fone>
+                    <email>{{ end.email }}</email>
                     <regTrib>
-                        <opSimpNac></opSimpNac>
-                        <regApTribSN></regApTribSN>
-                        <regEspTrib></regEspTrib>
+                        <opSimpNac>{{ end.regTrib.opSimpNac }}</opSimpNac>
+                        <regApTribSN>{{ end.regTrib.regApTribSN }}</regApTribSN>
+                        <regEspTrib>{{ end.regTrib.regEspTrib }}</regEspTrib>
                     </regTrib>
                 </prest>
+                {% endwith %}
+                {% with toma = dps.infDPS.toma %}
                 <toma>
-                    <CNPJ></CNPJ>
-                    <CAEPF></CAEPF>
-                    <IM></IM>
-                    <xNome></xNome>
+                    <CNPJ>{{ toma.CNPJ }}</CNPJ>
+                    <CAEPF>{{ toma.CAEPF }}</CAEPF>
+                    <IM>{{ toma.IM }}</IM>
+                    <xNome>{{ toma.xNome }}</xNome>
                     <end>
-                        <xLgr></xLgr>
-                        <nro></nro>
-                        <xCpl></xCpl>
-                        <xBairro></xBairro>
+                        <xLgr>{{ toma.end.xLgr }}</xLgr>
+                        <nro>{{ toma.end.nro }}</nro>
+                        <xCpl>{{ toma.end.xCpl }}</xCpl>
+                        <xBairro>{{ toma.end.xBairro }}</xBairro>
                     </end>
-                    <fone></fone>
-                    <email></email>
+                    <fone>{{ toma.fone }}</fone>
+                    <email>{{ toma.email }}</email>
                 </toma>
+                {% endwith %}
+                {% if dps.infDPS.interm is defined -%}
+                {% with interm = dps.infDPS.interm %}
                 <interm>
-                    <CNPJ></CNPJ>
-                    <CAEPF></CAEPF>
-                    <IM></IM>
-                    <xNome></xNome>
+                    <CNPJ>{{ interm.CNPJ }}</CNPJ>
+                    <CAEPF>{{ interm.CAEPF }}</CAEPF>
+                    <IM>{{ interm.IM }}</IM>
+                    <xNome>{{ interm.xNome }}</xNome>
                     <end>
-                        <xLgr></xLgr>
-                        <nro></nro>
-                        <xCpl></xCpl>
-                        <xBairro></xBairro>
+                        <xLgr>{{ interm.end.xLgr }}</xLgr>
+                        <nro>{{ interm.end.nro }}</nro>
+                        <xCpl>{{ interm.end.xCpl }}</xCpl>
+                        <xBairro>{{ interm.end.xBairro }}</xBairro>
                     </end>
-                    <fone></fone>
-                    <email></email>
+                    <fone>{{ interm.fone }}</fone>
+                    <email>{{ interm.email }}</email>
                 </interm>
+                {% endwith %}
+                {% endif %}
+                {% with serv = dps.infDPS.serv %}
                 <serv>
                     <locPrest>
-                        <cLocPrestacao></cLocPrestacao>
-                        <cPaisPrestacao></cPaisPrestacao>
-                        <opConsumServ></opConsumServ>
+                        <cLocPrestacao>{{ serv.locPrest.cLocPrestacao }}</cLocPrestacao>
+                        <cPaisPrestacao>{{ serv.locPrest.cPaisPrestacao }}</cPaisPrestacao>
+                        <opConsumServ>{{ serv.locPrest.opConsumServ }}</opConsumServ>
                     </locPrest>
                     <cServ>
                         <cTribNac></cTribNac>
@@ -122,60 +140,146 @@
                         <cNBS></cNBS>
                         <cIntContrib></cIntContrib>
                     </cServ>
+                    {% if serv.comExt is defined -%}
                     <comExt>
-                        <mdPrestacao></mdPrestacao>
-                        <vincPrest></vincPrest>
-                        <tpMoeda></tpMoeda>
-                        <vServMoeda></vServMoeda>
-                        <mecAFComexP></mecAFComexP>
-                        <mecAFComexT></mecAFComexT>
-                        <movTempBens></movTempBens>
-                        <nDI></nDI>
-                        <nRE></nRE>
-                        <mdic></mdic>
+                        <mdPrestacao>{{ serv.comExt.mdPrestacao }}</mdPrestacao>
+                        <vincPrest>{{ serv.comExt.vincPrest }}</vincPrest>
+                        <tpMoeda>{{ serv.comExt.tpMoeda }}</tpMoeda>
+                        <vServMoeda>{{ serv.comExt.vServMoeda }}</vServMoeda>
+                        <mecAFComexP>{{ serv.comExt.mecAFComexP }}</mecAFComexP>
+                        <mecAFComexT>{{ serv.comExt.mecAFComexT }}</mecAFComexT>
+                        <movTempBens>{{ serv.comExt.movTempBens }}</movTempBens>
+                        <nDI>{{ serv.comExt.nDI }}</nDI>
+                        <nRE>{{ serv.comExt.nRE }}</nRE>
+                        <mdic>{{ serv.comExt.mdic }}</mdic>
                     </comExt>
+                    {% endif %}
+                    {% if serv.lsadppu is defined -%}
                     <lsadppu>
-                        <categ></categ>
-                        <objeto></objeto>
-                        <extensao></extensao>
-                        <nPostes></nPostes>
+                        <categ>{{ serv.lsadppu.categ }}</categ>
+                        <objeto>{{ serv.lsadppu.objeto }}</objeto>
+                        <extensao>{{ serv.lsadppu.extensao }}</extensao>
+                        <nPostes>{{ serv.lsadppu.nPostes }}</nPostes>
                     </lsadppu>
+                    {% endif %}
+                    {% if serv.obra is defined -%}
                     <obra>
-                        <cObra></cObra>
+                        <cObra>{{ serv.obra.cObra }}</cObra>
                     </obra>
+                    {% endif %}
+                    {% if serv.atvEvento is defined -%}
                     <atvEvento>
-                        <desc></desc>
-                        <dtIni></dtIni>
-                        <dtFim></dtFim>
-                        <id></id>
+                        <desc>{{ serv.atvEvento.desc }}</desc>
+                        <dtIni>{{ serv.atvEvento.dtIni }}</dtIni>
+                        <dtFim>{{ serv.atvEvento.dtFim }}</dtFim>
+                        <id>{{ serv.atvEvento.id }}</id>
                     </atvEvento>
+                    {% endif %}
+                    {% if serv.explRod is defined -%}
                     <explRod>
-                        <categVeic></categVeic>
-                        <nEixos></nEixos>
-                        <rodagem></rodagem>
-                        <sentido></sentido>
-                        <placa></placa>
-                        <codAcessoPed></codAcessoPed>
-                        <codContrato></codContrato>
+                        <categVeic>{{ serv.explRod.categVeic }}</categVeic>
+                        <nEixos>{{ serv.explRod.nEixos }}</nEixos>
+                        <rodagem>{{ serv.explRod.rodagem }}</rodagem>
+                        <sentido>{{ serv.explRod.sentido }}</sentido>
+                        <placa>{{ serv.explRod.placa }}</placa>
+                        <codAcessoPed>{{ serv.explRod.codAcessoPed }}</codAcessoPed>
+                        <codContrato>{{ serv.explRod.codContrato }}</codContrato>
                     </explRod>
+                    {% endif %}
+                    {% if serv.infoCompl is defined -%}
                     <infoCompl>
-                        <idDocTec></idDocTec>
-                        <docRef></docRef>
-                        <xInfComp></xInfComp>
+                        <idDocTec>{{ serv.infoCompl.idDocTec }}</idDocTec>
+                        <docRef>{{ serv.infoCompl.docRef }}</docRef>
+                        <xInfComp>{{ serv.infoCompl.xInfComp }}</xInfComp>
                     </infoCompl>
+                    {% endif %}
                 </serv>
+                {% endwith %}
+                {% with valores = dps.infDPS.valores}
                 <valores>
                     <vServPrest>
-                        <vReceb></vReceb>
-                        <vServ></vServ>
+                        <vReceb>{{ valores.vServPrest.vReceb }}</vReceb>
+                        <vServ>{{ valores.vServPrest.vServ }}</vServ>
                     </vServPrest>
+                    {% if valores.vDescCondIncond is defined -%}
                     <vDescCondIncond>
-                        <vDescIncond></vDescIncond>
-                        <vDescCond></vDescCond>
+                        <vDescIncond>{{ valores.vDescCondIncond.vDescIncond }}</vDescIncond>
+                        <vDescCond>{{ valores.vDescCondIncond.vDescCond }}</vDescCond>
                     </vDescCondIncond>
+                    {% endif %}
+                    {% if valores.vDedRed is defined -%}
                     <vDedRed>
-                        <pDR></pDR>
+                        <pDR>{{ valores.vDedRed.pDR }}</pDR>
+                        <vDR>{{ valores.vDedRed.vDR }}</vDR>
+                        <documentos>
+                            {% for doc in valores.vDedRed.documentos.docDedRed %}
+                            <docDedRed>
+                                <chNFSe>{{ doc.chNFSe }}</chNFSe>
+                                <chNFe>{{ doc.chNFe }}</chNFe>
+                                {% if doc.NFSeMun is defined -%}
+                                <NFSeMun>
+                                    <cMunNFSeMun>{{ doc.NFSeMun.cMunNFSeMun }}</cMunNFSeMun>
+                                    <nNFSeMun>{{ doc.NFSeMun.nNFSeMun }}</nNFSeMun>
+                                    <cVerifNFSeMun>{{ doc.NFSeMun.cVerifNFSeMun }}</cVerifNFSeMun>
+                                </NFSeMun>
+                                {% endif %}
+                                {% if doc.NFNFS is defined -%}
+                                <NFNFS>
+                                    <nNFS>{{ doc.NFNFS.nNFS }}</nNFS>
+                                    <modNFS>{{ doc.NFNFS.modNFS }}</modNFS>
+                                    <serieNFS>{{ doc.NFNFS.serieNFS }}</serieNFS>
+                                </NFNFS>
+                                {% endif %}
+                                <nDocFisc>{{ doc.nDocFisc }}</nDocFisc>
+                                <nDoc>{{ doc.nDoc }}</nDoc>
+                                <tpDedRed>{{ doc.tpDedRed }}</tpDedRed>
+                                <xDescOutDed>{{ doc.xDescOutDed }}</xDescOutDed>
+                                <dtEmiDoc>{{ doc.dtEmiDoc }}</dtEmiDoc>
+                                <vDedutivelRedutivel>{{ doc.vDedutivelRedutivel }}</vDedutivelRedutivel>
+                                <vDeducaoReducao>{{ doc.vDeducaoReducao }}</vDeducaoReducao>
+                                {% if doc.fornec is defined -%}
+                                <fornec>
+                                    <CNPJ>{{ doc.fornec.CNPJ }}</CNPJ>
+                                    <CPF>{{ doc.fornec.CPF }}</CPF>
+                                    <NIF>{{ doc.fornec.NIF }}</NIF>
+                                    <cNaoNIF>{{ doc.fornec.cNaoNIF }}</cNaoNIF>
+                                    <CAEPF>{{ doc.fornec.CAEPF }}</CAEPF>
+                                    <IM>{{ doc.fornec.IM }}</IM>
+                                    <xNome>{{ doc.fornec.xNome }}</xNome>
+                                    {% if doc.fornec.end is defined -%}
+                                    <end>
+                                        {% if doc.fornec.end.endNac is defined -%}
+                                        <endNac>
+                                            <cMun>{{ doc.fornec.end.endNac.cMun }}</cMun>
+                                            <CEP>{{ doc.fornec.end.endNac.CEP }}</CEP>
+                                        </endNac>
+                                        {% endif %}
+                                        {% if doc.fornec.end.endExt is defined -%}
+                                        <endExt>
+                                            <cPais>{{ doc.fornec.end.endExt.cPais }}</cPais>
+                                            <cEndPost>{{ doc.fornec.end.endExt.cEndPost }}</cEndPost>
+                                            <xCidade>{{ doc.fornec.end.endExt.xCidade }}</xCidade>
+                                            <xEstProvReg>{{ doc.fornec.end.endExt.xEstProvReg }}</xEstProvReg>
+                                        </endExt>
+                                        {% endif %}
+                                    </end>
+                                    <xLgr>{{ doc.fornec.xLgr }}</xLgr>
+                                    <nro>{{ doc.fornec.nro }}</nro>
+                                    <xCpl>{{ doc.fornec.xCpl }}</xCpl>
+                                    <xBairro>{{ doc.fornec.xBairro }}</xBairro>
+                                    <fone>{{ doc.fornec.fone }}</fone>
+                                    <email>{{ doc.fornec.email }}</email>
+                                    {% endif %}
+                                </fornec>
+                                {% endif %}
+                                <trib>
+                                    
+                                </trib>
+                            </docDedRed>
+                            {% endfor %}
+                        </documentos>
                     </vDedRed>
+                    {% endif %}
                     <trib>
                         <tribMun>
                             <tribISSQN></tribISSQN>
@@ -218,6 +322,7 @@
                 </valores>
             </infDPS>
         </DPS>
+        {% endfor %}
     </infNFSe>
 </NFSe>
 
