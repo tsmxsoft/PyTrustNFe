@@ -48,7 +48,7 @@
         </valores>
         {% endwith %}
         {% for dps in NFSe.infNFSe.DPS %}
-        <DPS>
+        <DPS versao="1.00">
             <infDPS Id="{{ dps.infDPS.Id }}" versao="1.00">
                 <tpAmb>{{ dps.infDPS.tpAmb }}</tpAmb>
                 <dhEmi>{{ dps.infDPS.dhEmi }}</dhEmi>

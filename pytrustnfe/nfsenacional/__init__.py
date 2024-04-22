@@ -7,13 +7,10 @@ import os
 import sys
 import requests
 from lxml import etree
-from .patch import has_patch
-from .assinatura import Assinatura
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.utils import gerar_chave_nfsenacional, gerar_chave_nfsenacional_dps, ChaveNFSeNacional, ChaveNFSeNacionalDPS
 from pytrustnfe.Servidores import localizar_url
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 # Zeep
 from requests import Session
@@ -98,11 +95,14 @@ def _send(certificado, method, **kwargs):
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
+    
+    params = {}
+    payload = {}
     if method == "NFSe":
         payload = {
             "dpsXmlGZipB64": xml_send,
         }
-    request = requests.post(base_url,data=payload,verify=False,cert=(cert, key))
+    request = requests.post(base_url,data=payload, params=params,verify=False,cert=(cert, key))
     return {"sent_xml": xml_send, "received": request, "obj": None}
 
 
@@ -119,6 +119,3 @@ def autorizar_nfse(certificado, **kwargs):  # Assinar
         kwargs["xml"] = xml_autorizar_nfse(certificado, **kwargs)
     kwargs["base_url"] = "https://sefin.nfse.gov.br/sefinnacional/nfse"
     return _send(certificado, "NFSe", **kwargs)
-
-def consultar_nfse(certificado, **kwargs):
-    

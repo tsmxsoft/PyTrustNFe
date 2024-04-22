@@ -27,6 +27,7 @@ later (LGPLv2+)",
         "pytrustnfe": [
             "nfe/templates/*xml",
             "nfe/fonts/*ttf",
+            "nfse_nacional/templates/*xml",
             "nfse/paulistana/templates/*xml",
             "nfse/dsf/templates/*xml",
             "nfse/ginfes/templates/*xml",
