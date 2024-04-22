@@ -5,14 +5,18 @@
 import re
 import os
 import sys
+import ssl 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfse.betha.assinatura import Assinatura
+from requests.packages.urllib3 import disable_warnings
+from pytrustnfe.nfse.sispmjp.assinatura import Assinatura
 from lxml import etree
-from zeep.transports import Transport
 from requests import Session
-import requests
-from datetime import datetime, timedelta
+from zeep.transports import Transport
+from zeep import Client, Settings, xsd
+import logging.config
+import urllib
+
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -20,10 +24,6 @@ def _render(certificado, method, **kwargs):
         remove_blank_text=True, remove_comments=True, strip_cdata=False
     )
     signer = Assinatura(certificado.pfx, certificado.password)
-
-    referencia = ""
-    if method in ["RecepcionarLoteRps","RecepcionarLoteRpsSincrono"]:
-        referencia = kwargs.get("nfse").get("numero_lote")
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
 
@@ -46,35 +46,54 @@ def _render(certificado, method, **kwargs):
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
+    logging.config.dictConfig({
+        'version': 1,
+        'formatters': {
+            'verbose': {
+                'format': '%(name)s: %(message)s'
+            }
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose',
+            },
+        },
+        'loggers': {
+            'zeep.transports': {
+                'level': 'DEBUG',
+                'propagate': True,
+                'handlers': ['console'],
+            },
+        }
+    })
     path = os.path.join(os.path.dirname(__file__), "templates")
 
     if kwargs["ambiente"] == "homologacao":
-        url = "http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl"
+        url = "https://nfsehomolog.joaopessoa.pb.gov.br:8443/sispmjp/NfseWSService"
     else:
-        url = kwargs["base_url"]
+        url = "https://sispmjp.joaopessoa.pb.gov.br:8443/sispmjp/NfseWSService"
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method })
+    soap = render_xml(path, "SoapRequest.xml", False, False, soap_body=xml_send, method=method)
 
+    disable_warnings()
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
+        
     session = Session()
     session.cert = (cert, key)
-    session.verify = False
-    action = "%s" %(method)
-    headers = {
-        "Content-Type": "text/xml;charset=UTF-8",
-        "SOAPAction": action,
-        "Content-length": str(len(soap))
-    }
+    action = "http://nfse.abrasf.org.br/%s" %(method)
+    transport = Transport(session=session)
 
-    request = requests.post(url, data=soap, headers=headers)
-    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
-    try:
-        return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
-    except:
-        return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
+    client = Client(wsdl=url + '?wsdl', transport=transport)
+
+
+    response = client.service[method](xml_send)
+    response, obj = sanitize_response(response)
+    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf-8')), "object": obj }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)

@@ -6,8 +6,8 @@ Created on Jun 16, 2015
 """
 import unittest
 import datetime
-from pytrustnfe.utils import date_tostring, datetime_tostring, gerar_chave
-from pytrustnfe.utils import ChaveNFe
+from pytrustnfe.utils import date_tostring, datetime_tostring, gerar_chave, gerar_chave_cte
+from pytrustnfe.utils import ChaveNFe,ChaveCTe
 
 
 class test_utils(unittest.TestCase):
@@ -37,6 +37,7 @@ class test_utils(unittest.TestCase):
         self.assertRaises(Exception, datetime_tostring, "Not a date")
 
     def test_geracao_chave(self):
+        # NFe
         chave = ChaveNFe(**self.kwargs)
         str_chave = gerar_chave(chave)
         chave_correta = "52060433009911002506550120000007800267301615"
@@ -50,6 +51,21 @@ class test_utils(unittest.TestCase):
 
         self.assertRaises(Exception, gerar_chave, "Not a ChaveNFe object")
         self.assertRaises(Exception, gerar_chave, "Not a ChaveNFe object")
+
+        #CTe
+        chave = ChaveCTe(**self.kwargs)
+        str_chave = gerar_chave_cte(chave)
+        chave_correta = "52060433009911002506550120000007800267301615"
+        self.assertEqual(str_chave, chave_correta, "Geração de chave ct-e incorreta")
+
+        str_chave = gerar_chave_cte(chave, prefix="CTe")
+        chave_correta = "CTe52060433009911002506550120000007800267301615"
+        self.assertEqual(
+            str_chave, chave_correta, "Geração de chave ct-e com prefixo incorreta"
+        )
+
+        self.assertRaises(Exception, gerar_chave_cte, "Not a ChaveCTe object")
+        self.assertRaises(Exception, gerar_chave_cte, "Not a ChaveCTe object")
 
     def test_chave_nfe(self):
         chave = ChaveNFe(**self.kwargs)

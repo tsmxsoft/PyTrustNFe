@@ -1,4 +1,4 @@
-<ConsultarNfseRpsEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">
+<ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
     <IdentificacaoRps>
         <Numero>{{ nfse.rps.numero }}</Numero>
         <Serie>{{ nfse.rps.serie}}</Serie>

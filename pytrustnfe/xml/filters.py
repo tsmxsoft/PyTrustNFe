@@ -9,18 +9,23 @@ from unicodedata import normalize
 from jinja2.exceptions import UndefinedError
 import sys
 
+if sys.version_info >= (3, 0):
+    unicode = str
 
 def normalize_str(string):
     """
     Remove special characters and strip spaces
     """
     if string:
-        if not isinstance(string, str):
-            string = str(string, "utf-8", "replace")
+        if sys.version_info[0] > 2:
+            if not isinstance(string, str):
+                string = str(string, "utf-8", "replace")
+        else:
+            if not isinstance(string,unicode):
+                string = unicode(string, "utf-8")
 
-        string = string.encode("utf-8")
         return (
-            normalize("NFKD", string.decode("utf-8")).encode("ASCII", "ignore").decode()
+            normalize("NFKD", string).encode("ASCII", "ignore").decode()
         )
     return ""
 
@@ -34,9 +39,9 @@ def strip_line_feed(string):
             if not isinstance(string,unicode):
                 string = unicode(string, "utf-8")
         remap = {
-            ord("\t"): " ",
-            ord("\n"): " ",
-            ord("\f"): " ",
+            ord("\t"): u" ",
+            ord("\n"): u" ",
+            ord("\f"): u" ",
             ord("\r"): None,  # Delete
         }
         return string.translate(remap).strip()
