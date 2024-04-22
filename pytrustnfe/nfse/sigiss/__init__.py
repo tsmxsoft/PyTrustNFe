@@ -67,7 +67,7 @@ def _render_unsigned(certificado, method, **kwargs):
 
 def _send(certificado, method, **kwargs):
 
-    base_url = kwargs.get("base_url", None)
+    base_url = kwargs.get("base_url", '')
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
@@ -78,7 +78,7 @@ def _send(certificado, method, **kwargs):
     session.verify = False
     transport = Transport(session=session)
 
-    client = Client(wsdl='{}?wsdl'.format(base_url), transport=transport)
+    client = Client(wsdl='%s?wsdl' % str(base_url), transport=transport)
     xml_send = {
         "nfseDadosMsg": kwargs["xml"],
         "nfseCabecMsg": """
