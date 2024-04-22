@@ -273,7 +273,62 @@
                                 </fornec>
                                 {% endif %}
                                 <trib>
-                                    
+                                    <tribMun>
+                                        <tribISSQN>{{ doc.trib.tribMun.tribISSQN }}</tribISSQN>
+                                        <cPaisResult>{{ doc.trib.tribMun.cPaisResult }}</cPaisResult>
+                                        {% if doc.trib.tribMun.BM is defined -%}
+                                        <BM>
+                                            <nBM>{{ doc.trib.tribMun.BM.nBM }}</nBM>
+                                            <vRedBCBM>{{ doc.trib.tribMun.BM.vRedBCBM }}</vRedBCBM>
+                                            <pRedBCBM>{{ doc.trib.tribMun.BM.pRedBCBM }}</pRedBCBM>
+                                        </BM>
+                                        {% endif %}
+                                        {% if doc.trib.tribMun.exigSusp is defined -%}
+                                        <exigSusp>
+                                            <tpSusp>{{ doc.trib.tribMun.exigSusp.tpSusp }}</tpSusp>
+                                            <nProcesso>{{ doc.trib.tribMun.exigSusp.nProcesso }}</nProcesso>
+                                        </exigSusp>
+                                        {% endif %}
+                                        <tpImunidade>{{ doc.trib.tribMun.tpImunidade }}</tpImunidade>
+                                        <pAliq>{{ doc.trib.tribMun.pAliq }}</pAliq>
+                                        <tpRetISSQN>{{ doc.trib.tribMun.tpRetISSQN }}</tpRetISSQN>
+                                    </tribMun>
+                                    {% if doc.trib.tribFed is defined -%}
+                                    <tribFed>
+                                        {% if doc.trib.tribFed.piscofins is defined -%}
+                                        <piscofins>
+                                            <CST>{{ doc.trib.tribFed.piscofins.CST }}</CST>
+                                            <vBCPisCofins>{{ doc.trib.tribFed.piscofins.vBCPisCofins }}</vBCPisCofins>
+                                            <pAliqPis>{{ doc.trib.tribFed.piscofins.pAliqPis }}</pAliqPis>
+                                            <pAliqCofins>{{ doc.trib.tribFed.piscofins.pAliqCofins }}</pAliqCofins>
+                                            <vPis>{{ doc.trib.tribFed.piscofins.vPis }}</vPis>
+                                            <vCofins>{{ doc.trib.tribFed.piscofins.vCofins }}</vCofins>
+                                            <tpRetPisCofins>{{ doc.trib.tribFed.piscofins.tpRetPisCofins }}</tpRetPisCofins>
+                                        </piscofins>
+                                        {% endif %}
+                                        <vRetCP>{{ doc.trib.tribFed.vRetCP }}</vRetCP>
+                                        <vRetIRRF>{{ doc.trib.tribFed.vRetIRRF }}</vRetIRRF>
+                                        <vRetCSLL>{{ doc.trib.tribFed.vRetCSLL }}</vRetCSLL>
+                                    </tribFed>
+                                    {% endif %}
+                                    <totTrib>
+                                        {% if doc.trib.totTrib.vTotTrib is defined -%}
+                                        <vTotTrib>
+                                            <vTotTribFed>{{ doc.trib.totTrib.vTotTrib.vTotTribFed }}</vTotTribFed>
+                                            <vTotTribEst>{{ doc.trib.totTrib.vTotTrib.vTotTribEst }}</vTotTribEst>
+                                            <vTotTribMun>{{ doc.trib.totTrib.vTotTrib.vTotTribMun }}</vTotTribMun>
+                                        </vTotTrib>
+                                        {% endif %}
+                                        {% if doc.trib.totTrib.pTotTrib is defined -%}
+                                        <pTotTrib>
+                                            <pTotTribFed>{{ doc.trib.totTrib.pTotTrib.pTotTribFed }}</pTotTribFed>
+                                            <pTotTribEst>{{ doc.trib.totTrib.pTotTrib.pTotTribEst }}</pTotTribEst>
+                                            <pTotTribMun>{{ doc.trib.totTrib.pTotTrib.pTotTribMun }}</pTotTribMun>
+                                        </pTotTrib>
+                                        {% endif %}
+                                        <indTotTrib>{{ doc.trib.totTrib.indTotTrib }}</indTotTrib>
+                                        <pTotTribSN>{{ doc.trib.totTrib.pTotTribSN }}</pTotTribSN>
+                                    </totTrib>
                                 </trib>
                             </docDedRed>
                             {% endfor %}

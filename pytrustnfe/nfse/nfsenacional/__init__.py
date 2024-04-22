@@ -71,7 +71,7 @@ def _render(certificado, method, sign, **kwargs):
         signer = Assinatura(certificado.pfx, certificado.password)
         if method == "NFSe":
             #Assina DPS (hoje 1-1, talvez amanhã 1-N)
-            #signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"]["Id"])
+            signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"][0]["Id"])
             #Assina NFSe
             xml_send = signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["Id"])
 
