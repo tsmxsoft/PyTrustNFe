@@ -71,11 +71,11 @@ def _render(certificado, method, sign, **kwargs):
 
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
-        if method == "NFSe":
+        if method == "DPS":
             #Assina DPS (hoje 1-1, talvez amanhã 1-N)
-            signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"]["Id"])
+            xml_send = signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"]["Id"])
             #Assina NFSe
-            xml_send = signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["Id"])
+            #xml_send = signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["Id"])
 
     else:
         if sys.version_info[0] > 2:
@@ -105,7 +105,7 @@ def _send(certificado, method, **kwargs):
     }
     params = {}
     payload = {}
-    if method == "NFSe":
+    if method == "DPS":
         payload = {
             "dpsXmlGZipB64": xml_send,
         }
@@ -116,9 +116,9 @@ def _send(certificado, method, **kwargs):
 
 
 def xml_autorizar_nfse(certificado, **kwargs):
-    _generate_nfse_id(**kwargs)
+#    _generate_nfse_id(**kwargs)
     _generate_nfse_dps_id(**kwargs) #Um dia vai ser 1-N, certeza.
-    return _render(certificado, "NFSe", True, **kwargs)
+    return _render(certificado, "DPS", True, **kwargs)
 
 
 def autorizar_nfse(certificado, **kwargs):  # Assinar
@@ -129,4 +129,4 @@ def autorizar_nfse(certificado, **kwargs):  # Assinar
     if "ambiente" in kwargs:
         if kwargs["ambiente"] == "homologacao":
             kwargs["base_url"] = "https://sefin.producaorestrita.nfse.gov.br/SefinNacional/nfse"
-    return _send(certificado, "NFSe", **kwargs)
+    return _send(certificado, "DPS", **kwargs)
