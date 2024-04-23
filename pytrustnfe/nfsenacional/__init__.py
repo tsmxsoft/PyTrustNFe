@@ -2,21 +2,19 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+#Homologação: https://www.producaorestrita.nfse.gov.br/swagger/contribuintesissqn/#/
+#Produção: https://www.nfse.gov.br/swagger/contribuintesissqn/#/
 
 import os
 import sys
+import certifi
 import requests
 from lxml import etree
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.utils import gerar_chave_nfsenacional, gerar_chave_nfsenacional_dps, ChaveNFSeNacional, ChaveNFSeNacionalDPS
 from pytrustnfe.Servidores import localizar_url
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-
-# Zeep
-from requests import Session
-from zeep import Client
-from zeep.transports import Transport
-
+from pytrustnfe.nfsenacional.assinatura import Assinatura
 #B64 + Gzip
 import gzip
 import base64
@@ -29,7 +27,7 @@ VERSAO = "1.00"
 
 def _generate_nfse_id(**kwargs):
     vals = {
-        "ibge_num": kwargs["NFSe"]["infNFSe"]["cLocEmi"],
+        "ibge_mun": kwargs["NFSe"]["infNFSe"]["cLocEmi"],
         "ambiente": kwargs["NFSe"]["infNFSe"]["ambGer"],
         "tipo_insc_fed": 1 if len(kwargs["NFSe"]["infNFSe"]["emit"]["cnpj_cpf"]) == 11 else 2,
         "insc_fed": kwargs["NFSe"]["infNFSe"]["emit"]["cnpj_cpf"],
@@ -39,7 +37,7 @@ def _generate_nfse_id(**kwargs):
             kwargs["NFSe"]["infNFSe"]["DPS"]["infDPS"]["dhEmi"][2:4],
             kwargs["NFSe"]["infNFSe"]["DPS"]["infDPS"]["dhEmi"][5:7],
         ),
-        "codigo": kwargs["NFSe"]["infNFSe"]["ide"]["cNF"],
+        "codigo": kwargs["NFSe"]["infNFSe"]["cNFSe"],
     }
     chave_nfse = ChaveNFSeNacional(**vals)
     chave_nfse = gerar_chave_nfsenacional(chave_nfse, "NFS")
@@ -47,9 +45,9 @@ def _generate_nfse_id(**kwargs):
 
 
 def _generate_nfse_dps_id(**kwargs):
-    dps = kwargs["NFSe"]["infNFSe"]["DPS"][0]
+    dps = kwargs["NFSe"]["infNFSe"]["DPS"]["infDPS"]
     vals = {
-        "ibge_num": dps["cLocEmi"],
+        "ibge_mun": dps["cLocEmi"],
         "tipo_insc_fed": 1 if len(dps["prest"]["cnpj_cpf"]) == 11 else 2,
         "insc_fed": dps["prest"]["cnpj_cpf"],
         "serie": dps["serie"],
@@ -57,18 +55,25 @@ def _generate_nfse_dps_id(**kwargs):
     }
     chave_nfse_dps = ChaveNFSeNacionalDPS(**vals)
     chave_nfse_dps = gerar_chave_nfsenacional_dps(chave_nfse_dps, "DPS")
-    kwargs["NFSe"]["infNFSe"]["DPS"][0]["Id"] = chave_nfse_dps
+    kwargs["NFSe"]["infNFSe"]["DPS"]["Id"] = chave_nfse_dps
 
 
 def _render(certificado, method, sign, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    xmlElem_send = render_xml(path, "%s_%s.xml" % (method, VERSAO), True, **kwargs)
+    parser = etree.XMLParser(
+        remove_blank_text=True, remove_comments=True, strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+    xml_string_send = render_xml(path, "%s_%s.xml" % (method, VERSAO), True, **kwargs)
+    
+    xmlElem_send = etree.fromstring(
+        xml_string_send, parser=parser)
 
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
         if method == "NFSe":
             #Assina DPS (hoje 1-1, talvez amanhã 1-N)
-            signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"][0]["Id"])
+            signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["DPS"]["Id"])
             #Assina NFSe
             xml_send = signer.assina_xml(xmlElem_send, kwargs["NFSe"]["infNFSe"]["Id"])
 
@@ -95,15 +100,18 @@ def _send(certificado, method, **kwargs):
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
-    
+    headers = {
+        "Content-Type": "application/json",
+    }
     params = {}
     payload = {}
     if method == "NFSe":
         payload = {
             "dpsXmlGZipB64": xml_send,
         }
-    request = requests.post(base_url,data=payload, params=params,verify=False,cert=(cert, key))
-    return {"sent_xml": xml_send, "received": request, "obj": None}
+    request = requests.post(base_url,json=payload, params=params, cert=(cert, key), headers=headers, verify=certifi.where())
+    print("Status: %d" % request.status_code)
+    return {"sent_xml": xml_send, "received": request.json(), "obj": None}
 
 
 
@@ -118,4 +126,7 @@ def autorizar_nfse(certificado, **kwargs):  # Assinar
     if "xml" not in kwargs:
         kwargs["xml"] = xml_autorizar_nfse(certificado, **kwargs)
     kwargs["base_url"] = "https://sefin.nfse.gov.br/sefinnacional/nfse"
+    if "ambiente" in kwargs:
+        if kwargs["ambiente"] == "homologacao":
+            kwargs["base_url"] = "https://sefin.producaorestrita.nfse.gov.br/SefinNacional/nfse"
     return _send(certificado, "NFSe", **kwargs)

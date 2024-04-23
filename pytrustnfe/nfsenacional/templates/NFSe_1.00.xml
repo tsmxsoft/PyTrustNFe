@@ -1,4 +1,4 @@
-<NFSe xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
+<NFSe versao="1.00" xmlns="http://www.sped.fazenda.gov.br/nfse">
     <infNFSe Id="{{ NFSe.infNFSe.Id }}">
         <xLocEmi>{{ NFSe.infNFSe.xLocEmi }}</xLocEmi>
         <xLocPrestacao>{{ NFSe.infNFSe.xLocPrestacao }}</xLocPrestacao>
@@ -17,21 +17,26 @@
         <nDFSe>{{ NFSe.infNFSe.nDFSe }}</nDFSe>
         {% with emit = NFSe.infNFSe.emit %}
         <emit>
-            <CNPJ>{{ emi.CNPJ }}</CNPJ>
-            <IM>{{ emi.IM }}</IM>
-            <xNome>{{ emi.xNome }}</xNome>
-            <xFant>{{ emi.xFant }}</xFant>
+            {% if emit.cnpj_cpf|length == 14  %}
+            <CNPJ>{{ emit.cnpj_cpf }}</CNPJ>
+            {% endif %}
+            {% if emit.cnpj_cpf|length == 11  %}
+            <CPF>{{ emit.cnpj_cpf }}</CPF>
+            {% endif %}
+            <IM>{{ emit.IM }}</IM>
+            <xNome>{{ emit.xNome }}</xNome>
+            <xFant>{{ emit.xFant }}</xFant>
             <enderNac>
-                <xLgr>{{ emi.xLgr }}</xLgr>
-                <nro>{{ emi.nro }}</nro>
-                <xCpl>{{ emi.xCpl }}</xCpl>
-                <xBairro>{{ emi.xBairro }}</xBairro>
-                <cMun>{{ emi.cMun }}</cMun>
-                <UF>{{ emi.UF }}</UF>
-                <CEP>{{ emi.CEP }}</CEP>
+                <xLgr>{{ emit.enderNac.xLgr }}</xLgr>
+                <nro>{{ emit.enderNac.nro }}</nro>
+                <xCpl>{{ emit.enderNac.xCpl }}</xCpl>
+                <xBairro>{{ emit.enderNac.xBairro }}</xBairro>
+                <cMun>{{ emit.enderNac.cMun }}</cMun>
+                <UF>{{ emit.enderNac.UF }}</UF>
+                <CEP>{{ emit.enderNac.CEP }}</CEP>
             </enderNac>
-            <fone>{{ emi.fone }}</fone>
-            <email>{{ emi.email }}</email>
+            <fone>{{ emit.fone }}</fone>
+            <email>{{ emit.email }}</email>
         </emit>
         {% endwith %}
         {% with valores = NFSe.infNFSe.valores %}
@@ -47,9 +52,9 @@
             <xOutInf>{{ valores.xOutInf }}</xOutInf>
         </valores>
         {% endwith %}
-        {% for dps in NFSe.infNFSe.DPS %}
+        {% with dps = NFSe.infNFSe.DPS %}
         <DPS versao="1.00">
-            <infDPS Id="{{ dps.infDPS.Id }}" versao="1.00">
+            <infDPS Id="{{ dps.Id }}">
                 <tpAmb>{{ dps.infDPS.tpAmb }}</tpAmb>
                 <dhEmi>{{ dps.infDPS.dhEmi }}</dhEmi>
                 <verAplic>{{ dps.infDPS.verAplic }}</verAplic>
@@ -67,10 +72,16 @@
                 {% endif %}
                 {% with prest = dps.infDPS.prest %}
                 <prest>
-                    <CNPJ>{{ prest.CNPJ }}</CNPJ>
+                    {% if prest.cnpj_cpf|length == 14  %}
+                    <CNPJ>{{ prest.cnpj_cpf }}</CNPJ>
+                    {% endif %}
+                    {% if prest.cnpj_cpf|length == 11  %}
+                    <CPF>{{ prest.cnpj_cpf }}</CPF>
+                    {% endif %}
                     <CAEPF>{{ prest.CAEPF }}</CAEPF>
                     <IM>{{ prest.IM }}</IM>
                     <xNome>{{ prest.xNome }}</xNome>
+                    {% if prest.end is defined -%}
                     {% with end = prest.end %}
                     <end>
                         <endNac>
@@ -83,18 +94,24 @@
                         <xBairro>{{ end.xBairro }}</xBairro>
                     </end>
                     {% endwith %}
-                    <fone>{{ end.fone }}</fone>
-                    <email>{{ end.email }}</email>
+                    {% endif %}
+                    <fone>{{ prest.fone }}</fone>
+                    <email>{{ prest.email }}</email>
                     <regTrib>
-                        <opSimpNac>{{ end.regTrib.opSimpNac }}</opSimpNac>
-                        <regApTribSN>{{ end.regTrib.regApTribSN }}</regApTribSN>
-                        <regEspTrib>{{ end.regTrib.regEspTrib }}</regEspTrib>
+                        <opSimpNac>{{ prest.regTrib.opSimpNac }}</opSimpNac>
+                        <regApTribSN>{{ prest.regTrib.regApTribSN }}</regApTribSN>
+                        <regEspTrib>{{ prest.regTrib.regEspTrib }}</regEspTrib>
                     </regTrib>
                 </prest>
                 {% endwith %}
                 {% with toma = dps.infDPS.toma %}
                 <toma>
-                    <CNPJ>{{ toma.CNPJ }}</CNPJ>
+                    {% if toma.cnpj_cpf|length == 14  %}
+                    <CNPJ>{{ toma.cnpj_cpf }}</CNPJ>
+                    {% endif %}
+                    {% if toma.cnpj_cpf|length == 11  %}
+                    <CPF>{{ toma.cnpj_cpf }}</CPF>
+                    {% endif %}
                     <CAEPF>{{ toma.CAEPF }}</CAEPF>
                     <IM>{{ toma.IM }}</IM>
                     <xNome>{{ toma.xNome }}</xNome>
@@ -111,7 +128,12 @@
                 {% if dps.infDPS.interm is defined -%}
                 {% with interm = dps.infDPS.interm %}
                 <interm>
-                    <CNPJ>{{ interm.CNPJ }}</CNPJ>
+                    {% if interm.cnpj_cpf|length == 14  %}
+                    <CNPJ>{{ interm.cnpj_cpf }}</CNPJ>
+                    {% endif %}
+                    {% if interm.cnpj_cpf|length == 11  %}
+                    <CPF>{{ interm.cnpj_cpf }}</CPF>
+                    {% endif %}
                     <CAEPF>{{ interm.CAEPF }}</CAEPF>
                     <IM>{{ interm.IM }}</IM>
                     <xNome>{{ interm.xNome }}</xNome>
@@ -134,11 +156,11 @@
                         <opConsumServ>{{ serv.locPrest.opConsumServ }}</opConsumServ>
                     </locPrest>
                     <cServ>
-                        <cTribNac></cTribNac>
-                        <cTribMun></cTribMun>
-                        <xDescServ></xDescServ>
-                        <cNBS></cNBS>
-                        <cIntContrib></cIntContrib>
+                        <cTribNac>{{ serv.cServ.cTribNac }}</cTribNac>
+                        <cTribMun>{{ serv.cServ.cTribMun }}</cTribMun>
+                        <xDescServ>{{ serv.cServ.xDescServ }}</xDescServ>
+                        <cNBS>{{ serv.cServ.cNBS }}</cNBS>
+                        <cIntContrib>{{ serv.cServ.cIntContrib }}</cIntContrib>
                     </cServ>
                     {% if serv.comExt is defined -%}
                     <comExt>
@@ -195,7 +217,7 @@
                     {% endif %}
                 </serv>
                 {% endwith %}
-                {% with valores = dps.infDPS.valores}
+                {% with valores = dps.infDPS.valores %}
                 <valores>
                     <vServPrest>
                         <vReceb>{{ valores.vServPrest.vReceb }}</vReceb>
@@ -337,47 +359,67 @@
                     {% endif %}
                     <trib>
                         <tribMun>
-                            <tribISSQN></tribISSQN>
-                            <cPaisResult></cPaisResult>
+                            <tribISSQN>{{ valores.trib.tribMun.tribISSQN }}</tribISSQN>
+                            <cPaisResult>{{ valores.trib.tribMun.cPaisResult }}</cPaisResult>
+                            {% if valores.trib.tribMun.BM is defined -%}
                             <BM>
-                                <tpBM></tpBM>
-                                <nBM></nBM>
-                                <vRedBCBM></vRedBCBM>
+                                <tpBM>{{ valores.trib.tribMun.BM.tpBM }}</tpBM>
+                                <nBM>{{ valores.trib.tribMun.BM.nBM }}</nBM>
+                                <vRedBCBM>{{ valores.trib.tribMun.BM.vRedBCBM }}</vRedBCBM>
                             </BM>
+                            {% endif %}
+                            {% if valores.trib.tribMun.exigSusp is defined -%}
                             <exigSusp>
-                                <tpSusp></tpSusp>
-                                <nProcesso></nProcesso>
+                                <tpSusp>{{ valores.trib.tribMun.exigSusp.tpSusp }}</tpSusp>
+                                <nProcesso>{{ valores.trib.tribMun.exigSusp.nProcesso }}</nProcesso>
                             </exigSusp>
-                            <tpImunidade></tpImunidade>
-                            <pAliq></pAliq>
-                            <tpRetISSQN></tpRetISSQN>
+                            {% endif %}
+                            <tpImunidade>{{ valores.trib.tribMun.tpImunidade }}</tpImunidade>
+                            <pAliq>{{ valores.trib.tribMun.pAliq }}</pAliq>
+                            <tpRetISSQN>{{ valores.trib.tribMun.tpRetISSQN }}</tpRetISSQN>
                         </tribMun>
-                        <tribNac>
+                        {% if valores.trib.tribFed is defined -%}
+                        <tribFed>
+                            {% if valores.trib.tribFed.piscofins is defined -%}
                             <piscofins>
-                                <CST></CST>
-                                <vBCPisCofins></vBCPisCofins>
-                                <pAliqPis></pAliqPis>
-                                <pAliqCofins></pAliqCofins>
-                                <vPis></vPis>
-                                <vCofins></vCofins>
-                                <tpRetPisCofins></tpRetPisCofins>
+                                <CST>{{ valores.trib.tribFed.piscofins.CST }}</CST>
+                                <vBCPisCofins>{{ valores.trib.tribFed.piscofins.vBCPisCofins }}</vBCPisCofins>
+                                <pAliqPis>{{ valores.trib.tribFed.piscofins.pAliqPis }}</pAliqPis>
+                                <pAliqCofins>{{ valores.trib.tribFed.piscofins.pAliqCofins }}</pAliqCofins>
+                                <vPis>{{ valores.trib.tribFed.piscofins.vPis }}</vPis>
+                                <vCofins>{{ valores.trib.tribFed.piscofins.vCofins }}</vCofins>
+                                <tpRetPisCofins>{{ valores.trib.tribFed.piscofins.tpRetPisCofins }}</tpRetPisCofins>
                             </piscofins>
-                            <vRetCP></vRetCP>
-                            <vRetIRRF></vRetIRRF>
-                            <vRetCSLL></vRetCSLL>
-                        </tribNac>
+                            {% endif %}
+                            <vRetCP>{{ valores.trib.tribFed.vRetCP }}</vRetCP>
+                            <vRetIRRF>{{ valores.trib.tribFed.vRetIRRF }}</vRetIRRF>
+                            <vRetCSLL>{{ valores.trib.tribFed.vRetCSLL }}</vRetCSLL>
+                        </tribFed>
+                        {% endif %}
                         <totTrib>
+                            {% if valores.trib.totTrib.vTotTrib is defined -%}
                             <vTotTrib>
-                                <vTotTribFed></vTotTribFed>
-                                <vTotTribEst></vTotTribEst>
-                                <vTotTribMun></vTotTribMun>
+                                <vTotTribFed>{{ valores.trib.totTrib.vTrotTrib.vTotTribFed }}</vTotTribFed>
+                                <vTotTribEst>{{ valores.trib.totTrib.vTrotTrib.vTotTribEst }}</vTotTribEst>
+                                <vTotTribMun>{{ valores.trib.totTrib.vTrotTrib.vTotTribMun }}</vTotTribMun>
                             </vTotTrib>
+                            {% endif %}
+                            {% if valores.trib.totTrib.pTotTrib is defined -%}
+                            <pTotTrib>
+                                <pTotTribFed>{{ valores.trib.totTrib.pTrotTrib.pTotTribFed }}</pTotTribFed>
+                                <pTotTribEst>{{ valores.trib.totTrib.pTrotTrib.pTotTribEst }}</pTotTribEst>
+                                <pTotTribMun>{{ valores.trib.totTrib.pTrotTrib.pTotTribMun }}</pTotTribMun>
+                            </pTotTrib>
+                            {% endif %}
+                            <indTotTrib>{{ valores.trib.totTrib.indTotTrib }}</indTotTrib>
+                            <pTotTribSN>{{ valores.trib.totTrib.pTotTribSN }}</pTotTribSN>
                         </totTrib>
                     </trib>
                 </valores>
+                {% endwith %}
             </infDPS>
         </DPS>
-        {% endfor %}
+        {% endwith %}
     </infNFSe>
 </NFSe>
 

@@ -132,34 +132,34 @@ def validar_dv(chave,dv):
 def gerar_chave_nfsenacional(obj_chave, prefix="NFS"):
     assert isinstance(obj_chave, ChaveNFSeNacional), "Objeto deve ser do tipo ChaveNFSeNacional"
     obj_chave.validar()
-    chave_parcial = "%s%d%d%s%s%s%s" % (
+    chave_parcial = "%s%s%s%s%s%s%s" % (
         obj_chave.ibge_mun,
         obj_chave.ambiente,
         obj_chave.tipo_insc_fed,
         obj_chave.insc_fed.zfill(14),
         str(obj_chave.numero).zfill(13),
-        obj_chave.emissao,
+        obj_chave.dt_emissao,
         obj_chave.codigo,
     )
     chave_parcial = re.sub("[^0-9]", "", chave_parcial)
-    soma = sum(a*b for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
+    soma = sum(int(a)*b for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
     dv = 11 - (soma%11)
     if prefix:
-        return prefix + chave_parcial + dv
+        return prefix + chave_parcial + str(dv)
     return chave_parcial + str(dv)
 
 
 def gerar_chave_nfsenacional_dps(obj_chave, prefix="DPS"):
     assert isinstance(obj_chave, ChaveNFSeNacionalDPS), "Objeto deve ser do tipo ChaveNFSeNacionalDPS"
     obj_chave.validar()
-    chave_parcial = "%s%d%s%s%s%s" % (
+    chave_parcial = "%s%d%s%s%s" % (
         obj_chave.ibge_mun,
         obj_chave.tipo_insc_fed,
         obj_chave.insc_fed.zfill(14),
-        obj_chave.serie,
+        obj_chave.serie.zfill(5),
         str(obj_chave.numero).zfill(15),
     )
-    return chave_parcial
+    return prefix + chave_parcial
 
 def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"
