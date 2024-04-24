@@ -110,6 +110,29 @@ class ChaveNFSeNacionalDPS(object):
         assert self.serie != "", "Série é necessário para criar chave NFSe DPS"
         assert self.numero != "", "Número da NFSe é necessário para criar chave NFSe DPS"
 
+
+class ChaveNFSeNacionalEvento(object):
+    def __init__(self, **kwargs):
+        self.id_pedido = kwargs.pop("id_pedido", "")
+        self.nseq_evento = kwargs.pop("nseq_evento", "")
+
+    def validar(self):
+        assert self.id_pedido != "", "ID do pedido é necessário para criar chave de Evento"
+        assert self.nseq_evento != "", "Número sequencial do evento é necessário para criar chave de Evento"
+
+
+class ChaveNFSeNacionalPedidoRegistro(object):
+    def __init__(self, **kwargs):
+        self.chave_acesso = kwargs.pop("chave_acesso", "")
+        self.cod_evento = kwargs.pop("cod_evento", "")
+        self.nPedRegEvento = kwargs.pop("nPedRegEvento", "")
+
+    def validar(self):
+        assert self.chave_acesso != "", "Chave de Acesso da NFSe é necessário para criar chave de Pedido de Registro"
+        assert self.cod_evento != "", "Código do evento é necessário para criar chave de Pedido de Registro"
+        assert self.nPedRegEvento != "", "Número do Pedido de Registro do Evento é necessário para criar chave de Pedido de Registro"
+
+
 def date_tostring(data):
     assert isinstance(data, date), "Objeto date requerido"
     return data.strftime("%d-%m-%y")
@@ -160,6 +183,28 @@ def gerar_chave_nfsenacional_dps(obj_chave, prefix="DPS"):
         str(obj_chave.numero).zfill(15),
     )
     return prefix + chave_parcial
+
+
+def gerar_chave_nfsenacional_evento(obj_chave, prefix="EVT"):
+    assert isinstance(obj_chave, ChaveNFSeNacionalEvento), "Objeto deve ser do tipo ChaveNFSeNacionalEvento"
+    obj_chave.validar()
+    chave_parcial = "%s%s" % (
+        str(obj_chave.id_pedido).zfill(50),
+        str(obj_chave.nseq_evento).zfill(3),
+    )
+    return prefix + chave_parcial
+
+
+def gerar_chave_nfsenacional_pedido_registro(obj_chave, prefix="PRE"):
+    assert isinstance(obj_chave, ChaveNFSeNacionalPedidoRegistro), "Objeto deve ser do tipo ChaveNFSeNacionalPedidoRegistro"
+    obj_chave.validar()
+    chave_parcial = "%s%s%s" % (
+        str(obj_chave.chave_acesso),
+        str(obj_chave.cod_evento).zfill(6),
+        str(obj_chave.nPedRegEvento).zfill(3),
+    )
+    return prefix + chave_parcial
+
 
 def gerar_chave_nfcom(obj_chave, suffix="NFCom"):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"

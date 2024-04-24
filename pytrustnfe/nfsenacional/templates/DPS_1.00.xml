@@ -1,22 +1,21 @@
 <DPS versao="1.00" xmlns="http://www.sped.fazenda.gov.br/nfse">
-    {% with dps = NFSe.infNFSe.DPS %}
-    <infDPS Id="{{ dps.Id }}">
-        <tpAmb>{{ dps.infDPS.tpAmb }}</tpAmb>
-        <dhEmi>{{ dps.infDPS.dhEmi }}</dhEmi>
-        <verAplic>{{ dps.infDPS.verAplic }}</verAplic>
-        <serie>{{ dps.infDPS.serie }}</serie>
-        <nDPS>{{ dps.infDPS.nDPS }}</nDPS>
-        <dCompet>{{ dps.infDPS.dCompet }}</dCompet>
-        <tpEmit>{{ dps.infDPS.tpEmit }}</tpEmit>
-        <cLocEmi>{{ dps.infDPS.cLocEmi }}</cLocEmi>
-        {% if dps.infDPS.subst is defined -%}
+    <infDPS Id="{{ DPS.Id }}">
+        <tpAmb>{{ DPS.infDPS.tpAmb }}</tpAmb>
+        <dhEmi>{{ DPS.infDPS.dhEmi }}</dhEmi>
+        <verAplic>{{ DPS.infDPS.verAplic }}</verAplic>
+        <serie>{{ DPS.infDPS.serie }}</serie>
+        <nDPS>{{ DPS.infDPS.nDPS }}</nDPS>
+        <dCompet>{{ DPS.infDPS.dCompet }}</dCompet>
+        <tpEmit>{{ DPS.infDPS.tpEmit }}</tpEmit>
+        <cLocEmi>{{ DPS.infDPS.cLocEmi }}</cLocEmi>
+        {% if DPS.infDPS.subst is defined -%}
         <subst>
-            <chSubstda>{{ dps.infDPS.subst.chSubstda }}</chSubstda>
-            <cMotivo>{{ dps.infDPS.subst.cMotivo }}</cMotivo>
-            <xMotivo>{{ dps.infDPS.subst.xMotivo }}</xMotivo>
+            <chSubstda>{{ DPS.infDPS.subst.chSubstda }}</chSubstda>
+            <cMotivo>{{ DPS.infDPS.subst.cMotivo }}</cMotivo>
+            <xMotivo>{{ DPS.infDPS.subst.xMotivo }}</xMotivo>
         </subst>
         {% endif %}
-        {% with prest = dps.infDPS.prest %}
+        {% with prest = DPS.infDPS.prest %}
         <prest>
             {% if prest.cnpj_cpf|length == 14  %}
             <CNPJ>{{ prest.cnpj_cpf }}</CNPJ>
@@ -50,7 +49,7 @@
             </regTrib>
         </prest>
         {% endwith %}
-        {% with toma = dps.infDPS.toma %}
+        {% with toma = DPS.infDPS.toma %}
         <toma>
             {% if toma.cnpj_cpf|length == 14  %}
             <CNPJ>{{ toma.cnpj_cpf }}</CNPJ>
@@ -71,8 +70,8 @@
             <email>{{ toma.email }}</email>
         </toma>
         {% endwith %}
-        {% if dps.infDPS.interm is defined -%}
-        {% with interm = dps.infDPS.interm %}
+        {% if DPS.infDPS.interm is defined -%}
+        {% with interm = DPS.infDPS.interm %}
         <interm>
             {% if interm.cnpj_cpf|length == 14  %}
             <CNPJ>{{ interm.cnpj_cpf }}</CNPJ>
@@ -94,7 +93,7 @@
         </interm>
         {% endwith %}
         {% endif %}
-        {% with serv = dps.infDPS.serv %}
+        {% with serv = DPS.infDPS.serv %}
         <serv>
             <locPrest>
                 <cLocPrestacao>{{ serv.locPrest.cLocPrestacao }}</cLocPrestacao>
@@ -163,7 +162,7 @@
             {% endif %}
         </serv>
         {% endwith %}
-        {% with valores = dps.infDPS.valores %}
+        {% with valores = DPS.infDPS.valores %}
         <valores>
             <vServPrest>
                 <vReceb>{{ valores.vServPrest.vReceb }}</vReceb>
@@ -364,5 +363,4 @@
         </valores>
         {% endwith %}
     </infDPS>
-    {% endwith %}
 </DPS>
