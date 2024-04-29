@@ -9,7 +9,9 @@ import os
 import sys
 import certifi
 import requests
+from copy import copy
 from lxml import etree
+from decimal import Decimal
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.utils import gerar_chave_nfsenacional, gerar_chave_nfsenacional_dps, gerar_chave_nfsenacional_pedido_registro, \
     ChaveNFSeNacional, ChaveNFSeNacionalDPS, ChaveNFSeNacionalEvento, ChaveNFSeNacionalPedidoRegistro
@@ -407,3 +409,145 @@ def retorna_municipio_regimes_especiais(certificado, **kwargs):
         kwargs["competencia"],
     )
     return _send(certificado, "", **kwargs)
+
+#========================================
+#Adaptadores Abrasf > NFSe Nacional
+#========================================
+
+
+def _abrasf_adapter(**kwargs):
+    nfse_abrasf = kwargs["rps"]
+    ambiente = kwargs["ambiente"]
+    #optante do simples
+    op_simples = None
+    if str(nfse_abrasf["optante_simples"]) == '1' and str(nfse_abrasf["regime_tributacao"]) == '5':
+        op_simples = '2'
+    elif str(nfse_abrasf["optante_simples"]) == '1' and str(nfse_abrasf["regime_tributacao"]) == '6':
+        op_simples = '3'
+    else:
+        op_simples = '1'
+    #regime especial de tributação
+    reg_esp_trib = None
+    if str(nfse_abrasf["regime_tributacao"]) == '4':
+        reg_esp_trib = '1'
+    elif str(nfse_abrasf["regime_tributacao"]) == '2':
+        reg_esp_trib = '2'
+    elif str(nfse_abrasf["regime_tributacao"]) == '1':
+        reg_esp_trib = '3'
+    elif str(nfse_abrasf["regime_tributacao"]) == '3':
+        reg_esp_trib = '6'
+    else:
+        reg_esp_trib = '0'
+
+    nfse_base = {
+        "infDPS": {
+            "tpAmb": "1" if ambiente == "producao" else "2",
+            "verAplic": "PyTrustNFe3",
+            "serie": nfse_abrasf["serie"],
+            "tpEmit":  "1",
+            "prest": {
+                "cnpj_cpf": nfse_abrasf["prestador"]["cnpj"],
+                "regTrib": {
+                    "opSimplNac": op_simples,
+                    "regApTribSN": nfse_abrasf["optante_simples_codigo"],
+                    "regEspTrib": reg_esp_trib,
+                }
+            }
+        }
+    }
+
+    #Exigibilidade ISS
+    eligibilidade_iss = None
+    if str(nfse_abrasf["natureza_operacao"]) in ['1','2','5','6']:
+        eligibilidade_iss = '1'
+    elif str(nfse_abrasf["natureza_operacao"]) == '4':
+        eligibilidade_iss = '2'
+    if str(nfse_abrasf["servico"]["iss"]) == '0.00':
+        eligibilidade_iss = '4'
+    if str(nfse_abrasf["servico"]["codigo_municipio"]) == '9999999':
+        eligibilidade_iss = '3'
+
+    nfse = copy(nfse_base)
+    nfse["infDPS"].update({
+        "dhEmi": str(nfse_abrasf["data_emissao"]) + "-03:00",
+        "nDPS": nfse_abrasf["numero"],
+        "dCompet": str(nfse_abrasf["data_competencia"]).split("T")[0],
+        "cLocEmi": nfse_abrasf["servico"]["codigo_municipio"],
+        "toma": {
+            "cnpj_cpf": nfse_abrasf["tomador"]["cpf_cnpj"],
+            "xNome": nfse_abrasf["tomador"]["razao_social"],
+            "end": {
+                "endNac": {
+                    "cMun": nfse_abrasf["tomador"]["codigo_municipio"],
+                    "CEP": nfse_abrasf["tomador"]["cep"],
+                },
+                "xLgr": nfse_abrasf["tomador"]["endereco"],
+                "nro": nfse_abrasf["tomador"]["numero"],
+                "xBairro": nfse_abrasf["tomador"]["bairro"],
+            },
+            "email": nfse_abrasf["tomador"]["email"],
+        },
+        "serv": {
+            "locPrest": {
+                "cLocPrestacao": nfse_abrasf["servico"]["codigo_municipio"],
+            },
+            "cServ": {
+                "cTribNac": nfse_abrasf["servico"]["codigo_atividade"],
+                "xDescServ": nfse_abrasf["servico"]["discriminacao"],
+                "cIntContrib": nfse_abrasf["servico"]["codigo_servico"],
+            },
+            "infoCompl": {
+                "xInfComp": nfse_abrasf["servico"]["informacao_complementar"],
+            }
+        },
+        "valores": {
+            "vServPrest": {
+                "vServ": nfse_abrasf["servico"]["valor_servico"],
+            },
+            "trib": {
+                "tribMun": {
+                    "tribISSQN": eligibilidade_iss,
+                },
+                "totTrib": {
+                    "pTotTribSN": "%.2f" % (Decimal(nfse_abrasf["servico"]["aliquota"]) * Decimal("100.00")),
+                }
+            }
+        }
+    })
+
+    if str(nfse_abrasf["eligibilidade_iss"]) in ['6','7']:
+        nfse["valores"]["trib"]["tribMun"]["exigSusp"] = {
+            "tpSusp": 1 if str(nfse_abrasf["eligibilidade_iss"]) == '6' else 2,
+            "nProcesso": str(nfse_abrasf["servico"]["numero_processo"]),
+        }
+    return nfse
+    
+def xml_recepcionar_lote_rps(certificado, **kwargs):
+    lote = kwargs["nfse"]
+    
+    notas = []
+    for nota in lote["lista_rps"]:
+        kwargs["rps"] = nota
+        adapter = _abrasf_adapter(**kwargs)
+        notas.append(xml_autorizar_dps(certificado, DPS=adapter, **kwargs))
+    return notas
+
+
+def recepcionar_lote_rps(certificado, **kwargs):
+    notas_xml = kwargs.get("XML_Notas", xml_recepcionar_lote_rps(certificado, **kwargs))
+    ret = []
+
+    for dps in notas_xml:
+        kwargs["XML"] = dps
+        ret.append(autorizar_dps(certificado, **kwargs))
+    return ret
+
+
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+   #Vai retornar apenas a chave baseado nas informações fornecidas
+   
+   return kwargs["nfse"] 
+
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    return 
