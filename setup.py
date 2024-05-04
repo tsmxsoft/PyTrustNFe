@@ -60,6 +60,7 @@ later (LGPLv2+)",
             "nfse/saatri/templates/*xml",
             "nfse/sigiss/templates/*xml",
             "nfse/sispmjp/templates/*xml",
+            "nfse/isslegal/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
