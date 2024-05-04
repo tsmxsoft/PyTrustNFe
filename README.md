@@ -45,6 +45,7 @@ NFSe - Empresas Atendidas
 * **GISS** - (Fork Ginfes?)
 * **Imperial** - Petrópolis/RH
 * **IPM**
+* **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
 * **Memory (NFSe Brasil)**

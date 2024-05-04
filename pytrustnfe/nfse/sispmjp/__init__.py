@@ -5,17 +5,15 @@
 import re
 import os
 import sys
-import ssl 
+import requests
+
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from requests.packages.urllib3 import disable_warnings
+import urllib3.contrib.securetransport
 from pytrustnfe.nfse.sispmjp.assinatura import Assinatura
 from lxml import etree
-from requests import Session
-from zeep.transports import Transport
-from zeep import Client, Settings, xsd
 import logging.config
-import urllib
 
 
 def _render(certificado, method, **kwargs):
@@ -46,6 +44,8 @@ def _render(certificado, method, **kwargs):
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
+    disable_warnings()
+    urllib3.contrib.securetransport.inject_into_urllib3()
     logging.config.dictConfig({
         'version': 1,
         'formatters': {
@@ -79,21 +79,23 @@ def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
     soap = render_xml(path, "SoapRequest.xml", False, False, soap_body=xml_send, method=method)
 
-    disable_warnings()
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
-        
-    session = Session()
+
+    rootpath = os.path.join(os.path.dirname(__file__), "intermediate.pem")
+    session = requests.Session()
     session.cert = (cert, key)
     action = "http://nfse.abrasf.org.br/%s" %(method)
-    transport = Transport(session=session)
+    headers = {
+        "Content-Type": "text/xml;charset=UTF-8",
+        "SOAPAction": action,
+        "Content-length": str(len(soap))
+    }
 
-    client = Client(wsdl=url + '?wsdl', transport=transport)
-
-
-    response = client.service[method](xml_send)
-    response, obj = sanitize_response(response)
-    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf-8')), "object": obj }
+    request = requests.post(url + "?wsdl", data=soap, cert=(cert, key), headers=headers, verify=rootpath)
+    response, obj = sanitize_response(request.content)
+    print(response)
+    return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
