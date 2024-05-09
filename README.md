@@ -39,7 +39,8 @@ NFSe - Empresas Atendidas
 * **Betha**
 * **Directa** - Natal/RN
 * **DSF**
-* **Equiplano** 
+* **Equiplano**
+* **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
