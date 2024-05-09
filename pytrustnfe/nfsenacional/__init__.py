@@ -541,13 +541,3 @@ def recepcionar_lote_rps(certificado, **kwargs):
         kwargs["XML"] = dps
         ret.append(autorizar_dps(certificado, **kwargs))
     return ret
-
-
-def xml_consultar_nfse_por_rps(certificado, **kwargs):
-   #Vai retornar apenas a chave baseado nas informações fornecidas
-   
-   return kwargs["nfse"] 
-
-
-def consultar_nfse_por_rps(certificado, **kwargs):
-    return 
