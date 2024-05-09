@@ -1,5 +1,5 @@
 <Rps>
-    <InfDeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
+    <InfDeclaracaoPrestacaoServico>
         <Rps>
             <IdentificacaoRps>
                 <Numero>{{ rps.numero }}</Numero>
@@ -20,18 +20,26 @@
                 <ValorInss>{{ rps.servico.inss }}</ValorInss>
                 <ValorIr>{{ rps.servico.ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
-                <ValorIss>{{ rps.servico.iss }}</ValorIss>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
                 <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota> 
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
-            <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
-            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
-            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             <ExigibilidadeISS>{{ rps.eligibilidade_iss }}</ExigibilidadeISS>
             <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
+            <ListaItensServico>
+                <ItemServico>
+                    <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+                    <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
+                    <Descricao>{{ rps.servico.discriminacao }}</Descricao>
+                    <Tributavel>1</Tributavel>
+                    <Quantidade>1</Quantidade>
+                    <ValorUnitario>{{ rps.servico.valor_servico }}</ValorUnitario>
+                    <ValorDesconto>0.00</ValorDesconto>
+                    <ValorLiquido>{{ rps.servico.valor_servico }}</ValorLiquido>
+                </ItemServico>
+            </ListaItensServico>
         </Servico>
         <Prestador>
             <CpfCnpj>
@@ -78,7 +86,6 @@
             </OrgaoGerador>
             {% endif %}
         </Tomador>
-        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
     </InfDeclaracaoPrestacaoServico> 
 </Rps>

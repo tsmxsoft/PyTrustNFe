@@ -1,4 +1,4 @@
-<EnviarLoteRpsEnvio xmlns="http://shad.elotech.com.br/schemas/iss/nfse_v2_03.xsd">
+<EnviarLoteRpsSincronoEnvio xmlns="http://shad.elotech.com.br/schemas/iss/nfse_v2_03.xsd">
     <IdentificacaoRequerente>
         <CpfCnpj>
             <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
@@ -11,7 +11,7 @@
         <Homologa>false</Homologa>
         {% endif %}
     </IdentificacaoRequerente>
-    <LoteRps Id="lote:{{nfse.numero_lote}}" versao="2.03">
+    <LoteRps versao="2.03">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <CpfCnpj>
             <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
@@ -24,4 +24,4 @@
             {% endfor %}
         </ListaRps>
     </LoteRps>
-</EnviarLoteRpsEnvio>
+</EnviarLoteRpsSincronoEnvio>

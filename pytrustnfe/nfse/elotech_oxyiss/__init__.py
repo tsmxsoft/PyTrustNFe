@@ -27,23 +27,24 @@ def _render(certificado, method, **kwargs):
                              remove_comments=True, 
                              strip_cdata=False)
 
-    signer = Assinatura(certificado.pfx, certificado.password)
+#    signer = Assinatura(certificado.pfx, certificado.password)
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     xml_send = etree.fromstring(xml_string_send, parser=parser)
-    referencia = ""
+#    referencia = ""
 
-    if method in ["RecepcionarLoteRps", "RecepcionarLoteRpsSincrono"]:
-        referencia = kwargs.get("nfse").get("numero_lote")
-        for item in kwargs["nfse"]["lista_rps"]:
-            reference = "rps:{0}{1}".format(
-                item.get('numero'), item.get('serie'))
-            
-            signer.assina_xml(xml_send, reference)
+#    if method in ["RecepcionarLoteRps", "RecepcionarLoteRpsSincrono"]:
+#        referencia = kwargs.get("nfse").get("numero_lote")
+#        for item in kwargs["nfse"]["lista_rps"]:
+#            reference = "rps:{0}{1}".format(
+#                item.get('numero'), item.get('serie'))
+#            
+#            signer.assina_xml(xml_send, reference)
 
-        xml_signed_send = signer.assina_xml(
-            xml_send, "lote:{0}".format(referencia))
-    else:
-        xml_signed_send = etree.tostring(xml_send)
+#        xml_signed_send = signer.assina_xml(
+#            xml_send, "lote:{0}".format(referencia))
+#    else:
+#        xml_signed_send = etree.tostring(xml_send)
+    xml_signed_send = etree.tostring(xml_send)
 
     return xml_signed_send
 
@@ -74,12 +75,12 @@ def _send(certificado, method, **kwargs):
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "RecepcionarLoteRps", **kwargs)
+    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "RecepcionarLoteRps", **kwargs)
+    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def xml_consultar_lote_rps(certificado, **kwargs):
     return _render(certificado, "ConsultarLoteRps", **kwargs)
