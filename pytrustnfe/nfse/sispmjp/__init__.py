@@ -9,11 +9,8 @@ import requests
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from requests.packages.urllib3 import disable_warnings
-import urllib3.contrib.securetransport
 from pytrustnfe.nfse.sispmjp.assinatura import Assinatura
 from lxml import etree
-import logging.config
 
 
 def _render(certificado, method, **kwargs):
@@ -44,30 +41,6 @@ def _render(certificado, method, **kwargs):
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
-    disable_warnings()
-    urllib3.contrib.securetransport.inject_into_urllib3()
-    logging.config.dictConfig({
-        'version': 1,
-        'formatters': {
-            'verbose': {
-                'format': '%(name)s: %(message)s'
-            }
-        },
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-                'formatter': 'verbose',
-            },
-        },
-        'loggers': {
-            'zeep.transports': {
-                'level': 'DEBUG',
-                'propagate': True,
-                'handlers': ['console'],
-            },
-        }
-    })
     path = os.path.join(os.path.dirname(__file__), "templates")
 
     if kwargs["ambiente"] == "homologacao":
@@ -81,20 +54,16 @@ def _send(certificado, method, **kwargs):
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
+    cafile = os.path.join(os.path.dirname(__file__), "ca.pem")
 
-    rootpath = os.path.join(os.path.dirname(__file__), "intermediate.pem")
-    session = requests.Session()
-    session.cert = (cert, key)
     action = "http://nfse.abrasf.org.br/%s" %(method)
     headers = {
-        "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
         "Content-length": str(len(soap))
     }
 
-    request = requests.post(url + "?wsdl", data=soap, cert=(cert, key), headers=headers, verify=rootpath)
+    request = requests.post(url, data=soap, cert=(cert, key), headers=headers, verify=cafile)
     response, obj = sanitize_response(request.content)
-    print(response)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
@@ -103,6 +72,7 @@ def xml_recepcionar_lote_rps(certificado, **kwargs):
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
+        print(kwargs["xml"])
     return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 def xml_recepcionar_lote_rps_sincrono(certificado, **kwargs):
@@ -135,7 +105,7 @@ def cancelar_nfse(certificado, **kwargs):
 
     try:
         #Conversão a objeto e Busca pelo elemento Nfse
-        res, xml_obj = sanitize_response(response['object']['CancelarNfseResponse']['return'].text)
+        res, xml_obj = sanitize_response(response['object']['CancelarNfseResponse']['outputXML'].text)
         #Caso haja algum erro, as mensagens serão retornadas
         if xml_obj.find(".//ListaMensagemRetorno") is not None:
             xml_obj = xml_obj.find(".//ListaMensagemRetorno")
@@ -164,8 +134,7 @@ def consultar_lote_rps(certificado, **kwargs):
     xml = None
 
     try:
-        xml_clean = re.sub(r'\<\?xml.+\?\>\n?','',response['object']['ConsultarLoteRpsResponse']['return'].text)
-        res, xml_obj = sanitize_response(xml_clean)
+        res, xml_obj = sanitize_response(response['object']['ConsultarLoteRpsResponse']['outputXML'].text)
         xml = etree.tostring(xml_obj,xml_declaration=False)
         if sys.version_info[0] > 2:
             from html.parser import HTMLParser
@@ -196,7 +165,7 @@ def consultar_nfse_por_rps(certificado, **kwargs):
     xml = None
 
     try:
-        res, xml_obj = sanitize_response(response['object']['ConsultarNfsePorRpsResponse']['return'].text)
+        res, xml_obj = sanitize_response(response['object']['ConsultarNfsePorRpsResponse']['outputXML'].text)
         xml_obj = xml_obj.find(".//CompNfse")
         #Conversão de volta a string
         xml = etree.tostring(xml_obj)
