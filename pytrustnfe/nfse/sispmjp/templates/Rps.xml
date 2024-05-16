@@ -93,7 +93,7 @@
         </ConstrucaoCivil>
         {% endif %}
         {% if rps.regime_tributacao is defined -%}
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao|default("", true) }}</RegimeEspecialTributacao>
         {% endif %}
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal|default("2", true) }}</IncentivoFiscal>
