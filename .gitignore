@@ -1,3 +1,6 @@
+*.pem
+*.crt
+*.p12
 *.pyc
 *~
 *.DS_Store
