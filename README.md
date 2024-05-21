@@ -44,6 +44,7 @@ NFSe - Empresas Atendidas
 * **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
+* **Governa**
 * **Imperial** - Petrópolis/RH
 * **IPM**
 * **ISS Legal**

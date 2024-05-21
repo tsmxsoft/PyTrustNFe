@@ -1,0 +1,8 @@
+<tcConsultaRPS>
+	<tsCodCadBic>{{ nfse.inscricao_municipal }}</tsCodCadBic>
+	<tsVrsArq>4</tsVrsArq>
+	<tsChvAcs>{{ nfse.chave_digital }}</tsChvAcs>
+	<tcInfConsultaRPS>
+		<tsNumRPS>{{ nfse.rps.numero }}</tsNumRPS>
+	</tcInfConsultaRPS>
+</tcConsultaRPS>
