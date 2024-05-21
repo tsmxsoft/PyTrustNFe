@@ -39,13 +39,15 @@ NFSe - Empresas Atendidas
 * **Betha**
 * **Directa** - Natal/RN
 * **DSF**
-* **Equiplano** 
+* **Equiplano**
+* **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
 * **Governa**
 * **Imperial** - Petrópolis/RH
 * **IPM**
+* **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
 * **Memory (NFSe Brasil)**
