@@ -1,0 +1,15 @@
+<CancelarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">
+    <Pedido>
+        <InfPedidoCancelamento Id="rps:{{nfse.rps.numero}}">
+            <IdentificacaoNfse>
+                <Numero>{{ nfse.rps.numero }}</Numero>
+                <CpfCnpj>
+                    <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+                <CodigoMunicipio>{{ nfse.codigo_municipio }}</CodigoMunicipio>
+            </IdentificacaoNfse>
+            <CodigoCancelamento>{{ nfse.codigo_cancelamento }}</CodigoCancelamento>
+        </InfPedidoCancelamento>
+    </Pedido>
+</CancelarNfseEnvio>
