@@ -1,0 +1,8 @@
+<tcLoteRps>
+    <tsCodCadBic>{{ nfse.inscricao_municipal }}</tsCodCadBic>
+    <tsVrsArq>4</tsVrsArq>
+    <tsChvAcs>{{ nfse.chave_digital }}</tsChvAcs>
+    {% for rps in nfse.lista_rps -%}
+    {% include 'Rps.xml' %}
+    {% endfor %}
+</tcLoteRps>

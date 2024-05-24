@@ -63,6 +63,7 @@ later (LGPLv2+)",
             "nfse/isslegal/templates/*xml",
             "nfse/elotech_oxyiss/templates/*xml",
             "nfse/governa/templates/*xml",
+            "nfse/thema/templates/*xml",
             "xml/schemas/*xsd",
         ]
     },
