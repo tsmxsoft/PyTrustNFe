@@ -55,7 +55,7 @@ def _generate_nfcom_id(**kwargs):
     chave_nfcom = gerar_chave_nfcom(chave_nfcom)
     item["Id"] = chave_nfcom[:len(chave_nfcom)]
     item["ide"]["cDV"] = chave_nfcom[len(chave_nfcom) - 1 :]
-    item["qrCodNFCom"] = nfcom_qrcode(chave_nfcom[5:len(chave_nfcom)],kwargs["ambiente"],item["ide"]["cUF"])
+    item["qrCodNFCom"] = nfcom_qrcode(chave_nfcom[5:len(chave_nfcom)],item["ide"]["tpAmb"],item["ide"]["cUF"])
 
 
 def _render(certificado, method, sign, **kwargs):
@@ -98,8 +98,9 @@ def _get_client(base_url, transport):
 
 def _send(certificado, method, **kwargs):
     xml_send = kwargs["xml"]
+    item = kwargs.get("infNFCom")
     base_url = localizar_url(
-        method, kwargs["estado"], kwargs["modelo"], kwargs["ambiente"]
+        method, item["ide"]["cUF"], item["ide"]["mod"], item["ide"]["tpAmb"]
     )
     logging.config.dictConfig({
         'version': 1,
@@ -124,7 +125,7 @@ def _send(certificado, method, **kwargs):
         }
     })
     session = _get_session(certificado)
-    transport = Transport(session=session,timeout=300)
+    transport = Transport(session=session,timeout=3000)
     print(base_url)
     first_op, client = _get_client(base_url, transport)
     return _send_zeep(first_op, client, xml_send, method == "NFComRecepcao")
