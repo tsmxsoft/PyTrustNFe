@@ -1,9 +1,9 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:tem="http://tempuri.org/">
+	xmlns:tem="http://server.nfse.thema.inf.br">
 	<soapenv:Header/>
 	<soapenv:Body>
 		<tem:{{ method }}>
-			<tem:pArquivoXML><![CDATA[{{ soap_body }}]]></tem:pArquivoXML>
+			<tem:xml><![CDATA[{{ soap_body }}]]></tem:xml>
 		</tem:{{ method }}>
 </soapenv:Body>
 </soapenv:Envelope>

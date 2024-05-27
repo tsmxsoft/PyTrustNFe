@@ -1,8 +1,13 @@
-<tcLoteRps>
-    <tsCodCadBic>{{ nfse.inscricao_municipal }}</tsCodCadBic>
-    <tsVrsArq>4</tsVrsArq>
-    <tsChvAcs>{{ nfse.chave_digital }}</tsChvAcs>
-    {% for rps in nfse.lista_rps -%}
-    {% include 'Rps.xml' %}
-    {% endfor %}
-</tcLoteRps>
+<EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
+    <LoteRps id="lote:{{ nfse.numero_lote }}">
+        <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
+        <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+        <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+        <QuantidadeRps>{{ nfse.lista_rps|length }}</QuantidadeRps>
+        <ListaRps>
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
+        </ListaRps>
+    </LoteRps>
+</EnviarLoteRpsEnvio>
