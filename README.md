@@ -63,6 +63,7 @@ NFSe - Empresas Atendidas
 * **Speedgov**
 * **Simpliss**
 * **Sispmjp** - João Pessoa/PB
+* **Thema**
 * **Tiplan**
 * **Tinus Informatica**
 * **Tecnos**
