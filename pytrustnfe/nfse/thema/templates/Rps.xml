@@ -26,11 +26,11 @@
                 <ValorIr>{{ rps.servico.valor_ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.valor_csll }}</ValorCsll>
                 <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
-                <ValorIss>{{ rps.servico.valor_iss }}</ValorIss>
-                <ValorIssRetido>{{ rps.servico.valor_iss_retido }}</ValorIssRetido>
+                <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                <ValorIssRetido>{{ rps.servico.valor_iss_retido|default("0.00", true) }}</ValorIssRetido>
                 <OutrasRetencoes>{{ rps.servico.outras_retencoes }}</OutrasRetencoes>
                 <BaseCalculo>{{ rps.servico.base_calculo }}</BaseCalculo>
-                <Aliquota>{{ rps.servico.aliquota_issqn }}</Aliquota>
+                <Aliquota>{{ rps.servico.aliquota }}</Aliquota>
                 <ValorLiquidoNfse>{{ rps.servico.valor_liquido_nfse }}</ValorLiquidoNfse>
                 <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</DescontoIncondicionado>
                 <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
@@ -48,11 +48,11 @@
         <Tomador>
             <IdentificacaoTomador>
                 <CpfCnpj>
-                    {% if rps.tomador.cnpj_cpf|length == 14  %}
-                    <Cnpj>{{ rps.tomador.cnpj_cpf }}</Cnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
                     {% endif %}
-                    {% if rps.tomador.cnpj_cpf|length == 11  %}
-                    <Cpf>{{ rps.tomador.cnpj_cpf }}</Cpf>
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
                     {% endif %}
                 </CpfCnpj>
                 <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
