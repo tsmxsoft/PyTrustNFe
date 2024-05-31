@@ -2,12 +2,25 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-
+import os
 import re
+import csv
 from datetime import date, datetime
 import lxml.etree as ET
 from unicodedata import normalize
 
+
+def ibge2siafi(ibge_or_cnpj):
+    try:
+        path = os.path.dirname(__file__)
+        with open(path + '/data/csvs/tab_siafi_20220106.csv', 'r') as file:
+            for row in csv.reader(file, delimiter=";"):
+                if str(row[4]).strip() == str(ibge_or_cnpj).strip() or \
+                   str(row[1]).strip() == str(ibge_or_cnpj).strip():
+                    return str(row[0]).strip()
+    except Exception as e:
+        print(e)
+    return None
 
 class ChaveNFe(object):
     def __init__(self, **kwargs):
