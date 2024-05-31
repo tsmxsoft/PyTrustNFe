@@ -5,6 +5,7 @@
 from lxml import etree,objectify
 from jinja2 import Environment, FileSystemLoader
 from . import filters
+from pytrustnfe.utils import ibge2siafi
 
 import sys
 
@@ -13,6 +14,10 @@ def recursively_empty(e):
     if e.text:
         return False
     return all((recursively_empty(c) for c in e.iterchildren()))
+
+def filter_ibge2siafi(value):
+    val = ibge2siafi(value)
+    return val if val else value 
 
 
 def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
@@ -31,6 +36,7 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     env.filters["format_cep"] = filters.format_cep
     env.filters["format_date"] = filters.format_date
     env.filters["comma"] = filters.format_with_comma
+    env.filters["ibge2siafi"] = filter_ibge2siafi
 
     template = env.get_template(template_name)
     xml = template.render(**nfe)
