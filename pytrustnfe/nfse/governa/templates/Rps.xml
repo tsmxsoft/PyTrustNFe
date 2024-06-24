@@ -32,7 +32,6 @@
         <tsAnoCmp>{{ datacomp[0] }}</tsAnoCmp>
         {% set dataemi = rps.data_competencia.split('T')[0].replace('-','') %}
         <tsDatEmsRps>{{ dataemi }}</tsDatEmsRps>
-        <tsVlrRep>{{ rps.servico.iss|default("0.00", true)|format_numeric(14,2,True,True) }}</tsVlrRep>
         <tsVlrDed>{{ rps.servico.deducoes|default("0.00", true)|format_numeric(14,2,True,True) }}</tsVlrDed>
         <tsVlrDsc>{{ rps.servico.valor_descontos|default("0.00", true)|format_numeric(14,2,True,True) }}</tsVlrDsc>
         <tsVlrPIS>{{ rps.servico.pis|default("0.00", true)|format_numeric(14,2,True,True) }}</tsVlrPIS>
