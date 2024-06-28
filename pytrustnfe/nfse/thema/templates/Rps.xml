@@ -59,7 +59,7 @@
             </IdentificacaoTomador>
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
-                <Endereco>{{ rps.tomador.logradouro }}</Endereco>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
                 <Numero>{{ rps.tomador.numero }}</Numero>
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
