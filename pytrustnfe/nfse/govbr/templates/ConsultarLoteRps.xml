@@ -1,0 +1,8 @@
+<ConsultarLoteRpsEnvio>
+	<Prestador>
+		<CpfCnpj>
+			<Cnpj>{{ consulta.cnpj_prestador }}</Cnpj>
+		</CpfCnpj>
+	</Prestador>
+	<Protocolo>{{ consulta.protocolo }}</Protocolo>
+</ConsultarLoteRpsEnvio>
