@@ -45,6 +45,7 @@ NFSe - Empresas Atendidas
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
 * **Governa**
+* **GovBR (ISS Digital)** 
 * **Imperial** - Petrópolis/RH
 * **IPM**
 * **ISS Legal**
