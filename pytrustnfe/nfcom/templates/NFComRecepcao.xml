@@ -98,14 +98,27 @@
         {% if gCoFat is defined -%}
         <gCoFat>
             <chNFComLocal>{{ gCoFat.chNFComLocal }}</chNFComLocal>
+            <gNF>
+                <CNPJ>{{ gCoFat.gNF.CNPJ }}</CNPJ>
+                <mod>{{ gCoFat.gNF.mod }}</mod>
+                <serie>{{ gCoFat.gNF.serie }}</serie>
+                <nNF>{{ gCoFat.gNF.nNF }}</nNF>
+                <CompetEmis>{{ gCoFat.gNF.CompetEmis }}</CompetEmis>
+                <hash115>{{ gCoFat.gNF.hash115 }}</hash115>
+            </gNF>
         </gCoFat>
         {% endif %}
         {% for det in dets %}
-        {% if det.chNFComAnt is defined -%}
-        <det nItem="{{ det.nItem }}" chNFComAnt="{{ det.chNFComAnt }}" nItemAnt="{{ det.nItemAnt }}">
-        {% else %}
-        <det nItem="{{ det.nItem }}">
-        {% endif %}
+
+        <det
+            nItem="{{ det.nItem }}"
+            {% if det.chNFComAnt is defined -%}
+            chNFComAnt="{{ det.chNFComAnt }}"
+            nItemAnt="{{ det.nItemAnt }}"
+            {% if det.indNFComAntPapelFatCentral is defined -%}
+            indNFComAntPapelFatCentral="{{ det.indNFComAntPapelFatCentral }}"
+            {% endif %}
+            {% endif %}>
             <prod>
                 <cProd>{{ det.prod.cProd }}</cProd>
                 <xProd>{{ det.prod.xProd }}</xProd>

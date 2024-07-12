@@ -157,6 +157,7 @@ def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     with client.settings(raw_response=True):
         response = client.service[first_operation](xml_send)
+        print(response.text)
         response, obj = sanitize_response(response.text)
         return {
             "sent_xml": xml_send,

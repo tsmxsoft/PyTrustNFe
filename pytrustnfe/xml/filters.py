@@ -18,12 +18,35 @@ def normalize_str(string):
     Remove special characters and strip spaces
     """
     if string:
-        if not isinstance(string, str):
-            string = str(string).encode("utf-8", "replace")
+        if sys.version_info[0] > 2:
+            if not isinstance(string, str):
+                string = str(string, "utf-8", "replace")
+        else:
+            if not isinstance(string,unicode):
+                string = unicode(string, "utf-8")
+
         return (
             normalize("NFKD", string).encode("ASCII", "ignore").decode()
         )
     return ""
+
+
+def strip_line_feed(string):
+    if string:
+        if sys.version_info[0] > 2:
+            if not isinstance(string, str):
+                string = str(string, "utf-8", "replace")
+        else:
+            if not isinstance(string,unicode):
+                string = unicode(string, "utf-8")
+        remap = {
+            ord("\t"): u" ",
+            ord("\n"): u" ",
+            ord("\f"): u" ",
+            ord("\r"): None,  # Delete
+        }
+        return string.translate(remap).strip()
+    return string
 
 
 def zfill_str(string,qtd):
@@ -31,14 +54,6 @@ def zfill_str(string,qtd):
     Adiciona Zero's a esquerda
     """
     return string.zfill(qtd)
-
-
-def strip_line_feed(string):
-    if string:
-        if not isinstance(string, str):
-            string = str(string).encode("utf-8", "replace")
-        return re.sub('[\t\n\f\r]','', string)
-    return string
 
 
 def format_percent(value):
