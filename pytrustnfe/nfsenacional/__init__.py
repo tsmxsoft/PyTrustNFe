@@ -449,7 +449,7 @@ def _abrasf_adapter(**kwargs):
                 "cnpj_cpf": nfse_abrasf["prestador"]["cnpj"],
                 "regTrib": {
                     "opSimplNac": op_simples,
-                    "regApTribSN": nfse_abrasf["optante_simples_codigo"],
+                    "regApTribSN": nfse_abrasf["optante_simples"],
                     "regEspTrib": reg_esp_trib,
                 }
             }
