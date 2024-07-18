@@ -8,7 +8,7 @@ from collections import OrderedDict
 import signxml
 from lxml import etree
 from OpenSSL import crypto
-from signxml import XMLSigner
+from pytrustnfe.nfe.assinatura import XMLSigner
 import hashlib
 
 
