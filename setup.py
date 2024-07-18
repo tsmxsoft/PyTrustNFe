@@ -1,6 +1,7 @@
 # coding=utf-8
 from setuptools import setup, find_packages
 from pytrustnfe import get_version
+import sys
 
 
 setup(
@@ -74,17 +75,6 @@ later (LGPLv2+)",
     description="PyTrustNFe é uma biblioteca para envio de NF-e",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
-    install_requires=[
-        "requests == 2.24.0",
-        "Jinja2 >= 2.8",
-        "pyOpenSSL == 19.1.0",
-        "signxml >= 2.4.0",
-        "lxml >= 3.5.0, < 5",
-        "reportlab == 3.3.0",
-        "pytz == 2020.4",
-        "zeep == 3.4.0",
-        # "suds-jurko >= 0.6",
-        # "suds-jurko-requests >= 1.2",
-    ],
+    install_requires=[line.strip() for line in open("requirements.txt" if sys.version_info[0] < 3 else "requirements3.txt").readlines()],
     tests_require=["pytest",],
 )
