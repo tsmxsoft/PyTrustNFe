@@ -27,7 +27,7 @@ def _render(certificado, method, **kwargs):
     if method == "enviar":
         ibge_cid = kwargs["nfse"]["lista_rps"][0]["servico"].get("codigo_municipio", None)
         kwargs["nfse"]["total_servicos"] = sum(Decimal(rps["servico"]["valor_servico"]) for rps in kwargs["nfse"]["lista_rps"])
-        kwargs["nfse"]["total_deducoes"] = sum(Decimal(rps["servico"]["deducoes"]) for rps in kwargs["nfse"]["lista_rps"])
+        kwargs["nfse"]["total_deducoes"] = sum(Decimal(rps["servico"]["deducoes"]) for rps in kwargs["nfse"]["lista_rps"] if "deducoes" in rps["servico"])
     else:
         ibge_cid = kwargs["nfse"]["codigo_municipio"]
     kwargs["nfse"]["cidade"] = ibge2siafi(ibge_cid) if ibge_cid else ibge2siafi(cnpj_pref)
