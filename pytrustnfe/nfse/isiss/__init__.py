@@ -6,8 +6,7 @@ import os
 from OpenSSL import crypto
 from base64 import b64encode
 
-from requests import Session
-from zeep import Client
+import requests
 from zeep.transports import Transport
 from requests.packages.urllib3 import disable_warnings
 
@@ -16,6 +15,7 @@ from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
 import sys
+import logging.config
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -68,28 +68,47 @@ def _render_unsigned(certificado, method, **kwargs):
 def _send(certificado, method, **kwargs):
     base_url = ""
     if kwargs["ambiente"] == "homologacao":
-        base_url = "https://wsnfse.vitoria.es.gov.br/homologacao/NotaFiscalService.asmx?WSDL"
+        base_url = kwargs.get("base_url") or "https://wsnfse.vitoria.es.gov.br/homologacao/NotaFiscalService.asmx"
     else:
-        base_url = kwargs.get("base_url") or "https://wsnfse.vitoria.es.gov.br/producao/NotaFiscalService.asmx?WSDL"
+        base_url = kwargs.get("base_url") or "https://wsnfse.vitoria.es.gov.br/producao/NotaFiscalService.asmx"
+
+    xml_send = kwargs["xml"]
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
-
-    disable_warnings()
-    session = Session()
+    session = requests.Session()
     session.cert = (cert, key)
-    session.trust_env = False
-    transport = Transport(session=session)
+    action = 'http://www.abrasf.org.br/nfse.xsd/%s' %(method)
+    headers = {
+        "Content-Type": 'text/xml;charset=UTF-8',
+        "SOAPAction": action,
+    }
 
-    client = Client(wsdl=base_url, transport=transport)
-    xml = client.service[method](kwargs["xml"])
-    xml, obj = sanitize_response(xml)
-
-    print ('--- xml response ---')
-    print (xml)
-
-    return {"sent_xml": kwargs["xml"], "received_xml": xml, "object": obj}
+    request = session.post(base_url, data=soap, headers=headers)
+    pretty_print_POST(request.request)
+    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+    try:
+        return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+    except:
+        return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
     
+def pretty_print_POST(req):
+    """
+    At this point it is completely built and ready
+    to be fired; it is "prepared".
+
+    However pay attention at the formatting used in 
+    this function because it is programmed to be pretty 
+    printed and may differ from the actual request.
+    """
+    print('{}\n{}\r\n{}\r\n\r\n{}'.format(
+        '-----------START-----------',
+        req.method + ' ' + req.url,
+        '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
+        req.body,
+    ))
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
