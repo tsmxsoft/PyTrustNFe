@@ -68,6 +68,7 @@ later (LGPLv2+)",
             "nfse/thema/templates/*xml",
             "nfse/govbr/templates/*xml",
             "xml/schemas/*xsd",
+            "data/csvs/*csv",
         ]
     },
     url="https://github.com/danimaribeiro/PyTrustNFe",
