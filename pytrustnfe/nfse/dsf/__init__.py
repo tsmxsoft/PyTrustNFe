@@ -43,7 +43,7 @@ def _render(certificado, method, **kwargs):
             if str(rps["eligibilidade_iss"]) in ['3','5']:
                 operacao = "C"
             #“B”- Com Dedução/Materiais
-            elif not rps["servico"]["deducoes"] == "0.00":
+            elif "deducoes" in rps["servico"] and not rps["servico"]["deducoes"] == "0.00":
                 operacao = "B"
             #“J” – Intermediação
             elif "intermediario" in rps:
