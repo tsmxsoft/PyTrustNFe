@@ -10,17 +10,21 @@
         <Status>{{ rps.status }}</Status>
         <Servico>
             <Valores>
-                <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+                <ValorServicos>{{ rps.servico.valor_servico|default('0.00') }}</ValorServicos>
                 <ValorDeducoes>{{ rps.servico.valor_descontos|default('0.00') }}</ValorDeducoes>
-                <ValorPis>{{ rps.servico.pis }}</ValorPis>
-                <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
-                <ValorInss>{{ rps.servico.inss }}</ValorInss>
-                <ValorIr>{{ rps.servico.ir }}</ValorIr>
-                <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
-                <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
-                <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
+                <ValorPis>{{ rps.servico.pis|default('0.00') }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins|default('0.00') }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss|default('0.00') }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir|default('0.00') }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll|default('0.00') }}</ValorCsll>
+                <IssRetido>{{ rps.servico.iss_retido|default('0.00') }}</IssRetido>
+                <ValorIss>{{ rps.servico.iss|default('0.00') }}</ValorIss>
+                <OutrasRetencoes>{{ rps.servico.retencoes|default('0.00') }}</OutrasRetencoes>
+                {% if rps.servico.aliquota is defined -%}
                 <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
+                {% else %}
+                <Aliquota>0.00</Aliquota>
+                {% endif %}
                 <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default('0.00') }}</DescontoIncondicionado>
                 <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default('0.00') }}</DescontoCondicionado>
             </Valores>
