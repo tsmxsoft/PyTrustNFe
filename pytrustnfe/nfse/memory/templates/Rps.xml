@@ -1,5 +1,5 @@
 <Rps>
-    <InfRps Id="rps:{{ rps.numero }}{{ rps.serie }}">
+    <InfRps Id="{{ nfse.numero_lote }}{{ rps.numero }}{{ rps.serie }}">
         <IdentificacaoRps>
             <Numero>{{ rps.numero }}</Numero>
             <Serie>{{ rps.serie }}</Serie>
