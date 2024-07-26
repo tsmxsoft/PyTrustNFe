@@ -21,7 +21,8 @@
                 <ValorCsll>{{ rps.servico.csll|default("0.00", true) }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes|default("0.00", true) }}</OutrasRetencoes>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <Aliquota>{{ rps.servico.aliquota|float * 100.00 }}</Aliquota> 
+                {% set aliquota = rps.servico.aliquota| float * 100.00 %}
+                <Aliquota>{{ aliquota | format_numeric(0,2,True,False) }}</Aliquota> 
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             {% if rps.servico.iss_retido == 1 -%}
@@ -37,6 +38,7 @@
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             <CodigoPais>1058</CodigoPais>
             <ExigibilidadeISS>1</ExigibilidadeISS>
+            <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
         </Servico>
         <Prestador>
             <CpfCnpj>
