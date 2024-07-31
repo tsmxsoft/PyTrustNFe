@@ -36,8 +36,8 @@ def _render(certificado, method, **kwargs):
             kwargs['nfse']['lista_rps'][i]['servico']['iss_retido'] = "S" if rps['servico']['iss_retido'] == "1" else "N"
 
 
-    xml_string_send = render_xml(path, "%s.xml" % method, True, False, **kwargs)
-    
+    xml_string_send = render_xml(path, "%s.xml" % method, True, True, **kwargs)
+    xml_string_send = re.sub(r'[\r\n]','',xml_string_send)
     # xml object
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
@@ -50,6 +50,7 @@ def _render(certificado, method, **kwargs):
     else:
         xml_signed_send = etree.tostring(xml_send)
 
+    xml_signed_send = re.sub(r'[\r\n]','',xml_signed_send)
     print ('--- xml ---')
     print (xml_signed_send)
 
@@ -65,13 +66,12 @@ def _send(certificado, method, **kwargs):
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", True, False, **{"soap_body":xml_send, "method": method })
+    soap = render_xml(path, "SoapRequest.xml", True, True, **{"soap_body":xml_send, "method": method })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
     session = Session()
     session.cert = (cert, key)
-    session.verify = False
     op = "%sAsync" %(method)
     if method == "ConsultaSituacaoLote":
         op = method
@@ -82,8 +82,8 @@ def _send(certificado, method, **kwargs):
         "Operation": op,
         "Content-length": str(len(soap))
     }
-
     request = session.post(url, data=soap, headers=headers)
+    print(request.content)
     response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
     try:
         return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }

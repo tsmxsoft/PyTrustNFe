@@ -3,7 +3,6 @@
    <soap:Body>
       <{{ method }}Request>
          <versaoSchema>1</versaoSchema>
-         <!--Optional:-->
          <MensagemXML><![CDATA[{{ soap_body }}]]></MensagemXML>
       </{{ method }}Request>
    </soap:Body>

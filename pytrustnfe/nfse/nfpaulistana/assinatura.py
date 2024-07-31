@@ -19,6 +19,11 @@ from cryptography.hazmat.primitives.asymmetric import padding, utils
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from signxml.util import ensure_bytes,ensure_str
 
+from Crypto.PublicKey import RSA
+from Crypto.Signature.pkcs1_15 import PKCS115_SigScheme
+from Crypto.Hash import SHA1
+import binascii
+
 PY2 = sys.version_info[0] == 2
 
 class Assinatura(object):
@@ -79,19 +84,11 @@ class Assinatura(object):
             #não é necessário informar os dados de intermediário na assinatura se não houver intermediário
             if dados['intermed_ind'] == '3':
                 chave_raw = chave_raw[:-16]
-            
-            print(chave_raw)
 
-#            pfx = crypto.load_pkcs12(self.cert, self.key)
-#            print(chave_raw)
-#            obj = xml_send.find('.//Assinatura[.="assinatura:%s"]' % rps['numero'])
-#            obj.text = base64.b64encode(crypto.sign(pfx.get_privatekey(), chave_raw.encode('ascii'), "sha1"))
-            
-            obj = xml_send.find('.//Assinatura[.="assinatura:%s"]' % rps['numero'])
             cert, key = self.extract_cert_key()
             key = load_pem_private_key(key, None, backend=default_backend())
             signature = key.sign(chave_raw.encode('ascii'), padding=padding.PKCS1v15(), algorithm=hashes.SHA1())
-            obj.text = base64.encodestring(signature) if PY2 else base64.encodebytes(signature).decode()
+            xml_send.find('.//Assinatura[.="assinatura:%s"]' % rps['numero']).text = (base64.encodestring(signature) if PY2 else base64.encodebytes(signature).decode())
 
     def extract_cert_key(self):
         pfx = crypto.load_pkcs12(self.cert, self.key)
@@ -111,6 +108,7 @@ class Assinatura(object):
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
+        print(etree.tostring(xml))
         signed_root = signer.sign(xml, key=key, cert=cert)
 
         encoding = "utf8"

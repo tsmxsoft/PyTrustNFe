@@ -37,8 +37,7 @@
     <RazaoSocialTomador>{{ rps.tomador.razao_social }}</RazaoSocialTomador>
     {% if rps.tomador.endereco is defined -%}
     <EnderecoTomador>
-        {% set tipo_logradouro = rps.tomador.endereco.split(' ') %}
-        <Logradouro>{{ rps.tomador.logradouro }}</Logradouro>
+        <Logradouro>{{ rps.tomador.endereco }}</Logradouro>
         <NumeroEndereco>{{ rps.tomador.numero }}</NumeroEndereco>
         <ComplementoEndereco>{{ rps.tomador.complemento }}</ComplementoEndereco>
         <Bairro>{{ rps.tomador.bairro }}</Bairro>
@@ -47,6 +46,10 @@
         <CEP>{{ rps.tomador.cep }}</CEP>
     </EnderecoTomador>
     {% endif %}
-    <EmailTomador><![CDATA[{{ rps.tomador.email }}]]></EmailTomador>
-    <Discriminacao><![CDATA[{{ rps.servico.discriminacao }}]]></Discriminacao>
+    <EmailTomador>{{ rps.tomador.email }}</EmailTomador>
+    <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+    <ValorCargaTributaria>{{ rps.servico.iss | format_numeric(0,2,True,False) }}</ValorCargaTributaria>
+    {% set aliquota = rps.servico.aliquota | float * 100.00 %}
+    <PercentualCargaTributaria>{{ aliquota | format_numeric(0,4,True,False)}}</PercentualCargaTributaria>
+    <FonteCargaTributaria>ISS</FonteCargaTributaria>
 </RPS>
