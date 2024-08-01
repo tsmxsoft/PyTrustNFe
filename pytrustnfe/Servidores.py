@@ -366,6 +366,7 @@ UFCE = {
     },
 }
 UFCE[CTE_MODELO] = copy(SVRS[CTE_MODELO])
+UFCE[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 
 UFGO = {
