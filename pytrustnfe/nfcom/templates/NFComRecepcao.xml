@@ -17,6 +17,10 @@
             <verProc>{{ ide.verProc }}</verProc>
             <indPrePago>{{ ide.indPrePago }}</indPrePago>
             <indCessaoMeiosRede>{{ ide.indCessaoMeiosRede }}</indCessaoMeiosRede>
+            {# NT2023_002 #}
+            {% if ide.finNFCom|int == 4 %}
+            <indNotaEntrada>{{ ide.indNotaEntrada }}</indNotaEntrada>
+            {% endif %}
             <dhCont>{{ ide.dhCont }}</dhCont>
             <xJust>{{ ide.xJust }}</xJust>
         </ide>
@@ -67,6 +71,11 @@
                 <xMun>{{ dest.enderDest.xMun }}</xMun>
                 <CEP>{{ dest.enderDest.CEP }}</CEP>
                 <UF>{{ dest.enderDest.UF }}</UF>
+                {# NT2023.001 v1.01 #}
+                {% if dest.enderDest.UF == "EX" %}
+                <cPais>{{ dest.enderDest.cPais }}</cPais>
+                <xPais>{{ dest.enderDest.xPais }}</xPais>
+                {% endif %}
                 <fone>{{ dest.enderDest.fone }}</fone>
                 <email>{{ dest.enderDest.email }}</email>
             </enderDest>
@@ -79,11 +88,17 @@
             <dContratoIni>{{ assinante.dContratoIni }}</dContratoIni>
             <dContratoFim>{{ assinante.dContratoFim }}</dContratoFim>
             <NroTermPrinc>{{ assinante.NroTermPrinc }}</NroTermPrinc>
-            <cUF>{{ assinante.cUF }}</cUF>
+            <cUFPrinc>{{ assinante.cUFPrinc }}</cUFPrinc>
+            {# NT2023.001 v1.01 #}
+            {% for termadic in assinante.termAdic %}
+            <NroTermAdic>{{ termadic.NroTermPrinc }}</NroTermAdic>
+            <cUFAdic>{{ termadic.cUFAdic }}</cUFAdic>
+            {% endfor %}
         </assinante>
         {% if gSub is defined -%}
         <gSub>
             <chNFCom>{{ gSub.chNFCom }}</chNFCom>
+            {% if gSub.gNF is defined -%}
             <gNF>
                 <CNPJ>{{ gSub.gNF.CNPJ }}</CNPJ>
                 <mod>{{ gSub.gNF.mod }}</mod>
@@ -92,12 +107,14 @@
                 <CompetEmis>{{ gSub.gNF.CompetEmis }}</CompetEmis>
                 <hash115>{{ gSub.gNF.hash115 }}</hash115>
             </gNF>
+            {% endif %}
             <motSub>{{ gSub.motSub }}</motSub>
         </gsub>
         {% endif %}
         {% if gCoFat is defined -%}
         <gCoFat>
             <chNFComLocal>{{ gCoFat.chNFComLocal }}</chNFComLocal>
+            {% if gCoFat.gNF is defined -%}
             <gNF>
                 <CNPJ>{{ gCoFat.gNF.CNPJ }}</CNPJ>
                 <mod>{{ gCoFat.gNF.mod }}</mod>
@@ -106,10 +123,10 @@
                 <CompetEmis>{{ gCoFat.gNF.CompetEmis }}</CompetEmis>
                 <hash115>{{ gCoFat.gNF.hash115 }}</hash115>
             </gNF>
+            {% endif %}
         </gCoFat>
         {% endif %}
         {% for det in dets %}
-
         <det
             nItem="{{ det.nItem }}"
             {% if det.chNFComAnt is defined -%}
@@ -180,6 +197,11 @@
                     <vBC>{{ det.imposto.ICMS.vBC }}</vBC>
                     <pICMS>{{ det.imposto.ICMS.pICMS }}</pICMS>
                     <vICMS>{{ det.imposto.ICMS.vICMS }}</vICMS>
+                    <vICMSDeson>{{ det.imposto.ICMS.vICMSDeson }}</vICMSDeson>
+                    {# NT2024_001 #}
+                    <cBenef>{{ det.imposto.ICMS.cBenef }}</cBenef>
+                    <pFCP>{{ det.imposto.ICMS.pFCP }}</pFCP>
+                    <vFCP>{{ det.imposto.ICMS.vFCP }}</vFCP>
                 </ICMS90>
                 {% endif %}
                 {% if det.imposto.ICMSSN is defined -%}
@@ -253,6 +275,8 @@
                 <vICMS>{{ det.gProcRef.vICMS }}</vICMS>
                 <vPIS>{{ det.gProcRef.vPIS }}</vPIS>
                 <vCOFINS>{{ det.gProcRef.vCOFINS }}</vCOFINS>
+                {# NT2024_001 #}
+                <vFCP>{{ det.gProcRef.vFCP }}</vFCP>
                 {% for gproc in det.gProcRef.gProcs %}
                 <gProc>
                     <tpProc>{{ gproc.tpProc }}</tpProc>

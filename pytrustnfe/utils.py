@@ -214,8 +214,8 @@ def nfcom_valor(valor):
 
 def nfcom_qrcode(chNFCom, tpAmb, sigla, offline=False, assinatura=""):
     if offline:
-        return "https://%s/Nfcom/QrCode?chNFCom=%s&tpAmb=%d&amp;sign=%s" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["servidor"],chNFCom,tpAmb,assinatura)
-    return "https://%s/Nfcom/QrCode?chNFCom=%s&amp;tpAmb=%d" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["servidor"],chNFCom,tpAmb)
+        return "https://%s/Nfcom/QrCode?chNFCom=%s&tpAmb=%d&amp;sign=%s" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb,assinatura)
+    return "https://%s/Nfcom/QrCode?chNFCom=%s&amp;tpAmb=%d" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb)
 
 def gerar_chave_nfcom(obj_chave):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFe"
