@@ -52,6 +52,7 @@ NFSe - Empresas Atendidas
 * **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
+* **Megasoft**
 * **Memory (NFSe Brasil)**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
