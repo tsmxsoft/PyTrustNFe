@@ -20,12 +20,12 @@ def _render(certificado, method, **kwargs):
     reference = ""
     if method == "GerarNfse":
         reference = "rps:%s%s" % (str(kwargs["rps"]["numero"]),str(kwargs["rps"]["serie"]))
-    elif method == "CancelarNfse":
-        reference = "nfse:%s" % str(kwargs["nfse"]["rps"]["numero"])
 
-    signer = Assinatura(certificado.pfx, certificado.password)
-    xml_send = signer.assina_xml(etree.fromstring(xml_send), reference)
-    return xml_send.encode("utf-8")
+    if reference:
+        signer = Assinatura(certificado.pfx, certificado.password)
+        xml_send = signer.assina_xml(etree.fromstring(xml_send), reference)
+        return xml_send.encode("utf-8")
+    return xml_send
 
 
 def _send(certificado, method, **kwargs):
@@ -46,7 +46,6 @@ def _send(certificado, method, **kwargs):
 
     client = Client(base_url, transport=transport)
 
-    print(xml_send)
     response = client.service[method](xml_cabecalho, xml_send)
 
     response, obj = sanitize_response(response)
@@ -63,16 +62,6 @@ def gerar_nfse(certificado, **kwargs):
     return _send(certificado, "GerarNfse", **kwargs)
 
 
-def xml_cancelar_nfse(certificado, **kwargs):
-    return _render(certificado, "CancelarNfse", **kwargs)
-
-
-def cancelar_nfse(certificado, **kwargs):
-    if "xml" not in kwargs:
-        kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
-    return _send(certificado, "CancelarNfse", **kwargs)
-
-
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return [xml_gerar_nfse(certificado,rps=x,**kwargs) for x in kwargs["nfse"]["lista_rps"]]
 
@@ -85,3 +74,22 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
             "rps": rps,
         })))
     return "\n\n".join(ret)
+
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+
+    response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
+    xml = None
+
+    try:
+        xml_element = sanitize_response(response['received_xml'])
+    except:
+        pass
+
+    return etree.tostring(xml_element[1].find('.//Nfse'))
+
+
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render(certificado, "ConsultarNfsePorRps", **kwargs)
