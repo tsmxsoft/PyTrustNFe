@@ -68,6 +68,7 @@ later (LGPLv2+)",
             "nfse/thema/templates/*xml",
             "nfse/govbr/templates/*xml",
             "nfse/isiss/templates/*xml",
+            "nfse/megasoft/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
