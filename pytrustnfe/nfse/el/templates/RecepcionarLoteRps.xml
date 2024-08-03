@@ -1,0 +1,15 @@
+<LoteRps xmlns="http://www.el.com.br/nfse/xsd/el-nfse.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.el.com.br/nfse/xsd/el-nfse.xsd el-nfse.xsd ">
+	<Id>{{ nfse.numero_lote | encrypt_fnv1_32 }}</Id>
+	<NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
+	<QuantidadeRps>{{ nfse.lista_rps|length }}</QuantidadeRps>
+	<IdentificacaoPrestador>
+		<CpfCnpj>{{ nfse.cnpj_prestador }}</CpfCnpj>
+		<IndicacaoCpfCnpj>2</IndicacaoCpfCnpj>
+		<InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+	</IdentificacaoPrestador>
+	<ListaRps>
+		{% for rps in nfse.lista_rps -%}
+        {% include 'Rps.xml'%}
+        {% endfor %}
+	</ListaRps>
+</LoteRps>
