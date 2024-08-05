@@ -7,7 +7,7 @@ from datetime import date
 from datetime import datetime
 from unicodedata import normalize
 from jinja2.exceptions import UndefinedError
-from fnvhash import fnv1a_32
+from fnvhash import fnv1a_64
 import sys
 
 if sys.version_info >= (3, 0):
@@ -154,5 +154,5 @@ def format_with_comma(value):
     except Exception:
         return value
 
-def encrypt_fnv1_32(value):
-    return fnv1a_32(str(value))
+def encrypt_fnv1_64(value):
+    return fnv1a_64(str(value))
