@@ -6,3 +6,4 @@ lxml >= 3.5.0, < 5
 reportlab == 3.3.0
 pytz == 2020.4
 zeep == 3.4.0
+pyhash == 0.9.3
