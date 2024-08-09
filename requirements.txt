@@ -7,3 +7,4 @@ reportlab == 3.3.0
 pytz == 2020.4
 zeep == 3.4.0
 pyhash == 0.9.3
+fnvhash == 0.1.0
