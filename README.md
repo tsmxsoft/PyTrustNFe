@@ -77,9 +77,6 @@ Roadmap
 --------------
 * Teste unitários de cada NFSe
 * Objeto padronizado de retorno (Padronização e implementação)
-* NFCom (NF Modelo 62)
-* NFSe Tributus
-* NFSe GSN - Salvador
 * CT-e (mod 57) v4.0
 ** CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
 ** CTeRecepcaoGTVeV4   (TODO)

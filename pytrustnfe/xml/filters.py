@@ -9,6 +9,7 @@ from unicodedata import normalize
 from jinja2.exceptions import UndefinedError
 from fnvhash import fnv1a_64
 import sys
+import re
 
 if sys.version_info >= (3, 0):
     unicode = str
@@ -47,6 +48,13 @@ def strip_line_feed(string):
         }
         return string.translate(remap).strip()
     return string
+
+
+def zfill_str(string,qtd):
+    """
+    Adiciona Zero's a esquerda
+    """
+    return string.zfill(qtd)
 
 
 def format_percent(value):
