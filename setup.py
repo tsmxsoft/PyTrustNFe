@@ -66,6 +66,7 @@ later (LGPLv2+)",
             "nfse/governa/templates/*xml",
             "nfse/thema/templates/*xml",
             "nfse/govbr/templates/*xml",
+            "nfcom/templates/*xml"
             "xml/schemas/*xsd",
         ]
     },
