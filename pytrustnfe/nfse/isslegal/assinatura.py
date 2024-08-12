@@ -5,7 +5,7 @@
 from OpenSSL import crypto
 import signxml
 from lxml import etree
-from signxml import XMLSigner
+from pytrustnfe.nfe.assinatura import XMLSigner
 import sys
 
 class Assinatura(object):

@@ -39,6 +39,7 @@ NFSe - Empresas Atendidas
 * **Betha**
 * **Directa** - Natal/RN
 * **DSF**
+* **EL**
 * **Equiplano**
 * **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
@@ -48,9 +49,11 @@ NFSe - Empresas Atendidas
 * **GovBR (ISS Digital)** 
 * **Imperial** - Petrópolis/RH
 * **IPM**
+* **ISISS** - Vitoria/ES
 * **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
+* **Megasoft**
 * **Memory (NFSe Brasil)**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP

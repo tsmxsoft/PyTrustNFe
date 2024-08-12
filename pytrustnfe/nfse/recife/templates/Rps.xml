@@ -15,6 +15,9 @@
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos> 
                 <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                {% if rps.servico.iss_retido|int == 1 %}
+                <ValorIssRetido>{{ rps.servico.iss }}</ValorIssRetido>
+                {% endif %}
                 <BaseCalculo>{{ rps.servico.base_calculo }}</BaseCalculo>
                 <Aliquota>{{ rps.servico.aliquota }}</Aliquota> 
                 <ValorLiquidoNfse>{{ rps.servico.valor_servico }}</ValorLiquidoNfse>

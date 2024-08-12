@@ -7,6 +7,7 @@ from datetime import date
 from datetime import datetime
 from unicodedata import normalize
 from jinja2.exceptions import UndefinedError
+from fnvhash import fnv1a_64
 import sys
 import re
 
@@ -160,3 +161,6 @@ def format_with_comma(value):
         return ''
     except Exception:
         return value
+
+def encrypt_fnv1_64(value):
+    return fnv1a_64(str(value))

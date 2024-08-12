@@ -38,6 +38,7 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     env.filters["comma"] = filters.format_with_comma
     env.filters["ibge2siafi"] = filter_ibge2siafi
     env.filters["zfill_str"] = filters.zfill_str
+    env.filters["encrypt_fnv1_64"] = filters.encrypt_fnv1_64
 
     template = env.get_template(template_name)
     xml = template.render(**nfe)

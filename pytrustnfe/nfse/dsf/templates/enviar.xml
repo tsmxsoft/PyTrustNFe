@@ -13,8 +13,8 @@
 		<dtFim>{{ last.data_competencia|format_datetime_ymd }}</dtFim>
 		{% endwith %}
 		<QtdRPS>{{ nfse.lista_rps|length }}</QtdRPS>
-		<ValorTotalServicos>{{ nfse.total_servicos }}</ValorTotalServicos>
-		<ValorTotalDeducoes>{{ nfse.total_deducoes }}</ValorTotalDeducoes>
+		<ValorTotalServicos>{{ nfse.total_servicos|default("0.00", true) }}</ValorTotalServicos>
+		<ValorTotalDeducoes>{{ nfse.total_deducoes|default("0.00", true) }}</ValorTotalDeducoes>
 		<Versao>1</Versao>
 		<MetodoEnvio>WS</MetodoEnvio>
 	</Cabecalho>
