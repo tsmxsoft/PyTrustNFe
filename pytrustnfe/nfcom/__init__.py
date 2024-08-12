@@ -6,11 +6,14 @@
 import os
 import requests
 from lxml import etree
+import pytrustnfe
 from pytrustnfe.nfcom.assinatura import Assinatura
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.utils import  gerar_chave_nfcom,nfcom_qrcode,ChaveNFCom
 from pytrustnfe.Servidores import localizar_url
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
+from pytrustnfe.nfe import xml_consulta_cadastro as nfe_xml_consulta_cadastro, \
+                           consulta_cadastro as nfe_consulta_cadastro
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 # Zeep
@@ -60,17 +63,18 @@ def _generate_nfcom_id(**kwargs):
 
 def _render(certificado, method, sign, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    xmlElem_send = render_xml(path, "%s.xml" % method, True, **kwargs["infNFCom"])
+    xmlElem_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     xml_obj = etree.fromstring(xmlElem_send)
 
     if sign:
         signer = Assinatura(certificado.pfx, certificado.password)
         if method == "NFComRecepcao":
             xml_send = signer.assina_xml(xml_obj, kwargs["infNFCom"]["Id"])
+        elif method == "NFComRecepcaoEvento":
+            xml_send = signer.assina_xml(xmlElem_send, kwargs["eventos"][0]["Id"])
+        return xml_send
 
-    else:
-        xml_send = xmlElem_send
-    return xml_send
+    return xmlElem_send
 
 
 def _get_session(certificado):
@@ -98,9 +102,8 @@ def _get_client(base_url, transport):
 
 def _send(certificado, method, **kwargs):
     xml_send = kwargs["xml"]
-    item = kwargs.get("infNFCom")
     base_url = localizar_url(
-        method, item["ide"]["cUF"], item["ide"]["mod"], item["ide"]["tpAmb"]
+        method, kwargs["estado"], kwargs["modelo"], kwargs["ambiente"]
     )
     logging.config.dictConfig({
         'version': 1,
@@ -156,8 +159,10 @@ def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
 
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     with client.settings(raw_response=True):
-        response = client.service[first_operation](xml_send)
-        print(response.text)
+        if not b64_encode:
+            response = client.service[first_operation](etree.fromstring(xml_send))
+        else:
+            response = client.service[first_operation](xml_send)
         response, obj = sanitize_response(response.text)
         return {
             "sent_xml": xml_send,
@@ -170,8 +175,51 @@ def xml_autorizar_nfcom(certificado, **kwargs):
     _generate_nfcom_id(**kwargs)
     return _render(certificado, "NFComRecepcao", True, **kwargs)
 
-
 def autorizar_nfcom(certificado, **kwargs):  # Assinar
     if "xml" not in kwargs:
         kwargs["xml"] = xml_autorizar_nfcom(certificado, **kwargs)
     return _send(certificado, "NFComRecepcao", **kwargs)
+
+
+def xml_consulta_nfcom(certificado, **kwargs):
+    return _render(certificado, "NFComConsulta", True, **kwargs)
+
+def consulta_nfcom(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consulta_nfcom(certificado, **kwargs)
+        kwargs["modelo"] = "62"
+    return _send(certificado, "NFComConsulta", **kwargs)
+
+
+def xml_consulta_status_servico(certificado, **kwargs):
+    return _render(certificado, "NFComStatusServico", True, **kwargs)
+
+def consulta_status_servico(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consulta_status_servico(certificado, **kwargs)
+        kwargs["modelo"] = "62"
+    return _send(certificado, "NFComStatusServico", **kwargs)
+
+
+def xml_consulta_cadastro(certificado, **kwargs):
+    return nfe_xml_consulta_cadastro(certificado, **kwargs)
+
+def consulta_cadastro(certificado, **kwargs):
+    return nfe_consulta_cadastro(certificado, **kwargs)
+
+def _xml_recepcao_evento(certificado, **kwargs):
+    return _render(certificado, "NFComRecepcaoEvento", True, **kwargs)
+
+def _recepcao_evento(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = _xml_recepcao_evento(certificado, **kwargs)
+        kwargs["modelo"] = "62"
+    return _send(certificado, "NFComRecepcaoEvento", **kwargs)
+
+def xml_recepcao_evento_cancelamento(certificado, **kwargs):
+    return _xml_recepcao_evento(certificado, **kwargs)
+
+def recepcao_evento_cancelamento(certificado, **kwargs):
+    if "evento_cancelamento" in kwargs:
+        return _recepcao_evento(certificado, **kwargs)
+    raise Exception("necessario informar objeto 'evento_cancelamento' em kwargs para prosseguir")

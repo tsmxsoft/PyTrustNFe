@@ -1,0 +1,12 @@
+<eventoNFCom xmlns="http://www.portalfiscal.inf.br/nfcom" versao="1.00">
+    <infEvento Id="ID{{ evento.tpAmb }}{{ evento.chNFCom }}{{ evento.nSeqEvento }}">
+        <cOrgao>{{ evento.cOrgao }}</cOrgao>
+        <tpAmb>{{ evento.tpAmb }}</tpAmb>
+        <CNPJ>{{ evento.CNPJ }}</CNPJ>
+        <chNFCom>{{ evento.chNFCom }}</chNFCom>
+        <dhEvento>{{ evento.dhEvento }}</dhEvento>
+        <tpEvento>{{ evento.tpEvento }}</tpEvento>
+        <nSeqEvento>{{ evento.nSeqEvento }}</nSeqEvento>
+        {% include "EventoCancelamento.xml" %}
+    </infEvento>
+</eventoNFCom>
