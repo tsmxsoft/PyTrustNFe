@@ -36,11 +36,11 @@
             <Tomador>
                 <IdentificacaoTomador>
                     <CpfCnpj>
-                        {% if rps.tomador.cnpj_cpf|length == 14  %}
-                        <Cnpj>{{ rps.tomador.cnpj_cpf }}</Cnpj>
+                        {% if rps.tomador.cpf_cnpj|length == 14  %}
+                        <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
                         {% endif %}
-                        {% if rps.tomador.cnpj_cpf|length == 11  %}
-                        <Cpf>{{ rps.tomador.cnpj_cpf }}</Cpf>
+                        {% if rps.tomador.cpf_cnpj|length == 11  %}
+                        <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
                         {% endif %}
                     </CpfCnpj>
                     <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
