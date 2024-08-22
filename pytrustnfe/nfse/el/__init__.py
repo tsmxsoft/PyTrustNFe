@@ -59,9 +59,10 @@ def _abrirconexao(certificado, **kwargs):
 
 def _fecharconexao(certificado, **kwargs):
     #Fecha conexão
-    _send(certificado, "finalizarSessao", xml={
+    _ = _send(certificado, "finalizarSessao", xml={
         "hashIdentificador": kwargs["chave_acesso"],
     }, **kwargs)
+    return True
 
 
 def recepcionar_lote_rps(certificado, **kwargs):
@@ -77,7 +78,7 @@ def recepcionar_lote_rps(certificado, **kwargs):
     }, **kwargs)
     #Encerra conexão
     _fecharconexao(certificado, chave_acesso=chave_acesso, **kwargs)
-    return result_obj
+    return {"sent_xml": xml, "received_xml": str(result_obj), "object": result_obj}
 
 def xml_consultar_nfse_por_rps(certificado, **kwargs):
     return None
