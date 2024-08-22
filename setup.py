@@ -70,6 +70,7 @@ later (LGPLv2+)",
             "nfse/isiss/templates/*xml",
             "nfse/megasoft/templates/*xml",
             "nfse/el/templates/*xml",
+            "nfse/portalfacil/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
