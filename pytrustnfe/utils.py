@@ -209,6 +209,69 @@ class ChaveNFCom(object):
         assert self.codigo != "", "Código necessário para criar chave NFCom"
 
 
+class ChaveNFSeNacional(object):
+    def __init__(self, **kwargs):
+        self.ibge_mun = kwargs.pop("ibge_mun", "")
+        self.ambiente = kwargs.pop("ambiente", "")
+        self.tipo_insc_fed = kwargs.pop("tipo_insc_fed", "") #1 = CPF, 2 = CNPJ
+        self.insc_fed = kwargs.pop("insc_fed", "")
+        self.numero = kwargs.pop("numero", "")
+        self.dt_emissao = kwargs.pop("dt_emissao", "")
+        self.codigo = kwargs.pop("codigo", "")
+
+    def validar(self):
+        assert self.ibge_mun != "", "Código IBGE da Cidade é necessário para criar chave NFSe"
+        assert self.ambiente != "", "Ambiente Gerador é necessário para criar chave NFSe"
+        assert self.tipo_insc_fed != "", "Tipo de Inscrição Federal necessário para criar chave NFSe"
+        assert self.insc_fed != "", "Inscrição Federal (CPF/CNPJ) necessário para criar chave NFSe"
+        assert self.numero != "", "Número da NFSe é necessário para criar chave NFSe"
+        assert self.dt_emissao != "", "Ano/Mês de emissão é necessário para criar chave NFSe"
+        assert self.codigo != "", "Código é necessário para criar chave NFSe"
+
+
+class ChaveNFSeNacionalDPS(object):
+    def __init__(self, **kwargs):
+        self.ibge_mun = kwargs.pop("ibge_mun", "")
+        self.tipo_insc_fed = kwargs.pop("tipo_insc_fed", "") #1 = CPF, 2 = CNPJ
+        self.insc_fed = kwargs.pop("insc_fed", "")
+        self.serie = kwargs.pop("serie", "")
+        self.numero = kwargs.pop("numero", "")
+
+    def validar(self):
+        assert self.ibge_mun != "", "Código IBGE da Cidade é necessário para criar chave NFSe DPS"
+        assert self.tipo_insc_fed != "", "Tipo de Inscrição Federal necessário para criar chave NFSe DPS"
+        assert self.insc_fed != "", "Inscrição Federal (CPF/CNPJ) necessário para criar chave NFSe DPS"
+        assert self.serie != "", "Série é necessário para criar chave NFSe DPS"
+        assert self.numero != "", "Número da NFSe é necessário para criar chave NFSe DPS"
+
+
+class ChaveNFSeNacionalEvento(object):
+    def __init__(self, **kwargs):
+        self.id_pedido = kwargs.pop("id_pedido", "")
+        self.nseq_evento = kwargs.pop("nseq_evento", "")
+
+    def validar(self):
+        assert self.id_pedido != "", "ID do pedido é necessário para criar chave de Evento"
+        assert self.nseq_evento != "", "Número sequencial do evento é necessário para criar chave de Evento"
+
+
+class ChaveNFSeNacionalPedidoRegistro(object):
+    def __init__(self, **kwargs):
+        self.chave_acesso = kwargs.pop("chave_acesso", "")
+        self.cod_evento = kwargs.pop("cod_evento", "")
+        self.nPedRegEvento = kwargs.pop("nPedRegEvento", "")
+
+    def validar(self):
+        assert self.chave_acesso != "", "Chave de Acesso da NFSe é necessário para criar chave de Pedido de Registro"
+        assert self.cod_evento != "", "Código do evento é necessário para criar chave de Pedido de Registro"
+        assert self.nPedRegEvento != "", "Número do Pedido de Registro do Evento é necessário para criar chave de Pedido de Registro"
+
+
+def date_tostring(data):
+    assert isinstance(data, date), "Objeto date requerido"
+    return data.strftime("%d-%m-%y")
+
+
 def nfcom_valor(valor):
     return str("%.2f" %(round(valor,2)))
 
@@ -220,7 +283,7 @@ def nfcom_qrcode(chNFCom, tpAmb, sigla, offline=False, assinatura=""):
 def gerar_chave_nfcom(obj_chave):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFe"
 
-def validar_nfcom_dv(chave,dv):
+def validar_dv(chave,dv):
     pesos = [4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2]
     sum = 0
     i = 0
@@ -228,6 +291,60 @@ def validar_nfcom_dv(chave,dv):
         sum += int(c)*pesos[i]
         i += 1
     return dv == (11-(sum%11))
+
+def gerar_chave_nfsenacional(obj_chave, prefix="NFS"):
+    assert isinstance(obj_chave, ChaveNFSeNacional), "Objeto deve ser do tipo ChaveNFSeNacional"
+    obj_chave.validar()
+    chave_parcial = "%s%s%s%s%s%s%s" % (
+        obj_chave.ibge_mun,
+        obj_chave.ambiente,
+        obj_chave.tipo_insc_fed,
+        obj_chave.insc_fed.zfill(14),
+        str(obj_chave.numero).zfill(13),
+        obj_chave.dt_emissao,
+        obj_chave.codigo,
+    )
+    chave_parcial = re.sub("[^0-9]", "", chave_parcial)
+    soma = sum(int(a)*b for a, b in zip(reversed(chave_parcial), range(2, 9, 1)))
+    dv = (11 - soma % 11) if (soma % 11 != 0 and soma % 11 != 1) else 0
+    if prefix:
+        return prefix + chave_parcial + str(dv)
+    return chave_parcial + str(dv)
+
+
+def gerar_chave_nfsenacional_dps(obj_chave, prefix="DPS"):
+    assert isinstance(obj_chave, ChaveNFSeNacionalDPS), "Objeto deve ser do tipo ChaveNFSeNacionalDPS"
+    obj_chave.validar()
+    chave_parcial = "%s%d%s%s%s" % (
+        obj_chave.ibge_mun,
+        obj_chave.tipo_insc_fed,
+        obj_chave.insc_fed.zfill(14),
+        obj_chave.serie.zfill(5),
+        str(obj_chave.numero).zfill(15),
+    )
+    return prefix + chave_parcial
+
+
+def gerar_chave_nfsenacional_evento(obj_chave, prefix="EVT"):
+    assert isinstance(obj_chave, ChaveNFSeNacionalEvento), "Objeto deve ser do tipo ChaveNFSeNacionalEvento"
+    obj_chave.validar()
+    chave_parcial = "%s%s" % (
+        str(obj_chave.id_pedido).zfill(50),
+        str(obj_chave.nseq_evento).zfill(3),
+    )
+    return prefix + chave_parcial
+
+
+def gerar_chave_nfsenacional_pedido_registro(obj_chave, prefix="PRE"):
+    assert isinstance(obj_chave, ChaveNFSeNacionalPedidoRegistro), "Objeto deve ser do tipo ChaveNFSeNacionalPedidoRegistro"
+    obj_chave.validar()
+    chave_parcial = "%s%s%s" % (
+        str(obj_chave.chave_acesso),
+        str(obj_chave.cod_evento).zfill(6),
+        str(obj_chave.nPedRegEvento).zfill(3),
+    )
+    return prefix + chave_parcial
+
 
 def gerar_chave_nfcom(obj_chave, prefix="NFCom"):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"
