@@ -446,6 +446,7 @@ def _abrasf_adapter(**kwargs):
             "serie": nfse_abrasf["serie"],
             "tpEmit":  "1",
             "prest": {
+                "IM": nfse_abrasf["prestador"].get("inscricao_municipal",""),
                 "cnpj_cpf": nfse_abrasf["prestador"]["cnpj"],
                 "regTrib": {
                     "opSimplNac": op_simples,
