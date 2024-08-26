@@ -18,10 +18,10 @@
         <nmTomador>{{ rps.tomador.razao_social }}</nmTomador>
         <dsEmail>{{ rps.tomador.email }}</dsEmail>
         <nrInscricaoEstadual>{{ rps.tomador.inscricao_estadual }}</nrInscricaoEstadual>
-        <dsEndereco>{{ rps.tomador.endereco }}</dsEndereco>
+        <dsEndereco>{{ rps.tomador.endereco | truncate(40, True) }}</dsEndereco>
         <nrEndereco>{{ rps.tomador.numero }}</nrEndereco>
         <dsComplemento>{{ rps.tomador.complemento }}</dsComplemento>
-        <nmBairro>{{ rps.tomador.bairro }}</nmBairro>
+        <nmBairro>{{ rps.tomador.bairro | truncate(30, True) }}</nmBairro>
         <nrCidadeIbge>{{ rps.tomador.codigo_municipio }}</nrCidadeIbge>
         <nmUf>{{ rps.tomador.uf }}</nmUf>
         <nmPais>Brasil</nmPais>

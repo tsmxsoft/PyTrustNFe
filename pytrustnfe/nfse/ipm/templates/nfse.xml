@@ -1,0 +1,73 @@
+<nfse id="rps:{{ nfse.numero }}{{ nfse.serie }}">
+    {% if ambiente %}
+        {% if ambiente == "homologacao" %}
+        <nfse_teste>1</nfse_teste>
+        {% endif %}
+    {% endif %}
+    <identificador>rps:{{ nfse.numero }}{{ nfse.serie }}</identificador>
+    <rps>
+        <nro_recibo_provisorio>{{ nfse.numero }}</nro_recibo_provisorio>
+        <serie_recibo_provisorio>{{ nfse.serie }}</serie_recibo_provisorio>
+        <data_emissao_recibo_provisorio>{{ nfse.data_emissao | format_datetime_dmy }}</data_emissao_recibo_provisorio>
+        <hora_emissao_recibo_provisorio>{{ nfse.data_emissao | format_datetime_hms }}</hora_emissao_recibo_provisorio>
+    </rps>
+    <nf>
+        <valor_total>{{ nfse.servico.valor_servico | comma }}</valor_total>
+        <valor_desconto>{{ nfse.servico.valor_descontos | default("0.00") | comma }}</valor_desconto>
+        <valor_ir>{{ nfse.servico.ir | default("0.00") | comma }}</valor_ir>
+        <valor_inss>{{ nfse.servico.inss | default("0.00") | comma }}</valor_inss>
+        <valor_contribuicao_social>{{ nfse.servico.csll | default("0.00") | comma }}</valor_contribuicao_social>
+        <valor_rps>0,00</valor_rps>
+        <valor_pis>{{ nfse.servico.pis | default("0.00") | comma }}</valor_pis>
+        <valor_cofins>{{ nfse.servico.cofins | default("0.00") | comma }}</valor_cofins>
+    </nf>
+    <prestador>
+        <cpfcnpj>{{ nfse.prestador.cnpj }}</cpfcnpj>
+        <cidade>{{ nfse.cidade_tom }}</cidade>
+    </prestador>
+    <tomador>
+        {% if nfse.tomador.cpf_cnpj|length == 14 %}
+        <tipo>J</tipo>
+        {% elif nfse.tomador.cpf_cnpj|length == 11 %}
+        <tipo>F</tipo>
+        {% else %}
+        <tipo>E</tipo>
+        {% endif %}
+        <cpfcnpj>{{ nfse.tomador.cpf_cnpj }}</cpfcnpj>
+        <ie>{{ nfse.tomador.inscricao_estadual }}</ie>
+        <nome_razao_social>{{ nfse.tomador.razao_social }}</nome_razao_social>
+        <sobrenome_nome_fantasia>{{ nfse.tomador.nome }}</sobrenome_nome_fantasia>
+        <logradouro>{{ nfse.tomador.endereco }}</logradouro>
+        <email>{{ nfse.tomador.email }}</email>
+        <numero_residencia>{{ nfse.tomador.numero }}</numero_residencia>
+        <complemento>{{ nfse.tomador.complemento }}</complemento>
+        <bairro>{{ nfse.tomador.bairro }}</bairro>
+        <cidade>{{ nfse.tomador.codigo_municipio }}</cidade>
+        <cep>{{ nfse.tomador.cep | format_numeric(8, 0, False, False) }}</cep>
+    </tomador>
+    <itens>
+        <lista>
+            <tributa_municipio_prestador>S</tributa_municipio_prestador>
+            <codigo_local_prestacao_servico>{{ nfse.cidade_tom }}</codigo_local_prestacao_servico>
+            <codigo_item_lista_servico>{{ nfse.servico.codigo_atividade }}</codigo_item_lista_servico>
+            <descritivo>{{ nfse.servico.discriminacao }}</descritivo>
+            <aliquota_item_lista_servico>{{ "{:10.4f}".format(nfse.servico.aliquota | float * 100.00) | comma }}</aliquota_item_lista_servico>
+            {% if nfse.servico.iss_retido == 1 %}
+            <situacao_tributaria>2</situacao_tributaria>
+            {% elif nfse.eligibilidade_iss == 3 %}
+            <situacao_tributaria>6</situacao_tributaria>
+            {% elif nfse.exigibilidade_iss == 5 %}
+            <situacao_tributaria>7</situacao_tributaria>
+            {% else %}
+            <situacao_tributaria>0</situacao_tributaria>
+            {% endif %}
+            <valor_tributavel>{{ nfse.servico.valor_servico | comma }}</valor_tributavel>
+            <valor_deducao>{{ nfse.servico.deducoes | default("0.00") | comma }}</valor_deducao>
+            {% if nfse.servico.iss_retido == 2 %}
+            <valor_issrf>{{ nfse.servico.iss | default("0.00") | comma }}</valor_issrf>
+            {% else %}
+            <valor_issrf>0,00</valor_issrf>
+            {% endif %}
+        </lista>
+    </itens>
+</nfse>

@@ -1,0 +1,9 @@
+<ConsultarLoteRpsEnvio xmlns="http://ws.oportaltributario.com.br/colinas/schema/nfse_v204.xsd">
+    <Prestador>
+        <CpfCnpj>
+            <Cnpj>{{nfse.cnpj_prestador}}</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>{{nfse.inscricao_municipal}}</InscricaoMunicipal>
+    </Prestador>
+    <Protocolo>{{nfse.protocolo}}</Protocolo>
+</ConsultarLoteRpsEnvio>

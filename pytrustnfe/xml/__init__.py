@@ -5,6 +5,7 @@
 from lxml import etree,objectify
 from jinja2 import Environment, FileSystemLoader
 from . import filters
+from pytrustnfe.utils import ibge2siafi
 
 import sys
 
@@ -14,19 +15,30 @@ def recursively_empty(e):
         return False
     return all((recursively_empty(c) for c in e.iterchildren()))
 
+def filter_ibge2siafi(value):
+    val = ibge2siafi(value)
+    return val if val else value 
+
 
 def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     nfe = recursively_normalize(nfe)
     env = Environment(loader=FileSystemLoader(
-        path), extensions=["jinja2.ext.with_"])
+        path))
     env.filters["normalize"] = filters.strip_line_feed
     env.filters["normalize_str"] = filters.normalize_str
     env.filters["format_percent"] = filters.format_percent
     env.filters["format_datetime"] = filters.format_datetime
     env.filters["format_datetime_dmy"] = filters.format_datetime_dmy
+    env.filters["format_datetime_ymd"] = filters.format_datetime_ymd
+    env.filters["format_datetime_wslashes_ymd"] = filters.format_datetime_wslashes_ymd
+    env.filters["format_datetime_hms"] = filters.format_datetime_hms
+    env.filters["format_numeric"] = filters.format_numeric
     env.filters["format_cep"] = filters.format_cep
     env.filters["format_date"] = filters.format_date
     env.filters["comma"] = filters.format_with_comma
+    env.filters["ibge2siafi"] = filter_ibge2siafi
+    env.filters["zfill_str"] = filters.zfill_str
+    env.filters["encrypt_fnv1_64"] = filters.encrypt_fnv1_64
 
     template = env.get_template(template_name)
     xml = template.render(**nfe)

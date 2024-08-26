@@ -9,6 +9,7 @@
 # Prod:http://sistemas.pmp.sp.gov.br/semfi/simpliss/ws_nfse/nfseservice.svc
 
 import os
+import re
 from lxml import etree
 from requests import Session
 from zeep.transports import Transport
@@ -18,6 +19,8 @@ from pytrustnfe.nfse.siasp.assinatura import Assinatura
 
 from datetime import datetime, timedelta
 import requests 
+
+
 def _render_xml(certificado, method, **kwargs):
     kwargs['method'] = method
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -27,6 +30,19 @@ def _render_xml(certificado, method, **kwargs):
     signer = Assinatura(certificado.pfx, certificado.password)
 
     referencia = ""
+    #Limpeza do lote, removendo caracteres especiais
+    for i, lote in kwargs["nfse"].items():
+        if i != "lista_rps":
+            kwargs["nfse"][i] = re.sub('[^a-zA-Z0-9@\. ]', '', str(lote))
+        else:
+            for j, rps in enumerate(lote):
+                for k, rps_dict in rps.items():
+                    if type(rps_dict) != dict:
+                        kwargs["nfse"][i][j][k] = re.sub('[^a-zA-Z0-9@\. ]', '', str(rps_dict))
+                    else:
+                        for l, rps_dict2 in rps_dict.items():
+                            kwargs["nfse"][i][j][k][l] = re.sub('[^a-zA-Z0-9@\. ]', '', str(rps_dict2))
+
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     # xml object
     xml_send = etree.fromstring(
@@ -72,8 +88,8 @@ def _send(certificado, method, **kwargs):
     }
 
     request = requests.post(base_url, data=soap, headers=headers)
-    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
-    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+    response, obj = sanitize_response(request.content)
+    return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):

@@ -1,0 +1,124 @@
+<ns1:ReqEnvioLoteRPS xmlns:ns1="http://localhost:8080/WsNFe2/lote"
+	xmlns:tipos="http://localhost:8080/WsNFe2/tp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqEnvioLoteRPS.xsd">
+	<Cabecalho>
+		<CodCidade>{{ nfse.cidade }}</CodCidade>
+		{% with first = nfse.lista_rps|first %}
+		<CPFCNPJRemetente>{{ first.prestador.cnpj }}</CPFCNPJRemetente>
+		<RazaoSocialRemetente>{{ first.prestador.razao_social }}</RazaoSocialRemetente>
+		<transacao>{{ nfse.transacao|default("true", true) }}</transacao>
+		<dtInicio>{{ first.data_competencia|format_datetime_ymd }}</dtInicio>
+		{% endwith %}
+		{% with last = nfse.lista_rps|last %}
+		<dtFim>{{ last.data_competencia|format_datetime_ymd }}</dtFim>
+		{% endwith %}
+		<QtdRPS>{{ nfse.lista_rps|length }}</QtdRPS>
+		<ValorTotalServicos>{{ nfse.total_servicos|default("0.00", true) }}</ValorTotalServicos>
+		<ValorTotalDeducoes>{{ nfse.total_deducoes|default("0.00", true) }}</ValorTotalDeducoes>
+		<Versao>1</Versao>
+		<MetodoEnvio>WS</MetodoEnvio>
+	</Cabecalho>
+	<Lote Id="lote:{{ nfse.numero_lote }}">
+		{% for rps in nfse.lista_rps -%}
+		<RPS Id="rps:{{ rps.numero }}">
+			<Assinatura>{{ rps.assinatura }}</Assinatura>
+			<InscricaoMunicipalPrestador>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipalPrestador>
+			<RazaoSocialPrestador>{{ rps.prestador.razao_social }}</RazaoSocialPrestador>
+			<TipoRPS>RPS</TipoRPS>
+			<SerieRPS>NF</SerieRPS>
+			<NumeroRPS>{{ rps.numero }}</NumeroRPS>
+			<DataEmissaoRPS>{{ rps.data_emissao }}</DataEmissaoRPS>
+			<SituacaoRPS>{{ rps.status }}</SituacaoRPS>
+			<SeriePrestacao>{{ rps.serie|default("99", true) }}</SeriePrestacao>
+			{% if rps.tomador.inscricao_municipal %}
+			{% if rps.tomador.codigo_municipio == rps.servico.codigo_municipio %}
+			<InscricaoMunicipalTomador>{{ rps.tomador.inscricao_municipal|default("0000000", true) }}</InscricaoMunicipalTomador>
+			{% else %}
+			<InscricaoMunicipalTomador>0000000</InscricaoMunicipalTomador>
+			{% endif %}
+			{% else %}
+			<InscricaoMunicipalTomador>0000000</InscricaoMunicipalTomador>
+			{% endif %}
+			<CPFCNPJTomador>{{ rps.tomador.cpf_cnpj }}</CPFCNPJTomador>
+			<RazaoSocialTomador>{{ rps.tomador.razao_social }}</RazaoSocialTomador>
+			{% set tipo_logradouro = rps.tomador.endereco.split(' ') %}
+			<TipoLogradouroTomador>{{ tipo_logradouro[0] }}</TipoLogradouroTomador>
+			<LogradouroTomador>{{ rps.tomador.endereco }}</LogradouroTomador>
+			<NumeroEnderecoTomador>{{ rps.tomador.numero }}</NumeroEnderecoTomador>
+			<TipoBairroTomador>{{ rps.tomador.tipo_bairro|default("Bairro", true) }}</TipoBairroTomador>
+			<BairroTomador>{{ rps.tomador.bairro }}</BairroTomador>
+			<CidadeTomador>{{ rps.tomador.codigo_municipio|default("0009999", true) | ibge2siafi }}</CidadeTomador>
+			<CidadeTomadorDescricao>{{ rps.tomador.cidade }}</CidadeTomadorDescricao>
+			<CEPTomador>{{ rps.tomador.cep }}</CEPTomador>
+			<EmailTomador>{{ rps.tomador.email }}</EmailTomador>
+			<CodigoAtividade>{{ rps.servico.codigo_atividade }}</CodigoAtividade>
+			<AliquotaAtividade>{{ rps.servico.aliquota | float * 100.00 }}</AliquotaAtividade>
+			{% if rps.servico.iss_retido == "1" %}
+			<TipoRecolhimento>R</TipoRecolhimento>
+			{% else %}
+			<TipoRecolhimento>A</TipoRecolhimento>
+			{% endif %}
+			<MunicipioPrestacao>{{ rps.servico.codigo_municipio | ibge2siafi }}</MunicipioPrestacao>
+			<MunicipioPrestacaoDescricao>{{ rps.prestador.cidade }}</MunicipioPrestacaoDescricao>
+			<Operacao>{{ rps.operacao }}</Operacao>
+			<Tributacao>{{ rps.tributacao }}</Tributacao>
+			<ValorPIS>{{ rps.servico.valor_pis|default("0.00", true) }}</ValorPIS>
+			<ValorCOFINS>{{ rps.servico.valor_cofins|default("0.00", true) }}</ValorCOFINS>
+			<ValorINSS>{{ rps.servico.valor_inss|default("0.00", true) }}</ValorINSS>
+			<ValorIR>{{ rps.servico.valor_ir|default("0.00", true) }}</ValorIR>
+			<ValorCSLL>{{ rps.servico.valor_csll|default("0.00", true) }}</ValorCSLL>
+			<AliquotaPIS>{{ rps.servico.aliquota_pis|default("0.0000", true) }}</AliquotaPIS>
+			<AliquotaCOFINS>{{ rps.servico.aliquota_cofins|default("0.0000", true) }}</AliquotaCOFINS>
+			<AliquotaINSS>{{ rps.servico.aliquota_inss|default("0.0000", true) }}</AliquotaINSS>
+			<AliquotaIR>{{ rps.servico.aliquota_ir|default("0.0000", true) }}</AliquotaIR>
+			<AliquotaCSLL>{{ rps.servico.aliquota_csll|default("0.0000", true) }}</AliquotaCSLL>
+			<DescricaoRPS>{{ rps.servico.discriminacao }}</DescricaoRPS>
+			{% if rps.prestador.telefone %}
+			<DDDPrestador>{{ rps.prestador.telefone[:2] }}</DDDPrestador>
+			{% if rps.prestador.telefone[2:]|length > 8 %}
+			<TelefonePrestador>{{ rps.prestador.telefone[3:] }}</TelefonePrestador>
+			{% else %}
+			<TelefonePrestador>{{ rps.prestador.telefone[2:] }}</TelefonePrestador>
+			{% endif %}
+			{% endif %}
+			{% if rps.tomador.telefone %}
+			<DDDTomador>{{ rps.tomador.telefone[:2] }}</DDDTomador>
+			{% if rps.tomador.telefone[2:]|length > 8 %}
+			<TelefoneTomador>{{ rps.tomador.telefone[3:] }}</TelefoneTomador>
+			{% else %}
+			<TelefoneTomador>{{ rps.tomador.telefone[2:] }}</TelefoneTomador>
+			{% endif %}
+			{% endif %}
+			{% if rps.deducoes|count > 0 %}
+			<Deducoes>
+				{% for deducao in rps.deducoes -%}
+				<Deducao>
+					<DeducaoPor>{{ deducao.por }}</DeducaoPor>
+					<TipoDeducao>{{ deducao.tipo }}</TipoDeducao>
+					<CPFCNPJReferencia>{{ deducao.cnpj_referencia }}</CPFCNPJReferencia>
+					<NumeroNFReferencia>{{ deducao.nf_referencia }}</NumeroNFReferencia>
+					<ValorTotalReferencia>{{ deducao.valor_referencia }}</ValorTotalReferencia>
+					<PercentualDeduzir>{{ deducao.percentual_deduzir }}</PercentualDeduzir>
+					<ValorDeduzir>{{ deducao.valor_deduzir }}</ValorDeduzir>
+				</Deducao>
+				{% endfor %}
+			</Deducoes>
+			{% endif %}
+			{% if rps.deducoes|count == 0 %}
+			<Deducoes/>
+			{% endif %}
+			<Itens>
+				{% for item in rps.itens -%}
+				<Item>
+					<DiscriminacaoServico>{{ item.descricao }}</DiscriminacaoServico>
+					<Quantidade>{{ item.quantidade }}</Quantidade>
+					<ValorUnitario>{{ item.valor_unitario }}</ValorUnitario>
+					<ValorTotal>{{ item.valor_total }}</ValorTotal>
+					<Tributavel>{{ item.tributavel|default("S", true) }}</Tributavel>
+				</Item>
+				{% endfor %}
+			</Itens>
+		</RPS>
+		{% endfor %}
+	</Lote>
+</ns1:ReqEnvioLoteRPS>

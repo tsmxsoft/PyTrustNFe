@@ -4,6 +4,7 @@
 # Classe para geração de PDF da DANFE a partir de xml etree.fromstring
 
 import os
+import sys
 from io import BytesIO
 from textwrap import wrap
 import math
@@ -23,6 +24,9 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 import pytz
 from datetime import datetime, timedelta
+
+if sys.version_info >= (3, 0):
+    unicode = str
 
 
 def chunks(cString, nLen):
@@ -100,9 +104,9 @@ def tagtext(oNode=None, cTag=None):
 
 
 REGIME_TRIBUTACAO = {
-    "1": "Simples Nacional",
-    "2": "Simples Nacional, excesso sublimite de receita bruta",
-    "3": "Regime Normal",
+    "1": u"Simples Nacional",
+    "2": u"Simples Nacional, excesso sublimite de receita bruta",
+    "3": u"Regime Normal",
 }
 
 
@@ -382,7 +386,7 @@ class danfe(object):
             + tagtext(oNode=elem_emit, cTag="xMun")
             + " - "
         )
-        cEnd += "Fone: " + tagtext(oNode=elem_emit, cTag="fone") + "<br />"
+        cEnd += u"Fone: " + tagtext(oNode=elem_emit, cTag="fone") + "<br />"
         cEnd += (
             tagtext(oNode=elem_emit, cTag="UF")
             + " - "
@@ -390,7 +394,7 @@ class danfe(object):
         )
 
         regime = tagtext(oNode=elem_emit, cTag="CRT")
-        cEnd += "<br />Regime Tributário: %s" % (REGIME_TRIBUTACAO[regime])
+        cEnd += u"<br />Regime Tributário: %s" % (REGIME_TRIBUTACAO[regime])
 
         styleN.fontName = "NimbusSanL-Regu"
         styleN.fontSize = 7
@@ -1031,14 +1035,14 @@ obsCont[@xCampo='NomeVendedor']"
         )
         cEnd += tagtext(oNode=el_dest, cTag="UF")
 
-        cString = """
+        cString = u"""
         RECEBEMOS DE %s OS PRODUTOS/SERVIÇOS CONSTANTES DA NOTA FISCAL INDICADA
         ABAIXO. EMISSÃO: %s VALOR TOTAL: %s
         DESTINATARIO: %s""" % (
-            tagtext(oNode=el_emit, cTag="xNome"),
-            cDt,
-            cTotal,
-            cEnd,
+            unicode(tagtext(oNode=el_emit, cTag="xNome")),
+            unicode(cDt),
+            unicode(cTotal),
+            unicode(cEnd),
         )
 
         styles = getSampleStyleSheet()

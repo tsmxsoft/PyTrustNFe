@@ -1,0 +1,12 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+   <soapenv:Header>
+      <tem:cabecalho versao="2.02">
+         <tem:versaoDados>2.02</tem:versaoDados>
+      </tem:cabecalho>
+   </soapenv:Header>
+   <soapenv:Body>
+      <tem:{{ method }}>
+         <tem:xmlEnvio><![CDATA[{{ soap_body }}]]></tem:xmlEnvio>
+      </tem:{{ method }}>
+   </soapenv:Body>
+</soapenv:Envelope>

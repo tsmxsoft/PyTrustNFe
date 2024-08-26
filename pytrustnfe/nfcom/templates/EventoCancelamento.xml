@@ -1,0 +1,9 @@
+{% if evento_cancelamento is defined -%}
+<detEvento versaoEvento="1.00">
+    <evCancNFCom>
+        <descEvento>Cancelamento</descEvento>
+        <nProt>{{ evento_cancelamento.nProt }}</nProt>
+        <xJust>{{ evento_cancelamento.xJust }}</xJust>
+    </evCancNFCom>
+</detEvento>
+{% endif %}

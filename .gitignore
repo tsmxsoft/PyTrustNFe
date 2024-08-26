@@ -1,3 +1,6 @@
+*.pem
+*.crt
+*.p12
 *.pyc
 *~
 *.DS_Store
@@ -5,6 +8,8 @@
 .project
 .pydevproject
 .settings/*
+__pycache__
+/*.xml
 
 # build artifacts from python setup.py build or python setup.py install
 build/

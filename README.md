@@ -9,36 +9,65 @@ Dependências:
 * PyXmlSec
 * lxml
 * signxml
-* suds-jurko
-* suds-jurko-requests
+* certifi
+* numpy
+* pyopenssl
+* cryptography
+* eight
+* defusedxml
 * reportlab
 * Jinja2
 * requests
 * zeep
 
 
+Apple M1/M2/M3 Fixes (Arm)
+-----------------------------
+- https://stackoverflow.com/questions/76005401/cant-install-xmlsec-via-pip
+
+
+Ambientes
+-----------------------------
+Python2 (testado 2.7.18) - requirements.txt
+Python3 (testado 3.12.2) - requirements3.txt
+
+
 NFSe - Empresas Atendidas
 -----------------------------
 * **Agiliblue**
+* **Aspec**
 * **Betha**
-* **Cariacica** - Cariacica/ES
 * **Directa** - Natal/RN
 * **DSF**
-* **Equiplano** 
+* **EL**
+* **Equiplano**
+* **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
 * **GINFES**
+* **GISS** - (Fork Ginfes?)
+* **Governa**
+* **GovBR (ISS Digital)** 
 * **Imperial** - Petrópolis/RH
+* **IPM**
+* **ISISS** - Vitoria/ES
+* **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
+* **Megasoft**
 * **Memory (NFSe Brasil)**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
+* **Portal Tributário (Tax Tecnologia)** TODO: ConsultarNfsePorRps e CancelarNfse
 * **Recife** - Recife/PE
+* **Saatri**
+* **SmartAPD** - Cariacica/ES
 * **SIASP (Publica)**
 * **SIAP Sistemas**
+* **SIGISS**
 * **Speedgov**
-* **Susesu**
 * **Simpliss**
+* **Sispmjp** - João Pessoa/PB
+* **Thema**
 * **Tiplan**
 * **Tinus Informatica**
 * **Tecnos**
@@ -46,18 +75,15 @@ NFSe - Empresas Atendidas
 
 Roadmap
 --------------
-* Teste unitários
+* Teste unitários de cada NFSe
 * Objeto padronizado de retorno (Padronização e implementação)
-* NFCom (NF Modelo 62)
-* NFSe Tributus
-* NFSe GSN - Salvador
 * CT-e (mod 57) v4.0
--- CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
--- CTeRecepcaoGTVeV4   (TODO)
--- CTeRecepcaoOSV4     (TODO)
--- CTeConsultaV4       (OK)
--- CTeStatusServicoV4  (OK)
--- CTeRecepcaoEventoV4 (TODO)
+** CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
+** CTeRecepcaoGTVeV4   (TODO)
+** CTeRecepcaoOSV4     (TODO)
+** CTeConsultaV4       (OK)
+** CTeStatusServicoV4  (OK)
+** CTeRecepcaoEventoV4 (TODO)
 
 Padronizações
 --------------
