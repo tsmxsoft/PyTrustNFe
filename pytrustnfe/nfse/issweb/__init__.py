@@ -48,7 +48,7 @@ def _render_xml(certificado, method, **kwargs):
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
 
-    if method == "recepcionarLoteRps" or method == "recepcionarLoteRpsSincrono":
+    if method == "recepcionarLoteRps" or method == "recepcionarLoteRpsSincrono" and not kwargs.get('nosign', False):
         referencia = kwargs.get("nfse").get("numero_lote")
         #for item in kwargs["nfse"]["lista_rps"]:
             #reference = "rps:{0}{1}".format(
