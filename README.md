@@ -91,6 +91,10 @@ Padronizações
 
 * para distinção dos ambientes deve-se utilizar o parâmetro **kwargs["ambiente"]** com os textos "produção" ou "homologação" para escolha do ambiente adequado, tendo em vista que alguns sistemas NFS-e exigem a assinatura do XML em produção, e exigem a não-assinatura do XML em homologação, para cada ambiente a variável **kwargs["base_url"]** é levada em consideração.
 
+* algumas gateways (ex. issweb) adotam um padrão onde em algumas cidades se assina o RPS, outras não.
+por padrão o nfse será assinado, caso não deva ser, adicionar o parâmetro **kwargs["nosign"]=True** ao
+renderizar ou enviar. 
+
 Exemplos de uso da NFe
 -----------------------------
 
