@@ -39,10 +39,11 @@ NFSe - Empresas Atendidas
 * **Betha**
 * **Directa** - Natal/RN
 * **DSF**
-* **EL**
+* **EL (Versão Antiga)**
 * **Equiplano**
 * **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
+* **GPI - Gestão Publica Integrada (EL)**
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
 * **Governa**
