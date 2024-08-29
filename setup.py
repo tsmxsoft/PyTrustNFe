@@ -71,6 +71,7 @@ later (LGPLv2+)",
             "nfse/isiss/templates/*xml",
             "nfse/megasoft/templates/*xml",
             "nfse/el/templates/*xml",
+            "nfse/gpi/templates/*xml",
             "nfcom/templates/*xml"
             "xml/schemas/*xsd",
             "data/csvs/*csv",

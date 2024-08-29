@@ -2,6 +2,7 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import re
 from lxml import etree,objectify
 from jinja2 import Environment, FileSystemLoader
 from . import filters
@@ -65,6 +66,8 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
 
 
 def sanitize_response(response):
+    if '<?' in response:
+        response = re.sub(r'\<\?.+?\>','',response)
     parser = etree.XMLParser(encoding="utf-8")
     if sys.version_info[0] < 3:
         if isinstance(response,unicode):

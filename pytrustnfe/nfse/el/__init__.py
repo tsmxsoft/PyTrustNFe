@@ -36,11 +36,17 @@ def _send(certificado, method, **kwargs):
     client = Client(base_url, transport=transport)
 
     xml_send = kwargs["xml"]
+    print('-----------------------')
+    print('send')
+    print(xml_send)
     if isinstance(xml_send, dict):
         return client.service[method](**xml_send)
     else:
         response = client.service[method](xml_send)
+    print('response')
+    print(response)
     response, obj = sanitize_response(response)
+    print(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
 
