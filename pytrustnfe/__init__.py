@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 def get_version():
-    return "1.0.240"
+    return "1.0.253"
 
 class HttpClient(object):
     def __init__(self, url):

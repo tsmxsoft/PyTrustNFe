@@ -17,3 +17,4 @@ zeep
 numpy>=1.16.6
 openvino-telemetry>=2023.2.1
 pyhash == 0.9.3
+fnvhash

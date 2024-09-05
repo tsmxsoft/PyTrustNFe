@@ -48,7 +48,7 @@ def _render_xml(certificado, method, **kwargs):
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
 
-    if method == "recepcionarLoteRps" or method == "recepcionarLoteRpsSincrono":
+    if (method == "recepcionarLoteRps" or method == "recepcionarLoteRpsSincrono") and not kwargs.get('nosign', False):
         referencia = kwargs.get("nfse").get("numero_lote")
         #for item in kwargs["nfse"]["lista_rps"]:
             #reference = "rps:{0}{1}".format(
@@ -87,7 +87,7 @@ def _send(certificado, method, **kwargs):
         "Content-length": str(len(soap))
     }
 
-    request = requests.post(base_url, data=soap, headers=headers)
+    request = session.post(base_url, data=soap, headers=headers)
     response, obj = sanitize_response(request.content)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 

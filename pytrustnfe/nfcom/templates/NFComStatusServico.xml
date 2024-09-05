@@ -1,0 +1,4 @@
+<consStatServNFCom xmlns="http://www.portalfiscal.inf.br/nfcom" versao="1.00">
+    <tpAmb>{{ ambiente }}</tpAmb>
+    <xServ>STATUS</xServ>
+</consStatServNFCom>

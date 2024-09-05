@@ -1,0 +1,60 @@
+<NFSe versao="1.00" xmlns="http://www.sped.fazenda.gov.br/nfse">
+    <infNFSe Id="{{ NFSe.infNFSe.Id }}">
+        <xLocEmi>{{ NFSe.infNFSe.xLocEmi }}</xLocEmi>
+        <xLocPrestacao>{{ NFSe.infNFSe.xLocPrestacao }}</xLocPrestacao>
+        <nNFSe>{{ NFSe.infNFSe.nNFSe }}</nNFSe>
+        <cLocIncid>{{ NFSe.infNFSe.cLocIncid }}</cLocIncid>
+        <xLocIncid>{{ NFSe.infNFSe.xLocIncid }}</xLocIncid>
+        <xTribNac>{{ NFSe.infNFSe.xTribNac }}</xTribNac>
+        <xTribMun>{{ NFSe.infNFSe.xTribMun }}</xTribMun>
+        <xNBS>{{ NFSe.infNFSe.xNBS }}</xNBS>
+        <verAplic>{{ NFSe.infNFSe.verAplic }}</verAplic>
+        <ambGer>{{ NFSe.infNFSe.ambGer }}</ambGer>
+        <tpEmis>{{ NFSe.infNFSe.tpEmis }}</tpEmis>
+        <procEmi>{{ NFSe.infNFSe.procEmi }}</procEmi>
+        <cStat>{{ NFSe.infNFSe.cStat }}</cStat>
+        <dhProc>{{ NFSe.infNFSe.dhProc }}</dhProc>
+        <nDFSe>{{ NFSe.infNFSe.nDFSe }}</nDFSe>
+        {% with emit = NFSe.infNFSe.emit %}
+        <emit>
+            {% if emit.cnpj_cpf|length == 14  %}
+            <CNPJ>{{ emit.cnpj_cpf }}</CNPJ>
+            {% endif %}
+            {% if emit.cnpj_cpf|length == 11  %}
+            <CPF>{{ emit.cnpj_cpf }}</CPF>
+            {% endif %}
+            <IM>{{ emit.IM }}</IM>
+            <xNome>{{ emit.xNome }}</xNome>
+            <xFant>{{ emit.xFant }}</xFant>
+            <enderNac>
+                <xLgr>{{ emit.enderNac.xLgr }}</xLgr>
+                <nro>{{ emit.enderNac.nro }}</nro>
+                <xCpl>{{ emit.enderNac.xCpl }}</xCpl>
+                <xBairro>{{ emit.enderNac.xBairro }}</xBairro>
+                <cMun>{{ emit.enderNac.cMun }}</cMun>
+                <UF>{{ emit.enderNac.UF }}</UF>
+                <CEP>{{ emit.enderNac.CEP }}</CEP>
+            </enderNac>
+            <fone>{{ emit.fone }}</fone>
+            <email>{{ emit.email }}</email>
+        </emit>
+        {% endwith %}
+        {% with valores = NFSe.infNFSe.valores %}
+        <valores>
+            <vCalcDR>{{ valores.vCalcDR }}</vCalcDR>
+            <tpBM>{{ valores.tpBM }}</tpBM>
+            <vCalcBM>{{ valores.vCalcBM }}</vCalcBM>
+            <vBC>{{ valores.vBC }}</vBC>
+            <pAliqAplic>{{ valores.pAliqAplic }}</pAliqAplic>
+            <vISSQN>{{ valores.vISSQN }}</vISSQN>
+            <vTotalRet>{{ valores.vTotalRet }}</vTotalRet>
+            <vLiq>{{ valores.vLiq }}</vLiq>
+            <xOutInf>{{ valores.xOutInf }}</xOutInf>
+        </valores>
+        {% endwith %}
+        {% with DPS = NFSe.infNFSe.DPS %}
+        {% include 'DPS_1.00.xml' %}
+        {% endwith %}
+    </infNFSe>
+</NFSe>
+

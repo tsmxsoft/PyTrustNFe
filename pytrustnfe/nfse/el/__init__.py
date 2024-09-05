@@ -36,11 +36,17 @@ def _send(certificado, method, **kwargs):
     client = Client(base_url, transport=transport)
 
     xml_send = kwargs["xml"]
+    print('-----------------------')
+    print('send')
+    print(xml_send)
     if isinstance(xml_send, dict):
         return client.service[method](**xml_send)
     else:
         response = client.service[method](xml_send)
+    print('response')
+    print(response)
     response, obj = sanitize_response(response)
+    print(response)
     return {"sent_xml": xml_send, "received_xml": response, "object": obj}
 
 
@@ -59,9 +65,10 @@ def _abrirconexao(certificado, **kwargs):
 
 def _fecharconexao(certificado, **kwargs):
     #Fecha conexão
-    _send(certificado, "finalizarSessao", xml={
+    _ = _send(certificado, "finalizarSessao", xml={
         "hashIdentificador": kwargs["chave_acesso"],
     }, **kwargs)
+    return True
 
 
 def recepcionar_lote_rps(certificado, **kwargs):
@@ -77,7 +84,7 @@ def recepcionar_lote_rps(certificado, **kwargs):
     }, **kwargs)
     #Encerra conexão
     _fecharconexao(certificado, chave_acesso=chave_acesso, **kwargs)
-    return result_obj
+    return {"sent_xml": xml, "received_xml": str(result_obj), "object": result_obj}
 
 def xml_consultar_nfse_por_rps(certificado, **kwargs):
     return None
