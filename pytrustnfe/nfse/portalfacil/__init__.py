@@ -40,14 +40,17 @@ def _render(certificado, method, **kwargs):
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
 
-    for item in kwargs["nfse"]["lista_rps"]:
-        reference = "rps:{0}{1}".format(
-            item.get('numero'), item.get('serie'))
+    if method in ["RecepcionarLoteRps","RecepcionarLoteRpsSincrono"]:
+        for item in kwargs["nfse"]["lista_rps"]:
+            reference = "rps:{0}{1}".format(
+                item.get('numero'), item.get('serie'))
 
-        xml_signed_send = signer.assina_xml(xml_send, reference)
+            xml_signed_send = signer.assina_xml(xml_send, reference)
 
-    xml_signed_send = signer.assina_xml(
-        xml_send, "lote:{0}".format(referencia))
+        xml_signed_send = signer.assina_xml(
+            xml_send, "lote:{0}".format(referencia))
+    elif method == "CancelarNfse":
+        xml_signed_send = signer.assina_xml(xml_send, "1")
 
     print ('--- xml ---')
     print (xml_signed_send)
@@ -127,12 +130,12 @@ def consultar_lote_rps(certificado, **kwargs):
     return _send(certificado, "ConsultarLoteRps", **kwargs)
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return _render(certificado, "cancelarNfse", **kwargs)
+    return _render(certificado, "CancelarNfse", **kwargs)
 
 def cancelar_nfse(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
-    return _send(certificado, "cancelarNfse", **kwargs)
+    return _send(certificado, "CancelarNfse", **kwargs)
 
 def consultar_nfse_por_rps(certificado, **kwargs):
     if "xml" not in kwargs:
