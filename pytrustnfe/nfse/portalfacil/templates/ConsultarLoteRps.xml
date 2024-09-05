@@ -1,0 +1,9 @@
+<ConsultarLoteRpsEnvio xmlns="{{ base_url }}/nfseserv/schema/nfse_v204.xsd">
+    <Prestador>
+        <CpfCnpj>
+            <Cnpj>{{consulta.cnpj_prestador}}</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>{{consulta.inscricao_municipal}}</InscricaoMunicipal>
+    </Prestador>
+    <Protocolo>{{consulta.protocolo}}</Protocolo>
+</ConsultarLoteRpsEnvio>

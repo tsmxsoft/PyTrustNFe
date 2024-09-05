@@ -1,0 +1,15 @@
+<CancelarNfseEnvio xmlns="{{ base_url }}/nfseserv/schema/nfse_v204.xsd">
+    <Pedido>
+        <InfPedidoCancelamento Id="1">
+            <IdentificacaoNfse>
+                <Numero>{{ nfse.rps.numero }}</Numero>
+                <CpfCnpj>
+                    <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+                <CodigoMunicipio>{{ nfse.codigo_municipio }}</CodigoMunicipio>
+            </IdentificacaoNfse>
+            <CodigoCancelamento>{{ nfse.codigo_cancelamento }}</CodigoCancelamento>
+        </InfPedidoCancelamento>
+    </Pedido>
+</CancelarNfseEnvio>
