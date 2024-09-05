@@ -16,12 +16,14 @@ from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfe.assinatura import Assinatura
 from lxml import etree
 import sys
+import logging.config
 
 def _render(certificado, method, **kwargs):
     #Remove final slash
     if kwargs.get('base_url') and kwargs.get('base_url')[-1:] == '/':
         kwargs["base_url"] = kwargs["base_url"][:-1]
 
+    kwargs["base_url"] = kwargs["base_url"].replace("https","http")
     path = os.path.join(os.path.dirname(__file__), "templates")
     parser = etree.XMLParser(
         remove_blank_text=True, remove_comments=True, strip_cdata=False
@@ -53,17 +55,18 @@ def _render(certificado, method, **kwargs):
     return xml_signed_send
 
 def _render_unsigned(certificado, method, **kwargs):
+    if kwargs.get('base_url') and kwargs.get('base_url')[-1:] == '/':
+        kwargs["base_url"] = kwargs["base_url"][:-1]
+
+    kwargs["base_url"] = kwargs["base_url"].replace("https","http")
     path = os.path.join(os.path.dirname(__file__), "templates")
     parser = etree.XMLParser(remove_blank_text=True, 
                              remove_comments=True, 
                              strip_cdata=False
     )
-    signer = Assinatura(certificado.pfx, certificado.password)
 
     xml = render_xml(path, "%s.xml" % method, True, **kwargs)
 
-    reference = "rps:{0}{1}".format(kwargs["nfse"]['rps']['numero'], 
-                                    kwargs["nfse"]['rps']['serie'])
     xml_send = etree.fromstring(xml, parser=parser)
     xml = etree.tostring(xml_send)
 
@@ -89,8 +92,8 @@ def _send(certificado, method, **kwargs):
     xml_send = {
         "nfseDadosMsg": kwargs["xml"],
         "nfseCabecMsg": """
-        <cabecalho versao="1.00" xmlns="{base_url}/nfseserv/schema/nfse_v202.xsd">
-        <versaoDados>2.02</versaoDados>
+        <cabecalho versao="2.04" xmlns="{base_url}/nfseserv/schema/nfse_v204.xsd">
+        <versaoDados>2.04</versaoDados>
         </cabecalho>""".replace("{base_url}", base_url.replace("https","http")),
     }
 
@@ -116,7 +119,7 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 def xml_consultar_lote_rps(certificado, **kwargs):
-    return _render(certificado, "ConsultarLoteRps", **kwargs)
+    return _render_unsigned(certificado, "ConsultarLoteRps", **kwargs)
 
 def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
