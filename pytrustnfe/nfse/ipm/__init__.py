@@ -26,6 +26,8 @@ def _render_xml(certificado, method, **kwargs):
 
     if method == "nfse":
         kwargs["nfse"]["cidade_tom"] = ibge_to_tom(str(kwargs["nfse"]["servico"]["codigo_municipio"]))
+    else:
+        kwargs["nfse"]["cidade_tom"] = ibge_to_tom(str(kwargs["nfse"]["codigo_municipio"]))
 
     path = os.path.join(os.path.dirname(__file__), "templates")
     parser = etree.XMLParser(
@@ -55,19 +57,37 @@ def _send(certificado, method, **kwargs):
     else:
         base_url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php"
 
-    data = {
-        "login": kwargs.get("nfse").get("lista_rps")[0].get("usuario"),
-        "senha": kwargs.get("nfse").get("lista_rps")[0].get("senha"),
-        "cidade": kwargs.get("nfse").get("lista_rps")[0].get("cidade_tom"),
-    }
+    if method == "nfse":
+        data = {
+            "login": kwargs.get("nfse").get("lista_rps")[0].get("usuario"),
+            "senha": kwargs.get("nfse").get("lista_rps")[0].get("senha"),
+            "cidade": kwargs.get("nfse").get("lista_rps")[0].get("cidade_tom"),
+        }
+    else:
+        data = {
+            "login": kwargs.get("nfse").get("usuario"),
+            "senha": kwargs.get("nfse").get("senha"),
+            "cidade": ibge_to_tom(kwargs.get("nfse").get("codigo_municipio")),
+        }
+
     outfile = io.BytesIO(kwargs.get('xml'))
-    files = {
-        'f1': ('%s_%s_%s.xml' %( \
-            kwargs.get("nfse").get("lista_rps")[0].get("prestador").get("cnpj"), \
-            datetime.now().strftime("%y%m"),
-            datetime.now().strftime("%H%M%S") \
-            ), outfile.getvalue(), 'text/xml')
-    }
+
+    if method == "nfse":
+        files = {
+            'f1': ('%s_%s_%s.xml' %( \
+                kwargs.get("nfse").get("lista_rps")[0].get("prestador").get("cnpj"), \
+                datetime.now().strftime("%y%m"),
+                datetime.now().strftime("%H%M%S") \
+                ), outfile.getvalue(), 'text/xml')
+        }
+    else:
+        files = {
+            'f1': ('%s_%s_%s.xml' %( \
+                kwargs.get("nfse").get("cnpj_prestador"), \
+                datetime.now().strftime("%y%m"),
+                datetime.now().strftime("%H%M%S") \
+                ), outfile.getvalue(), 'text/xml')
+        }
     headers = {
     }
     response = requests.post(base_url + "?eletron=1", files=files, data=data, headers=headers)
@@ -115,8 +135,13 @@ def consultar_situacao_lote(certificado, **kwargs):
     return _send(None, "ConsultarSituacaoLoteRps", **kwargs)
 
 
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render_xml(certificado, "consultar_rps", **kwargs)
+
 def consultar_nfse_por_rps(certificado, **kwargs):
-    return _send(None, "ConsultarNfsePorRps", **kwargs)
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+    return _send(None, "consultar_rps", **kwargs)
 
 
 def consultar_lote_rps(certificado, **kwargs):
