@@ -6,10 +6,12 @@
                 <Serie>{{ rps.serie }}</Serie>
                 <Tipo>{{ rps.tipo_rps }}</Tipo>
             </IdentificacaoRps>
-            <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
+            {% set datatempo = rps.data_emissao.split('T') %}
+            <DataEmissao>{{ datatempo[0] }}</DataEmissao>
             <Status>{{ rps.status }}</Status>
         </Rps>
-        <Competencia>{{ rps.data_competencia }}</Competencia>
+        {% set competencia = rps.data_competencia.split('T') %}
+        <Competencia>{{ competencia[0] }}</Competencia>
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
