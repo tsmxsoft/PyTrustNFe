@@ -83,11 +83,15 @@
         <!-- <Intermediario>
             <IdentificacaoIntermediario>
                 <CpfCnpj>
-                    {% if rps.intermediador.cpf_cnpj|length == 14  %}
-                    <Cnpj>{{ rps.intermediador.cpf_cnpj }}</Cnpj>
-                    {% endif %}
-                    {% if rps.intermediador.cpf_cnpj|length == 11  %}
-                    <Cpf>{{ rps.intermediador.cpf_cnpj }}</Cpf>
+                    {% if rps.intermediador %}
+                        {% if rps.intermediador.cpf_cnpj|length == 14  %}
+                        <Cnpj>{{ rps.intermediador.cpf_cnpj }}</Cnpj>
+                        {% endif %}
+                        {% if rps.intermediador.cpf_cnpj|length == 11  %}
+                        <Cpf>{{ rps.intermediador.cpf_cnpj }}</Cpf>
+                        {% endif %}
+                    {% else %}
+                        <Cpf></Cpf>
                     {% endif %}
                 </CpfCnpj>
                 <InscricaoMunicipal>{{ rps.intermediador.inscricao_municipal }}</InscricaoMunicipal>
