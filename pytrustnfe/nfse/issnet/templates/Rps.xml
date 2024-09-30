@@ -24,7 +24,7 @@
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
                 <ValTotTributos>{{ rps.servico.valor_tributos }}</ValTotTributos>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <Aliquota>{{ rps.servico.aliquota }}</Aliquota>
+                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
                 <DescontoIncondicionado>{{ rps.servico.desconto_incodicionado }}</DescontoIncondicionado>
                 <DescontoCondicionado>{{ rps.servico.desconto_codicionado }}</DescontoCondicionado>
             </Valores>
