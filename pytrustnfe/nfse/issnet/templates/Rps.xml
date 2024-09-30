@@ -80,8 +80,8 @@
                 {% endif %}
             </Contato>
         </TomadorServico>
-        <!-- <Intermediario>
-        {% if rps.intermediador %}
+        {% if rps.intermediador is defined -%}
+        <Intermediario>
             <IdentificacaoIntermediario>
                 <CpfCnpj>
                     {% if rps.intermediador.cpf_cnpj|length == 14  %}
@@ -95,17 +95,8 @@
             </IdentificacaoIntermediario>
             <RazaoSocial>{{ rps.intermediador.razao_social }}</RazaoSocial>
             <CodigoMunicipio>{{ rps.intermediador.codigo_municipio }}</CodigoMunicipio>
-        {% else %}
-            <IdentificacaoIntermediario>
-                <CpfCnpj>
-                    <Cpf></Cpf>
-                </CpfCnpj>
-                <InscricaoMunicipal></InscricaoMunicipal>
-            </IdentificacaoIntermediario>
-            <RazaoSocial></RazaoSocial>
-            <CodigoMunicipio></CodigoMunicipio>
+        </Intermediario>
         {% endif %}
-        </Intermediario> -->
         <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
