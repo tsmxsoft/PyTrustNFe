@@ -43,7 +43,7 @@
             <fone>{{ prest.fone }}</fone>
             <email>{{ prest.email }}</email>
             <regTrib>
-                <opSimpNac>{{ prest.regTrib.opSimpNac }}</opSimpNac>
+                <opSimpNac>{{ prest.regTrib.opSimplNac }}</opSimpNac>
                 <regApTribSN>{{ prest.regTrib.regApTribSN }}</regApTribSN>
                 <regEspTrib>{{ prest.regTrib.regEspTrib }}</regEspTrib>
             </regTrib>
@@ -356,8 +356,7 @@
                         <pTotTribMun>{{ valores.trib.totTrib.pTrotTrib.pTotTribMun }}</pTotTribMun>
                     </pTotTrib>
                     {% endif %}
-                    <indTotTrib>{{ valores.trib.totTrib.indTotTrib }}</indTotTrib>
-                    <pTotTribSN>{{ valores.trib.totTrib.pTotTribSN }}</pTotTribSN>
+                    <indTotTrib>0</indTotTrib>
                 </totTrib>
             </trib>
         </valores>

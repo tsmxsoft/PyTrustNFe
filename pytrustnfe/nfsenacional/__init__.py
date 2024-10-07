@@ -456,7 +456,8 @@ def _abrasf_adapter(**kwargs):
             }
         }
     }
-
+    if op_simples in ['1','2']:
+        nfse_base["infDPS"]["prest"]["regTrib"].pop("regApTribSN")
     #Exigibilidade ISS
     eligibilidade_iss = None
     if str(nfse_abrasf["natureza_operacao"]) in ['1','2','5','6']:
@@ -468,6 +469,9 @@ def _abrasf_adapter(**kwargs):
         eligibilidade_iss = '4'
     if str(nfse_abrasf["servico"]["codigo_municipio"]) == '9999999':
         eligibilidade_iss = '3'
+    
+    #ISS Retido
+    iss_retido = '1' if str(nfse_abrasf["servico"]["iss_retido"]) == "2" else '2'
 
     nfse = copy(nfse_base)
     aliquota = Decimal(0.0)
@@ -512,6 +516,7 @@ def _abrasf_adapter(**kwargs):
             "trib": {
                 "tribMun": {
                     "tribISSQN": eligibilidade_iss,
+                    "tpRetISSQN": iss_retido,
                 },
                 "totTrib": {
                     "pTotTribSN": "%.2f" % (aliquota),
@@ -534,6 +539,7 @@ def xml_recepcionar_lote_rps(certificado, **kwargs):
     for nota in lote["lista_rps"]:
         kwargs["rps"] = nota
         kwargs["DPS"] = _abrasf_adapter(**kwargs)
+        kwargs["b64encode"] = not kwargs.get('dev', False)
         notas.append(xml_autorizar_dps(certificado, **kwargs))
     return notas
 
