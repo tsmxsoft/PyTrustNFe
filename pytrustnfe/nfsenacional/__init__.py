@@ -463,7 +463,8 @@ def _abrasf_adapter(**kwargs):
         eligibilidade_iss = '1'
     elif str(nfse_abrasf["natureza_operacao"]) == '4':
         eligibilidade_iss = '2'
-    if str(nfse_abrasf["servico"]["iss"]) == '0.00':
+    if "iss" not in nfse_abrasf["servico"] or \
+        ("iss" in nfse_abrasf["servico"] and Decimal(nfse_abrasf["servico"]["iss"]) == Decimal('0.00')):
         eligibilidade_iss = '4'
     if str(nfse_abrasf["servico"]["codigo_municipio"]) == '9999999':
         eligibilidade_iss = '3'
