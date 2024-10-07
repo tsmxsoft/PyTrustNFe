@@ -533,8 +533,8 @@ def xml_recepcionar_lote_rps(certificado, **kwargs):
     notas = []
     for nota in lote["lista_rps"]:
         kwargs["rps"] = nota
-        adapter = _abrasf_adapter(**kwargs)
-        notas.append(xml_autorizar_dps(certificado, DPS=adapter, **kwargs))
+        kwargs["DPS"] = _abrasf_adapter(**kwargs)
+        notas.append(xml_autorizar_dps(certificado, **kwargs))
     return notas
 
 
