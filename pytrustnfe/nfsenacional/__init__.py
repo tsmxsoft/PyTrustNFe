@@ -150,7 +150,7 @@ def _send(certificado, method, **kwargs):
             "pedidoRegistroEventoXmlGZipB64": xml_send,
         }
     request = requests.request(method_request, base_url,json=payload, params=params, cert=(cert, key), headers=headers, verify=certifi.where())
-    return {"sent_xml": xml_send, "received_xml": request.text, "obj": request}
+    return {"sent_xml": xml_send, "received_xml": request.json(), "obj": request}
 
 
 def xml_autorizar_dps(certificado, **kwargs):
