@@ -470,6 +470,9 @@ def _abrasf_adapter(**kwargs):
         eligibilidade_iss = '3'
 
     nfse = copy(nfse_base)
+    aliquota = Decimal(0.0)
+    if "aliquota" in nfse_abrasf["servico"]:
+        aliquota = Decimal(nfse_abrasf["servico"]["aliquota"]) * Decimal("100.00")
     nfse["infDPS"].update({
         "dhEmi": str(nfse_abrasf["data_emissao"]) + "-03:00",
         "nDPS": nfse_abrasf["numero"],
@@ -511,7 +514,7 @@ def _abrasf_adapter(**kwargs):
                     "tribISSQN": eligibilidade_iss,
                 },
                 "totTrib": {
-                    "pTotTribSN": "%.2f" % (Decimal(nfse_abrasf["servico"]["aliquota"]) * Decimal("100.00")),
+                    "pTotTribSN": "%.2f" % (aliquota),
                 }
             }
         }
