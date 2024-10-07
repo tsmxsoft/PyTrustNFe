@@ -543,6 +543,6 @@ def recepcionar_lote_rps(certificado, **kwargs):
     ret = []
 
     for dps in notas_xml:
-        kwargs["XML"] = dps
+        kwargs["xml"] = dps
         ret.append(autorizar_dps(certificado, **kwargs))
     return ret
