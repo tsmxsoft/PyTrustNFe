@@ -12,6 +12,8 @@ import requests
 from datetime import datetime, timedelta
 from pytrustnfe.nfse.siasp.assinatura import Assinatura
 import sys
+import traceback
+import re
 
 
 def _render(certificado, method, **kwargs):
@@ -67,6 +69,10 @@ def _send(certificado, method, **kwargs):
     }
 
     request = requests.post(url, data=soap, headers=headers,verify=False,cert=(cert, key))
+
+    print (request.status_code)
+    print (request.text)
+
     response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
     return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
 
@@ -133,16 +139,23 @@ def consultar_nfse_por_rps(certificado, **kwargs):
     xml = None
 
     try:
-        xml_element = response['object'].find('.//Nfse')
+        xml_element = response['object']
 
         if sys.version_info[0] > 2:
             xml = str(etree.tostring(xml_element, encoding=str))
         else:
             xml = str(etree.tostring(xml_element, encoding="utf8"))
-            
+        
+        xml = xml.replace('&#xd;', '')
         xml = xml.replace('&#13;', '')
+        xml = xml.replace('&lt;', '<')
+        xml = xml.replace('&gt;', '>')
+
+        s = re.search(r'(?s)((?=<nfse)(.*?)(<\/nfse>))', xml)
+        if s:
+            xml = s.group(1).strip()
     except:
-        pass
+        traceback.print_exc()
 
     return xml
 
