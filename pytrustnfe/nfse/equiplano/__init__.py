@@ -11,6 +11,7 @@ from requests import Session
 import requests
 from datetime import datetime, timedelta
 from pytrustnfe.nfse.siasp.assinatura import Assinatura
+import sys
 
 
 def _render(certificado, method, **kwargs):
@@ -29,6 +30,18 @@ def _render(certificado, method, **kwargs):
     xml_signed_send = signer.assina_xml(xml_send)
 
     return xml_signed_send
+
+def _render_unsigned(certificado, method, **kwargs):
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    parser = etree.XMLParser(remove_blank_text=True, 
+                             remove_comments=True, 
+                             strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+
+    xml = render_xml(path, "%s.xml" % method, True, **kwargs)
+
+    return xml
 
 def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -111,3 +124,28 @@ def consulta_nfse_faixe(certificado, **kwargs):
 
 def consulta_cnpj(certificado, **kwargs):
     return _send(certificado, "ConsultaCNPJ", **kwargs)
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+
+    response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
+    xml = None
+
+    try:
+        xml_element = response['object'].find('.//Nfse')
+
+        if sys.version_info[0] > 2:
+            xml = str(etree.tostring(xml_element, encoding=str))
+        else:
+            xml = str(etree.tostring(xml_element, encoding="utf8"))
+            
+        xml = xml.replace('&#13;', '')
+    except:
+        pass
+
+    return xml
+
+
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render_unsigned(certificado, "ConsultarNfsePorRps", **kwargs)
