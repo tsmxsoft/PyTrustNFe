@@ -148,4 +148,4 @@ def consultar_nfse_por_rps(certificado, **kwargs):
 
 
 def xml_consultar_nfse_por_rps(certificado, **kwargs):
-    return _render_unsigned(certificado, "ConsultarNfsePorRps", **kwargs)
+    return _render(certificado, "ConsultarNfsePorRps", **kwargs)
