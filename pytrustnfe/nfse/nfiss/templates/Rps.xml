@@ -1,0 +1,103 @@
+<Rps>
+    <InfDeclaracaoPrestacaoServico  Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <Rps>
+            <IdentificacaoRps>
+                <Numero>{{ rps.numero }}</Numero>
+                <Serie>{{ rps.serie }}</Serie>
+                <Tipo>{{ rps.tipo_rps }}</Tipo>
+            </IdentificacaoRps>
+            {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
+            <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
+            <Status>{{ rps.status }}</Status>
+        </Rps>
+        <Competencia>{{ datatempo[0] }}-{{ datatempo[1] }}-01</Competencia>
+        <Servico>
+            <Valores>
+                <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+                <ValorDeducoes>{{ rps.servico.valor_descontos|default("0", true) }}</ValorDeducoes>
+                <ValorPis>{{ rps.servico.pis|default("0", true) }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins|default("0", true) }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss|default("0", true) }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir|default("0", true) }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll|default("0", true) }}</ValorCsll>
+                <OutrasRetencoes>{{ rps.servico.retencoes|default("0", true) }}</OutrasRetencoes>
+                <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default("0", true) }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0", true) }}</DescontoCondicionado>
+            </Valores>
+            <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+            <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <CodigoCnae>{{ rps.cnae_servico }}</CodigoCnae>
+            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
+            <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+            <ExigibilidadeISS>{{ rps.iss_exigibilidade_cod|default("1", true) }}</ExigibilidadeISS>
+            <MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</MunicipioIncidencia>
+        </Servico>
+        <Prestador>
+            <CpfCnpj>
+              <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+            </CpfCnpj>
+            <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+        </Prestador>
+        <Tomador>
+            <IdentificacaoTomador>
+                 <CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
+                    {% endif %}
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+            </IdentificacaoTomador>
+            <RazaoSocial>{{ rps.tomador.razao_social|truncate(115, True) }}</RazaoSocial>
+            <Endereco>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
+                <Numero>{{ rps.tomador.numero }}</Numero>
+                {% if rps.tomador.complemento is defined -%}
+                <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                {% endif %}
+                <Bairro>{{ rps.tomador.bairro }}</Bairro>
+                <CodigoMunicipio>{{ rps.tomador.codigo_municipio}}</CodigoMunicipio>
+                <Uf>{{ rps.tomador.uf }}</Uf>
+                <Cep>{{ rps.tomador.cep }}</Cep>
+            </Endereco>
+            <Contato>
+                {% if rps.tomador.telefone is defined -%}
+                <Telefone>{{ rps.tomador.telefone }}</Telefone>
+                {% endif %}
+                <Email>{{ rps.tomador.email }}</Email>
+            </Contato>
+        </Tomador>
+        {% if rps.intermediario is defined -%}
+        <Intermediario>
+            <IdentificacaoIntermediario>
+                <CpfCnpj>
+                    {% if rps.intermediario.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.intermediario.cpf_cnpj }}</Cnpj>
+                    {% endif %}
+                    {% if rps.intermediario.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.intermediario.cpf_cnpj }}</Cpf>
+                    {% endif %}
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ item.intermediario.inscricao_municipal }}</InscricaoMunicipal>
+            </IdentificacaoIntermediario>
+            <RazaoSocial>{{ item.intermediario.razao_social }}</RazaoSocial>
+        </Intermediario>
+        {% endif %}
+        {% if rps.construcao_civil is defined -%}
+        <ConstrucaoCivil>
+            <CodigoObra>{{ rps.construcao_civil.codigo_obra}}</CodigoObra>
+            <Art>{{ rps.construcao_civil.art}}</Art>
+        </ConstrucaoCivil>
+        {% endif %}
+        {% if rps.regime_tributacao is defined -%}
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% endif %}
+        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
+        <IncentivoFiscal>{{ rps.incentivo_fiscal|default("2", true) }}</IncentivoFiscal>
+    </InfDeclaracaoPrestacaoServico>
+</Rps>
