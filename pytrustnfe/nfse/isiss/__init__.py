@@ -84,11 +84,18 @@ def _send(certificado, method, **kwargs):
     }
     with extract_cert_key_and_ca_from_pfx(certificado.pfx, certificado.password) as cert:
         request = requests.post(base_url, data=soap, headers=headers, cert=cert)
-        response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
         try:
-            return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+            response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+            try:
+                return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+            except:
+                return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
         except:
-            return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
+            try:
+                return {"sent_xml": str(soap), "received_xml": str(request.content.decode('utf8', 'ignore')), "object": None }
+            except:
+                return {"sent_xml": str(soap), "received_xml": str(request.content), "object": None }
+
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
