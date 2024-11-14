@@ -58,7 +58,7 @@
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
                 <Endereco>{{ rps.tomador.endereco }}</Endereco>
-                <Numero>{{ rps.tomador.numero }}</Numero>
+                <Numero>{{ rps.tomador.numero | default('SN') }}</Numero>
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
                 <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
