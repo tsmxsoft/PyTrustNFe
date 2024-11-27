@@ -1,12 +1,10 @@
-<EnviarLoteRpsSincronoEnvio xmlns="{{ base_url }}/nfseserv/schema/nfse_v204.xsd">
-    <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.04">
+<EnviarLoteRpsSincronoEnvio xmlns="{{ base_url }}/nfseserv/schema/nfse_v202.xsd">
+    <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.02">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
-        <Prestador>
-			<CpfCnpj>
-				<Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
-			</CpfCnpj>
-			<InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
-		</Prestador>
+        <CpfCnpj>
+            <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
         <QuantidadeRps>{{ nfse.lista_rps|length }}</QuantidadeRps>
         <ListaRps>
             {% for rps in nfse.lista_rps -%}
