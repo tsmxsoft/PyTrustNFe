@@ -48,7 +48,7 @@
             </CpfCnpj>
             <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
         </Prestador>
-        <TomadorServico>
+        <Tomador>
             <IdentificacaoTomador>
                 <CpfCnpj>
                     {% if rps.tomador.cpf_cnpj|length == 14  %}
@@ -80,10 +80,9 @@
                 <Email>{{ rps.tomador.email }}</Email>
                 {% endif %}
             </Contato>
-        </TomadorServico>
+        </Tomador>
         <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
-        <InformacoesComplementares>{{ rps.servico.informacao_complementar }}</InformacoesComplementares>
     </InfDeclaracaoPrestacaoServico>
 </Rps>
