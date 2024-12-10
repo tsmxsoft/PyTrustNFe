@@ -164,6 +164,18 @@ class ChaveNFCom(object):
         assert self.codigo != "", "Código necessário para criar chave NFCom"
 
 
+class ChaveNFComEvento(object):
+    def __init__(self, **kwargs):
+        self.tpevento   = kwargs.get("tpEvento", "")
+        self.chnfcom    = kwargs.get("chNFCom", "")
+        self.nseqevento = kwargs.get("nSeqEvento", "")
+
+    def validar(self):
+        assert self.tpevento != "", "Tipo do evento deve ser informado (verificar tabela)"
+        assert self.chnfcom != "", "Chave NFCom não informada"
+        assert self.nseqevento != "", "Num. Sequencial do evento não informado (Geralmente 1)"
+
+
 class ChaveCTe(object):
     def __init__(self, **kwargs):
         self.cnpj = kwargs.pop("cnpj", "")
@@ -271,7 +283,6 @@ def date_tostring(data):
     assert isinstance(data, date), "Objeto date requerido"
     return data.strftime("%d-%m-%y")
 
-
 def nfcom_valor(valor):
     return str("%.2f" %(round(valor,2)))
 
@@ -279,9 +290,6 @@ def nfcom_qrcode(chNFCom, tpAmb, sigla, offline=False, assinatura=""):
     if offline:
         return "https://%s/Nfcom/QrCode?chNFCom=%s&tpAmb=%d&amp;sign=%s" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb,assinatura)
     return "https://%s/Nfcom/QrCode?chNFCom=%s&amp;tpAmb=%d" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb)
-
-def gerar_chave_nfcom(obj_chave):
-    assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFe"
 
 def validar_dv(chave,dv):
     pesos = [4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2]
@@ -345,6 +353,15 @@ def gerar_chave_nfsenacional_pedido_registro(obj_chave, prefix="PRE"):
     )
     return prefix + chave_parcial
 
+def gerar_chave_nfcom_evento(obj_chave, prefix="ID"):
+    assert isinstance(obj_chave, ChaveNFComEvento), "Objeto deve ser do tipo ChaveNFComEvento"
+    obj_chave.validar()
+    return "%s%s%s%s" %(
+        prefix,
+        str(obj_chave.tpevento),
+        str(obj_chave.chnfcom),
+        str(obj_chave.nseqevento)
+    )
 
 def gerar_chave_nfcom(obj_chave, prefix="NFCom"):
     assert isinstance(obj_chave, ChaveNFCom), "Objeto deve ser do tipo ChaveNFCom"
