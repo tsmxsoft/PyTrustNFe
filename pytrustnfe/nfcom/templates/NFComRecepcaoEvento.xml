@@ -1,5 +1,5 @@
 <eventoNFCom xmlns="http://www.portalfiscal.inf.br/nfcom" versao="1.00">
-    <infEvento Id="ID{{ evento.tpAmb }}{{ evento.chNFCom }}{{ evento.nSeqEvento }}">
+    <infEvento Id="{{ evento.Id }}">
         <cOrgao>{{ evento.cOrgao }}</cOrgao>
         <tpAmb>{{ evento.tpAmb }}</tpAmb>
         <CNPJ>{{ evento.CNPJ }}</CNPJ>

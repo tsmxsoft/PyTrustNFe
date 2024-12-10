@@ -1,5 +1,6 @@
 <NFCom xmlns="http://www.portalfiscal.inf.br/nfcom">
-    <infNFCom Id="{{ Id }}" versao="1.00">
+    <infNFCom Id="{{ infNFCom.Id }}" versao="1.00">
+        {% with ide = infNFCom.ide %}
         <ide>
             <cUF>{{ ide.cUF }}</cUF>
             <tpAmb>{{ ide.tpAmb }}</tpAmb>
@@ -24,6 +25,8 @@
             <dhCont>{{ ide.dhCont }}</dhCont>
             <xJust>{{ ide.xJust }}</xJust>
         </ide>
+        {% endwith %}
+        {% with emit = infNFCom.emit %}
         <emit>
             <CNPJ>{{ emit.cnpj_cpf }}</CNPJ>
             <IE>{{ emit.IE }}</IE>
@@ -44,6 +47,8 @@
                 <email>{{ emit.enderEmit.email }}</email>
             </enderEmit>
         </emit>
+        {% endwith %}
+        {% with dest = infNFCom.dest %}
         <dest>
             <xNome>{{ dest.xNome }}</xNome>
             {% if dest.tipo == 'person' -%}
@@ -80,6 +85,8 @@
                 <email>{{ dest.enderDest.email }}</email>
             </enderDest>
         </dest>
+        {% endwith %}
+        {% with assinante = infNFCom.assinante %}
         <assinante>
             <iCodAssinante>{{ assinante.iCodAssinante }}</iCodAssinante>
             <tpAssinante>{{ assinante.tpAssinante }}</tpAssinante>
@@ -95,7 +102,9 @@
             <cUFAdic>{{ termadic.cUFAdic }}</cUFAdic>
             {% endfor %}
         </assinante>
-        {% if gSub is defined -%}
+        {% endwith %}
+        {% if infNFCom.gSub is defined -%}
+        {% with gSub = infNFCom.gSub %}
         <gSub>
             <chNFCom>{{ gSub.chNFCom }}</chNFCom>
             {% if gSub.gNF is defined -%}
@@ -110,8 +119,10 @@
             {% endif %}
             <motSub>{{ gSub.motSub }}</motSub>
         </gsub>
+        {% endwith %}
         {% endif %}
-        {% if gCoFat is defined -%}
+        {% if infNFCom.gCoFat is defined -%}
+        {% with gCoFat = infNFCom.gCoFat %}
         <gCoFat>
             <chNFComLocal>{{ gCoFat.chNFComLocal }}</chNFComLocal>
             {% if gCoFat.gNF is defined -%}
@@ -125,8 +136,9 @@
             </gNF>
             {% endif %}
         </gCoFat>
+        {% endwith %}
         {% endif %}
-        {% for det in dets %}
+        {% for det in infNFCom.dets %}
         <det
             nItem="{{ det.nItem }}"
             {% if det.chNFComAnt is defined -%}
@@ -297,6 +309,7 @@
             <infAdProd>{{ det.infAdProd }}</infAdProd>
         </det>
         {% endfor %}
+        {% with total = infNFCom.total %}
         <total>
             <vProd>{{ total.vProd }}</vProd>
             <ICMSTot>
@@ -319,15 +332,19 @@
             <vOutro>{{ total.vOutro }}</vOutro>
             <vNF>{{ total.vNF }}</vNF>
         </total>
-        {% if gFidelidade is defined -%}
+        {% endwith %}
+        {% if infNFCom.gFidelidade is defined -%}
+        {% with gFidelidade = infNFCom.gFidelidade %}
         <gFidelidade>
             <qtdSaldoPts>{{ gFidelidade.qtdSaldoPts }}</qtdSaldoPts>
             <dRefSaldoPts>{{ gFidelidade.dRefSaldoPts }}</dRefSaldoPts>
             <qtdPtsResg>{{ gFidelidade.qtdPtsResg }}</qtdPtsResg>
             <dRefResgPts>{{ gFidelidade.dRefResgPts }}</dRefResgPts>
         </gFidelidade>
+        {% endwith %}
         {% endif %}
-        {% if gFat is defined -%}
+        {% if infNFCom.gFat is defined -%}
+        {% with gFat = infNFCom.gFat %}
         <gFat>
             <CompetFat>{{ gFat.CompetFat }}</CompetFat>
             <dVencFat>{{ gFat.dVencFat }}</dVencFat>
@@ -357,26 +374,32 @@
             </gPIX>
             {% endif %}
         </gFat>
+        {% endwith %}
         {% endif %}
-        {% if gFatCentral is defined -%}
+        {% if infNFCom.gFatCentral is defined -%}
+        {% with gFatCentral = infNFCom.gFatCentral %}
         <gFatCentral>
             <CNPJ>{{ gFatCentral.CNPJ }}</CNPJ>
             <cUF>{{ gFatCentral.cUF }}</cUF>
         </gFatCentral>
+        {% endwith %}
         {% endif %}
-        {% for aut in AutXMLS %}
+        {% for aut in infNFCom.AutXMLS %}
         <autXML>
             <CNPJ>{{ aut.CNPJ }}</CNPJ>
             <CPF>{{ aut.CPF }}</CPF>
         </autXML>
         {% endfor %}
-        {% if infAdic is defined -%}
+        {% if infNFCom.infAdic is defined -%}
+        {% with infAdic = infNFCom.infAdic %}
         <infAdic>
             <infAdFisco>{{ infAdic.infAdFisco }}</infAdFisco>
             <infCpl>{{ infAdic.infCpl }}</infCpl>
         </infAdic>
+        {% endwith %}
         {% endif %}
-        {% if gRespTec is defined -%}
+        {% if infNFCom.gRespTec is defined -%}
+        {% with gRespTec = infNFCom.gRespTec %}
         <gRespTec>
             <CNPJ>{{ gRespTec.CNPJ }}</CNPJ>
             <xContato>{{ gRespTec.xContato }}</xContato>
@@ -385,9 +408,10 @@
             <idCSRT>{{ gRespTec.idCSRT }}</idCSRT>
             <hashCSRT>{{ gRespTec.hashCSRT }}</hashCSRT>
         </gRespTec>
+        {% endwith %}
         {% endif %}
     </infNFCom>
     <infNFComSupl>
-        <qrCodNFCom>{{ qrCodNFCom }}</qrCodNFCom>
+        <qrCodNFCom>{{ infNFCom.qrCodNFCom }}</qrCodNFCom>
     </infNFComSupl>
 </NFCom>

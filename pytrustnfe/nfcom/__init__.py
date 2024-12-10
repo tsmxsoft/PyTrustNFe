@@ -9,7 +9,7 @@ from lxml import etree
 import pytrustnfe
 from pytrustnfe.nfcom.assinatura import Assinatura
 from pytrustnfe.xml import render_xml, sanitize_response
-from pytrustnfe.utils import  gerar_chave_nfcom,nfcom_qrcode,ChaveNFCom
+from pytrustnfe.utils import gerar_chave_nfcom,nfcom_qrcode,ChaveNFCom,gerar_chave_nfcom_evento,ChaveNFComEvento
 from pytrustnfe.Servidores import localizar_url
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfe import xml_consulta_cadastro as nfe_xml_consulta_cadastro, \
@@ -60,6 +60,13 @@ def _generate_nfcom_id(**kwargs):
     item["ide"]["cDV"] = chave_nfcom[len(chave_nfcom) - 1 :]
     item["qrCodNFCom"] = nfcom_qrcode(chave_nfcom[5:len(chave_nfcom)],item["ide"]["tpAmb"],item["ide"]["cUF"])
 
+def _generate_nfcom_evento_id(**kwargs):
+    item = kwargs.get("evento")
+    
+    chave_nfcom_ev = ChaveNFComEvento(**item)
+    chave_nfcom_ev = gerar_chave_nfcom_evento(chave_nfcom_ev)
+    item["Id"] = chave_nfcom_ev[:len(chave_nfcom_ev)]
+    
 
 def _render(certificado, method, sign, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -71,7 +78,7 @@ def _render(certificado, method, sign, **kwargs):
         if method == "NFComRecepcao":
             xml_send = signer.assina_xml(xml_obj, kwargs["infNFCom"]["Id"])
         elif method == "NFComRecepcaoEvento":
-            xml_send = signer.assina_xml(xmlElem_send, kwargs["eventos"][0]["Id"])
+            xml_send = signer.assina_xml(xml_obj, kwargs["evento"]["Id"])
         return xml_send
 
     return xmlElem_send
@@ -182,7 +189,7 @@ def autorizar_nfcom(certificado, **kwargs):  # Assinar
 
 
 def xml_consulta_nfcom(certificado, **kwargs):
-    return _render(certificado, "NFComConsulta", True, **kwargs)
+    return _render(certificado, "NFComConsulta", False, **kwargs)
 
 def consulta_nfcom(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -192,7 +199,7 @@ def consulta_nfcom(certificado, **kwargs):
 
 
 def xml_consulta_status_servico(certificado, **kwargs):
-    return _render(certificado, "NFComStatusServico", True, **kwargs)
+    return _render(certificado, "NFComStatusServico", False, **kwargs)
 
 def consulta_status_servico(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -208,6 +215,7 @@ def consulta_cadastro(certificado, **kwargs):
     return nfe_consulta_cadastro(certificado, **kwargs)
 
 def _xml_recepcao_evento(certificado, **kwargs):
+    _generate_nfcom_evento_id(**kwargs)
     return _render(certificado, "NFComRecepcaoEvento", True, **kwargs)
 
 def _recepcao_evento(certificado, **kwargs):
@@ -220,6 +228,6 @@ def xml_recepcao_evento_cancelamento(certificado, **kwargs):
     return _xml_recepcao_evento(certificado, **kwargs)
 
 def recepcao_evento_cancelamento(certificado, **kwargs):
-    if "evento_cancelamento" in kwargs:
+    if "evento_cancelamento" in kwargs and str(kwargs.get("evento").get("tpEvento")) == "110111":
         return _recepcao_evento(certificado, **kwargs)
     raise Exception("necessario informar objeto 'evento_cancelamento' em kwargs para prosseguir")
