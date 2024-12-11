@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prod="https://nfse.setelagoas.mg.gov.br/webservice/index/producao">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prod:{{method}}>
+         <xml><![CDATA[ {{ soap_body }} ]]></xml>
+      </prod:{{method}}>
+   </soapenv:Body>
+</soapenv:Envelope>

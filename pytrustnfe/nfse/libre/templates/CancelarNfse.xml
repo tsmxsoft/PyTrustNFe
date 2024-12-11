@@ -1,0 +1,19 @@
+<CancelarNfseEnvio xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
+    <Pedido>
+        <InfPedidoCancelamento Id="{{ nfse.numero }}">
+            <IdentificacaoNfse>
+                <Numero>{{ nfse.numero }}</Numero>
+                <CpfCnpj> 
+                {%- if nfse.cnpj_prestador -%}
+                    <Cnpj>{{nfse.cnpj_prestador}}</Cnpj>
+                {%- else -%}
+                    <Cpf>{{nfse.cpf_prestador}}</Cpf>
+                {%- endif -%}
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+                <CodigoMunicipio>{{ nfse.codigo_municipio }}</CodigoMunicipio>
+            </IdentificacaoNfse>
+            <CodigoCancelamento>{{ nfse.codigo_cancelamento }}</CodigoCancelamento>
+        </InfPedidoCancelamento>
+    </Pedido>
+</CancelarNfseEnvio>
