@@ -22,7 +22,9 @@
                 <ValorCsll>{{ rps.servico.csll|default("0", true) }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes|default("0", true) }}</OutrasRetencoes>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                {% if rps.servico.aliquota is defined -%}
                 <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
+                {% endif %}
                 <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default("0", true) }}</DescontoIncondicionado>
                 <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0", true) }}</DescontoCondicionado>
             </Valores>
