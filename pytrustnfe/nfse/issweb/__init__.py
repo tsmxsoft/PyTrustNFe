@@ -34,8 +34,9 @@ def _render_xml(certificado, method, **kwargs):
     #Limpeza do lote, removendo caracteres especiais
     if method in ["recepcionarLoteRpsSincrono","recepcionarLoteRps"]:
         for i, lote in kwargs["nfse"].items():
-            if i not in ["lista_rps","usuario","senha"]:
-                kwargs["nfse"][i] = re.sub('[^a-zA-Z0-9@\. ]', '', str(lote))
+            if i != "lista_rps":
+                if i not in ["usuario","senha"]:
+                    kwargs["nfse"][i] = re.sub('[^a-zA-Z0-9@\. ]', '', str(lote))
             else:
                 for j, rps in enumerate(lote):
                     for k, rps_dict in rps.items():
