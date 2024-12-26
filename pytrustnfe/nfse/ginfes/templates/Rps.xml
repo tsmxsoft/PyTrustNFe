@@ -9,7 +9,7 @@
         <NaturezaOperacao>{{ rps.natureza_operacao }}</NaturezaOperacao>
         <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
-        <IncentivadorCultural>{{ rps.incentivador_cultural }}</IncentivadorCultural>
+        <IncentivadorCultural>{{ rps.incentivador_cultural | default("2", true) }}</IncentivadorCultural>
         <Status>{{ rps.status }}</Status>
         <RpsSubstituido>
             <Numero>{{ rps.numero_substituido }}</Numero>
@@ -18,28 +18,28 @@
         </RpsSubstituido>
         <Servico>
             <Valores>
-                <ValorServicos>{{ rps.valor_servico }}</ValorServicos>
-                <ValorDeducoes>{{ rps.valor_deducao }}</ValorDeducoes>
-                <ValorPis>{{ rps.valor_pis }}</ValorPis>
-                <ValorCofins>{{ rps.valor_cofins }}</ValorCofins>
-                <ValorInss>{{ rps.valor_inss }}</ValorInss>
-                <ValorIr>{{ rps.valor_ir }}</ValorIr>
-                <ValorCsll>{{ rps.valor_csll }}</ValorCsll>
-                <IssRetido>{{ rps.iss_retido }}</IssRetido>
-                <ValorIss>{{ rps.valor_iss }}</ValorIss>
-                <ValorIssRetido>{{ rps.valor_iss_retido }}</ValorIssRetido>
-                <OutrasRetencoes>{{ rps.outras_retencoes }}</OutrasRetencoes>
-                <BaseCalculo>{{ rps.base_calculo }}</BaseCalculo>
-                <Aliquota>{{ rps.aliquota_issqn }}</Aliquota>
-                <ValorLiquidoNfse>{{ rps.valor_liquido_nfse }}</ValorLiquidoNfse>
-                <DescontoIncondicionado>{{ rps.desconto_incondicionado }}</DescontoIncondicionado>
-                <DescontoCondicionado>{{ rps.desconto_condicionado }}</DescontoCondicionado>
+                <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+                <ValorDeducoes>{{ rps.servico.valor_descontos|default("0.00", true) }}</ValorDeducoes>
+                <ValorPis>{{ rps.servico.pis|default("0.00", true) }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins|default("0.00", true) }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss|default("0.00", true) }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir|default("0.00", true) }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll|default("0.00", true) }}</ValorCsll>
+                <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+                <ValorIss>{{ rps.servico.iss|default("0.00", true) }}</ValorIss>
+                <ValorIssRetido>{{ rps.servico.valor_iss_retido|default("0.00", true) }}</ValorIssRetido>
+                <OutrasRetencoes>{{ rps.servico.retencoes|default("0.00", true) }}</OutrasRetencoes>
+                <BaseCalculo>{{ rps.servico.base_calculo|default("0.00", true) }}</BaseCalculo>
+                {% set aliquota = rps.servico.aliquota| float * 100.00 %}
+                <Aliquota>{{ aliquota | format_numeric(0,2,True,False) }}</Aliquota>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
             </Valores>
-            <ItemListaServico>{{ rps.codigo_servico }}</ItemListaServico>
-            <CodigoCnae>{{ rps.cnae_servico }}</CodigoCnae>
-            <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
-            <Discriminacao>{{ rps.descricao }}</Discriminacao>
-            <CodigoMunicipio>{{ rps.codigo_municipio }}</CodigoMunicipio>
+            <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
+            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
+            <CodigoTributacaoMunicipio>{{ rps.servico.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
+            <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
         </Servico>
         <Prestador>
             <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
@@ -63,7 +63,7 @@
                 <Numero>{{ rps.tomador.numero }}</Numero>
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
-                <CodigoMunicipio>{{ rps.tomador.cidade }}</CodigoMunicipio>
+                <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
                 <Uf>{{ rps.tomador.uf }}</Uf>
                 <Cep>{{ rps.tomador.cep }}</Cep>
             </Endereco>
