@@ -11,7 +11,7 @@ from requests.packages.urllib3 import disable_warnings
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfe.assinatura import Assinatura
+from pytrustnfe.nfse.siasp.assinatura import Assinatura
 
 
 def _render(certificado, method, **kwargs):
@@ -20,14 +20,10 @@ def _render(certificado, method, **kwargs):
                              remove_comments=True,
                              strip_cdata=False)
 
-    reference = ""
-    if method == "RecepcionarLoteRpsV3":
-        reference = "rps%s" % kwargs["nfse"]["lista_rps"][0]["numero"]
-
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     xml_send = etree.fromstring(xml_string_send, parser=parser)
     signer = Assinatura(certificado.pfx, certificado.password)
-    xml_send = signer.assina_xml(xml_send, reference)
+    xml_send = signer.assina_xml(xml_send)
     return xml_send
 
 
