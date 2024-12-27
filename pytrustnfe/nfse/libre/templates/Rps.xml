@@ -20,7 +20,9 @@
                 <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
                 <ValorInss>{{ rps.servico.inss }}</ValorInss>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                {% if rps.servico.aliquota is defined -%}
                 <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
+                {% endif %}
                 <ValorIr>{{ rps.servico.ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
