@@ -1,16 +1,8 @@
 # -*- coding: utf-8 -*-
 import requests
-import json
-from pytrustnfe.xml.filters import format_datetime_dmy
+from datetime import datetime
 
-
-def _consultar(base_url, params = None, data = None):
-    req = requests.get(base_url, data=data, params=params, headers={'Content-Type': 'application/json'})
-    if req.status_code == 200:
-        if len(req.json()) == 1 and "msg" in req.json()[0]:
-            raise Exception(req.json()[0]["msg"])
-        return req.json()
-    return None
+######################################################
 
 def token(base_url, credenciais):
     url = base_url + '/auth/token'
@@ -18,135 +10,170 @@ def token(base_url, credenciais):
     if response.status_code == 200:
         return response.json().get('accessToken')
     else:
-        raise Exception("Erro: %s" (response.text))
+        raise Exception("Erro ao gerar token")
     
-def solicitarAirps(base_url, token, lote):
-    url = base_url + "/solicitarAirps"
-    headers = {'Authorization': 'Bearer' + token}
-    response = requests.post(url, json=lote, headers=headers)
+def listarAirps(base_url, **kwargs):
+    url = base_url + "/rps/listarAiRps"
+    nfse = kwargs.get('nfse')
+    accessKeyId = nfse['cnpj_prestador']
+    listaAiRps = []
+
+    credenciais = {
+        "accessKeyId": accessKeyId,
+        "secretAccessKey": accessKeyId[:5]
+    }
+
+    headers = {}
+    headers['accessToken'] = token(base_url, credenciais)
+
+    json = {}
+    json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
+
+    response = requests.post(url, headers=headers, json=json)
+
+    if response.status_code == 200:
+        autorizacoesRps = response.json().get('autorizacoesRps')
+        for autorizacao in autorizacoesRps:
+            listaAiRps.append({"numeroSolicitacao": autorizacao.get('numeroSolicitacao'),
+                               "dataSolicitacao": autorizacao.get('dataSolicitacao')})
+        return listaAiRps
+    else:
+        raise Exception("Erro ao listar AiRps")
+    
+def solicitarAiRps(base_url, **kwargs):
+    url = base_url + "/rps/solicitarAiRps"
+    nfse = kwargs.get('nfse')
+    accessKeyId = nfse['cnpj_prestador']
+
+    credenciais = {
+        "accessKeyId": accessKeyId,
+        "secretAccessKey": accessKeyId[:5]
+    }
+
+    headers = {}
+    headers['accessToken'] = token(base_url, credenciais)
+
+    json = {}
+    json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
+
+    response = requests.post(url, headers=headers, json=json)
     if response.status_code == 200:
         return response.json()
     else:
-        raise Exception(f"Erro ao solicitar lote de RPS: {response.text}")
+        raise Exception("Erro ao solicitar AiRps")
 
+def consultarAiRps(certificado = None, **kwargs):
+    base_url = kwargs.get('base_url')
+    nfse = kwargs.get('nfse')
+    accessKeyId = nfse['cnpj_prestador']
+
+    credenciais = {
+        "accessKeyId": accessKeyId,
+        "secretAccessKey": accessKeyId[:5]
+    }
+
+    headers = {}
+    headers['accessToken'] = token(base_url, credenciais)
+
+    json = {}
+    json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
+    json['numeroSolicitacao'] = nfse['solicitacao']
+
+    
+    url = base_url + "/rps/consultarAiRps"
+    response = requests.post(url, headers=headers, json=json)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        Exception("Erro ao consultar AiRps")
+
+######################################################
+
+# Até então, não disponibilizado pelo WebService
+def consultar_lote_rps(**kwargs):
+  pass
+
+
+def recepcionar_lote_rps(certificado = None, **kwargs):
+    base_url = kwargs.get('base_url')
+    url = base_url + "/rps/gerarRps"
+    nfse = kwargs.get('nfse')
+
+    accessKeyId = nfse['lista_rps'][0]['prestador']['cnpj']
+    credenciais = {
+        "accessKeyId": accessKeyId,
+        "secretAccessKey": accessKeyId[:5]
+    }
+
+    headers = {}
+    headers['accessToken'] = token(base_url, credenciais)
+    
+    ambiente = kwargs.get('ambiente')
+    if ambiente == "homologacao":
+        ambiente = "H"
+    else:
+        ambiente = "P"
+
+    json = {}
+    json['ambiente'] = ambiente
+    json['dataSolicitacao'] = datetime.now().strftime('%Y%m%d')
+    json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
+    json['recibos'] = _obj_send_parser(nfse=nfse)
+
+    response = requests.post(url, headers=headers, json=json)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception("Erro ao gerar Rps")
+    
 
 def _obj_send_parser(**kwargs):
-    if not isinstance(kwargs.get('rps'), dict):
-        raise Exception("Objeto invalido")
-
-    base_url = kwargs.get('base_url')
-    consulta = kwargs.get('consulta')
-    rps = kwargs.get('rps')
-    print(base_url, consulta)
-    rpsobj = {
-        "cnpjPessoaPrestador": rps["prestador"]["cnpj"],
-        "razaoSocialPessoaTomador": rps["tomador"]["razao_social"],
+    nfse = kwargs.get('nfse')
+    rpsList = []
+    
+    for rps in nfse['lista_rps']:
+        rpsList.append({
+        "numero": rps["numero"],
+        "codigoVerificacao": rps["codigo_verificacao"],
+        "dataHoraEmissao": rps["data_emissao"].replace('-','').replace(':', '').replace('T', ''),
+        "situacao": rps["tipo_rps"],
+        "naturezaOperacao": rps["status"],
+        "valorServicos": float(rps["servico"]["valor_servico"]),
+        "valorDeducoes": rps["servico"].get("deducoes", 0.00),
+        "descontoCondicionado": rps["servico"].get("desconto_condicionado", 0.00),
+        "descontoIncondicionado": rps["servico"].get("desconto_incondicionado", 0.00),
+        "baseCalculo": rps["servico"].get("base_calculo", 0.00),
+        "aliquota": float(rps["servico"]["aliquota"]),
+        "valorIss": float(rps["servico"]["iss"]),
+        "issRetidoPeloTomador": "SIM" if int(rps["servico"]["iss_retido"]) == 1 else "NAO",
+        "valorPis": rps["servico"].get("pis", 0.00),
+        "valorCofins": rps["servico"].get("cofins", 0.00),
+        "valorInss": rps["servico"].get("inss", 0.00),
+        "valorIrrf": rps["servico"].get("ir", 0.00),
+        "valorCsll": rps["servico"].get("csll", 0.00),
+        "valorLiquido": float(rps["servico"]["valor_liquido_nfse"]),
+        "codigoServico": rps["servico"]["codigo_servico"],
+        "codigoCnae": rps["servico"]["cnae_servico"],
+        "codigoLocalServico": rps["servico"]["codigo_municipio"],
+        "discriminacaoServico": rps["servico"]["discriminacao"] or "",
+        "indicadorTomador": "1" if len(rps["tomador"]["cpf_cnpj"].strip()) == 11 else "2",
+        "cpfCnpjTomador": rps["tomador"]["cpf_cnpj"],
+        "nomeTomador": rps["tomador"]["razao_social"],
+        "enderecoTomador": rps["tomador"]["endereco"],
+        "bairroTomador": rps["tomador"]["bairro"],
+        "cepTomador": rps["tomador"]["cep"],
+        "codigoCidadeTomador": rps["tomador"]["codigo_municipio"],
+        "emailTomador": rps["tomador"]["email"],
         "numeroEnderecoTomador": rps["tomador"].get("numero", 'SN'),
         "complementoEnderecoTomador": rps["tomador"].get("complemento", ''),
         "inscricaoEstadualTomador": rps["tomador"].get("inscricao_estadual", ''),
         "inscricaoMunicipalTomador": rps["tomador"].get("inscricao_municipal", ''),
         "emailTomador": rps["tomador"].get("email", ''),
-        "paisLocalPrestacaoServico":    {
-            "codigoBacen": 1058,
-        },
-        "localPrestacaoServico": {
-            "codIBGE": rps["tomador"]["codigo_municipio"],
-        },
-        "servico": {
-            "codigo": rps["servico"]["codigo_servico"],
-        },
-        "aliquota": float(rps["servico"]["aliquota"]) * 100.00,
-        "issRetidoPeloTomador": "SIM" if int(rps["servico"]["iss_retido"]) == 1 else "NAO",
-        "discriminacaoServico": rps["servico"]["discriminacao"] or '',
-        "valorTotal": float(rps["servico"]["valor_servico"]),
-        "valorDeducoes": rps["servico"].get("deducoes", 0.00),
-        "descontoCondicionado": rps["servico"].get("desconto_condicionado", 0.00),
-        "descontoIncondicionado": rps["servico"].get("desconto_incondicionado", 0.00),
-        "valorBaseCalculo": rps["servico"].get("base_calculo", 0.00),
-        "cofins": rps["servico"].get("cofins", 0.00),
-        "csll": rps["servico"].get("csll", 0.00),
-        "inss": rps["servico"].get("inss", 0.00),
-        "irrf": rps["servico"].get("ir", 0.00),
-        "pisPasep": rps["servico"].get("pis", 0.00),
-        "rpsDataEmissaoStr": format_datetime_dmy(rps["data_emissao"]),
-        "rpsSerie": rps["serie"],
-        "rpsNumero": rps["numero"],
-        "tokenRPS": kwargs.get('chave_digital'),
-    }
-    #CPF/CNPJ Tomador
-    if len(rps["tomador"]["cpf_cnpj"].strip()) == 11:
-        rpsobj["cpfPessoaTomador"] = rps["tomador"]["cpf_cnpj"]
-    elif len(rps["tomador"]["cpf_cnpj"].strip()) == 14:
-        rpsobj["cnpjPessoaTomador"] = rps["tomador"]["cpf_cnpj"]
-    else:
-        raise Exception("CPF/CNPJ Tomador Inválido")
-    
-    #Bairro
-    bairroID = None
-    if len(rps["tomador"]["bairro"]) == 0:
-        raise Exception("Bairro Tomador Inválido")
-    ret_bairro = _consultar(kwargs.get('base_url'), 'Bairros', {
-        'cmu': rps["tomador"]["codigo_municipio"],
-    })
-    for bairro in ret_bairro:
-        if bairro["nome"].lower().strip() == rps["tomador"]["bairro"].lower().strip():
-            bairroID = bairro["id"]
-            break
-    if bairroID:
-        rpsobj["bairroId"] = bairroID
-    else:
-        rpsobj["bairroEnderecoTomador"] = rps["tomador"]["bairro"]
-    
-    #Logradouro
-    logID = None
-    logparams = None
-    if len(rps["tomador"]["endereco"]) == 0:
-        raise Exception("Logradouro Tomador Inválido")
-    if bairroID:
-        logparams = {
-            'cmu': rps["tomador"]["codigo_municipio"],
-            'iba': bairroID,
-        }
-        retlog = _consultar(kwargs.get('base_url'), 'Logradouros', logparams)
-        for log in retlog:
-            if log["nome"].lower().strip() == rps["tomador"]["endereco"].lower().strip():
-                logID = log["id"]
-                break
-    if logID:
-        rpsobj["logradouroId"] = logID
-    else:
-        rpsobj["logradouroEnderecoTomador"] = rps["tomador"]["endereco"]
+        })
 
-    if bairroID and not logID:
-        rpsobj.pop("bairroId")
-
-    return rpsobj
+    return rpsList
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _obj_send_parser(**kwargs)
-
-def recepcionar_lote_rps(certificado = None, **kwargs):
-    lote = kwargs.get('nfse')
-    ret = []
-    for rps in lote["lista_rps"]:
-        ret.append(str(gerar_nfse(**{
-            "base_url": kwargs.get("base_url"),
-            "rps": rps,
-            "chave_digital": lote["chave_digital"],
-        })))
-    return "\n\n".join(ret)
-
-
-def gerar_nfse(certificado = None, **kwargs):
-    obj = [_obj_send_parser(**{
-        "base_url": kwargs.get("base_url"),
-        "rps": kwargs.get("rps"),
-        "chave_digital": kwargs.get("chave_digital"),
-    })]
-
-    req = requests.post(kwargs.get('base_url') + "prefeitura/ws/nfse/emitir", json=obj, headers={'Content-Type': 'application/json'})
-    if req.status_code == 200:
-        if len(req.json()) == 1 and "msg" in req.json()[0]:
-            return {"sent_xml": json.dumps(obj), "received_xml": req.json()[0]["msg"], "object": None }
-        return {"sent_xml": json.dumps(obj), "received_xml": json.dumps(req.json()), "object": req.json() }
-    return {"sent_xml": json.dumps(obj), "received_xml": str(req.content), "object": None }
