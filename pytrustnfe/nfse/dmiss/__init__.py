@@ -9,8 +9,8 @@ def token(base_url, credenciais):
     response = requests.post(url, json=credenciais)
     if response.status_code == 200:
         return response.json().get('accessToken')
-    else:
-        raise Exception("Erro ao gerar token")
+    
+    raise Exception(response.text.encode('utf-8') or "Erro ao gerar token")
     
 def listarAirps(base_url, **kwargs):
     url = base_url + "/rps/listarAiRps"
@@ -37,8 +37,8 @@ def listarAirps(base_url, **kwargs):
             listaAiRps.append({"numeroSolicitacao": autorizacao.get('numeroSolicitacao'),
                                "dataSolicitacao": autorizacao.get('dataSolicitacao')})
         return listaAiRps
-    else:
-        raise Exception("Erro ao listar AiRps")
+    
+    raise Exception(response.text.encode('utf-8') or "Erro ao listar AiRps") 
     
 def solicitarAiRps(base_url, **kwargs):
     url = base_url + "/rps/solicitarAiRps"
@@ -59,8 +59,8 @@ def solicitarAiRps(base_url, **kwargs):
     response = requests.post(url, headers=headers, json=json)
     if response.status_code == 200:
         return response.json()
-    else:
-        raise Exception("Erro ao solicitar AiRps")
+    
+    raise Exception(response.text.encode('utf-8') or "Erro ao solicitar AiRps")
 
 def consultarAiRps(certificado = None, **kwargs):
     base_url = kwargs.get('base_url')
@@ -85,8 +85,7 @@ def consultarAiRps(certificado = None, **kwargs):
 
     if response.status_code == 200:
         return response.json()
-    else:
-        Exception("Erro ao consultar AiRps")
+    raise Exception(response.text.encode('utf-8') or "Erro ao consultar AiRps")
 
 ######################################################
 
@@ -125,8 +124,8 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     
     if response.status_code == 200:
         return response.json()
-    else:
-        raise Exception("Erro ao gerar Rps")
+    
+    raise Exception(response.text.encode('utf-8') or "Erro ao recepcionar lote RPS")
     
 
 def _obj_send_parser(**kwargs):
