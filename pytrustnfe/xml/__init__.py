@@ -20,6 +20,9 @@ def filter_ibge2siafi(value):
     val = ibge2siafi(value)
     return val if val else value 
 
+def truncate(value,len):
+    return value[:len]
+
 
 def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     nfe = recursively_normalize(nfe)
@@ -40,6 +43,7 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     env.filters["ibge2siafi"] = filter_ibge2siafi
     env.filters["zfill_str"] = filters.zfill_str
     env.filters["encrypt_fnv1_64"] = filters.encrypt_fnv1_64
+    env.filters["truncate"] = truncate
 
     template = env.get_template(template_name)
     xml = template.render(**nfe)
