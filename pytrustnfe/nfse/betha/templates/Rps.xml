@@ -29,6 +29,9 @@
                 <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0", true) }}</DescontoCondicionado>
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+            {% if rps.servico.iss_retido == 1 -%}
+            <ResponsavelRetencao>{% if rps.intermediario is defined -%}2{% else %}1{% endif %}</ResponsavelRetencao>
+            {% endif %}
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
