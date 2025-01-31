@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from datetime import datetime
-
+import json as jsonlib
 ######################################################
 
 def token(base_url, credenciais):
@@ -123,9 +123,10 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     response = requests.post(url, headers=headers, json=json)
     
     if response.status_code == 200:
-        return response.json()
-    
-    raise Exception(response.text.encode('utf-8') or "Erro ao recepcionar lote RPS")
+        if len(response.json()) == 1 and "msg" in response.json()[0]:
+            return {'sent_xml': jsonlib.dumps(json), 'received_xml': response.json()[0]["msg"], 'object': None}
+        return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
+    return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
     
 
 def _obj_send_parser(**kwargs):
