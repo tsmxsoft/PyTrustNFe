@@ -105,11 +105,9 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
         "accessKeyId": accessKeyId,
         "secretAccessKey": accessKeyId[:5]
     }
-    print('credenciais', credenciais)
 
     headers = {}
     headers['accessToken'] = token(base_url, credenciais)
-    print('headers', headers)
     
     ambiente = kwargs.get('ambiente')
     if ambiente == "homologacao":
@@ -126,7 +124,6 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     response = requests.post(url, headers=headers, json=json)
     
     if response.status_code == 200:
-        print('response', response.json())
         if len(response.json()) == 1 and "mensagem" in response.json()['mensagem']:
             return {'sent_xml': jsonlib.dumps(json), 'received_xml': response.json()['mensagem'], 'object': None}
         return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
