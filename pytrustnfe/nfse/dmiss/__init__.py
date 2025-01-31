@@ -100,6 +100,7 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     nfse = kwargs.get('nfse')
 
     accessKeyId = nfse['lista_rps'][0]['prestador']['cnpj']
+
     credenciais = {
         "accessKeyId": accessKeyId,
         "secretAccessKey": accessKeyId[:5]
@@ -123,8 +124,8 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     response = requests.post(url, headers=headers, json=json)
     
     if response.status_code == 200:
-        if len(response.json()) == 1 and "msg" in response.json()[0]:
-            return {'sent_xml': jsonlib.dumps(json), 'received_xml': response.json()[0]["msg"], 'object': None}
+        if len(response.json()) == 1 and "mensagem" in response.json()['mensagem']:
+            return {'sent_xml': jsonlib.dumps(json), 'received_xml': response.json()['mensagem'], 'object': None}
         return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
     return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
     
