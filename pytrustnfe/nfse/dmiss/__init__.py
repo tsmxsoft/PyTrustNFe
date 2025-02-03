@@ -146,7 +146,7 @@ def _obj_send_parser(**kwargs):
         "descontoCondicionado": rps["servico"].get("desconto_condicionado", 0.00),
         "descontoIncondicionado": rps["servico"].get("desconto_incondicionado", 0.00),
         "baseCalculo": rps["servico"].get("base_calculo", 0.00),
-        "aliquota": float(rps["servico"]["aliquota"]),
+        "aliquota": float(rps["servico"]["aliquota"]) * 100.00,
         "valorIss": float(rps["servico"]["iss"]),
         "issRetido": "S" if int(rps["servico"]["iss_retido"]) == 1 else "N",
         "valorPis": rps["servico"].get("pis", 0.00),
