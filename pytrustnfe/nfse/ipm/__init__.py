@@ -43,9 +43,18 @@ def _render_xml(certificado, method, **kwargs):
                 kwargs["nfse"]["numero"],
                 kwargs["nfse"]["serie"],
             ),sign_namespace=True)
+        
+        print ('--- ipm xml ---')
+        print (xml_signed_send)
+        
         return xml_signed_send
+    
+    xml_signed_send = etree.tostring(xml_send)
 
-    return etree.tostring(xml_send)
+    print ('--- ipm xml ---')
+    print (xml_signed_send)
+
+    return xml_signed_send
 
 def _send(certificado, method, **kwargs):
     base_url = kwargs.get("base_url")

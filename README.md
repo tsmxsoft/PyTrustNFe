@@ -38,6 +38,7 @@ NFSe - Empresas Atendidas
 * **Aspec**
 * **Betha**
 * **Directa** - Natal/RN
+* **DMISS** - Caucaia/CE
 * **DSF**
 * **EL (Versão Antiga)**
 * **Equiplano**
