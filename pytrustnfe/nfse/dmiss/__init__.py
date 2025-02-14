@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from datetime import datetime
-
+import json as jsonlib
 ######################################################
 
 def token(base_url, credenciais):
@@ -100,6 +100,7 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     nfse = kwargs.get('nfse')
 
     accessKeyId = nfse['lista_rps'][0]['prestador']['cnpj']
+
     credenciais = {
         "accessKeyId": accessKeyId,
         "secretAccessKey": accessKeyId[:5]
@@ -123,9 +124,10 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     response = requests.post(url, headers=headers, json=json)
     
     if response.status_code == 200:
-        return response.json()
-    
-    raise Exception(response.text.encode('utf-8') or "Erro ao recepcionar lote RPS")
+        if len(response.json()) == 1 and "mensagem" in response.json()['mensagem']:
+            return {'sent_xml': jsonlib.dumps(json), 'received_xml': response.json()['mensagem'], 'object': None}
+        return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
+    return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
     
 
 def _obj_send_parser(**kwargs):
@@ -144,9 +146,9 @@ def _obj_send_parser(**kwargs):
         "descontoCondicionado": rps["servico"].get("desconto_condicionado", 0.00),
         "descontoIncondicionado": rps["servico"].get("desconto_incondicionado", 0.00),
         "baseCalculo": rps["servico"].get("base_calculo", 0.00),
-        "aliquota": float(rps["servico"]["aliquota"]),
+        "aliquota": float(rps["servico"]["aliquota"]) * 100.00,
         "valorIss": float(rps["servico"]["iss"]),
-        "issRetidoPeloTomador": "SIM" if int(rps["servico"]["iss_retido"]) == 1 else "NAO",
+        "issRetido": "S" if int(rps["servico"]["iss_retido"]) == 1 else "N",
         "valorPis": rps["servico"].get("pis", 0.00),
         "valorCofins": rps["servico"].get("cofins", 0.00),
         "valorInss": rps["servico"].get("inss", 0.00),
