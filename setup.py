@@ -76,6 +76,7 @@ later (LGPLv2+)",
             "nfse/portalfacil/templates/*xml",
             "nfse/nfiss/templates/*xml",
             "nfse/libre/templates/*xml",
+            "nfse/tributus/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]

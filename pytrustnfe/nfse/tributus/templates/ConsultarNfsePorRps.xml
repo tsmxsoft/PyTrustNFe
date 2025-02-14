@@ -1,0 +1,15 @@
+<ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+	<Pedido Id="rps:{{nfse.rps.numero}}{{nfse.rps.serie}}">
+		<IdentificacaoRps>
+            <Numero>{{nfse.rps.numero}}</Numero>
+            <Serie>{{nfse.rps.serie}}</Serie>
+            <Tipo>{{nfse.rps.tipo}}</Tipo>
+        </IdentificacaoRps>
+		<Prestador>
+            <CpfCnpj>
+                <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+            </CpfCnpj>
+            <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+        </Prestador>
+	</Pedido>
+</ConsultarNfseRpsEnvio>
