@@ -21,8 +21,7 @@ def _obj_send_parser(**kwargs):
     rps = kwargs.get('rps')
 
     rpsobj = {
-        "token": rps["codigo_verificacao"],
-
+        "token": kwargs.get("chave_digital"),
         "cnpjcpf": rps["prestador"]["cnpj"],
         "prefeitura": kwargs.get('prefeitura'),
         "tomador_nome": rps["tomador"]["razao_social"],
@@ -62,7 +61,9 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
         ret.append(str(gerar_nfse(**{
             "base_url": kwargs.get("base_url"),
             "rps": rps,
-            'prefeitura': lote['cnpj_prefeitura']
+            "prefeitura": lote['cnpj_prefeitura'],
+            "chave_digital": lote['chave_digital']
+            
         })))
     
     return "\n\n".join(ret)
@@ -72,7 +73,8 @@ def gerar_nfse(certificado = None, **kwargs):
     obj = [_obj_send_parser(**{
         "base_url": kwargs.get("base_url"),
         "rps": kwargs.get("rps"),
-        'prefeitura': kwargs.get('prefeitura')
+        "prefeitura": kwargs.get('prefeitura'),
+        "chave_digital": kwargs.get('chave_digital')
     })]
 
     form_data = {key: value for o in obj for key, value in o.items()}
