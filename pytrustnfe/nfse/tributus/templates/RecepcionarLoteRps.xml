@@ -1,5 +1,5 @@
 <EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
-    <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.04">
+    <LoteRps id="lote:{{ nfse.numero_lote }}" versao="2.04">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <Prestador>
 			<CpfCnpj>

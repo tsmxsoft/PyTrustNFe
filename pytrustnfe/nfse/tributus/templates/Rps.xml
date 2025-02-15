@@ -1,15 +1,15 @@
 <Rps>
-    <InfDeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
-        <Rps>
+    <InfDeclaracaoPrestacaoServico id="rps:{{ rps.numero }}{{ rps.serie }}">
+        {% set data_comp = rps.data_competencia.split('T') %}
+        <Rps id="rps1:{{ rps.numero }}{{ rps.serie }}">
             <IdentificacaoRps>
                 <Numero>{{ rps.numero }}</Numero>
                 <Serie>{{ rps.serie }}</Serie>
                 <Tipo>{{ rps.tipo_rps }}</Tipo>
             </IdentificacaoRps>
-            <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
+            <DataEmissao>{{ data_comp[0] }}</DataEmissao>
             <Status>{{ rps.status }}</Status>
         </Rps>
-        {% set data_comp = rps.data_competencia.split('T') %}
         <Competencia>{{ data_comp[0] }}</Competencia>
         <Servico>
             <Valores>
@@ -23,7 +23,11 @@
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
                 <ValTotTributos>{{ rps.servico.valor_tributos }}</ValTotTributos>
                 <ValorIss>{{ rps.servico.iss }}</ValorIss>
-                <Aliquota>{{ rps.servico.aliquota }}</Aliquota>
+                {% if rps.servico.aliquota is defined -%}
+                <Aliquota>{{ rps.servico.aliquota | float * 100 }}</Aliquota>
+                {% else %}
+                <Aliquota>0.00</Aliquota>
+                {% endif %}
                 <DescontoIncondicionado>{{ rps.servico.desconto_incodicionado }}</DescontoIncondicionado>
                 <DescontoCondicionado>{{ rps.servico.desconto_codicionado }}</DescontoCondicionado>
             </Valores>

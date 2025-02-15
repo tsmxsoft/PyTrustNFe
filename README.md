@@ -72,6 +72,7 @@ NFSe - Empresas Atendidas
 * **Sispmjp** - João Pessoa/PB
 * **Thema**
 * **Tiplan**
+* **Tributus**
 * **Tinus Informatica**
 * **Tecnos**
 * **WebISS**
