@@ -187,7 +187,10 @@ def _send(certificado, method, **kwargs):
     session = Session()
     session.cert = (cert, key)
     session.verify = False
-    action = "%s.%s.%s" %(tinus['msgns'],method,method)
+    if tinus:
+        action = "%s.%s.%s" %(tinus['msgns'],method,method)
+    else:
+        action = "http://www2.tinus.com.br/WSNFSE.%s.%s" %(method,method)
     headers = {
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
