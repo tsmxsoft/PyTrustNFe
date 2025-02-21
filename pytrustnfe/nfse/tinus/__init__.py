@@ -162,17 +162,22 @@ def _render_xml(certificado, method, **kwargs):
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
-    if method == "RecepcionarLoteRps":
-        tinus = cidades[kwargs['nfse']['lista_rps'][0]['servico']['codigo_municipio']]
+    if not kwargs.get('base_url', ''):
+        if method == "RecepcionarLoteRps":
+            tinus = cidades[kwargs['nfse']['lista_rps'][0]['servico']['codigo_municipio']]
+        else:
+            tinus = cidades[kwargs['codigo_municipio']]
+        if kwargs["ambiente"] == "producao":
+            base_url = "%s%s.cls" %(tinus['producao'],method)
+            soap_ns = "http://www.tinus.com.br"
+        else:
+            base_url = "%s%s.cls" %(tinus['homologacao'],method)
+            soap_ns = "http://www2.tinus.com.br"
     else:
-        tinus = cidades[kwargs['codigo_municipio']]
-    if kwargs["ambiente"] == "producao":
-        base_url = "%s%s.cls" %(tinus['producao'],method)
-        soap_ns = "http://www.tinus.com.br"
-    else:
-        base_url = "%s%s.cls" %(tinus['homologacao'],method)
-        soap_ns = "http://www2.tinus.com.br"
-
+        soap_ns = "http://www.tinus.com.br" \
+            if kwargs.get("ambiente","") == "producao" else \
+            "http://www2.tinus.com.br"
+        base_url = kwargs.get('base_url')
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
     soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "soap_ns": soap_ns})
