@@ -162,6 +162,7 @@ def _render_xml(certificado, method, **kwargs):
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
+    tinus = None
     if not kwargs.get('base_url', ''):
         if method == "RecepcionarLoteRps":
             tinus = cidades[kwargs['nfse']['lista_rps'][0]['servico']['codigo_municipio']]
