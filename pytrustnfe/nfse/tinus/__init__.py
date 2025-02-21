@@ -178,7 +178,7 @@ def _send(certificado, method, **kwargs):
         soap_ns = "http://www.tinus.com.br" \
             if kwargs.get("ambiente","") == "producao" else \
             "http://www2.tinus.com.br"
-        base_url = kwargs.get('base_url')
+        base_url = "%s%s.cls" %(kwargs.get('base_url'),method)
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
     soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method, "soap_ns": soap_ns})
@@ -204,7 +204,7 @@ def _send(certificado, method, **kwargs):
     except Exception as e:
         return {"sent_xml": str(soap), "received_xml": str(e), "object": None}
 
-    return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
+    return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body if hasattr(obj, 'Body') else obj }
 
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
