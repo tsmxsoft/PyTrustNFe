@@ -83,8 +83,10 @@
             </OrgaoGerador>
             {% endif %}
         </Tomador>
-        {% if rps.optante_simples|int == 1 %}
-            <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% if rps.optante_simples %}
+            {% if rps.optante_simples|int == 1 %}
+                <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+            {% endif %}
         {% endif %}
         <OptanteSimplesNacional>{{ rps.optante_simples | default("2", true) }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal | default("2", true) }}</IncentivoFiscal>
