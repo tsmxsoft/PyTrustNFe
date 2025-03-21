@@ -42,7 +42,7 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     headers['Authorization'] = 'Bearer %s' % token
     json = {}
     json['rps'] = _obj_send_parser(**kwargs)
-
+    
     
     
     urlRps = base_url + '/%s/api/Rps/%s' % (ecode, prestadorCpfCnpj)
@@ -50,10 +50,11 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     response = requests.post(urlRps, headers=headers, json=json)
 
 
-    if response.status_code == 200 and response.json():
-        return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
+    # if response.status_code == 200 and response.json():
+    #     return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
     
-    return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
+    # return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
+    return json
     
 
     
@@ -65,6 +66,7 @@ def _obj_send_parser(**kwargs):
     rpsList = []
 
     for rps in nfse['lista_rps']:
+        print(float(rps["servico"]["iss"]) if int(rps["servico"]["iss_retido"]) == 1 else 0.00)
         rps_dict = {
             "rps": {
                 "identificacaoRps": {
@@ -90,8 +92,8 @@ def _obj_send_parser(**kwargs):
                     "valorInss": rps["servico"].get("inss", 0.00),
                     "valorIr": rps["servico"].get("ir", 0.00),
                     "valorCsll": rps["servico"].get("csll", 0.00),
-                    "valorIssRetido": float(rps["servico"]["iss_retido"]) if int(rps["servico"]["iss_retido"]) == 2 else 0.00,
-                    "valorIss": float(rps["servico"]["iss"]),
+                    "valorIssRetido": float(rps["servico"]["iss"]) if int(rps["servico"]["iss_retido"]) == 1 else 0.00,
+                    "valorIss": float(rps["servico"]["iss"]) if int(rps["servico"]["iss_retido"]) == 2 else 0.00,
                     "outrasRetencoes": rps["servico"].get("outras_retencoes", 0.00),
                     "baseCalculo": float(rps["servico"]["base_calculo"]),
                     "aliquota": float(rps["servico"]["aliquota"]) * 100.00,
