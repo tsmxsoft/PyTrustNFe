@@ -50,11 +50,10 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
     response = requests.post(urlRps, headers=headers, json=json)
 
 
-    # if response.status_code == 200 and response.json():
-    #     return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
+    if response.status_code == 200 and response.json():
+        return {"sent_xml": jsonlib.dumps(json), "received_xml": jsonlib.dumps(response.json()), "object": response.json()}
     
-    # return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
-    return json
+    return {"sent_xml": jsonlib.dumps(json), "received_xml": str(response.content), "object": None }
     
 
     
