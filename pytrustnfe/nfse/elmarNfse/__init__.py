@@ -65,7 +65,6 @@ def _obj_send_parser(**kwargs):
     rpsList = []
 
     for rps in nfse['lista_rps']:
-        print(float(rps["servico"]["iss"]) if int(rps["servico"]["iss_retido"]) == 1 else 0.00)
         rps_dict = {
             "rps": {
                 "identificacaoRps": {
