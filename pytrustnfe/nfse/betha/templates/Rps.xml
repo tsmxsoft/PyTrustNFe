@@ -33,6 +33,7 @@
             <ResponsavelRetencao>{% if rps.intermediario is defined -%}2{% else %}1{% endif %}</ResponsavelRetencao>
             {% endif %}
             <ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             <ExigibilidadeISS>{{ rps.iss_exigibilidade_cod|default("1", true) }}</ExigibilidadeISS>
