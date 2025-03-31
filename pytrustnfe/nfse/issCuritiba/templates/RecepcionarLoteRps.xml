@@ -1,0 +1,13 @@
+<e:EnviarLoteRpsEnvio xmlns:e="https://www.e-governeapps2.com.br/">
+    <e:LoteRps Id="lote:{{ nfse.numero_lote }}">
+        <e:NumeroLote>{{ nfse.numero_lote }}</e:NumeroLote>
+            <e:Cnpj>{{ nfse.cnpj_prestador }}</e:Cnpj>
+        <e:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</e:InscricaoMunicipal>
+        <e:QuantidadeRps>{{ nfse.lista_rps|length }}</e:QuantidadeRps>
+        <e:ListaRps>
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
+        </e:ListaRps>
+    </e:LoteRps>
+</e:EnviarLoteRpsEnvio>

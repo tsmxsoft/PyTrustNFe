@@ -1,0 +1,7 @@
+<e:ConsultarLoteRpsEnvio xmlns:e="https://www.e-governeapps2.com.br/">
+    <e:Prestador>
+        <e:Cnpj>{{ nfse.cnpj_prestador }}</e:Cnpj>
+        <e:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</e:InscricaoMunicipal>
+    </e:Prestador>
+    <e:Protocolo>{{ nfse.protocolo }}</e:Protocolo>
+</e:ConsultarLoteRpsEnvio>

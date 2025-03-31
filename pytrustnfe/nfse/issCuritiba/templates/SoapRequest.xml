@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+                  xmlns:e="https://www.e-governeapps2.com.br/">
+	<soapenv:Header/>
+    <soapenv:Body>
+        <e:{{method}}>
+            {{soap_body}}
+        </e:{{method}}>
+    </soapenv:Body>
+</soapenv:Envelope>
