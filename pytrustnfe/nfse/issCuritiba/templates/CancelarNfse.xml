@@ -1,0 +1,14 @@
+<!-- Validado -->
+<e:CancelarNfseEnvio xmlns:e="https://www.e-governeapps2.com.br/">
+    <e:Pedido>
+        <e:InfPedidoCancelamento Id="{{nfse.numero}}">
+            <e:IdentificacaoNfse>
+                <e:Numero>{{ nfse.numero }}</e:Numero>
+                <e:Cnpj>{{ nfse.cnpj_prestador }}</e:Cnpj>
+                <e:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</e:InscricaoMunicipal>
+                <e:CodigoMunicipio>{{ nfse.codigo_municipio }}</e:CodigoMunicipio>
+            </e:IdentificacaoNfse>
+            <e:CodigoCancelamento>{{ nfse.codigo_cancelamento }}</e:CodigoCancelamento>
+        </e:InfPedidoCancelamento>
+    </e:Pedido>
+</e:CancelarNfseEnvio>

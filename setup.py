@@ -77,6 +77,7 @@ later (LGPLv2+)",
             "nfse/nfiss/templates/*xml",
             "nfse/libre/templates/*xml",
             "nfse/tributus/templates/*xml",
+            "nfse/issCuritiba/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
