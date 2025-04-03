@@ -62,7 +62,7 @@ def _send(certificado, method, **kwargs):
         "Content-length": str(len(soap))
     }
 
-    request = requests.post(url, data=soap, cert=(cert, key), headers=headers, verify=cafile)
+    request = requests.post(url, data=soap, cert=(cert, key), headers=headers)
     response, obj = sanitize_response(request.content)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
