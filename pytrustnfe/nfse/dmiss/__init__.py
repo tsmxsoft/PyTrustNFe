@@ -15,9 +15,8 @@ def token(base_url, credenciais):
 def listarAirps(base_url, **kwargs):
     url = base_url + "/rps/listarAiRps"
     nfse = kwargs.get('nfse')
-    rps = nfse['lista_rps']
     accessKeyId = nfse['cnpj_prestador']
-    secretAccessKey = rps[0]['senha']
+    secretAccessKey = nfse['senha']
     listaAiRps = []
 
     credenciais = {
@@ -45,9 +44,8 @@ def listarAirps(base_url, **kwargs):
 def solicitarAiRps(base_url, **kwargs):
     url = base_url + "/rps/solicitarAiRps"
     nfse = kwargs.get('nfse')
-    rps = nfse['lista_rps']
     accessKeyId = nfse['cnpj_prestador']
-    secretAccessKey = rps[0]['senha']
+    secretAccessKey = nfse['senha']
 
     credenciais = {
         "accessKeyId": accessKeyId,
@@ -69,9 +67,8 @@ def solicitarAiRps(base_url, **kwargs):
 def consultarAiRps(certificado = None, **kwargs):
     base_url = kwargs.get('base_url')
     nfse = kwargs.get('nfse')
-    rps = nfse['lista_rps']
     accessKeyId = nfse['cnpj_prestador']
-    secretAccessKey = rps[0]['senha']
+    secretAccessKey = nfse['senha']
 
     credenciais = {
         "accessKeyId": accessKeyId,
