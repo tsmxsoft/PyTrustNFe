@@ -163,7 +163,7 @@ def _obj_send_parser(**kwargs):
         "codigoCnae": rps["servico"]["cnae_servico"],
         "codigoLocalServico": rps["servico"]["codigo_municipio"],
         "discriminacaoServico": rps["servico"]["discriminacao"] or "",
-        "indicadorTomador": "1" if len(rps["tomador"]["cpf_cnpj"].strip()) == 11 else "2",
+        "indicadorTomador": "1" if len(rps["tomador"]["cpf_cnpj"].strip()) == 11 else "3",
         "cpfCnpjTomador": rps["tomador"]["cpf_cnpj"],
         "nomeTomador": rps["tomador"]["razao_social"],
         "enderecoTomador": rps["tomador"]["endereco"],
