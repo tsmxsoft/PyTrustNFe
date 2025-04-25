@@ -1,7 +1,9 @@
-*.pem
+/*.pem
 *.crt
 *.p12
 *.pyc
+*.pdf
+/*.xlsx
 *~
 *.DS_Store
 .directory
