@@ -6,7 +6,8 @@ import json as jsonlib
 
 def token(base_url, credenciais):
     url = base_url + '/auth/token'
-    response = requests.post(url, json=credenciais)
+    headers = { "User-Agent": "Mozilla/5.0" }
+    response = requests.post(url, json=credenciais, headers=headers)
     if response.status_code == 200:
         return response.json().get('accessToken')
     
@@ -26,6 +27,7 @@ def listarAirps(base_url, **kwargs):
 
     headers = {}
     headers['accessToken'] = token(base_url, credenciais)
+    headers['User-Agent'] = "Mozilla/5.0"
 
     json = {}
     json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
@@ -54,6 +56,7 @@ def solicitarAiRps(base_url, **kwargs):
 
     headers = {}
     headers['accessToken'] = token(base_url, credenciais)
+    headers['User-Agent'] = "Mozilla/5.0"
 
     json = {}
     json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
@@ -77,6 +80,7 @@ def consultarAiRps(certificado = None, **kwargs):
 
     headers = {}
     headers['accessToken'] = token(base_url, credenciais)
+    headers['User-Agent'] = "Mozilla/5.0"
 
     json = {}
     json['inscricaoMunicipalPrestador'] = nfse['inscricao_municipal']
@@ -112,6 +116,7 @@ def recepcionar_lote_rps(certificado = None, **kwargs):
 
     headers = {}
     headers['accessToken'] = token(base_url, credenciais)
+    headers['User-Agent'] = "Mozilla/5.0"
     
     ambiente = kwargs.get('ambiente')
     if ambiente == "homologacao":
