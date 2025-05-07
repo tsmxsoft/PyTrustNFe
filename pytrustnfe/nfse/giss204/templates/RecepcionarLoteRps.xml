@@ -1,0 +1,18 @@
+<ns4:EnviarLoteRpsEnvio xmlns:ns2="http://www.giss.com.br/tipos-v2_04.xsd"
+    xmlns:ns4="http://www.giss.com.br/enviar-lote-rps-envio-v2_04.xsd">
+    <ns4:LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.04">
+        <ns2:NumeroLote>{{ nfse.numero_lote }}</ns2:NumeroLote>
+        <ns2:Prestador>
+            <ns2:CpfCnpj>
+                <ns2:Cnpj>{{ nfse.cnpj_prestador }}</ns2:Cnpj>
+            </ns2:CpfCnpj>
+            <ns2:InscricaoMunicipal>{{ nfse.inscricao_municipal }}</ns2:InscricaoMunicipal>
+        </ns2:Prestador>
+        <ns2:QuantidadeRps>{{ nfse.lista_rps|length }}</ns2:QuantidadeRps>
+        <ns2:ListaRps>
+            {% for rps in nfse.lista_rps -%}
+            {% include 'Rps.xml' %}
+            {% endfor %}
+        </ns2:ListaRps>
+    </ns4:LoteRps>
+</ns4:EnviarLoteRpsEnvio>
