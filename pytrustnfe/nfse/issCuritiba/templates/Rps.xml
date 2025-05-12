@@ -7,10 +7,10 @@
             <e:Tipo>{{ rps.tipo_rps }}</e:Tipo>
         </e:IdentificacaoRps>
         <e:DataEmissao>{{ rps.data_emissao }}</e:DataEmissao>
-        <e:NaturezaOperacao>1</e:NaturezaOperacao>
-        <e:OptanteSimplesNacional>2</e:OptanteSimplesNacional>
-        <e:IncentivadorCultural>2</e:IncentivadorCultural>
-        <e:Status>1</e:Status>
+        <e:NaturezaOperacao>{{ rps.natureza_operacao }}</e:NaturezaOperacao>
+        <e:OptanteSimplesNacional>{{ rps.optante_simples }}</e:OptanteSimplesNacional>
+        <e:IncentivadorCultural>{{ rps.incentivador_cultural }}</e:IncentivadorCultural>
+        <e:Status>{{ rps.status }}</e:Status>
         <e:Servico>
             <e:Valores>
                 <e:ValorServicos>{{ rps.servico.valor_servico }}</e:ValorServicos>
