@@ -2,15 +2,12 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import os
 from pytrustnfe.xml import render_xml, sanitize_response
-from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from lxml import etree
-from zeep.transports import Transport
-from requests import Session
-import requests
-from datetime import datetime, timedelta
+from pytrustnfe.certificado import extract_cert_key_and_ca_from_pfx
 from pytrustnfe.nfse.siasp.assinatura import Assinatura
+from lxml import etree
+import requests
+import os
 import sys
 import traceback
 import re
@@ -49,32 +46,27 @@ def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
 
     if kwargs["ambiente"] == "homologacao":
-        url = "https://www.esnfs.com.br:9444/homologacaows/services/Enfs?wsdl"
+        url = "https://www.esnfs.com.br:9444/homologacaows/services/Enfs.EnfsHttpsSoap11Endpoint"
     else:
-        url = "https://www.esnfs.com.br:8444/enfsws/services/Enfs?wsdl"
+        url = "https://www.esnfs.com.br:8444/enfsws/services/Enfs.EnfsHttpsSoap11Endpoint"
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
     soap = render_xml(path, "SoapRequest.xml", False, False, **{"soap_body":xml_send, "method": method })
 
-    cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
-    cert, key = save_cert_key(cert, key)
-    session = Session()
-    session.cert = (cert, key)
-    session.verify = False
     headers = {
-        "Content-Type": "application/soap+xml;charset=UTF-8",
-        "Operation": "es" + method,
+        "Content-Type": "text/xml;charset=UTF-8",
+        "SOAPAction": "urn:es" + method,
         "Content-length": str(len(soap))
     }
+    with extract_cert_key_and_ca_from_pfx(certificado.pfx, certificado.password) as cert:
+        request = requests.post(url, data=soap, headers=headers,verify=False,cert=cert)
 
-    request = requests.post(url, data=soap, headers=headers,verify=False,cert=(cert, key))
+        print (request.status_code)
+        print (request.text)
 
-    print (request.status_code)
-    print (request.text)
-
-    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
-    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+        response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+        return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
