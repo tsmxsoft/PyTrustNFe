@@ -82,6 +82,7 @@ later (LGPLv2+)",
             "nfse/novaIguacu/templates/*xml",
             "nfse/giss204/templates/*xml",
             "nfse/prodata/templates/*xml",
+            "nfse/eReceita/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]

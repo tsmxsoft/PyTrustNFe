@@ -1,0 +1,16 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:nfs="http://www3.ereceita.net.br/soap/NfseWebService">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<nfs:{{ method }}>
+			<nfs:nfseCabecMsg><![CDATA[
+				<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.02">
+					<versaoDados>2.02</versaoDados>
+				</cabecalho>
+				]]></nfs:nfseCabecMsg>
+			<nfs:nfseDadosMsg><![CDATA[
+				{{ soap_body }}
+				]]></nfs:nfseDadosMsg>
+		</nfs:{{ method }}>
+</soapenv:Body>
+</soapenv:Envelope>
