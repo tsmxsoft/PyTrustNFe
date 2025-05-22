@@ -78,7 +78,9 @@
                 {% endif %}
             </Contato>
         </Tomador>
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% if rps.regime_tributacao is defined -%}
+            <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% endif %}
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
     </InfDeclaracaoPrestacaoServico>
