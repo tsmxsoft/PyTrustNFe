@@ -78,7 +78,7 @@
                 {% endif %}
             </Contato>
         </Tomador>
-        {% if rps.regime_tributacao is defined -%}
+        {% if rps.regime_tributacao is defined and rps.regime_tributacao is not none -%}
             <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         {% endif %}
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
