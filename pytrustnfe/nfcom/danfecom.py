@@ -261,14 +261,12 @@ class DANFECom(object):
                 list_desc=list_desc,
                 list_cod_prod=list_cod_prod,
             )
-            print( range(1,int(self.NrPages)))
             for np in range(1,int(self.NrPages)):
                 p2 = nId
                 self.newpage()
                 self.ide_emit(oXML=oXML, timezone=timezone)
                 if index > p2:
                     break
-                print(index,p2,np)
                 index = self.detalhamentos(
                     oXML=oXML,
                     el_det=el_det,
@@ -289,7 +287,7 @@ class DANFECom(object):
             self.area_contrib_cliente(oXML=oXML, timezone=timezone)
             self.area_anatel(oXML=oXML, timezone=timezone)
 
-            #self.tarjas(oXML=oXML)
+            self.tarjas(oXML=oXML)
             self.newpage()
         if cce_xml:
             for xml in cce_xml:
