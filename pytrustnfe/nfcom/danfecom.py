@@ -169,7 +169,7 @@ def round_decimal(number, decimal_places=2):
     result = whole_part + (',00' if dec in [0,''] else ',' + dec)
     return result
 
-class DANFCom(object):
+class DANFECom(object):
     def __init__(
         self,
         sizepage=A4,
@@ -248,7 +248,7 @@ class DANFCom(object):
 
                 # Calculando nr. aprox. de páginas
                 if nId > self.maxprod:
-                    self.NrPages += math.ceil((nId-self.maxprod)/self.maxprod) + 1
+                    self.NrPages += math.ceil(nId/(self.maxprod*5)) + 1
 
             self.ide_emit(oXML=oXML, timezone=timezone)
             self.destinatario(oXML=oXML, timezone=timezone)
@@ -257,32 +257,31 @@ class DANFCom(object):
             index = self.detalhamentos(
                 oXML=oXML,
                 el_det=el_det,
-                max_index=min(50,nId+1),
+                max_index=min((self.maxprod*5),nId),
                 list_desc=list_desc,
                 list_cod_prod=list_cod_prod,
             )
-            self.tarjas(oXML=oXML)
+            print( range(1,int(self.NrPages)))
             for np in range(1,int(self.NrPages)):
-                p1 = 50+(50*np)
-                p2 = nId + (50*np)
-                maxindex = min(p1,p2)
-                if nId-maxindex > (50*np):
-                    self.newpage()
-                    self.ide_emit(oXML=oXML, timezone=timezone)
-                    index = self.detalhamentos(
-                        oXML=oXML,
-                        el_det=el_det,
-                        index=index*np,
-                        max_index=maxindex,
-                        list_desc=list_desc,
-                        list_cod_prod=list_cod_prod,
-                    )
+                p2 = nId
+                self.newpage()
+                self.ide_emit(oXML=oXML, timezone=timezone)
+                if index > p2:
+                    break
+                print(index,p2,np)
+                index = self.detalhamentos(
+                    oXML=oXML,
+                    el_det=el_det,
+                    index=index,
+                    max_index=p2,
+                    list_desc=list_desc,
+                    list_cod_prod=list_cod_prod,
+                )
                 self.nlin = self.height - 36
-                if nId-maxindex <= (50*np):
+
+                if index >= p2:
                     self.newpage()
                     self.ide_emit(oXML=oXML, timezone=timezone)
-                
-                if p1 > p2:
                     break
 
             self.detalhamentos_resumo(oXML=oXML, timezone=timezone)
@@ -290,7 +289,7 @@ class DANFCom(object):
             self.area_contrib_cliente(oXML=oXML, timezone=timezone)
             self.area_anatel(oXML=oXML, timezone=timezone)
 
-            self.tarjas(oXML=oXML)
+            #self.tarjas(oXML=oXML)
             self.newpage()
         if cce_xml:
             for xml in cce_xml:
@@ -603,7 +602,7 @@ class DANFCom(object):
         # somar a ele a altura atual que é nlin
         maxHeight = self.nlin + max_index + nH
 
-        lineHeight = 4.0 + ((max_index-index) * 3.5)
+        lineHeight = 4.0 + ((max_index-index+1) * 3.5)
         self.canvas.setFont("NimbusSanL-Regu", 5.5)
         # Colunas
         self.stringcenter(self.nLeft + 20.5, self.nlin + 4.5, "ITENS")
@@ -636,7 +635,7 @@ class DANFCom(object):
         # Conteúdo campos
         self.canvas.setFont("NimbusSanL-Regu", 5)
 
-        while id < max_index:
+        while id <= max_index:
             item = el_det[id]
             piscofins  = decimal.Decimal(tagtext(oNode=item, cTag="vPIS") or 0) or decimal.Decimal(0)
             piscofins += decimal.Decimal(tagtext(oNode=item, cTag="vCOFINS") or 0) or decimal.Decimal(0)
