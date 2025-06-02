@@ -1,0 +1,14 @@
+<ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+    <IdentificacaoRps>
+        <Numero>{{ nfse.rps.numero }}</Numero>
+        <Serie>{{ nfse.rps.serie }}</Serie>
+        <Tipo>{{ nfse.rps.tipo }}</Tipo>
+    </IdentificacaoRps>
+    <Prestador>
+        <CpfCnpj>
+            <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+        </CpfCnpj>
+        <RazaoSocial>{{ nfse.razao_social }}</RazaoSocial>
+        <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+    </Prestador>
+</ConsultarNfseRpsEnvio>

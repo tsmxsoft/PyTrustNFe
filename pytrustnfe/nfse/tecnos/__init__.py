@@ -33,15 +33,16 @@ estados = {
     'SE': 26,'SP': 25,'TO': 27,
 }
 
-class TransportPlugin:
-    def egress(self, envelope, http_headers, operation, binding_options):
-        xml_string = etree.tostring(envelope)
-        xml_string = xml_string.replace("&lt;", "<")
-        xml_string = xml_string.replace("&gt;", ">")
-        xml_string = xml_string.replace("&amp;", "&")
-        parser = etree.XMLParser(strip_cdata=False)
-        new_envelope = etree.XML(xml_string, parser=parser)
-        return new_envelope, http_headers
+def clean_x509(xml_string):
+    parser = etree.XMLParser(remove_blank_text=True, remove_comments=True, strip_cdata=False)
+    root = etree.fromstring(xml_string, parser=parser)
+
+    for elem in root.iter():
+        if elem.tag.endswith('X509Certificate'):
+            if '\n' in elem.text:
+                elem.text = elem.text.replace('\n', '')
+
+    return etree.tostring(root, encoding='unicode')
 
 def _render_xml(certificado, method, **kwargs):
     kwargs['method'] = method
@@ -51,23 +52,25 @@ def _render_xml(certificado, method, **kwargs):
     #<!--0000 - ano do lote enviado no formato AAAA-->
     #<!--00000000000009 - numero do CPF/CNPJ do contribuinte formatado com 14 posições-->
     #<!--0000000000000009 - número sequencial do lote formatado com 16 posições-->
-    kwargs['nfse']['numero_lote_formatado'] = "1%s%s%s" %(
-        str(datetime.now().year),
-        str(kwargs['nfse']['cnpj_prestador']).zfill(14),
-        str(kwargs['nfse']['numero_lote']).zfill(16)
-    )
+    if method == "EnviarLoteRpsSincrono":
+        kwargs['nfse']['numero_lote_formatado'] = "1%s%s%s" %(
+            str(datetime.now().year),
+            str(kwargs['nfse']['cnpj_prestador']).zfill(14),
+            str(kwargs['nfse']['numero_lote']).zfill(16)
+        )
     #Numero de cada RPS formatado - Tecnos
     #<!--1 - Tipo de operação, no caso envio-->
     #<!--91593376000102 - Documento do prestador formatado com 14 posições-->
     #<!--0000000000000007 - Número do RPS formatado com 16 posições-->
-    for item in kwargs["nfse"]["lista_rps"]:
-        item["numero_rps_formatado"] = "1%s%s" %(
-            str(kwargs['nfse']['cnpj_prestador']).zfill(14),
-            str(item["numero"]).zfill(16)
-        )
-        item["tomador"]["uf_codigo"] = estados[item["tomador"]["uf"]]
-        if "intermediario" in item:
-            item["intermediario"]["uf_codigo"] = estados[item["tomador"]["uf"]]
+    if method == "EnviarLoteRpsSincrono":
+        for item in kwargs["nfse"]["lista_rps"]:
+            item["numero_rps_formatado"] = "1%s%s" %(
+                str(kwargs['nfse']['cnpj_prestador']).zfill(14),
+                str(item["numero"]).zfill(16)
+            )
+            item["tomador"]["uf_codigo"] = estados[item["tomador"]["uf"]]
+            if "intermediario" in item:
+                item["intermediario"]["uf_codigo"] = estados[item["tomador"]["uf"]]
 
 
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -83,15 +86,17 @@ def _render_xml(certificado, method, **kwargs):
     if method == "EnviarLoteRpsSincrono":
         for item in kwargs["nfse"]["lista_rps"]:
             xml_signed_send = signer.assina_xml(xml_send, item["numero_rps_formatado"],parser=parser)
-    
+    elif method == "CancelamentoNFSe":
+        xml_signed_send = signer.assina_xml(xml_send,"1",parser=parser)
+    else:
+        return xml_string_send
+
     return xml_signed_send
 
 def _send(certificado, method, **kwargs):
     base_url = "%s:%s/%s.asmx?wsdl" %(kwargs["base_url"],str(kwargs["ws_port"]),kwargs["soap_action"])
 
-
-    xml_send = "<![CDATA[" + kwargs["xml"] + "]]>"
-    xml_cabecalho = """<![CDATA[<cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" versao="20.01" xmlns="http://www.nfse-tecnos.com.br/nfse.xsd"><versaoDados>20.01</versaoDados></cabecalho>]]>""".decode('utf-8')
+    xml_cabecalho = """<cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" versao="20.01" xmlns="http://www.nfse-tecnos.com.br/nfse.xsd"><versaoDados>20.01</versaoDados></cabecalho>"""
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
 
@@ -100,17 +105,17 @@ def _send(certificado, method, **kwargs):
     session.verify = False
     transport = Transport(session=session)
 
-    client = Client(wsdl=base_url, transport=transport, plugins=[TransportPlugin()])
+    client = Client(wsdl=base_url, transport=transport)
     client.set_ns_prefix(None, "http://tempuri.org/m"+kwargs["soap_action"])
 
-    response = client.service["m"+kwargs["soap_action"]](xml_send,xml_cabecalho)
+    response = client.service["m"+kwargs["soap_action"]](kwargs["xml"],xml_cabecalho)
     response, obj = sanitize_response(response)
 
-    return {"sent_xml": str(xml_send), "received_xml": str(response), "object": obj}
+    return {"sent_xml": str(kwargs["xml"]), "received_xml": str(response), "object": obj}
 
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return _render_xml(certificado, "EnviarLoteRpsSincrono", **kwargs)
+    return clean_x509(_render_xml(certificado, "EnviarLoteRpsSincrono", **kwargs))
 
 
 def recepcionar_lote_rps(certificado, **kwargs):
@@ -121,6 +126,18 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado,"EnviarLoteRpsSincrono", **kwargs)
 
 
+def xml_consultar_sequencia(certificado, **kwargs):
+    return _render_xml(certificado, "ConsultaSequenciaLoteNotaRPS", **kwargs)
+
+
+def consultar_sequencia(certificado, **kwargs):
+    kwargs["ws_port"] = 9084
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_sequencia(certificado, **kwargs)
+        kwargs["soap_action"] = "ConsultaSequenciaLoteNotaRPS"
+    return _send(certificado,"ConsultaSequenciaLoteNotaRPS", **kwargs)
+
+
 def xml_consultar_situacao_lote(certificado, **kwargs):
     return _render_xml(certificado, "ConsultarSituacaoLoteRps", **kwargs)
 
@@ -129,12 +146,18 @@ def consultar_situacao_lote(certificado, **kwargs):
     kwargs["ws_port"] = 9097
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_situacao_lote(certificado, **kwargs)
-    return _send(None, "ConsultarSituacaoLoteRps", **kwargs)
+        kwargs["soap_action"] = "ConsultarSituacaoLoteRps"
+    return _send(certificado, "ConsultarSituacaoLoteRps", **kwargs)
 
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render_xml(certificado, "ConsultaNFSePorRPS", **kwargs)
 
 def consultar_nfse_por_rps(certificado, **kwargs):
     kwargs["ws_port"] = 9095
-    return _send(None, "ConsultarNfsePorRps", **kwargs)
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+        kwargs["soap_action"] = "ConsultaNFSePorRPS"
+    return _send(certificado, "ConsultaNFSePorRPS", **kwargs)
 
 
 def xml_consultar_lote_rps(certificado, **kwargs):
@@ -158,14 +181,15 @@ def consultar_nfse(certificado, **kwargs):
 
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return _render_xml(certificado, "CancelarNfse", **kwargs)
+    return clean_x509(_render_xml(certificado, "CancelamentoNFSe", **kwargs))
 
 
 def cancelar_nfse(certificado, **kwargs):
     kwargs["ws_port"] = 9098
     if "xml" not in kwargs:
         kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
-    return _send("CancelarNfse", **kwargs)
+        kwargs["soap_action"] = "CancelamentoNFSe"
+    return _send(certificado,"CancelamentoNFSe", **kwargs)
 
 
 def xml_gerar_nfse(certificado, **kwargs):
@@ -176,4 +200,4 @@ def gerar_nfse(certificado, **kwargs):
     kwargs["ws_port"] = 9092
     if "xml" not in kwargs:
         kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    return _send("GerarNfse", **kwargs)
+    return _send(certificado,"GerarNfse", **kwargs)
