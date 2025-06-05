@@ -4,33 +4,28 @@
 
 import sys
 import re
-import hashlib
-import rsa
 from collections import OrderedDict
 from OpenSSL import crypto
 import signxml
-import base64
 from lxml import etree
 from signxml import XMLSigner
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import padding, utils
+from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
+from cryptography.hazmat.primitives.hashes import SHA1
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
-from signxml.util import ensure_bytes,ensure_str
+from cryptography.hazmat.backends import default_backend
+from base64 import b64encode
+from signxml.util import ensure_str
+from pytrustnfe.certificado import extract_cert_and_key_from_pfx
 
-from Crypto.PublicKey import RSA
-from Crypto.Signature.pkcs1_15 import PKCS115_SigScheme
-from Crypto.Hash import SHA1
-import binascii
+
 
 PY2 = sys.version_info[0] == 2
 
 class Assinatura(object):
 
-    def __init__(self, cert, key):
-        self.cert = cert
-        self.key = key
+    def __init__(self, arquivo, senha):
+        self.arquivo = arquivo
+        self.senha = senha
 
     def gerar_assinatura_rps(self, xml_send, **kwargs):
         for i, rps in enumerate(kwargs['nfse']['lista_rps']):
@@ -84,23 +79,23 @@ class Assinatura(object):
             #não é necessário informar os dados de intermediário na assinatura se não houver intermediário
             if dados['intermed_ind'] == '3':
                 chave_raw = chave_raw[:-16]
-
-            cert, key = self.extract_cert_key()
-            key = load_pem_private_key(key, None, backend=default_backend())
-            signature = key.sign(chave_raw.encode('ascii'), padding=padding.PKCS1v15(), algorithm=hashes.SHA1())
-            xml_send.find('.//Assinatura[.="assinatura:%s"]' % rps['numero']).text = (base64.encodestring(signature) if PY2 else base64.encodebytes(signature).decode())
+            
+            cert, pem = self.extract_cert_key()
+            key = load_pem_private_key(pem, None, default_backend())
+            signature = key.sign(chave_raw.encode('ascii'), padding=PKCS1v15(), algorithm=SHA1())
+            xml_send.find('.//Assinatura[.="assinatura:%s"]' % rps['numero']).text = ensure_str(b64encode(signature))
 
     def extract_cert_key(self):
-        pfx = crypto.load_pkcs12(self.cert, self.key)
+        pfx = crypto.load_pkcs12(self.arquivo, self.senha)
         key = crypto.dump_privatekey(crypto.FILETYPE_PEM, pfx.get_privatekey())
         cert = crypto.dump_certificate(crypto.FILETYPE_PEM, pfx.get_certificate())
 
         return cert, key
 
-    def assina_xml(self, xml):
+    def assina_xml(self, xml_element):
         cert, key = self.extract_cert_key()
 
-        signer = XMLSigner(method=signxml.methods.enveloped,
+        signer = XMLSigner(method=signxml.methods.enveloped, 
                            signature_algorithm="rsa-sha1",
                            digest_algorithm='sha1',
                            c14n_algorithm='http://www.w3.org/TR/2001/REC-xml-c14n-20010315')
@@ -108,13 +103,33 @@ class Assinatura(object):
         ns = {None: signer.namespaces['ds']}
         signer.namespaces = ns
 
-        print(etree.tostring(xml))
-        signed_root = signer.sign(xml, key=key, cert=cert)
+        signed_root = signer.sign(xml_element, key=key, cert=cert)
 
-        encoding = "utf8"
+        encoding = "utf8"        
         if sys.version_info[0] > 2:
             encoding = str
             
         xml_output = etree.tostring(signed_root, encoding=encoding)
 
         return xml_output
+
+    def gerar_assinatura_cancelamento(self, xml_send, **kwargs):
+        chave_raw = ""
+        campos = (
+            #Composição: (name, max_length, rjust or ljust, padding_data)
+            ('im', 8, 'rjust', '0'),                #01 - Inscrição do contribuinte
+            ('num_nfe', 12, 'rjust', '0'),          #02 - Número da NF-e
+        )
+
+        dados = OrderedDict()
+        dados['im'] = kwargs['nfse']['inscricao_municipal']
+        dados['num_nfe'] = kwargs['nfse']['rps']['numero']
+
+        #Gerar chave na ordem dos campos informada
+        for campo in campos:
+            chave_raw += getattr(re.sub(r'[^a-zA-Z0-9 ]', '', str(dados[campo[0]])[:campo[1]].strip()), campo[2])(campo[1],campo[3])
+        
+        cert, pem = self.extract_cert_key()
+        key = load_pem_private_key(pem, None, default_backend())
+        signature = key.sign(chave_raw.encode('ascii'), padding=PKCS1v15(), algorithm=SHA1())
+        xml_send.find('.//AssinaturaCancelamento').text = ensure_str(b64encode(signature))

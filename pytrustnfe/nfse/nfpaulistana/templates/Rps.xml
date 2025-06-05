@@ -1,5 +1,5 @@
 
-  <RPS xmlns="">
+  <RPS>
     <Assinatura>assinatura:{{ rps.numero }}</Assinatura>
     <ChaveRPS>
         <InscricaoPrestador>{{ nfse.inscricao_municipal }}</InscricaoPrestador>

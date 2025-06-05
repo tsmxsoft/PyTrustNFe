@@ -1,0 +1,8 @@
+<xd:PedidoConsultaSituacaoLote xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xd="http://www.prefeitura.sp.gov.br/nfe">
+    <CPFCNPJRemetente>
+        <CNPJ>{{ nfse.cnpj_prestador }}</CNPJ>
+    </CPFCNPJRemetente>
+    <NumeroProtocolo>{{ nfse.protocolo }}</NumeroProtocolo>
+</xd:PedidoConsultaSituacaoLote>

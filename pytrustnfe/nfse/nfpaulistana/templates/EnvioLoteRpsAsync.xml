@@ -1,5 +1,5 @@
-<PedidoEnvioLoteRPS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.prefeitura.sp.gov.br/nfe">
-    <Cabecalho Versao="1" xmlns="">
+<xd:PedidoEnvioLoteRPS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.prefeitura.sp.gov.br/nfe">
+    <Cabecalho Versao="1">
         <CPFCNPJRemetente>
             <CNPJ>{{ nfse.cnpj_prestador }}</CNPJ>
         </CPFCNPJRemetente>
@@ -17,4 +17,4 @@
     {% for rps in nfse.lista_rps -%}
     {% include 'Rps.xml' %}
     {% endfor %}
-</PedidoEnvioLoteRPS>
+</xd:PedidoEnvioLoteRPS>
