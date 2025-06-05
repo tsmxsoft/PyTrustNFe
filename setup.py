@@ -83,6 +83,7 @@ later (LGPLv2+)",
             "nfse/giss204/templates/*xml",
             "nfse/prodata/templates/*xml",
             "nfse/tecnos/templates/*xml",
+            "nfse/nfpaulistana/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
