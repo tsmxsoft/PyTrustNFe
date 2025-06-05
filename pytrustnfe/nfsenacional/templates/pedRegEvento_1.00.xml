@@ -1,0 +1,30 @@
+<pedRegEvento versao="1.00" xmlns="http://www.sped.fazenda.gov.br/nfse">
+    <infPedReg Id="{{ pedRegEvento.Id }}">
+        <tpAmb>{{ pedRegEvento.infPedReg.tpAmb }}</tpAmb>
+        <verAplic>{{ pedRegEvento.infPedReg.verAplic }}</verAplic>
+        <dhEvento>{{ pedRegEvento.infPedReg.dhEvento }}</dhEvento>
+        {% if pedRegEvento.infPedReg.cnpj_cpf|length == 14  %}
+        <CNPJAutor>{{ pedRegEvento.infPedReg.cnpj_cpf }}</CNPJAutor>
+        {% elif pedRegEvento.infPedReg.cnpj_cpf|length == 11  %}
+        <CPFAutor>{{ pedRegEvento.infPedReg.cnpj_cpf }}</CPFAutor>
+        {% endif %}
+        <chNFSe>{{ pedRegEvento.infPedReg.chNFSe }}</chNFSe>
+        <nPedRegEvento>{{ pedRegEvento.infPedReg.nPedRegEvento }}</nPedRegEvento>
+        {% for key, value in pedRegEvento.infPedReg.items() %}
+        {% if key.startswith("e") %}
+        <{{ key }}>
+            <xDesc>{{ value.xDesc }}</xDesc>
+            <CPFAgTrib>{{ value.CPFAgTrib }}</CPFAgTrib>
+            <nProcAdm>{{ value.nProcAdm }}</nProcAdm>
+            <xProcAdm>{{ value.xProcAdm }}</xProcAdm>
+            <idEvManifRej>{{ value.idEvManifRej }}</idEvManifRej>
+            <cMotivo>{{ value.cMotivo }}</cMotivo>
+            <xMotivo>{{ value.xMotivo }}</xMotivo>
+            <cEvtNFSe>{{ value.cEvtNFSe }}</cEvtNFSe>
+            <chSubstituta>{{ value.chSubstituta }}</chSubstituta>
+            <idBloqOfic>{{ value.idBloqOfic }}</idBloqOfic>
+        </{{ key}}>
+        {% endif %}
+        {% endfor %}
+    </infPedReg>
+</pedRegEvento>

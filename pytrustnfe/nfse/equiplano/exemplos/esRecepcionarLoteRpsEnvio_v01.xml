@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<es:enviarLoteRpsEnvio xmlns:es="http://www.equiplano.com.br/esnfs"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.equiplano.com.br/enfs esRecepcionarLoteRpsEnvio_v01.xsd">
+	<lote>
+		<!-- nrLote obrigatório --><nrLote>1</nrLote>
+		<!-- qtRps obrigatório --><qtRps>1</qtRps>
+		<!-- nrVersaoXml obrigatório --><nrVersaoXml>1</nrVersaoXml>
+		<prestador>
+			<!-- nrCnpj obrigatório --><nrCnpj>99999999999999</nrCnpj>
+			<!-- nrInscricaoMunicipal obrigatório --><nrInscricaoMunicipal>123456</nrInscricaoMunicipal>
+			<!-- isOptanteSimplesNacional obrigatório {1=sim, 2=não} --><isOptanteSimplesNacional>2</isOptanteSimplesNacional>
+			<!-- idEntidade obrigatório --><idEntidade>136</idEntidade>
+		</prestador>
+		<listaRps>
+			<rps>
+				<!-- nrRps obrigatório --><nrRps>4</nrRps>
+				<!-- nrEmissorRps obrigatório --><nrEmissorRps>1</nrEmissorRps>
+				<!-- dtEmissaoRps obrigatório --><dtEmissaoRps>2009-06-15T10:00:00</dtEmissaoRps>
+				<!-- stRps obrigatório {1=converter, 2=converter e cancelar NFS, 3=cancelar RPS}--><stRps>1</stRps>
+				<!-- tpTributacao obrigatório {1=tributado no munícipio, 2=em outro munícipio, 3=isento/imune, 4=suspenso/decisão judicial}--><tpTributacao>1</tpTributacao>
+				<!-- isIssRetido obrigatório {1=sim, 2=não}--><isIssRetido>2</isIssRetido>
+				<tomador>
+					<documento>
+						<!-- nrDocumento obrigatório --><nrDocumento>38693524000188</nrDocumento>
+						<!-- tpDocumento obrigatório {1=cpf, 2=cnpj, 3=estrangeiro}--><tpDocumento>1</tpDocumento>
+						<!-- dsDocumentoEstrangeiro obrigatório se tpDocumento=3--><dsDocumentoEstrangeiro></dsDocumentoEstrangeiro>
+					</documento>
+					<!-- nmTomador obrigatório --><nmTomador>Gancho Serviços Marítimos</nmTomador>
+					<dsEmail>contato@gancho.com.br</dsEmail>
+					<nrInscricaoEstadual>19518744</nrInscricaoEstadual>
+					<nrInscricaoMunicipal>555</nrInscricaoMunicipal>
+					<dsEndereco>R dos Navegantes 123, 321</dsEndereco>
+					<nrEndereco>123</nrEndereco>
+					<dsComplemento>321</dsComplemento>
+					<nmBairro>Boa Viagem</nmBairro>
+					<nrCidadeIbge>261160</nrCidadeIbge>
+					<nmUf>PR</nmUf>
+					<nmCidadeEstrangeira></nmCidadeEstrangeira>
+					<!-- nmPais obrigatório --><nmPais>Brasil</nmPais>
+					<nrCep>51021010</nrCep>
+					<nrTelefone>41 99999999</nrTelefone>
+				</tomador>
+				<listaServicos>
+					<servico>
+						<!-- nrServicoItem obrigatório --><nrServicoItem>36</nrServicoItem>
+						<!-- nrServicoSubItem obrigatório --><nrServicoSubItem>1</nrServicoSubItem>
+						<!-- vlServico obrigatório --><vlServico>1100.32</vlServico>
+						<!-- vlAliquota obrigatório --><vlAliquota>0.05</vlAliquota>
+						<deducao>
+							<vlDeducao>1.0</vlDeducao>
+							<!-- dsJustificativaDeducao obrigatório Se informado vlDeducao--><dsJustificativaDeducao>teste</dsJustificativaDeducao>
+						</deducao>
+						<!-- vlBaseCalculo obrigatório --><vlBaseCalculo>1100.00</vlBaseCalculo>
+						<!-- vlIssServico obrigatório --><vlIssServico>55.02</vlIssServico>
+						<!-- dsDiscriminacaoServico obrigatório --><dsDiscriminacaoServico>
+							Teste de RPS - Discriminação do serviço (permite caracteres especiais)
+						</dsDiscriminacaoServico>
+					</servico>
+				</listaServicos>
+				<!-- vlTotalRps obrigatório --><vlTotalRps>1100.32</vlTotalRps>
+				<!-- vlLiquidoRps obrigatório --><vlLiquidoRps>1100.32</vlLiquidoRps>
+				<retencoes>
+					<vlCofins>20</vlCofins>
+					<vlCsll>50</vlCsll>
+					<vlInss>30</vlInss>
+					<vlIrrf>40</vlIrrf>
+					<vlPis>10</vlPis>
+					<!-- vlIss obrigatório se isIssRetido = 1 --><vlIss>10</vlIss>
+					<vlAliquotaCofins>2.0</vlAliquotaCofins>
+					<vlAliquotaCsll>3.0</vlAliquotaCsll>
+					<vlAliquotaInss>4.0</vlAliquotaInss>
+					<vlAliquotaIrrf>5.0</vlAliquotaIrrf>
+					<vlAliquotaPis>6.0</vlAliquotaPis>
+				</retencoes>
+			</rps>
+			<rps>
+				<!-- nrRps obrigatório --><nrRps>4</nrRps>
+				<!-- nrEmissorRps obrigatório --><nrEmissorRps>1</nrEmissorRps>
+				<!-- dtEmissaoRps obrigatório --><dtEmissaoRps>2009-06-15T10:00:00</dtEmissaoRps>
+				<!-- stRps obrigatório {1=converter, 2=converter e cancelar NFS, 3=cancelar RPS}--><stRps>1</stRps>
+				<!-- tpTributacao obrigatório {1=tributado no munícipio, 2=em outro munícipio, 3=isento/imune, 4=suspenso/decisão judicial}--><tpTributacao>1</tpTributacao>
+				<!-- isIssRetido obrigatório {1=sim, 2=não}--><isIssRetido>2</isIssRetido>
+				<tomador>
+					<!-- nmTomador obrigatório --><nmTomador>TOMADOR ESTRANGEIRO 1 SEM DOCUMENTO</nmTomador>
+					<dsEmail>contato@gancho.com.br</dsEmail>
+					<nrInscricaoEstadual>19518744</nrInscricaoEstadual>
+					<dsEndereco>R dos Navegantes 123, 321</dsEndereco>
+					<nrEndereco>123</nrEndereco>
+					<dsComplemento>321</dsComplemento>
+					<nmBairro>Boa Viagem</nmBairro>
+					<nmCidadeEstrangeira>Nova York</nmCidadeEstrangeira>
+					<!-- nmPais obrigatório --><nmPais>Estados Unidos</nmPais>
+					<nrTelefone>41 99999999</nrTelefone>
+				</tomador>
+				<listaServicos>
+					<servico>
+						<!-- nrServicoItem obrigatório --><nrServicoItem>36</nrServicoItem>
+						<!-- nrServicoSubItem obrigatório --><nrServicoSubItem>1</nrServicoSubItem>
+						<!-- vlServico obrigatório --><vlServico>1100.32</vlServico>
+						<!-- vlAliquota obrigatório --><vlAliquota>0.05</vlAliquota>
+						<deducao>
+							<vlDeducao>1.0</vlDeducao>
+							<!-- dsJustificativaDeducao obrigatório Se informado vlDeducao--><dsJustificativaDeducao>teste</dsJustificativaDeducao>
+						</deducao>
+						<!-- vlBaseCalculo obrigatório --><vlBaseCalculo>1100.00</vlBaseCalculo>
+						<!-- vlIssServico obrigatório --><vlIssServico>55.02</vlIssServico>
+						<!-- dsDiscriminacaoServico obrigatório --><dsDiscriminacaoServico>
+							Teste de RPS - Discriminação do serviço (permite caracteres especiais)
+						</dsDiscriminacaoServico>
+					</servico>
+				</listaServicos>
+				<!-- vlTotalRps obrigatório --><vlTotalRps>1100.32</vlTotalRps>
+				<!-- vlLiquidoRps obrigatório --><vlLiquidoRps>1100.32</vlLiquidoRps>
+				<retencoes>
+					<vlCofins>20</vlCofins>
+					<vlCsll>50</vlCsll>
+					<vlInss>30</vlInss>
+					<vlIrrf>40</vlIrrf>
+					<vlPis>10</vlPis>
+					<!-- vlIss obrigatório se isIssRetido = 1 --><vlIss>10</vlIss>
+					<vlAliquotaCofins>2.0</vlAliquotaCofins>
+					<vlAliquotaCsll>3.0</vlAliquotaCsll>
+					<vlAliquotaInss>4.0</vlAliquotaInss>
+					<vlAliquotaIrrf>5.0</vlAliquotaIrrf>
+					<vlAliquotaPis>6.0</vlAliquotaPis>
+				</retencoes>
+			</rps>
+			<rps>
+				<!-- nrRps obrigatório --><nrRps>4</nrRps>
+				<!-- nrEmissorRps obrigatório --><nrEmissorRps>1</nrEmissorRps>
+				<!-- dtEmissaoRps obrigatório --><dtEmissaoRps>2009-06-15T10:00:00</dtEmissaoRps>
+				<!-- stRps obrigatório {1=converter, 2=converter e cancelar NFS, 3=cancelar RPS}--><stRps>1</stRps>
+				<!-- tpTributacao obrigatório {1=tributado no munícipio, 2=em outro munícipio, 3=isento/imune, 4=suspenso/decisão judicial}--><tpTributacao>1</tpTributacao>
+				<!-- isIssRetido obrigatório {1=sim, 2=não}--><isIssRetido>2</isIssRetido>
+				<tomador>
+					<documento>
+						<!-- nrDocumento obrigatório --><nrDocumento>12345</nrDocumento>
+						<!-- tpDocumento obrigatório {1=cpf, 2=cnpj, 3=estrangeiro}--><tpDocumento>3</tpDocumento>
+						<!-- dsDocumentoEstrangeiro obrigatório se tpDocumento=3--><dsDocumentoEstrangeiro>ID</dsDocumentoEstrangeiro>
+					</documento>
+					<!-- nmTomador obrigatório --><nmTomador>TOMADOR ESTRANGEIRO 2 COM DOCUMENTO</nmTomador>
+					<dsEmail>contato@gancho.com.br</dsEmail>
+					<nrInscricaoEstadual>19518744</nrInscricaoEstadual>
+					<dsEndereco>R dos Navegantes 123, 321</dsEndereco>
+					<nrEndereco>123</nrEndereco>
+					<dsComplemento>321</dsComplemento>
+					<nmBairro>Boa Viagem</nmBairro>
+					<nmCidadeEstrangeira>Nova York</nmCidadeEstrangeira>
+					<!-- nmPais obrigatório --><nmPais>Estados Unidos</nmPais>
+					<nrTelefone>41 99999999</nrTelefone>
+				</tomador>
+				<listaServicos>
+					<servico>
+						<!-- nrServicoItem obrigatório --><nrServicoItem>36</nrServicoItem>
+						<!-- nrServicoSubItem obrigatório --><nrServicoSubItem>1</nrServicoSubItem>
+						<!-- vlServico obrigatório --><vlServico>1100.32</vlServico>
+						<!-- vlAliquota obrigatório --><vlAliquota>0.05</vlAliquota>
+						<deducao>
+							<vlDeducao>1.0</vlDeducao>
+							<!-- dsJustificativaDeducao obrigatório Se informado vlDeducao--><dsJustificativaDeducao>teste</dsJustificativaDeducao>
+						</deducao>
+						<!-- vlBaseCalculo obrigatório --><vlBaseCalculo>1100.00</vlBaseCalculo>
+						<!-- vlIssServico obrigatório --><vlIssServico>55.02</vlIssServico>
+						<!-- dsDiscriminacaoServico obrigatório --><dsDiscriminacaoServico>
+							Teste de RPS - Discriminação do serviço (permite caracteres especiais)
+						</dsDiscriminacaoServico>
+					</servico>
+				</listaServicos>
+				<!-- vlTotalRps obrigatório --><vlTotalRps>1100.32</vlTotalRps>
+				<!-- vlLiquidoRps obrigatório --><vlLiquidoRps>1100.32</vlLiquidoRps>
+				<retencoes>
+					<vlCofins>20</vlCofins>
+					<vlCsll>50</vlCsll>
+					<vlInss>30</vlInss>
+					<vlIrrf>40</vlIrrf>
+					<vlPis>10</vlPis>
+					<!-- vlIss obrigatório se isIssRetido = 1 --><vlIss>10</vlIss>
+					<vlAliquotaCofins>2.0</vlAliquotaCofins>
+					<vlAliquotaCsll>3.0</vlAliquotaCsll>
+					<vlAliquotaInss>4.0</vlAliquotaInss>
+					<vlAliquotaIrrf>5.0</vlAliquotaIrrf>
+					<vlAliquotaPis>6.0</vlAliquotaPis>
+				</retencoes>
+				<dsImpostos>Descrição de impostos. Limite de 500 caracteres</dsImpostos>
+			</rps>
+		</listaRps>
+	</lote>
+</es:enviarLoteRpsEnvio>

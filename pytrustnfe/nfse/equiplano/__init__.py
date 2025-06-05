@@ -2,15 +2,15 @@
 # © 2016 Danimar Ribeiro, Trustcode
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import os
 from pytrustnfe.xml import render_xml, sanitize_response
-from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from lxml import etree
-from zeep.transports import Transport
-from requests import Session
-import requests
-from datetime import datetime, timedelta
+from pytrustnfe.certificado import extract_cert_key_and_ca_from_pfx
 from pytrustnfe.nfse.siasp.assinatura import Assinatura
+from lxml import etree
+import requests
+import os
+import sys
+import traceback
+import re
 
 
 def _render(certificado, method, **kwargs):
@@ -30,32 +30,43 @@ def _render(certificado, method, **kwargs):
 
     return xml_signed_send
 
+def _render_unsigned(certificado, method, **kwargs):
+    path = os.path.join(os.path.dirname(__file__), "templates")
+    parser = etree.XMLParser(remove_blank_text=True, 
+                             remove_comments=True, 
+                             strip_cdata=False
+    )
+    signer = Assinatura(certificado.pfx, certificado.password)
+
+    xml = render_xml(path, "%s.xml" % method, True, **kwargs)
+
+    return xml
+
 def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
 
     if kwargs["ambiente"] == "homologacao":
-        url = "https://www.esnfs.com.br:9444/homologacaows/services/Enfs?wsdl"
+        url = "https://www.esnfs.com.br:9444/homologacaows/services/Enfs.EnfsHttpsSoap11Endpoint"
     else:
-        url = "https://www.esnfs.com.br:8444/enfsws/services/Enfs?wsdl"
+        url = "https://www.esnfs.com.br:8444/enfsws/services/Enfs.EnfsHttpsSoap11Endpoint"
 
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
     soap = render_xml(path, "SoapRequest.xml", False, False, **{"soap_body":xml_send, "method": method })
 
-    cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
-    cert, key = save_cert_key(cert, key)
-    session = Session()
-    session.cert = (cert, key)
-    session.verify = False
     headers = {
-        "Content-Type": "application/soap+xml;charset=UTF-8",
-        "Operation": "es" + method,
+        "Content-Type": "text/xml;charset=UTF-8",
+        "SOAPAction": "urn:es" + method,
         "Content-length": str(len(soap))
     }
+    with extract_cert_key_and_ca_from_pfx(certificado.pfx, certificado.password) as cert:
+        request = requests.post(url, data=soap, headers=headers,verify=False,cert=cert)
 
-    request = requests.post(url, data=soap, headers=headers,verify=False,cert=(cert, key))
-    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
-    return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
+        print (request.status_code)
+        print (request.text)
+
+        response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+        return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
     return _render(certificado, "RecepcionarLoteRps", **kwargs)
@@ -111,3 +122,35 @@ def consulta_nfse_faixe(certificado, **kwargs):
 
 def consulta_cnpj(certificado, **kwargs):
     return _send(certificado, "ConsultaCNPJ", **kwargs)
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+
+    response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
+    xml = None
+
+    try:
+        xml_element = response['object']
+
+        if sys.version_info[0] > 2:
+            xml = str(etree.tostring(xml_element, encoding=str))
+        else:
+            xml = str(etree.tostring(xml_element, encoding="utf8"))
+        
+        xml = xml.replace('&#xd;', '')
+        xml = xml.replace('&#13;', '')
+        xml = xml.replace('&lt;', '<')
+        xml = xml.replace('&gt;', '>')
+
+        s = re.search(r'(?s)((?=<nfse)(.*?)(<\/nfse>))', xml)
+        if s:
+            xml = s.group(1).strip()
+    except:
+        traceback.print_exc()
+
+    return xml
+
+
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render(certificado, "ConsultarNfsePorRps", **kwargs)

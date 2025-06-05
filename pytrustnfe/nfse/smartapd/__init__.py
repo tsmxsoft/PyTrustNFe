@@ -56,10 +56,7 @@ def _render(certificado, method, **kwargs):
     return xml_string_send
 
 def _send(certificado, method, **kwargs):
-    if kwargs["ambiente"] == "homologacao":
-        base_url = "https://servicos.cariacica.es.gov.br/tbwhomologacao/services/Abrasf23?wsdl"
-    else:
-        base_url = "https://sistemas.cariacica.es.gov.br/tbw/services/Abrasf23?wsdl"
+    base_url = kwargs.get("base_url")
     cert, key = extract_cert_and_key_from_pfx(
         certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)

@@ -1,0 +1,61 @@
+<GerarNfseEnvio xmlns="http://megasoftarrecadanet.com.br/xsd/nfse_v01.xsd">
+    <Rps>
+        <InfDeclaracaoPrestacaoServico Id="rps:{{rps.numero}}{{rps.serie}}">
+            <Rps>
+                <IdentificacaoRps>
+                    <Numero>{{ rps.numero }}</Numero>
+                </IdentificacaoRps>
+                <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
+            </Rps>
+            <Servico>
+                <Valores>
+                    <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+                    <ValorDeducoes>{{ rps.servico.valor_descontos }}</ValorDeducoes>
+                    <ValorPis>{{ rps.servico.pis }}</ValorPis>
+                    <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
+                    <ValorInss>{{ rps.servico.inss }}</ValorInss>
+                    <ValorIr>{{ rps.servico.ir }}</ValorIr>
+                    <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
+                    <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
+                    <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
+                    <DescontoIncondicionado>{{ rps.servico.desconto_incondicionado }}</DescontoIncondicionado>
+                    <DescontoCondicionado>{{ rps.servico.desconto_condicionado }}</DescontoCondicionado>
+                </Valores>
+                <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+                <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+                <CodigoTributacaoMunicipio>{{ rps.servico.codigo_servico }}</CodigoTributacaoMunicipio>
+                <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+                <InfAdicional>{{ rps.servico.inf_adicional }}</InfAdicional>
+            </Servico>
+            <Prestador>
+                <CpfCnpj>
+                    <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+                <IdentificacaoTomador>
+                    <CpfCnpj>
+                        {% if rps.tomador.cpf_cnpj|length == 14  %}
+                        <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+                        {% endif %}
+                        {% if rps.tomador.cpf_cnpj|length == 11  %}
+                        <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
+                        {% endif %}
+                    </CpfCnpj>
+                    <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+                    <InscricaoEstadual>{{ rps.tomador.inscricao_estadual }}</InscricaoEstadual>
+                </IdentificacaoTomador>
+                <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
+                <Endereco>
+                    <Endereco>{{ rps.tomador.endereco }}</Endereco>
+                    <Numero>{{ rps.tomador.numero }}</Numero>
+                    <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                    <Bairro>{{ rps.tomador.bairro }}</Bairro>
+                    <Cep>{{ rps.tomador.cep }}</Cep>
+                    <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
+                </Endereco>
+            </Tomador>
+        </InfDeclaracaoPrestacaoServico>
+    </Rps>
+</GerarNfseEnvio>

@@ -1,0 +1,106 @@
+<Rps>
+    {% set rpsid = nfse.numero_lote ~ 'RPS' ~ rps.numero %}
+    <Id>{{ rpsid | encrypt_fnv1_64 }}</Id>
+    <LocalPrestacao>2</LocalPrestacao>
+    <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+    <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
+    <IdentificacaoRps>
+        <Numero>{{ rps.data_emissao[:4] }}{{ rps.numero | format_numeric(7,0,False,False) }}</Numero>
+        <Serie>{{ rps.serie }}</Serie>
+        <Tipo>{{ rps.tipo_rps }}</Tipo>
+    </IdentificacaoRps>
+    <DadosPrestador>
+        <IdentificacaoPrestador>
+            <CpfCnpj>{{ rps.prestador.cnpj }}</CpfCnpj>
+            <IndicacaoCpfCnpj>2</IndicacaoCpfCnpj>
+            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
+        </IdentificacaoPrestador>
+        <RazaoSocial>{{ rps.prestador.razao_social }}</RazaoSocial>
+        <NomeFantasia>{{ rps.prestador.nome_fantasia }}</NomeFantasia>
+        <IncentivadorCultural>{{ rps.incentivador_cultural }}</IncentivadorCultural>
+        <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
+        <NaturezaOperacao>{{ rps.natureza_operacao }}</NaturezaOperacao>
+        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% if rps.prestador.endereco is defined -%}
+        <Endereco>
+            <LogradouroTipo>{{ rps.prestador.endereco.split(" ")[0] }}</LogradouroTipo>
+            <Logradouro>{{ rps.prestador.endereco }}</Logradouro>
+            <LogradouroNumero>{{ rps.prestador.numero }}</LogradouroNumero>
+            <LogradouroComplemento>{{ rps.prestador.complemento }}</LogradouroComplemento>
+            <Bairro>{{ rps.prestador.bairro }}</Bairro>
+            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+            <Municipio>{{ rps.prestador.cidade }}</Municipio>
+            <Uf>{{ rps.prestador.uf }}</Uf>
+            <Cep>{{ rps.prestador.cep }}</Cep>
+        </Endereco>
+        {% endif %}
+        <Contato>
+            <Telefone>{{ rps.prestador.telefone }}</Telefone>
+            <Email>{{ rps.prestador.email }}</Email>
+        </Contato>
+    </DadosPrestador>
+    <DadosTomador>
+        <IdentificacaoTomador>
+            <CpfCnpj>{{ rps.tomador.cpf_cnpj }}</CpfCnpj>
+            {% if rps.tomador.cpf_cnpj|length == 11 %}
+            <IndicacaoCpfCnpj>1</IndicacaoCpfCnpj>
+            {% else %}
+            <IndicacaoCpfCnpj>2</IndicacaoCpfCnpj>
+            {% endif %}
+            <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+        </IdentificacaoTomador>
+        <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
+        <NomeFantasia>{{ rps.tomador.nome_fantasia }}</NomeFantasia>
+        <Endereco>
+            <LogradouroTipo>{{ rps.tomador.endereco.split(" ")[0] }}</LogradouroTipo>
+            <Logradouro>{{ rps.tomador.endereco }}</Logradouro>
+            <LogradouroNumero>{{ rps.tomador.numero }}</LogradouroNumero>
+            <LogradouroComplemento>{{ rps.tomador.complemento }}</LogradouroComplemento>
+            <Bairro>{{ rps.tomador.bairro }}</Bairro>
+            <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
+            <Municipio>{{ rps.tomador.cidade }}</Municipio>
+            <Uf>{{ rps.tomador.uf }}</Uf>
+            <Cep>{{ rps.tomador.cep }}</Cep>
+        </Endereco>
+        <Contato>
+            <Telefone>{{ rps.tomador.telefone }}</Telefone>
+            <Email>{{ rps.tomador.email }}</Email>
+        </Contato>
+    </DadosTomador>
+    <Servicos>
+        <Servico>
+            <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
+            <CodigoServico116>{{ rps.servico.codigo_atividade }}</CodigoServico116>
+            <CodigoServicoMunicipal>{{ rps.servico.codigo_servico }}</CodigoServicoMunicipal>
+            <Quantidade>1</Quantidade>
+            <Unidade>UN</Unidade>
+            <Descricao>{{ rps.servico.discriminacao }}</Descricao>
+            {% set aliquota = rps.servico.aliquota | float %}
+            <Aliquota>{{ aliquota | format_numeric(1,2,True,False) }}</Aliquota>
+            <ValorServico>{{ rps.servico.valor_servico }}</ValorServico>
+            <ValorIssqn>{{ rps.servico.iss }}</ValorIssqn>
+            <ValorDesconto>0.00</ValorDesconto>
+            <NumeroAlvara>{{ rps.servico.numero_alvara }}</NumeroAlvara>
+        </Servico>
+    </Servicos>
+    <Valores>
+        <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+        <ValorDeducoes>{{ rps.servico.deducoes }}</ValorDeducoes>
+        <ValorPis>{{ rps.servico.pis }}</ValorPis>
+        <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
+        <ValorInss>{{ rps.servico.inss }}</ValorInss>
+        <ValorIr>{{ rps.servico.ir }}</ValorIr>
+        <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
+        <ValorIss>{{ rps.servico.iss }}</ValorIss>
+        <ValorOutrasRetencoes>0.00</ValorOutrasRetencoes>
+        {% if rps.servico.iss_retido == 2 %}
+        <ValorLiquidoNfse>{{ rps.servico.valor_liquido_nfse }}</ValorLiquidoNfse>
+        <ValorIssRetido>0.00</ValorIssRetido>
+        {% else %}
+        <ValorLiquidoNfse>0.00</ValorLiquidoNfse>
+        <ValorIssRetido>{{ rps.servico.valor_liquido_nfse }}</ValorIssRetido>
+        {% endif %}
+    </Valores>
+    <Observacao>{{ rps.servico.informacao_complementar }}</Observacao>
+    <Status>{{ rps.status }}</Status>
+</Rps>

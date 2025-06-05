@@ -26,6 +26,7 @@ WS_NFCOM_CONSULTA = "NFComConsulta"
 WS_NFCOM_RECEPCAO = "NFComRecepcao"
 WS_NFCOM_RECEPCAO_EVENTO = "NFComRecepcaoEvento"
 WS_NFCOM_STATUS_SERVICO = "NFComStatusServico"
+WS_NFCOM_QR_CODE = "QRCode"
 
 #CTe 4.0
 WS_CTE400_RECEPCAO_SINC   = "CTeRecepcaoSincV4"
@@ -82,11 +83,7 @@ def localizar_url(servico, estado, mod="55", ambiente=2):
     
     # Implementação inicial do NFCom
     # Todos estados utilizam o servidor SVRS
-    if mod == NFCOM_MODELO:
-        sigla = SIGLA_ESTADO["43"]
-    else:
-        sigla = SIGLA_ESTADO[estado]
-    
+    sigla = SIGLA_ESTADO[estado]
     ws = ESTADO_WS[sigla]
 
     if servico in (WS_DFE_DISTRIBUICAO, WS_DOWNLOAD_NFE):
@@ -188,17 +185,19 @@ SVRS = {
     NFCOM_MODELO: {
         AMBIENTE_PRODUCAO: {
             "servidor": "nfcom.svrs.rs.gov.br",
-            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx",
-            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx",
-            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx",
-            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx?wsdl",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
+            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br",
         },
         AMBIENTE_HOMOLOGACAO: {
             "servidor": "nfcom-homologacao.svrs.rs.gov.br",
-            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx",
-            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx",
-            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx",
-            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx?wsdl",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
+            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br",
         },
     },
     CTE_MODELO: {
@@ -346,6 +345,7 @@ UFBA = {
         },
     },
 }
+UFBA[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFCE = {
     AMBIENTE_PRODUCAO: {
@@ -370,6 +370,7 @@ UFCE = {
     },
 }
 UFCE[CTE_MODELO] = copy(SVRS[CTE_MODELO])
+UFCE[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 
 UFGO = {
@@ -395,6 +396,7 @@ UFGO = {
     },
 }
 UFGO[CTE_MODELO] = copy(SVRS[CTE_MODELO])
+UFGO[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 
 UFMT = {
@@ -465,6 +467,7 @@ UFMT = {
         }
     }
 }
+UFMT[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFMS = {
     NFE_MODELO: {
@@ -536,6 +539,7 @@ UFMS = {
         }
     }
 }
+UFMS[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFMG = {
     NFE_MODELO: {
@@ -605,6 +609,7 @@ UFMG = {
         }
     }
 }
+UFMG[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFPR = {
     NFE_MODELO: {
@@ -676,6 +681,7 @@ UFPR = {
         }
     }
 }
+UFPR[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFRS = {
     NFE_MODELO: {
@@ -726,6 +732,7 @@ UFRS = {
     },
 }
 UFRS[CTE_MODELO] = copy(SVRS[CTE_MODELO])
+UFRS[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFSP = {
     NFE_MODELO: {
@@ -797,6 +804,7 @@ UFSP = {
         }
     }
 }
+UFSP[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFPE = {
     AMBIENTE_PRODUCAO: {
@@ -821,9 +829,11 @@ UFPE = {
     },
 }
 UFPE[CTE_MODELO] = copy(UFSP[CTE_MODELO])
+UFPE[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFRR = copy(SVRS)
 UFRR[CTE_MODELO] = copy(UFSP[CTE_MODELO])
+UFRR[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFAM = {
     NFE_MODELO: {
@@ -871,6 +881,7 @@ UFAM = {
     },
 }
 UFAM[CTE_MODELO] = copy(SVRS[CTE_MODELO])
+UFAM[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 
 ESTADO_WS = {

@@ -1,0 +1,5 @@
+<consulta_rps>
+    <cidade>{{nfse.cidade_tom}}</cidade>
+    <serie_rps>{{nfse.rps.serie}}</serie_rps>
+    <numero_rps>{{nfse.rps.numero}}</numero_rps>
+</consulta_rps>

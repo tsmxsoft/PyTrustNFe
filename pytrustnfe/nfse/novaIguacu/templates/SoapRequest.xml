@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+                  xmlns:ns1="http://localhost:8080/WsNFe2/lote">
+<soapenv:Body>
+      <ns1:{{method}} soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <mensagemXml xsi:type="xsd:string"><![CDATA[ {{soap_body}} ]]></mensagemXml>
+      </ns1:{{method}}>
+   </soapenv:Body>
+</soapenv:Envelope>

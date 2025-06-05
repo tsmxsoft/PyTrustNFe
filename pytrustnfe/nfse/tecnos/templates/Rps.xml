@@ -9,9 +9,15 @@
                 </IdentificacaoRps>
                 <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
                 <Status>{{ rps.status }}</Status>
+                <RpsSubstituido>
+                    <Numero/>
+                    <Serie/>
+                    <Tipo>{{ rps.tipo_rps }}</Tipo>
+                </RpsSubstituido>
             </Rps>
-            <Competencia>{{ rps.data_emissao }}</Competencia>
+            <SiglaUF>{{ rps.prestador.uf }}</SiglaUF>
             <IdCidade>{{ rps.servico.codigo_municipio }}</IdCidade>
+            <Competencia>{{ rps.data_emissao }}</Competencia>
             <Servico>
                 <tcDadosServico>
                     <Valores>

@@ -157,7 +157,7 @@ def consultar_nfse_por_rps(certificado, **kwargs):
 
     try:
         res, xml_obj = sanitize_response(response['object']['consultarNfsePorRpsResponse']['return'].text)
-        xml_obj = xml_obj.find(".//CompNfse")
+        xml_obj = xml_obj.find(".//Nfse")
         #Conversão de volta a string
         xml = etree.tostring(xml_obj)
         if sys.version_info[0] > 2:

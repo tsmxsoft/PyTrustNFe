@@ -10,6 +10,7 @@
 
 import os
 import re
+import sys
 from lxml import etree
 from requests import Session
 from zeep.transports import Transport
@@ -31,24 +32,26 @@ def _render_xml(certificado, method, **kwargs):
 
     referencia = ""
     #Limpeza do lote, removendo caracteres especiais
-    for i, lote in kwargs["nfse"].items():
-        if i != "lista_rps":
-            kwargs["nfse"][i] = re.sub('[^a-zA-Z0-9@\. ]', '', str(lote))
-        else:
-            for j, rps in enumerate(lote):
-                for k, rps_dict in rps.items():
-                    if type(rps_dict) != dict:
-                        kwargs["nfse"][i][j][k] = re.sub('[^a-zA-Z0-9@\. ]', '', str(rps_dict))
-                    else:
-                        for l, rps_dict2 in rps_dict.items():
-                            kwargs["nfse"][i][j][k][l] = re.sub('[^a-zA-Z0-9@\. ]', '', str(rps_dict2))
+    if method in ["recepcionarLoteRpsSincrono","recepcionarLoteRps"]:
+        for i, lote in kwargs["nfse"].items():
+            if i != "lista_rps":
+                if i not in ["usuario","senha"]:
+                    kwargs["nfse"][i] = re.sub('[^a-zA-Z0-9@\. ]', '', str(lote))
+            else:
+                for j, rps in enumerate(lote):
+                    for k, rps_dict in rps.items():
+                        if type(rps_dict) != dict:
+                            kwargs["nfse"][i][j][k] = re.sub('[^a-zA-Z0-9@\. ]', '', str(rps_dict))
+                        else:
+                            for l, rps_dict2 in rps_dict.items():
+                                kwargs["nfse"][i][j][k][l] = re.sub('[^a-zA-Z0-9@\. ]', '', str(rps_dict2))
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     # xml object
     xml_send = etree.fromstring(
         xml_string_send, parser=parser)
 
-    if method == "recepcionarLoteRps" or method == "recepcionarLoteRpsSincrono":
+    if (method == "recepcionarLoteRps" or method == "recepcionarLoteRpsSincrono") and not kwargs.get('nosign', False):
         referencia = kwargs.get("nfse").get("numero_lote")
         #for item in kwargs["nfse"]["lista_rps"]:
             #reference = "rps:{0}{1}".format(
@@ -87,7 +90,7 @@ def _send(certificado, method, **kwargs):
         "Content-length": str(len(soap))
     }
 
-    request = requests.post(base_url, data=soap, headers=headers)
+    request = session.post(base_url, data=soap, headers=headers)
     response, obj = sanitize_response(request.content)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
@@ -105,6 +108,8 @@ def recepcionar_lote_rps(certificado, **kwargs):
 def xml_consultar_situacao_lote(certificado, **kwargs):
     return _render_xml(certificado, "ConsultarSituacaoLoteRps", **kwargs)
 
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render_xml(certificado, "consultarNfsePorRps", **kwargs)
 
 def consultar_situacao_lote(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -113,7 +118,23 @@ def consultar_situacao_lote(certificado, **kwargs):
 
 
 def consultar_nfse_por_rps(certificado, **kwargs):
-    return _send(None, "ConsultarNfsePorRps", **kwargs)
+    if "xml" not in kwargs:
+        kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
+    response = _send(certificado, "consultarNfsePorRps", **kwargs)
+    xml = None
+
+    try:
+        xml_element = response['object'].findall('.//Nfse')[0]
+        if sys.version_info[0] > 2:
+            xml = str(etree.tostring(xml_element, encoding=str))
+        else:
+            xml = str(etree.tostring(xml_element, encoding="utf8"))
+
+        xml = xml.replace('&#13;', '')
+    except:
+        pass
+
+    return xml
 
 
 def xml_consultar_lote_rps(certificado, **kwargs):
@@ -128,7 +149,6 @@ def consultar_lote_rps(certificado, **kwargs):
 
 def xml_consultar_nfse(certificado, **kwargs):
     return _render_xml(certificado, "ConsultarNfse", **kwargs)
-
 
 def consultar_nfse(certificado, **kwargs):
     return _send("ConsultarNfse", **kwargs)

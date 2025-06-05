@@ -4,34 +4,35 @@
 
 import os
 from requests import Session
+from lxml import etree
 from zeep import Client
 from zeep.transports import Transport
 from requests.packages.urllib3 import disable_warnings
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfe.assinatura import Assinatura
+from pytrustnfe.nfse.siasp.assinatura import Assinatura
 
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
-    xml_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+    parser = etree.XMLParser(remove_blank_text=True,
+                             remove_comments=True,
+                             strip_cdata=False)
 
-    reference = ""
-    if method == "RecepcionarLoteRpsV3":
-        reference = "rps%s" % kwargs["nfse"]["lista_rps"][0]["numero"]
-
+    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+    xml_send = etree.fromstring(xml_string_send, parser=parser)
     signer = Assinatura(certificado.pfx, certificado.password)
-    xml_send = signer.assina_xml(xml_send, reference)
+    xml_send = signer.assina_xml(xml_send)
     return xml_send
 
 
 def _send(certificado, method, **kwargs):
     base_url = ""
-    if kwargs["ambiente"] == "producao":
-        base_url = "https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl"
-    else:
+    if kwargs["ambiente"] == "homologacao":
         base_url = "https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl"
+    else:
+        base_url = "https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl"
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)

@@ -21,7 +21,7 @@
                 <ValorIr>{{ rps.servico.ir }}</ValorIr>
                 <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
                 <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
-                <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota> 
+                <Aliquota>{{ rps.servico.aliquota }}</Aliquota> 
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>

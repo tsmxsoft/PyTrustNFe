@@ -1,0 +1,90 @@
+<ns2:Rps>
+    <ns2:InfDeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
+        <ns2:Rps Id="infrps:{{ rps.numero }}{{ rps.serie }}">
+            <ns2:IdentificacaoRps>
+                <ns2:Numero>{{ rps.numero }}</ns2:Numero>
+                <ns2:Serie>{{ rps.serie }}</ns2:Serie>
+                <ns2:Tipo>{{ rps.tipo_rps }}</ns2:Tipo>
+            </ns2:IdentificacaoRps>
+            {% set dataemi = rps.data_emissao.split('T') %}
+            <ns2:DataEmissao>{{ dataemi[0] }}</ns2:DataEmissao>
+            <ns2:Status>{{ rps.status }}</ns2:Status>
+        </ns2:Rps>
+        {% set datacomp = rps.data_competencia.split('T') %}
+        <ns2:Competencia>{{ datacomp[0] }}</ns2:Competencia>
+        <ns2:Servico>
+            <ns2:Valores>
+                <ns2:ValorServicos>{{ rps.servico.valor_servico }}</ns2:ValorServicos>
+                <ns2:ValorDeducoes>{{ rps.servico.deducoes }}</ns2:ValorDeducoes>
+                <ns2:ValorPis>{{ rps.servico.pis }}</ns2:ValorPis>
+                <ns2:ValorCofins>{{ rps.servico.cofins }}</ns2:ValorCofins>
+                <ns2:ValorInss>{{ rps.servico.inss }}</ns2:ValorInss>
+                <ns2:ValorIr>{{ rps.servico.ir }}</ns2:ValorIr>
+                <ns2:ValorCsll>{{ rps.servico.csll }}</ns2:ValorCsll>
+                <ns2:OutrasRetencoes>{{ rps.servico.retencoes }}</ns2:OutrasRetencoes>
+                <ns2:ValTotTributos>{{ rps.servico.valor_tributos }}</ns2:ValTotTributos>
+                <ns2:ValorIss>{{ rps.servico.iss }}</ns2:ValorIss>
+                {% if rps.servico.aliquota is defined -%}
+                    <ns2:Aliquota>{{ rps.servico.aliquota }}</ns2:Aliquota>
+                {% endif %}
+                <ns2:DescontoIncondicionado>{{ rps.servico.desconto_incodicionado }}</ns2:DescontoIncondicionado>
+                <ns2:DescontoCondicionado>{{ rps.servico.desconto_codicionado }}</ns2:DescontoCondicionado>
+            </ns2:Valores>
+            <ns2:IssRetido>{{ rps.servico.iss_retido }}</ns2:IssRetido>
+            {% if rps.servico.iss_retido == 1 -%}
+            <ns2:ResponsavelRetencao>{% if rps.intermediario is defined -%}2{% else %}1{% endif %}</ns2:ResponsavelRetencao>
+            {% endif %}
+            <ns2:ItemListaServico>{{ rps.servico.codigo_servico }}</ns2:ItemListaServico>
+            <ns2:CodigoCnae>{{ rps.servico.cnae_servico }}</ns2:CodigoCnae>
+            <ns2:CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</ns2:CodigoTributacaoMunicipio>
+            <ns2:Discriminacao>{{ rps.servico.discriminacao }}</ns2:Discriminacao>
+            <ns2:CodigoMunicipio>{{ rps.servico.codigo_municipio }}</ns2:CodigoMunicipio>
+            <ns2:CodigoPais>0076</ns2:CodigoPais>
+            <ns2:ExigibilidadeISS>{{ rps.eligibilidade_iss }}</ns2:ExigibilidadeISS>
+            <ns2:MunicipioIncidencia>{{ rps.servico.codigo_municipio }}</ns2:MunicipioIncidencia>
+        </ns2:Servico>
+        <ns2:Prestador>
+            <ns2:CpfCnpj>
+                <ns2:Cnpj>{{ rps.prestador.cnpj }}</ns2:Cnpj>
+            </ns2:CpfCnpj>
+            <ns2:InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</ns2:InscricaoMunicipal>
+        </ns2:Prestador>
+        <ns2:TomadorServico>
+            <ns2:IdentificacaoTomador>
+                <ns2:CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <ns2:Cnpj>{{ rps.tomador.cpf_cnpj }}</ns2:Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <ns2:Cpf>{{ rps.tomador.cpf_cnpj }}</ns2:Cpf>
+                    {% endif %}
+                </ns2:CpfCnpj>
+                {% if rps.tomador.inscricao_municipal is defined -%}
+                <ns2:InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</ns2:InscricaoMunicipal>
+                {% endif %}
+            </ns2:IdentificacaoTomador>
+            <ns2:RazaoSocial>{{ rps.tomador.razao_social }}</ns2:RazaoSocial>
+            <ns2:Endereco>
+                <ns2:Endereco>{{ rps.tomador.endereco }}</ns2:Endereco>
+                <ns2:Numero>{{ rps.tomador.numero|default("0", true) }}</ns2:Numero>
+                <ns2:Complemento>{{ rps.tomador.complemento }}</ns2:Complemento>
+                <ns2:Bairro>{{ rps.tomador.bairro }}</ns2:Bairro>
+                <ns2:CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</ns2:CodigoMunicipio>
+                <ns2:Uf>{{ rps.tomador.uf }}</ns2:Uf>
+                <ns2:Cep>{{ rps.tomador.cep }}</ns2:Cep>
+            </ns2:Endereco>
+            <ns2:Contato>
+                {% if rps.tomador.telefone is defined -%}
+                <ns2:Telefone>{{ rps.tomador.telefone }}</ns2:Telefone>
+                {% endif %}
+                {% if rps.tomador.email is defined -%}
+                <ns2:Email>{{ rps.tomador.email }}</ns2:Email>
+                {% endif %}
+            </ns2:Contato>
+        </ns2:TomadorServico>
+        <ns2:RegimeEspecialTributacao>{{ rps.regime_tributacao }}</ns2:RegimeEspecialTributacao>
+        <ns2:OptanteSimplesNacional>{{ rps.optante_simples }}</ns2:OptanteSimplesNacional>
+        <ns2:IncentivoFiscal>{{ rps.incentivo_fiscal }}</ns2:IncentivoFiscal>
+        <ns2:InformacoesComplementares>{{ rps.servico.informacao_complementar }}</ns2:InformacoesComplementares>
+    </ns2:InfDeclaracaoPrestacaoServico>
+</ns2:Rps>

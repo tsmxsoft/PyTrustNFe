@@ -8,7 +8,7 @@ from collections import OrderedDict
 import signxml
 from lxml import etree
 from OpenSSL import crypto
-from signxml import XMLSigner
+from pytrustnfe.nfe.assinatura import XMLSigner
 import hashlib
 
 
@@ -48,7 +48,7 @@ class Assinatura(object):
             dados['sit_rps'] = kwargs["nfse"]["lista_rps"][i]["status"]
             dados['tipo_rec'] = kwargs["nfse"]["lista_rps"][i]["servico"]["iss_retido"]
             dados['valor_servico'] = rps["servico"]["valor_servico"]
-            dados['valor_deducoes'] = rps["servico"]["deducoes"]
+            dados['valor_deducoes'] = rps["servico"]["deducoes"] if "deducoes" in rps["servico"] and not rps["servico"]["deducoes"] == "0.00" else "0.00"
             dados['cod_atividade'] = rps["servico"]["codigo_atividade"]
             dados['cpfcnpj_tomador'] = rps["tomador"]["cpf_cnpj"]
 

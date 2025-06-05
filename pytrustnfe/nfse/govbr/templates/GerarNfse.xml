@@ -1,0 +1,4 @@
+<GerarNfseEnvio xmlns = "http://www.abrasf.org.br/nfse.xsd">
+    {% set rps = nfse %}
+    {% include 'rps.xml' %}
+</GerarNfseEnvio>

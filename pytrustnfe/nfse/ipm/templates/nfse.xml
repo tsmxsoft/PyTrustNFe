@@ -47,7 +47,11 @@
     </tomador>
     <itens>
         <lista>
+            {% if nfse.servico.iss_retido == 1 %}
+            <tributa_municipio_prestador>N</tributa_municipio_prestador>
+            {% else %}
             <tributa_municipio_prestador>S</tributa_municipio_prestador>
+            {% endif %}
             <codigo_local_prestacao_servico>{{ nfse.cidade_tom }}</codigo_local_prestacao_servico>
             <codigo_item_lista_servico>{{ nfse.servico.codigo_atividade }}</codigo_item_lista_servico>
             <descritivo>{{ nfse.servico.discriminacao }}</descritivo>

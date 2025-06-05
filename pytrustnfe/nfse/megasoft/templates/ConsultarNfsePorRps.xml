@@ -1,0 +1,11 @@
+<ConsultarNfseRpsEnvio xmlns="http://megasoftarrecadanet.com.br/xsd/nfse_v01.xsd">
+  <IdentificacaoRps>
+    <Numero>{{nfse.rps.numero}}</Numero>
+  </IdentificacaoRps>
+  <Prestador>
+    <CpfCnpj>
+        <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+    </CpfCnpj>
+    <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+  </Prestador>
+</ConsultarNfseRpsEnvio>

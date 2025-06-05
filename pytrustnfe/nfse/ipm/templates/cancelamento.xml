@@ -1,0 +1,13 @@
+<solicitacao_cancelamento>
+    <prestador>
+        <cpfcnpj>{{nfse.cpfcnpj}}</cpfcnpj>
+        <cidade>{{nfse.cidade_tom}}</cidade>
+    </prestador>
+    <documentos>
+        <nfse>
+            <numero>{{nfse.rps.numero}}</numero>
+            <serie>{{nfse.rps.serie}}</serie>
+            <observacao>{{nfse.codigo_cancelamentos}}</observacao>
+        </nfse>
+    </documentos>
+</solicitacao_cancelamento>

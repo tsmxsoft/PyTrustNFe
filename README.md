@@ -38,21 +38,28 @@ NFSe - Empresas Atendidas
 * **Aspec**
 * **Betha**
 * **Directa** - Natal/RN
+* **DMISS** - Caucaia/CE
 * **DSF**
+* **EL (Versão Antiga)**
 * **Equiplano**
 * **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
+* **GPI - Gestão Publica Integrada (EL)**
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
 * **Governa**
+* **GovBR (ISS Digital)** 
 * **Imperial** - Petrópolis/RH
 * **IPM**
+* **ISISS** - Vitoria/ES
 * **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
+* **Megasoft**
 * **Memory (NFSe Brasil)**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
+* **Portal Fácil**
 * **Portal Tributário (Tax Tecnologia)** TODO: ConsultarNfsePorRps e CancelarNfse
 * **Recife** - Recife/PE
 * **Saatri**
@@ -65,6 +72,7 @@ NFSe - Empresas Atendidas
 * **Sispmjp** - João Pessoa/PB
 * **Thema**
 * **Tiplan**
+* **Tributus**
 * **Tinus Informatica**
 * **Tecnos**
 * **WebISS**
@@ -73,9 +81,6 @@ Roadmap
 --------------
 * Teste unitários de cada NFSe
 * Objeto padronizado de retorno (Padronização e implementação)
-* NFCom (NF Modelo 62)
-* NFSe Tributus
-* NFSe GSN - Salvador
 * CT-e (mod 57) v4.0
 ** CTeRecepcaoSincV4   (implementado, layout ok, pendente emissão)
 ** CTeRecepcaoGTVeV4   (TODO)
@@ -89,6 +94,10 @@ Padronizações
 * As integrações contém URL direta para ambiente de homologação, porém para ambiente de produção, é necessário passar o parâmetro **kwargs["base_url"]**, pois alguns sistemas tem URL única em produção, outros possuem uma URL para cada cidade atendida, para abranger todos os casos, esse parâmetro foi implementado.
 
 * para distinção dos ambientes deve-se utilizar o parâmetro **kwargs["ambiente"]** com os textos "produção" ou "homologação" para escolha do ambiente adequado, tendo em vista que alguns sistemas NFS-e exigem a assinatura do XML em produção, e exigem a não-assinatura do XML em homologação, para cada ambiente a variável **kwargs["base_url"]** é levada em consideração.
+
+* algumas gateways (ex. issweb) adotam um padrão onde em algumas cidades se assina o RPS, outras não.
+por padrão o nfse será assinado, caso não deva ser, adicionar o parâmetro **kwargs["nosign"]=True** ao
+renderizar ou enviar. 
 
 Exemplos de uso da NFe
 -----------------------------

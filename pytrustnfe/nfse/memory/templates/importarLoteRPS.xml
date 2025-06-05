@@ -1,6 +1,6 @@
 <EnviarLoteRpsEnvio xmlns:xs="http://www.nfsebrasil.com.br/nfse/rps/xsd/rps.xsd"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <LoteRps codMunicipio="{{ nfse.lista_rps[0].servico.codigo_municipio }}" versao="1" Id="lote:{{ nfse.numero_lote }}">
+    <LoteRps codMunicipio="{{ nfse.lista_rps[0].servico.codigo_municipio }}" versao="1" Id="{{ nfse.numero_lote }}">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
         <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>

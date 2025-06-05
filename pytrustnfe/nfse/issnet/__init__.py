@@ -66,11 +66,7 @@ def _render_unsigned(certificado, method, **kwargs):
     return xml
 
 def _send(certificado, method, **kwargs):
-    base_url = ""
-    if kwargs["ambiente"] == "producao":
-        base_url = "https://df.issnetonline.com.br/webservicenfse204/nfse.asmx"
-    else:
-        base_url = "https://www.issnetonline.com.br/apresentacao/df/webservicenfse204/nfse.asmx"
+    base_url = kwargs.get("base_url","https://df.issnetonline.com.br/webservicenfse204/nfse.asmx")
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)

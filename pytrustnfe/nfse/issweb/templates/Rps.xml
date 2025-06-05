@@ -58,7 +58,7 @@
             <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
             <Endereco>
                 <Endereco>{{ rps.tomador.endereco }}</Endereco>
-                <Numero>{{ rps.tomador.numero }}</Numero>
+                <Numero>{{ rps.tomador.numero | default("SN", true) }}</Numero>
                 <Complemento>{{ rps.tomador.complemento }}</Complemento>
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
                 <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
@@ -83,7 +83,11 @@
             </OrgaoGerador>
             {% endif %}
         </Tomador>
-        <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+        {% if rps.optante_simples %}
+            {% if rps.optante_simples|int == 1 %}
+                <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
+            {% endif %}
+        {% endif %}
         <OptanteSimplesNacional>{{ rps.optante_simples | default("2", true) }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal | default("2", true) }}</IncentivoFiscal>
         {% if rps.intermediario is defined -%}

@@ -5,8 +5,12 @@
 import signxml
 from lxml import etree
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx
-from signxml import XMLSigner, XMLVerifier
+from signxml import XMLSigner as XMLSignerOriginal
 import sys
+
+class XMLSigner(XMLSignerOriginal):
+    def check_deprecated_methods(self):
+        pass
 
 
 class Assinatura(object):

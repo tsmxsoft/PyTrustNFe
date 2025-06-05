@@ -1,0 +1,10 @@
+<evento versao="1.00" xmlns="http://www.sped.fazenda.gov.br/nfse">
+    <infEvento Id="">
+        <verAplic></verAplic>
+        <ambGer></ambGer>
+        <nSeqEvento></nSeqEvento>
+        <dhProc></dhProc>
+        <nDFe></nDFe>
+        {% include 'pedRegEvento_1.00.xml' %}
+    </infEvento>
+</evento>

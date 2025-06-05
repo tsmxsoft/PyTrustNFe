@@ -1,0 +1,139 @@
+<NFCom xmlns="http://www.portalfiscal.inf.br/nfcom">
+    <infNFCom Id="NFCom27240726773682000169620010000000011095852509" versao="1.00">
+        <ide>
+            <cUF>27</cUF>
+            <tpAmb>1</tpAmb>
+            <mod>62</mod>
+            <serie>1</serie>
+            <nNF>1</nNF>
+            <cNF>9585250</cNF>
+            <cDV>9</cDV>
+            <dhEmi>2024-07-12T14:44:53-03:00</dhEmi>
+            <tpEmis>1</tpEmis>
+            <nSiteAutoriz>0</nSiteAutoriz>
+            <cMunFG>2707701</cMunFG>
+            <finNFCom>0</finNFCom>
+            <tpFat>0</tpFat>
+            <verProc>1.00</verProc>
+        </ide>
+        <emit>
+            <CNPJ>26773682000169</CNPJ>
+            <IE>247202630</IE>
+            <CRT>3</CRT>
+            <xNome>JM TELECOM</xNome>
+            <xFant>JM TELECOM</xFant>
+            <enderEmit>
+                <xLgr>R VEREADOR JARBAS JANUARIO</xLgr>
+                <nro>86</nro>
+                <xBairro>CENTRO</xBairro>
+                <cMun>2707701</cMun>
+                <xMun>RIO LARGO</xMun>
+                <CEP>57100000</CEP>
+                <UF>AL</UF>
+                <fone>8232614983</fone>
+            </enderEmit>
+        </emit>
+        <dest>
+            <xNome>UBIRANI MARQUES FIRMO</xNome>
+            <CPF>03857777443</CPF>
+            <indIEDest>2</indIEDest>
+            <IE>ISENTO</IE>
+            <enderDest>
+                <xLgr>R MUNDAU VELHO</xLgr>
+                <nro>16</nro>
+                <xBairro>UTINGA</xBairro>
+                <cMun>4104402</cMun>
+                <xMun>RIO LARGO</xMun>
+                <CEP>57100000</CEP>
+                <UF>AL</UF>
+                <fone>82993855387</fone>
+            </enderDest>
+        </dest>
+        <assinante>
+            <iCodAssinante>11164</iCodAssinante>
+            <tpAssinante>3</tpAssinante>
+            <tpServUtil>4</tpServUtil>
+        </assinante>
+        <det nItem="1">
+            <prod>
+                <cProd>201</cProd>
+                <xProd>Provimento de acesso a internet</xProd>
+                <cClass>0100201</cClass>
+                <CFOP>5102</CFOP>
+                <uMed>4</uMed>
+                <qFaturada>1</qFaturada>
+                <vItem>100.00</vItem>
+                <vDesc>0.00</vDesc>
+                <vOutro>0.00</vOutro>
+                <vProd>100.00</vProd>
+            </prod>
+            <imposto>
+                <ICMS00>
+                    <CST>00</CST>
+                    <vBC>100.00</vBC>
+                    <pICMS>5.00</pICMS>
+                    <vICMS>5.00</vICMS>
+                </ICMS00>
+            </imposto>
+        </det>
+        <total>
+            <vProd>100.00</vProd>
+            <ICMSTot>
+                <vBC>100.00</vBC>
+                <vICMS>5.00</vICMS>
+                <vICMSDeson>0.00</vICMSDeson>
+                <vFCP>0.00</vFCP>
+            </ICMSTot>
+            <vCOFINS>0.00</vCOFINS>
+            <vPIS>0.00</vPIS>
+            <vFUNTTEL>0.00</vFUNTTEL>
+            <vFUST>0.00</vFUST>
+            <vRetTribTot>
+                <vRetPIS>0.00</vRetPIS>
+                <vRetCofins>0.00</vRetCofins>
+                <vRetCSLL>0.00</vRetCSLL>
+                <vIRRF>0.00</vIRRF>
+            </vRetTribTot>
+            <vDesc>0.00</vDesc>
+            <vOutro>0.00</vOutro>
+            <vNF>100.00</vNF>
+        </total>
+        <gFat>
+            <CompetFat>202405</CompetFat>
+            <dVencFat>2024-05-15</dVencFat>
+            <dPerUsoIni>2024-04-15</dPerUsoIni>
+            <dPerUsoFim>2024-05-15</dPerUsoFim>
+            <codBarras>123123123123123</codBarras>
+        </gFat>
+        <gRespTec>
+            <CNPJ>23809070000190</CNPJ>
+            <xContato>THIAGO SAMPAIO MONTENEGRO</xContato>
+            <email>desenvolvimento@sgp.net.br</email>
+            <fone>8431137050</fone>
+        </gRespTec>
+    </infNFCom>
+    <infNFComSupl>
+        <qrCodNFCom>https://nfcom.svrs.rs.gov.br/Nfcom/QrCode?chNFCom=27240726773682000169620010000000011095852509&amp;tpAmb=1</qrCodNFCom>
+    </infNFComSupl>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <Reference URI="#NFCom27240726773682000169620010000000011095852509">
+                <Transforms>
+                    <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                    <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <DigestValue>C/qsBcWPuiHC0Hd7Q9+SZNWRmAk=</DigestValue>
+            </Reference>
+        </SignedInfo>
+        <SignatureValue>TEoT+UyuRvVTqmda4ORE45R4FetSIo9dmXAmu8BOxHd/ypCA2rDa8WRSCcTKF+orqcH80h6C48EZsFwa8YbMJAwxk53C8dAOh75jzIExOGShyWgG7pVO2z2Yu+jWhR0A8yn+KKu7iatBWShJqVkgTV+LVIlhpv4QyScINdjjDt7P13jQ3KkdccKFbWelDN8iE5OJsAlZ7OH0n5607lqDADZixgzTUAjEAW0sH803xXe5QL99heLY3//5ZPMf8rAInyJxnjNV3DnKgL/R8QRl7LJdXz+vAheqkt1GhxbBgtMs3a7Tj/ePEB7Wef/mvdwuzkcHhm8jlAKKlJdiySSRoA==</SignatureValue>
+        <KeyInfo>
+            <X509Data>
+                <X509Certificate>MIIHZjCCBU6gAwIBAgIMEzl5RP7axn8XECs3MA0GCSqGSIb3DQEBCwUAMIGJMQsw CQYDVQQGEwJCUjETMBEGA1UECgwKSUNQLUJyYXNpbDE2MDQGA1UECwwtU2VjcmV0 YXJpYSBkYSBSZWNlaXRhIEZlZGVyYWwgZG8gQnJhc2lsIC0gUkZCMS0wKwYDVQQD DCRBdXRvcmlkYWRlIENlcnRpZmljYWRvcmEgU0VSUFJPUkZCdjUwHhcNMjMwNzEy MTMyODM4WhcNMjQwNzExMTMyODM4WjCCAQQxCzAJBgNVBAYTAkJSMQswCQYDVQQI DAJBTDESMBAGA1UEBwwJUklPIExBUkdPMRMwEQYDVQQKDApJQ1AtQnJhc2lsMRkw FwYDVQQLDBB2aWRlb2NvbmZlcmVuY2lhMRcwFQYDVQQLDA4zMzIxNjY4OTAwMDE0 NTE2MDQGA1UECwwtU2VjcmV0YXJpYSBkYSBSZWNlaXRhIEZlZGVyYWwgZG8gQnJh c2lsIC0gUkZCMRIwEAYDVQQLDAlJREZFREVSQUwxFjAUBgNVBAsMDVJGQiBlLUNO UEogQTExJzAlBgNVBAMMHkpNIFRFTEVDT00gTFREQToyNjc3MzY4MjAwMDE2OTCC ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANpy3LCurGh0mZ0sEBMd9zP2 2Mc4wZ+atd267dlQAMqoBq6zMnJpS9nsqyzMZzNfvaypFsxlkmj0EkCy1ztRqYAh g8pkGIWqzMVQMzFMEBjGk1csRbLG/RZWGc6u6txySLEtgS3YShpO/iWm0hJQILmg MtbvtXWbQBmqABbXkq8NfeZOfeNxDoJ2XvuFwpmQPd+Oqw6WN3UGa68QQm2WNXp9 vJN7ubYYwH7ok0m1nj0IJsXwZE12Ijc8kh9/SM136dQ61iK7rHluD+MkMi8jn5rz VXZDEq5a54DbtvxHwGu6bwOVPh/JnhQwetBdufMyDCFrl82CSgWH9Wsjn+WjR38C AwEAAaOCAk4wggJKMB8GA1UdIwQYMBaAFBSALZ1+mkXA8Vs/GdVAsG8vZeDpMIGI BgNVHR8EgYAwfjA8oDqgOIY2aHR0cDovL3JlcG9zaXRvcmlvLnNlcnByby5nb3Yu YnIvbGNyL2Fjc2VycHJvcmZidjUuY3JsMD6gPKA6hjhodHRwOi8vY2VydGlmaWNh ZG9zMi5zZXJwcm8uZ292LmJyL2xjci9hY3NlcnByb3JmYnY1LmNybDBWBggrBgEF BQcBAQRKMEgwRgYIKwYBBQUHMAKGOmh0dHA6Ly9yZXBvc2l0b3Jpby5zZXJwcm8u Z292LmJyL2NhZGVpYXMvYWNzZXJwcm9yZmJ2NS5wN2IwgbcGA1UdEQSBrzCBrKA4 BgVgTAEDBKAvBC0wMjAzMTk4NjA2NjMxMjQxNDA1MDAwMDAwMDAwMDAwMDAwMDAw MDAwMDAwMDCgJgYFYEwBAwKgHQQbSk9OQVRBTiBGUkFOQ0VMSU5PIERBIFNJTFZB oBkGBWBMAQMDoBAEDjI2NzczNjgyMDAwMTY5oBcGBWBMAQMHoA4EDDAwMDAwMDAw MDAwMIEUam9uYXRhbjA4MkBnbWFpbC5jb20wDgYDVR0PAQH/BAQDAgXgMB0GA1Ud JQQWMBQGCCsGAQUFBwMEBggrBgEFBQcDAjBbBgNVHSAEVDBSMFAGBmBMAQIBCjBG MEQGCCsGAQUFBwIBFjhodHRwOi8vcmVwb3NpdG9yaW8uc2VycHJvLmdvdi5ici9k b2NzL2RwY2Fjc2VycHJvcmZiLnBkZjANBgkqhkiG9w0BAQsFAAOCAgEAb+4ZXRhv GTCFWQGCtNmGjvfHGm9hI6miQqXwksVSPhPXgrtkEKP92nFyemILVMfblizrlEb2 s50NbG2um1qEuA5d5KFWMKL0sGO3722fYd5hpgXLy7yUZzr0nnakGuvqqGNehI9w Xucg71ufvlIACfzCw6sH9Xb4kZWc62Jx5JjYqtlXnJf9CVOsNNjlc1y3i0PA9foS 8pC7nN0kQGGj+M20KOUiLwPOg6teYmGOkNmM4xWOlurUTpLZg1/Gotv1166DvdrK y3+Oxv8paRvQoTXew9ZzmTEFr1qzQAVl9hpILVRLxa2a47cpZcEjIXBJDbd4egja zoHKOMRutI1Wj8VqN1+m8TL/pyOEMSe1kHvLvk8SZ5DhwzSlkg+t+S/2VplKUVIS FcjXwYaZ2xlJZWV7fOiUOlWFCdD/jQZqKY4fQv7v5/8qJ12DRuRFJ6znXrPorvn/ kT7h8j25SqOlRF6cOSRh+Fzc4cYVB+283+BtR6HajXHQPgnAI32dzXvwgsYSFyq0 iFypGUNjebxxuKQwHlaqvqeDI3p6mH3wvFHIStW9pGqKGb3k2zDs/xBUJq2ljFZY jCDs/o08r/vve7CZCRYpUMPJg8Tp3x6PAS3y+MgZ0c+72nmcKm96JnB4A3pI203M Elx16fTUHh0D24Ee5Mqh5pkldPgaJdlIXRM=
+                </X509Certificate>
+            </X509Data>
+        </KeyInfo>
+    </Signature>
+</NFCom>

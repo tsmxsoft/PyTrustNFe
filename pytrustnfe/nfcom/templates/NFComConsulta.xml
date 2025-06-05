@@ -1,0 +1,5 @@
+<consSitNFCom xmlns="http://www.portalfiscal.inf.br/nfcom" versao="1.00">
+    <tpAmb>{{ obj.ambiente }}</tpAmb>
+    <xServ>CONSULTAR</xServ>
+    <chNFCom>{{ obj.chave_nfcom }}</chNFCom>
+</consSitNFCom>

@@ -5,7 +5,7 @@
 import signxml
 from lxml import etree
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx
-from signxml import XMLSigner
+from pytrustnfe.nfe.assinatura import XMLSigner
 import sys
 
 
