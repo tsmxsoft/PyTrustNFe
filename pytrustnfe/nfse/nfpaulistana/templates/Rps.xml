@@ -1,0 +1,55 @@
+
+  <RPS>
+    <Assinatura>assinatura:{{ rps.numero }}</Assinatura>
+    <ChaveRPS>
+        <InscricaoPrestador>{{ nfse.inscricao_municipal }}</InscricaoPrestador>
+        <SerieRPS>{{ rps.serie }}</SerieRPS>
+        <NumeroRPS>{{ rps.numero }}</NumeroRPS>
+    </ChaveRPS>
+    <TipoRPS>RPS</TipoRPS>
+    <DataEmissao>{{ rps.data_emissao.split("T")[0] }}</DataEmissao>
+    <StatusRPS>N</StatusRPS>
+    <TributacaoRPS>{{ rps.tipo_rps }}</TributacaoRPS>
+    <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+    <ValorDeducoes>{{ rps.servico.valor_deducao | default("0.00") }}</ValorDeducoes>
+    <ValorPIS>{{ rps.servico.pis }}</ValorPIS>
+    <ValorCOFINS>{{ rps.servico.cofins }}</ValorCOFINS>
+    <ValorINSS>{{ rps.servico.inss }}</ValorINSS>
+    <ValorIR>{{ rps.servico.pis }}</ValorIR>
+    <ValorCSLL>{{ rps.servico.csll }}</ValorCSLL>
+    <CodigoServico>{{ rps.servico.codigo_servico }}</CodigoServico>
+    <AliquotaServicos>{{ rps.servico.aliquota }}</AliquotaServicos>
+    {% if rps.servico.iss_retido == "1" %}
+    <ISSRetido>true</ISSRetido>
+    {% else %}
+    <ISSRetido>false</ISSRetido>
+    {% endif %}
+    <CPFCNPJTomador>
+        {% if rps.tomador.cpf_cnpj|length == 11  %}
+        <CPF>{{ rps.tomador.cpf_cnpj }}</CPF>
+        {% endif %}
+        {% if rps.tomador.cpf_cnpj|length == 14  %}
+        <CNPJ>{{ rps.tomador.cpf_cnpj }}</CNPJ>
+        {% endif %}
+    </CPFCNPJTomador>
+    <InscricaoMunicipalTomador>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipalTomador>
+    <InscricaoEstadualTomador>{{ rps.tomador.inscricao_estadual }}</InscricaoEstadualTomador>
+    <RazaoSocialTomador>{{ rps.tomador.razao_social }}</RazaoSocialTomador>
+    {% if rps.tomador.endereco is defined -%}
+    <EnderecoTomador>
+        <Logradouro>{{ rps.tomador.endereco }}</Logradouro>
+        <NumeroEndereco>{{ rps.tomador.numero }}</NumeroEndereco>
+        <ComplementoEndereco>{{ rps.tomador.complemento }}</ComplementoEndereco>
+        <Bairro>{{ rps.tomador.bairro }}</Bairro>
+        <Cidade>{{ rps.tomador.codigo_municipio }}</Cidade>
+        <UF>{{ rps.tomador.uf }}</UF>
+        <CEP>{{ rps.tomador.cep }}</CEP>
+    </EnderecoTomador>
+    {% endif %}
+    <EmailTomador>{{ rps.tomador.email }}</EmailTomador>
+    <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+    <ValorCargaTributaria>{{ rps.servico.iss | format_numeric(0,2,True,False) }}</ValorCargaTributaria>
+    {% set aliquota = rps.servico.aliquota | float * 100.00 %}
+    <PercentualCargaTributaria>{{ aliquota | format_numeric(0,4,True,False)}}</PercentualCargaTributaria>
+    <FonteCargaTributaria>ISS</FonteCargaTributaria>
+</RPS>
