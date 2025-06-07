@@ -51,7 +51,9 @@
     {% if rps.servico.iss is defined and rps.servico.iss is not none %}
         <ValorCargaTributaria>{{ rps.servico.iss | format_numeric(0,2,True,False) }}</ValorCargaTributaria>
     {% endif %}
-    {% set aliquota = rps.servico.aliquota | float * 100.00 %}
-    <PercentualCargaTributaria>{{ aliquota | format_numeric(0,4,True,False)}}</PercentualCargaTributaria>
+    {% if rps.servico.aliquota is defined and rps.servico.aliquota is not none %}
+        {% set aliquota = rps.servico.aliquota | float * 100.00 %}
+        <PercentualCargaTributaria>{{ aliquota | format_numeric(0,4,True,False) }}</PercentualCargaTributaria>
+    {% endif %}
     <FonteCargaTributaria>ISS</FonteCargaTributaria>
 </RPS>
