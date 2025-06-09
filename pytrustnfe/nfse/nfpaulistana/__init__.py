@@ -51,8 +51,8 @@ def _render(certificado, method, **kwargs):
 
     referencia = ""
     if method in ["EnvioLoteRPS","EnvioLoteRpsAsync"]:
-        kwargs["nfse"]["total_servicos"] = sum(Decimal(rps["servico"]["valor_servico"]) for rps in kwargs["nfse"]["lista_rps"] if "valor_servico" in rps["servico"]) or Decimal("0.00")
-        kwargs["nfse"]["total_deducoes"] = sum(Decimal(rps["servico"]["deducoes"]) for rps in kwargs["nfse"]["lista_rps"] if "deducoes" in rps["servico"]) or Decimal("0.00")
+        kwargs["nfse"]["total_servicos"] = float(sum(Decimal(rps["servico"]["valor_servico"]) for rps in kwargs["nfse"]["lista_rps"] if "valor_servico" in rps["servico"]) or Decimal("0.00"))
+        kwargs["nfse"]["total_deducoes"] = float(sum(Decimal(rps["servico"]["deducoes"]) for rps in kwargs["nfse"]["lista_rps"] if "deducoes" in rps["servico"]) or Decimal("0.00"))
 
         for i, rps in enumerate(kwargs['nfse']['lista_rps']):
             kwargs['nfse']['lista_rps'][i]['status'] = "N" if rps['status'] == "1" else "C"
