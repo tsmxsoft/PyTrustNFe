@@ -57,9 +57,7 @@
             {% if dest.tipo == 'company' -%}
             <CNPJ>{{ dest.CNPJ }}</CNPJ>
             {% endif %}
-            {% if dest.CPF == '' -%}
             <idOutros>{{ dest.idOutros }}</idOutros>
-            {% endif %}
             <indIEDest>{{ dest.indIEDest }}</indIEDest>
             {% if dest.indIEDest == 2 -%}
             <IE>ISENTO</IE>

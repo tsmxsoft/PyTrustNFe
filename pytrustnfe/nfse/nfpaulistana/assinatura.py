@@ -54,7 +54,7 @@ class Assinatura(object):
             dados['serie_rps'] = rps["serie"]
             dados['numero_rps'] = rps['numero']
             dados['dt_emissao'] = rps['data_emissao'].split("T")[0].replace("-","")
-            dados['trib'] = rps['tipo_rps']
+            dados['trib'] = "T" if rps['tipo_rps'] and rps['tipo_rps'] == "1" else rps['tipo_rps']
             dados['status'] = kwargs['nfse']['lista_rps'][i]['status']
             dados['iss_retido'] = kwargs['nfse']['lista_rps'][i]['servico']['iss_retido']
             dados['valor_servico'] = rps['servico']['valor_servico']
@@ -80,6 +80,7 @@ class Assinatura(object):
             if dados['intermed_ind'] == '3':
                 chave_raw = chave_raw[:-16]
             
+            print(chave_raw)
             cert, pem = self.extract_cert_key()
             key = load_pem_private_key(pem, None, default_backend())
             signature = key.sign(chave_raw.encode('ascii'), padding=PKCS1v15(), algorithm=SHA1())
