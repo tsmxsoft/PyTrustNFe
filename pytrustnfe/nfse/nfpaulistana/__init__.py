@@ -13,6 +13,8 @@ from pytrustnfe.nfse.nfpaulistana.assinatura import Assinatura
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 
+if sys.version_info >= (3, 0):
+    unicode = str
 
 op2action = {
     #Sync
@@ -58,12 +60,10 @@ def _render(certificado, method, **kwargs):
         kwargs["nfse"]["total_deducoes"] = "{:.2f}".format(
             (sum(Decimal(rps["servico"]["deducoes"]) for rps in kwargs["nfse"]["lista_rps"] if "deducoes" in rps["servico"]) or Decimal("0.00"))
         )
-            
-            
 
         for i, rps in enumerate(kwargs['nfse']['lista_rps']):
-            kwargs['nfse']['lista_rps'][i]['status'] = "N" if rps['status'] == "1" else "C"
-            kwargs['nfse']['lista_rps'][i]['servico']['iss_retido'] = "S" if rps['servico']['iss_retido'] == "1" else "N"
+            kwargs['nfse']['lista_rps'][i]['status'] = "N" if rps['status'] and rps['status'] in ["1","N"] else "C"
+            kwargs['nfse']['lista_rps'][i]['servico']['iss_retido'] = "S" if rps['servico']['iss_retido'] and rps['servico']['iss_retido'] in ["1","S"] else "N"
 
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, False, **kwargs)
