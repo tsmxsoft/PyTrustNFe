@@ -9,7 +9,11 @@
     <TipoRPS>RPS</TipoRPS>
     <DataEmissao>{{ rps.data_emissao.split("T")[0] }}</DataEmissao>
     <StatusRPS>N</StatusRPS>
-    <TributacaoRPS>{{ rps.tipo_rps }}</TributacaoRPS>
+    {% if rps.tipo_rps and rps.tipo_rps == "1" %}
+        <TributacaoRPS>T</TributacaoRPS>
+    {% else %}
+        <TributacaoRPS>{{rps.tipo_rps}}</TributacaoRPS>
+    {% endif %}
     <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
     <ValorDeducoes>{{ rps.servico.valor_deducao | default("0.00") }}</ValorDeducoes>
     <ValorPIS>{{ rps.servico.pis }}</ValorPIS>
