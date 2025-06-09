@@ -18,7 +18,7 @@
     <ValorIR>{{ rps.servico.pis }}</ValorIR>
     <ValorCSLL>{{ rps.servico.csll }}</ValorCSLL>
     <CodigoServico>{{ rps.servico.codigo_servico }}</CodigoServico>
-    <AliquotaServicos>{{ rps.servico.aliquota }}</AliquotaServicos>
+    <AliquotaServicos>{{ rps.servico.aliquota | default("0.00") }}</AliquotaServicos>
     {% if rps.servico.iss_retido == "1" %}
     <ISSRetido>true</ISSRetido>
     {% else %}
