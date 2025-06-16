@@ -59,6 +59,7 @@ def _generate_nfcom_id(**kwargs):
     item["Id"] = chave_nfcom[:len(chave_nfcom)]
     item["ide"]["cDV"] = chave_nfcom[len(chave_nfcom) - 1 :]
     item["qrCodNFCom"] = nfcom_qrcode(chave_nfcom[5:len(chave_nfcom)],item["ide"]["tpAmb"],item["ide"]["cUF"])
+    item["ide"]["verProc"] = "PyTrustNFe " + pytrustnfe.get_version()
 
 def _generate_nfcom_evento_id(**kwargs):
     item = kwargs.get("evento")
