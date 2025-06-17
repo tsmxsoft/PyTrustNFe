@@ -36,7 +36,6 @@
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
-            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             {% if rps.servico.codigo_municipio == 9999999 -%}
             <CodigoPais>rps.tomador.codigo_pais</CodigoPais>
             {% endif %}
