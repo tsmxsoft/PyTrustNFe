@@ -37,7 +37,7 @@ def _obj_send_parser(**kwargs):
         "tomador_uf": rps["tomador"]["uf"],
         "tomador_email": rps["tomador"]["email"],
         "discriminacao": rps["servico"]["discriminacao"],
-        "valordeducoes": rps["servico"]["deducoes"],
+        "valordeducoes": rps["servico"].get("deducoes", 0.00),
         "codservico": rps["servico"]["cnae_servico"],
         "<issretido>": "S" if rps["servico"]["iss_retido"] == "1" else "N",
         "basecalculo": float(rps["servico"]["base_calculo"]),
@@ -79,9 +79,10 @@ def gerar_nfse(certificado = None, **kwargs):
 
     form_data = {key: value for o in obj for key, value in o.items()}
 
-    req = requests.post(kwargs.get('base_url'), data=form_data, headers={'Content-Type': 'application/x-www-form-urlencoded'})
-    if req.status_code == 200:
-        if req.json() and "message" in req.json():
-            return {"sent_xml": json.dumps(obj), "received_xml": req.json()["message"], "object": None }
-        return {"sent_xml": json.dumps(obj), "received_xml": json.dumps(req.json()), "object": req.json() }
-    return {"sent_xml": json.dumps(obj), "received_xml": str(req.content), "object": None }
+    return obj
+    # req = requests.post(kwargs.get('base_url'), data=form_data, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+    # if req.status_code == 200:
+    #     if req.json() and "message" in req.json():
+    #         return {"sent_xml": json.dumps(obj), "received_xml": req.json()["message"], "object": None }
+    #     return {"sent_xml": json.dumps(obj), "received_xml": json.dumps(req.json()), "object": req.json() }
+    # return {"sent_xml": json.dumps(obj), "received_xml": str(req.content), "object": None }
