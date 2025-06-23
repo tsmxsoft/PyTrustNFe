@@ -19,6 +19,25 @@ def formatar_cnpj(cnpj):
         return "{}.{}.{}/{}-{}".format(cnpj[:2], cnpj[2:5], cnpj[5:8], cnpj[8:12], cnpj[12:])
     return cnpj
 
+def formatar_cpf(cpf):
+    cpf = str(cpf)
+    print('cpf', cpf)
+    if len(cpf) == 11:
+        return "{}.{}.{}-{}".format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
+    return cpf
+
+def formatar_cnae(cnae):
+    cnae = str(cnae)
+    if len(cnae) == 7:
+        return "{}.{}-{}-{}".format(cnae[:2], cnae[2:4], cnae[4:6], cnae[6:])
+    return cnae
+
+def formatar_cep(cep):
+    cep = str(cep)
+    if len(cep) == 8:
+        return "{}-{}".format(cep[:5], cep[5:])
+    return cep
+
 def _obj_send_parser(**kwargs):
     
     if not isinstance(kwargs.get('rps'), dict):
@@ -31,20 +50,20 @@ def _obj_send_parser(**kwargs):
         "cnpjcpf": formatar_cnpj(rps["prestador"]["cnpj"]),
         "prefeitura": kwargs.get('prefeitura'),
         "tomador_nome": rps["tomador"]["razao_social"],
-        "tomador_cnpjcpf": rps["tomador"]["cpf_cnpj"],
+        "tomador_cnpjcpf": formatar_cpf(rps["tomador"]["cpf_cnpj"]),
         "tomador_inscrmunicipal": rps["tomador"]["inscricao_municipal"],
         "tomador_logradouro": rps["tomador"]["endereco"],
         "tomador_numero": (int(rps["tomador"]["numero"]) 
                             if str(rps["tomador"]["numero"]).isdigit() 
                             else 0),
         "tomador_bairro": rps["tomador"]["bairro"],
-        "tomador_cep": rps["tomador"]["cep"],
+        "tomador_cep": formatar_cep(rps["tomador"]["cep"]),
         "tomador_municipio": rps["tomador"]["cidade"],
         "tomador_uf": rps["tomador"]["uf"],
         "tomador_email": rps["tomador"]["email"],
         "discriminacao": rps["servico"]["discriminacao"],
         "valordeducoes": rps["servico"].get("deducoes", 0.00),
-        "codservico": rps["servico"]["cnae_servico"],
+        "codservico": formatar_cnae(rps["servico"]["cnae_servico"]),
         "<issretido>": "S" if rps["servico"]["iss_retido"] == "1" else "N",
         "basecalculo": float(rps["servico"]["base_calculo"]),
         "pispasep": rps["servico"].get("pis", 0.00),
