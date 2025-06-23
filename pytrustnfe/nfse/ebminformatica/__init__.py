@@ -13,6 +13,12 @@ def _consultar(base_url,consulta,params = None, data = None):
     return None
 
 
+def formatar_cnpj(cnpj):
+    cnpj = str(cnpj)
+    if len(cnpj) == 14:
+        return "{}.{}.{}-{}/{}".format(cnpj[:2], cnpj[2:5], cnpj[5:8], cnpj[8:12], cnpj[12:])
+    return cnpj
+
 def _obj_send_parser(**kwargs):
     
     if not isinstance(kwargs.get('rps'), dict):
@@ -22,7 +28,7 @@ def _obj_send_parser(**kwargs):
 
     rpsobj = {
         "token": kwargs.get("chave_digital"),
-        "cnpjcpf": rps["prestador"]["cnpj"],
+        "cnpjcpf": formatar_cnpj(rps["prestador"]["cnpj"]),
         "prefeitura": kwargs.get('prefeitura'),
         "tomador_nome": rps["tomador"]["razao_social"],
         "tomador_cnpjcpf": rps["tomador"]["cpf_cnpj"],
