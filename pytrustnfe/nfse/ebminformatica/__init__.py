@@ -16,7 +16,7 @@ def _consultar(base_url,consulta,params = None, data = None):
 def formatar_cnpj(cnpj):
     cnpj = str(cnpj)
     if len(cnpj) == 14:
-        return "{}.{}.{}-{}/{}".format(cnpj[:2], cnpj[2:5], cnpj[5:8], cnpj[8:12], cnpj[12:])
+        return "{}.{}.{}/{}-{}".format(cnpj[:2], cnpj[2:5], cnpj[5:8], cnpj[8:12], cnpj[12:])
     return cnpj
 
 def _obj_send_parser(**kwargs):
