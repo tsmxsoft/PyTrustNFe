@@ -29,7 +29,7 @@ def formatar_cpf(cpf):
 def formatar_cnae(cnae):
     cnae = str(cnae)
     if len(cnae) == 7:
-        return "{}.{}-{}-{}".format(cnae[:2], cnae[2:4], cnae[4:5], cnae[6:])
+        return "{}.{}-{}-{}".format(cnae[:2], cnae[2:4], cnae[4:5], cnae[5:])
     return cnae
 
 def formatar_cep(cep):
