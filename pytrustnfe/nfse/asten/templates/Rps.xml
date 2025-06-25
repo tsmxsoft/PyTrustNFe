@@ -1,0 +1,52 @@
+<Rps>
+	<InfDeclaracaoPrestacaoServico Id="rps:{{rps.numero}}{{rps.serie}}">
+		<Rps>
+			<IdentificacaoRps>
+				<Numero>{{rps.numero}}</Numero>
+				<Serie>{{rps.serie}}</Serie>
+				<Tipo>{{rps.tipo_rps}}</Tipo>
+			</IdentificacaoRps>
+            {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
+            <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
+			<Status>{{rps.status}}</Status>
+		</Rps>
+        {% set datatempo = rps.data_competencia.split('T')[0].split('-') %}
+		<Competencia>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</Competencia>
+		<Servico>
+			<Valores>
+				<ValorServicos>{{rps.servico.valor_servico}}</ValorServicos>
+			</Valores>
+			<IssRetido>{{rps.servico.iss_retido}}</IssRetido>
+			<ItemListaServico>{{rps.servico.codigo_servico}}</ItemListaServico>
+			<CodigoCnae>{{rps.servico.cnae_servico}}</CodigoCnae>
+			<Discriminacao>{{rps.servico.discriminacao}}</Discriminacao>
+			<CodigoMunicipio>{{rps.servico.codigo_municipio}}</CodigoMunicipio>
+			<ExigibilidadeISS>{{rps.eligibilidade_iss}}</ExigibilidadeISS>
+			<MunicipioIncidencia>{{rps.servico.codigo_municipio}}</MunicipioIncidencia>
+		</Servico>
+		<Prestador>
+			<CpfCnpj>
+				<Cnpj>{{rps.prestador.cnpj}}</Cnpj>
+			</CpfCnpj>
+			<InscricaoMunicipal>{{rps.prestador.inscricao_municipal}}</InscricaoMunicipal>
+		</Prestador>
+		<Tomador>
+			<IdentificacaoTomador>
+				<CpfCnpj>
+					<Cpf>{{rps.tomador.cpf_cnpj}}</Cpf>
+				</CpfCnpj>
+			</IdentificacaoTomador>
+			<RazaoSocial>{{rps.tomador.razao_social}}</RazaoSocial>
+			<Endereco>
+				<Endereco>{{rps.tomador.endereco}}</Endereco>
+				<Numero>{{rps.tomador.numero}}</Numero>
+				<Bairro>{{rps.tomador.bairro}}</Bairro>
+				<CodigoMunicipio>{{rps.tomador.codigo_municipio}}</CodigoMunicipio>
+				<Uf>{{rps.tomador.uf}}</Uf>
+				<Cep>{{rps.tomador.cep}}</Cep>
+			</Endereco>
+		</Tomador>
+		<OptanteSimplesNacional>{{rps.optante_simples}}</OptanteSimplesNacional>
+		<IncentivoFiscal>{{rps.incentivo_fiscal}}</IncentivoFiscal>
+	</InfDeclaracaoPrestacaoServico>
+</Rps>
