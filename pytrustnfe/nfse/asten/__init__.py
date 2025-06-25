@@ -138,29 +138,3 @@ def consultar_lote_rps(certificado, **kwargs):
 
 def substituir_nfse(certificado, **kwargs):
     return _send(certificado, "SubstituirNfse", **kwargs)
-
-
-
-
-
-
-
-
-
-
-
-
-
-# PROTOCOLO 1: 01946385.2025-18
-# PROTOCOLO 2: 01946387.2025-07
-# PROTOCOLO 3: 01946389.2025-98
-# PROTOCOLO 4: 01946391.2025-67
-# PROTOCOLO 5: 01946393.2025-56
-# PROTOCOLO 6: 01946395.2025-45
-# PROTOCOLO 7: 01946397.2025-34
-# PROTOCOLO 8: 01946399.2025-23
-# PROTOCOLO 9: 01946401.2025-12
-
-
-# PRODUCAO
-# PROTOCOLO 1: 20404819.2025-71
