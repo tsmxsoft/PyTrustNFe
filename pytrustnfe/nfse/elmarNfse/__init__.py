@@ -131,8 +131,8 @@ def _obj_send_parser(**kwargs):
                     "complemento": ""
                 },
                 "contato": {
-                    "telefone": rps["tomador"]["telefone"],
-                    "email": rps["tomador"]["email"]
+                    "telefone": rps["tomador"].get("telefone", ""),
+                    "email": rps["tomador"].get("email", "")
                 }
             }
         }
