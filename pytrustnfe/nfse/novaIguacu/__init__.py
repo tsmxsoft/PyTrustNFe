@@ -64,9 +64,9 @@ def _render(certificado, method, **kwargs):
 
     referencia = ""
     if method == "RecepcionarLoteRpsSincrono" or method == "enviar":
-        ibge_cid_tomador = kwargs["nfse"]["lista_rps"][0]["tomador"].get("codigo_municipio", None)
-        ibge_cid_servico = kwargs["nfse"]["lista_rps"][0]["servico"].get("codigo_municipio", None)
         cnpj_pref = kwargs["nfse"].get("cnpj_prefeitura", None)
+        ibge_cid_tomador = kwargs.get("nfse", {}).get("lista_rps", [{}])[0].get("tomador", {}).get("codigo_municipio", None)
+        ibge_cid_servico = kwargs.get("nfse", {}).get("lista_rps", [{}])[0].get("servico", {}).get("codigo_municipio", None)
 
         for rps in kwargs["nfse"]["lista_rps"]:
             rps["servico"]["codigo_municipio"] = ibge2siafi(ibge_cid_servico) \
