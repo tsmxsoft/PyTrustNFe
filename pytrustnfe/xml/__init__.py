@@ -72,6 +72,13 @@ def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
 def sanitize_response(response):
     if '<?' in response:
         response = re.sub(r'\<\?.+?\>','',response)
+    if "Content-Type: text/xml" in response:
+        match = re.search(r'<SOAP-ENV:Envelope.*?</SOAP-ENV:Envelope>', response, re.DOTALL)
+        if match:
+            response = match.group(0)
+        else:
+            raise ValueError('Não foi possível encontrar o XML na resposta MIME')
+        
     parser = etree.XMLParser(encoding="utf-8")
     if sys.version_info[0] < 3:
         if isinstance(response,unicode):
