@@ -3,13 +3,12 @@
 	xmlns:tipos="http://localhost:8080/WsNFe2/tp"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqEnvioLoteRPS.xsd">
-  {% for rps in nfse.lista_rps -%}
     <Cabecalho>
       <CodCidade>{{ nfse.cnpj_prefeitura }}</CodCidade>
       {% with first = nfse.lista_rps|first %}
         <CPFCNPJRemetente>{{ first.prestador.cnpj }}</CPFCNPJRemetente>
         <RazaoSocialRemetente>{{ first.prestador.razao_social }}</RazaoSocialRemetente>
-        <transacao>{{ rps.status }}</transacao>
+        <transacao>{{ nfse.transacao|default("true", true) }}</transacao>
         <dtInicio>{{ first.data_competencia[:10] }}</dtInicio>
       {% endwith %}
       {% with last = nfse.lista_rps|last %}
@@ -23,6 +22,7 @@
     </Cabecalho>
 
     <Lote Id="lote:{{nfse.numero_lote}}">
+      {% for rps in nfse.lista_rps -%}
       <RPS Id="rps:{{rps.numero}}{{rps.serie}}">
         <Assinatura>{{ nfse.assinatura }}</Assinatura>
         <InscricaoMunicipalPrestador>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipalPrestador>

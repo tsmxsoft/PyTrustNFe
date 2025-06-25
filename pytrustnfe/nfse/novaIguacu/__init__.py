@@ -3,16 +3,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import os
-import traceback
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfse.novaIguacu.assinatura import Assinatura
 from lxml import etree
-from zeep.transports import Transport
 from requests import Session
 import requests
-from datetime import datetime, timedelta
 import hashlib
+from pytrustnfe.utils import ibge2siafi
 from decimal import Decimal
 
 
@@ -66,6 +64,16 @@ def _render(certificado, method, **kwargs):
 
     referencia = ""
     if method == "RecepcionarLoteRpsSincrono" or method == "enviar":
+        ibge_cid_tomador = kwargs["nfse"]["lista_rps"][0]["tomador"].get("codigo_municipio", None)
+        ibge_cid_servico = kwargs["nfse"]["lista_rps"][0]["servico"].get("codigo_municipio", None)
+        cnpj_pref = kwargs["nfse"].get("cnpj_prefeitura", None)
+
+        for rps in kwargs["nfse"]["lista_rps"]:
+            rps["servico"]["codigo_municipio"] = ibge2siafi(ibge_cid_servico) \
+                if ibge_cid_servico else cnpj_pref
+            rps["tomador"]["codigo_municipio"] = ibge2siafi(ibge_cid_tomador) \
+                if ibge_cid_tomador else cnpj_pref
+        
         referencia = kwargs.get('nfse').get('numero_lote')
         
     xml_string_send = render_xml(path, "%s.xml" % method, True, False, **kwargs)
