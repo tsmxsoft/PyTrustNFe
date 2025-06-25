@@ -23,7 +23,7 @@
     </Cabecalho>
 
     <Lote Id="lote:{{nfse.numero_lote}}">
-      <RPS Id="lote:{{rps.numero}}">
+      <RPS Id="rps:{{rps.numero}}{{rps.serie}}">
         <Assinatura>{{ nfse.assinatura }}</Assinatura>
         <InscricaoMunicipalPrestador>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipalPrestador>
         <RazaoSocialPrestador>{{ rps.prestador.razao_social }}</RazaoSocialPrestador>
