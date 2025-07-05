@@ -43,9 +43,9 @@ def gerar_assinatura_rps(**kwargs):
         recolhimento = rps['servico']['iss_retido'] = 'N' if rps['servico']['iss_retido'] == '2' else 'S'
         assinatura += recolhimento
         servico_deducao = float(rps['servico']['valor_servico']) - float(rps['servico'].get('deducoes', 0.00))
-        servico_deducao = str(servico_deducao).replace('.', '').replace(',', '').zfill(14) 
+        servico_deducao = str(servico_deducao).replace('.', '').replace(',', '').zfill(15) 
         assinatura += servico_deducao
-        assinatura += str(rps['servico'].get('deducoes', 0.00)).replace('.', '').replace(',', '.').zfill(16)    
+        assinatura += str(rps['servico'].get('deducoes', 0.00)).replace('.', '').replace(',', '.').zfill(15)    
         assinatura += rps['servico']['cnae_servico'].replace('.', '').replace('-', '').zfill(10)
         assinatura += rps['tomador']['cpf_cnpj'].replace('.', '').replace('-', '').zfill(14)
 
