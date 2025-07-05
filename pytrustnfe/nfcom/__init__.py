@@ -111,7 +111,7 @@ def _get_client(base_url, transport):
 def _send(certificado, method, **kwargs):
     xml_send = kwargs["xml"]
     base_url = localizar_url(
-        method, kwargs["estado"], kwargs["modelo"], kwargs["ambiente"]
+        method, kwargs["estado"], mod=kwargs["modelo"], ambiente=int(kwargs["ambiente"])
     )
     logging.config.dictConfig({
         'version': 1,
@@ -147,15 +147,6 @@ def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
     print(xml_send_raw)
     xml_send = ""
     if b64_encode:
-        ###
-        #gzip_header = struct.pack("<BBBBLBB", 0x1f, 0x8b, 8, 0, int(time.time()), 2, 255)
-        #gzip_trailer = struct.pack("<LL", zlib.crc32(xml_send_raw), (len(xml_send_raw) & 0xffffffff))
-        #compress_obj = zlib.compressobj(9, zlib.DEFLATED, -15)
-        #xml_bytes = compress_obj.compress(xml_send_raw.encode())
-        #xml_bytes = compress_obj.flush()
-        #b64_bytes = base64.b64encode(gzip_header + xml_bytes + gzip_trailer)
-        #xml_send  = b64_bytes.decode('utf-8')
-        ###
         out_file = StringIO()
         gzip_file = gzip.GzipFile(fileobj=out_file, mode='wb')
         gzip_file.write(xml_send_raw.encode('utf-8'))
