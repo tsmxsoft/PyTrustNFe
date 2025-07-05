@@ -80,11 +80,13 @@ SIGLA_ESTADO = {
 
 
 def localizar_url(servico, estado, mod="55", ambiente=2):
-    
-    # Implementação inicial do NFCom
-    # Todos estados utilizam o servidor SVRS
     sigla = SIGLA_ESTADO[estado]
     ws = ESTADO_WS[sigla]
+    
+    # Implementação inicial do NFCom
+    # Todos estados utilizam o servidor SVRS para NFCom
+    if mod == "62":
+        ws = ESTADO_WS["SVRS"]
 
     if servico in (WS_DFE_DISTRIBUICAO, WS_DOWNLOAD_NFE):
         ws = AN
@@ -913,4 +915,5 @@ ESTADO_WS = {
     "SP": UFSP,
     "TO": SVRS,
     "AN": AN,
+    "SVRS": SVRS,
 }

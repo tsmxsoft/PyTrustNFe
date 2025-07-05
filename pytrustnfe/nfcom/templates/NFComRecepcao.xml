@@ -16,7 +16,9 @@
             <finNFCom>{{ ide.finNFCom }}</finNFCom>
             <tpFat>{{ ide.tpFat }}</tpFat>
             <verProc>{{ ide.verProc }}</verProc>
-            <indPrePago>{{ ide.indPrePago }}</indPrePago>
+            {% if ide.indPrePago %}
+            <indPrePago>1</indPrePago>
+            {% endif %}
             <indCessaoMeiosRede>{{ ide.indCessaoMeiosRede }}</indCessaoMeiosRede>
             {# NT2023_002 #}
             {% if ide.finNFCom|int == 4 %}
@@ -165,6 +167,7 @@
             </prod>
             <imposto>
                 {% if det.imposto.indSemCST is not defined -%}
+                {% if det.imposto.ICMS is defined -%}
                 {% if det.imposto.ICMS.CST == '00' -%}
                 <ICMS00>
                     <CST>{{ det.imposto.ICMS.CST }}</CST>
@@ -213,6 +216,7 @@
                     <pFCP>{{ det.imposto.ICMS.pFCP }}</pFCP>
                     <vFCP>{{ det.imposto.ICMS.vFCP }}</vFCP>
                 </ICMS90>
+                {% endif %}
                 {% endif %}
                 {% if det.imposto.ICMSSN is defined -%}
                 <ICMSSN>
@@ -354,14 +358,14 @@
             <codAgencia>{{ gFat.codAgencia }}</codAgencia>
             {% if gFat.enderCorresp is defined -%}
             <enderCorresp>
-                <xLgr>{{ gFat.enderCorresp.xLGR }}</xLgr>
+                <xLgr>{{ gFat.enderCorresp.xLgr }}</xLgr>
                 <nro>{{ gFat.enderCorresp.nro }}</nro>
                 <xCpl>{{ gFat.enderCorresp.xCpl }}</xCpl>
                 <xBairro>{{ gFat.enderCorresp.xBairro }}</xBairro>
                 <cMun>{{ gFat.enderCorresp.cMun }}</cMun>
                 <xMun>{{ gFat.enderCorresp.xMun }}</xMun>
                 <CEP>{{ gFat.enderCorresp.CEP }}</CEP>
-                <UF>{{ gFat.enderCorresp.F }}</UF>
+                <UF>{{ gFat.enderCorresp.UF }}</UF>
                 <fone>{{ gFat.enderCorresp.fone }}</fone>
                 <email>{{ gFat.enderCorresp.email }}</email>
             </enderCorresp>
