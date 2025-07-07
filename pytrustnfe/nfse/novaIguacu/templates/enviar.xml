@@ -24,7 +24,7 @@
     <Lote Id="lote:{{nfse.numero_lote}}">
       {% for rps in nfse.lista_rps -%}
       <RPS Id="rps:{{rps.numero}}{{rps.serie}}">
-        <Assinatura>{{ nfse.assinatura }}</Assinatura>
+        <Assinatura>{{ rps.assinatura }}</Assinatura>
         <InscricaoMunicipalPrestador>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipalPrestador>
         <RazaoSocialPrestador>{{ rps.prestador.razao_social }}</RazaoSocialPrestador>
         <TipoRPS>RPS</TipoRPS>
