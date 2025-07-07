@@ -28,13 +28,13 @@ def clean_x509(xml_string):
 
 def gerar_assinatura_rps(**kwargs):
     assinatura = ''
-    inscricao_municipal = kwargs.get('nfse').get('inscricao_municipal')
-    assinatura += inscricao_municipal.zfill(11)
-    assinatura += 'NF'
-    assinatura += '   '
 
     rps = kwargs.get('nfse')
     for rps in rps['lista_rps']:
+        inscricao_municipal = kwargs.get('nfse').get('inscricao_municipal')
+        assinatura += inscricao_municipal.zfill(11)
+        assinatura += 'NF'
+        assinatura += '   '
         assinatura += rps['numero'].zfill(12)
         assinatura += rps['data_emissao'][:10].replace('-', '')
         assinatura += 'H'
@@ -49,7 +49,12 @@ def gerar_assinatura_rps(**kwargs):
         assinatura += rps['servico']['cnae_servico'].replace('.', '').replace('-', '').zfill(10)
         assinatura += rps['tomador']['cpf_cnpj'].replace('.', '').replace('-', '').zfill(14)
 
-        hash_assinatura = hashlib.sha1(assinatura.encode('utf-8')).hexdigest()
+
+    assinatura_slice = [assinatura[i:i+94] for i in range(0, len(assinatura), 94)]
+    hash_assinatura = []
+    for slice in assinatura_slice:
+        hash_assinatura.append(hashlib.sha1(slice.encode('utf-8')).hexdigest())
+
 
     return hash_assinatura
 
@@ -152,7 +157,9 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado, "enviar", **kwargs)
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    kwargs['nfse']['assinatura'] = gerar_assinatura_rps(**kwargs)
+    for rps in kwargs['nfse']['lista_rps']:
+        for assinatura in gerar_assinatura_rps(**kwargs):
+            rps['assinatura'] = assinatura
 
     kwargs['nfse']['total_servicos'] = '{0:.2f}'.format(sum(Decimal(rps['servico']['valor_servico']) \
                             for rps in kwargs['nfse']['lista_rps']))
