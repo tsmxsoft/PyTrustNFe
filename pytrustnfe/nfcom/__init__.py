@@ -22,17 +22,10 @@ from zeep import Client
 from zeep.transports import Transport
 import logging.config
 import base64
-import zlib
-import struct
-import time
 import gzip
 try:
     from StringIO import StringIO
 except ImportError:
-    # original line
-    #from io import StringIO
-
-    # fix
     import io as StringIO
 
 
@@ -136,15 +129,13 @@ def _send(certificado, method, **kwargs):
         }
     })
     session = _get_session(certificado)
-    transport = Transport(session=session,timeout=3000)
-    print(base_url)
+    transport = Transport(session=session,timeout=kwargs.get('timeout',3000))
     first_op, client = _get_client(base_url, transport)
     return _send_zeep(first_op, client, xml_send, method == "NFComRecepcao")
 
 
 def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
     #Base64 encode
-    print(xml_send_raw)
     xml_send = ""
     if b64_encode:
         out_file = StringIO()
@@ -158,15 +149,17 @@ def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
 
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     with client.settings(raw_response=True):
+        response_raw = None
         if not b64_encode:
-            response = client.service[first_operation](etree.fromstring(xml_send))
+            response_raw = client.service[first_operation](etree.fromstring(xml_send))
         else:
-            response = client.service[first_operation](xml_send)
-        response, obj = sanitize_response(response.text)
+            response_raw = client.service[first_operation](xml_send)
+        response, obj = sanitize_response(response_raw.text)
         return {
             "sent_xml": xml_send,
             "received_xml": response,
             "object": obj.Body.getchildren()[0],
+            "response": response_raw,
         }
 
 
