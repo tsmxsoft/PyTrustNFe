@@ -26,39 +26,6 @@ def clean_x509(xml_string):
     return etree.tostring(root, encoding='unicode')
 
 
-def gerar_assinatura_rps(**kwargs):
-    assinatura = ''
-
-    rps = kwargs.get('nfse')
-    for rps in rps['lista_rps']:
-        inscricao_municipal = kwargs.get('nfse').get('inscricao_municipal')
-        assinatura += inscricao_municipal.zfill(11)
-        assinatura += 'NF'
-        assinatura += '   '
-        assinatura += rps['numero'].zfill(12)
-        assinatura += rps['data_emissao'][:10].replace('-', '')
-        assinatura += 'H'
-        assinatura += ' '
-        assinatura += 'N' if rps['status'] == '1' else 'C'
-        recolhimento = rps['servico']['iss_retido'] = 'N' if rps['servico']['iss_retido'] == '2' else 'S'
-        assinatura += recolhimento
-        servico_deducao = float(rps['servico']['valor_servico']) - float(rps['servico'].get('deducoes', 0.00))
-        servico_deducao = str(servico_deducao).replace('.', '').replace(',', '').zfill(15) 
-        assinatura += servico_deducao
-        assinatura += str(rps['servico'].get('deducoes', 0.00)).replace('.', '').replace(',', '.').zfill(15)    
-        assinatura += rps['servico']['cnae_servico'].replace('.', '').replace('-', '').zfill(10)
-        assinatura += rps['tomador']['cpf_cnpj'].replace('.', '').replace('-', '').zfill(14)
-
-
-    assinatura_slice = [assinatura[i:i+94] for i in range(0, len(assinatura), 94)]
-    hash_assinatura = []
-    for slice in assinatura_slice:
-        hash_assinatura.append(hashlib.sha1(slice.encode('utf-8')).hexdigest())
-
-
-    return hash_assinatura
-
-
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -157,8 +124,33 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado, "enviar", **kwargs)
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    for rps in kwargs['nfse']['lista_rps']:
-        for assinatura in gerar_assinatura_rps(**kwargs):
+    for i, rps in enumerate(kwargs['nfse']['lista_rps']):
+        assinatura = ''
+
+        inscricao_municipal = kwargs.get('nfse').get('inscricao_municipal')
+        assinatura += inscricao_municipal.zfill(11)
+        assinatura += 'NF'
+        assinatura += '   '
+        assinatura += rps['numero'].zfill(12)
+        assinatura += rps['data_emissao'][:10].replace('-', '')
+        assinatura += 'H'
+        assinatura += ' '
+        assinatura += 'N' if rps['status'] == '1' else 'C'
+        recolhimento = rps['servico']['iss_retido'] = 'N' if rps['servico']['iss_retido'] == '2' else 'S'
+        assinatura += recolhimento
+        servico_deducao = float(rps['servico']['valor_servico']) - float(rps['servico'].get('deducoes', 0.00))
+        servico_deducao = str(servico_deducao).replace('.', '').replace(',', '').zfill(15) 
+        assinatura += servico_deducao
+        assinatura += str(rps['servico'].get('deducoes', 0.00)).replace('.', '').replace(',', '.').zfill(15)    
+        assinatura += rps['servico']['cnae_servico'].replace('.', '').replace('-', '').zfill(10)
+        assinatura += rps['tomador']['cpf_cnpj'].replace('.', '').replace('-', '').zfill(14)
+
+        assinatura_slice = [assinatura[i:i+94] for i in range(0, len(assinatura), 94)]
+        hash_assinatura = []
+        for slice in assinatura_slice:
+            hash_assinatura.append(hashlib.sha1(slice.encode('utf-8')).hexdigest())
+
+        for assinatura in hash_assinatura:
             rps['assinatura'] = assinatura
 
     kwargs['nfse']['total_servicos'] = '{0:.2f}'.format(sum(Decimal(rps['servico']['valor_servico']) \
