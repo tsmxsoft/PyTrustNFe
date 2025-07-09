@@ -1,0 +1,30 @@
+<!-- <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:e="http://nfse.abrasf.org.br">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<e:{{ method }}>
+			<nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="2.03">
+					<versaoDados>2.03</versaoDados>
+				</cabecalho>]]>
+			</nfseCabecMsg>
+			<nfseDadosMsg><![CDATA[{{ soap_body }}]]></nfseDadosMsg>
+		</e:{{ method }}>
+</soapenv:Body>
+</soapenv:Envelope> -->
+
+<soapenv:Envelope
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+		xmlns:nfse="http://nfse.abrasf.org.br/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <nfse:{{ method }}>
+      <nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd"><versaoDados>2.03</versaoDados></cabecalho>
+      ]]></nfseCabecMsg>
+      <nfseDadosMsg><![CDATA[
+        {{ soap_body }}
+      ]]></nfseDadosMsg>
+    </nfse:{{ method }}>
+  </soapenv:Body>
+</soapenv:Envelope>
