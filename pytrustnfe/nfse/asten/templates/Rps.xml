@@ -32,9 +32,14 @@
 		</Prestador>
 		<Tomador>
 			<IdentificacaoTomador>
-				<CpfCnpj>
-					<Cpf>{{rps.tomador.cpf_cnpj}}</Cpf>
-				</CpfCnpj>
+			<CpfCnpj>
+				{% if rps.tomador.cpf_cnpj|length == 14  %}
+					<Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+				{% endif %}
+				{% if rps.tomador.cpf_cnpj|length == 11  %}
+					<Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
+				{% endif %}
+			</CpfCnpj>
 			</IdentificacaoTomador>
 			<RazaoSocial>{{rps.tomador.razao_social}}</RazaoSocial>
 			<Endereco>
