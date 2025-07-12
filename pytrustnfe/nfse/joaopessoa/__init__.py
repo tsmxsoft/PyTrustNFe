@@ -6,7 +6,7 @@ import re
 import os
 import sys
 import requests
-
+import traceback
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfse.joaopessoa.assinatura import Assinatura
@@ -24,17 +24,6 @@ def clean_x509(xml_string):
                 elem.text = elem.text.replace('\n', '')
     return etree.tostring(root, encoding='unicode')
 
-
-# def clean_x509(xml_string):
-#     parser = etree.XMLParser(remove_blank_text=True, remove_comments=True, strip_cdata=False)
-#     root = etree.fromstring(xml_string, parser=parser)
-
-#     for elem in root.iter():
-#         if elem.tag.endswith('X509Certificate'):
-#             elem.text = elem.text[:len(elem.text)-1] if elem.text.endswith('\n') else elem.text
-#         # if 'Id' in elem.attrib:
-#         #     del elem.attrib['Id']
-#     return etree.tostring(root, encoding='unicode')
 
 
 def _render(certificado, method, **kwargs):
@@ -54,20 +43,21 @@ def _render(certificado, method, **kwargs):
         or method == "RecepcionarLoteRpsSincrono":
         referencia = kwargs.get("nfse").get("numero_lote")
 
-        for item in kwargs["nfse"]["lista_rps"]:
-            reference = "rps:{0}{1}".format(
-                item.get('numero'), item.get('serie'))
+        # for item in kwargs["nfse"]["lista_rps"]:
+        #     reference = "rps:{0}{1}".format(
+        #         item.get('numero'), item.get('serie'))
             
-            # signer.assina_xml(xml_send, reference)
+        #     # signer.assina_xml(xml_send, reference)
             
-        # xml_signed_send = signer.assina_xml(
-        #     xml_send, "RPS{0}".format(referencia))
         xml_signed_send = signer.assina_xml(
             xml_send, "lote:{0}".format(referencia))
         
         
     elif method == "CancelarNfse":
-        xml_signed_send = signer.assina_xml(xml_send,"rps:%s" %str(kwargs["nfse"]["rps"]["numero"]))
+        xml_signed_send = signer.assina_xml(xml_send, reference="rps:%s" %str(kwargs["nfse"]["rps"]["numero"]))
+    
+    elif method in ["ConsultarNfsePorRps", "ConsultarLoteRps", "ConsultarNfsePorRps"]:
+        xml_signed_send = signer.assina_xml(xml_send, reference="rps:%s" %str(kwargs["nfse"]["rps"]["numero"]))
     
     else:
         xml_signed_send = etree.tostring(xml_send)
@@ -92,11 +82,11 @@ def _send(certificado, method, **kwargs):
     cert, key = save_cert_key(cert, key)
     cafile = os.path.join(os.path.dirname(__file__), "ca.pem")
 
-    action = "http://nfse.abrasf.org.br/%s" %(method)
+
     headers = {
-        "SOAPAction": action,
+        "SOAPAction": "",
         "Content-length": str(len(soap)),
-        'Contet-Type': 'text/xml; charset=utf-8',
+        "Content-Type": "text/xml; charset=utf-8",
     }
 
     request = requests.post(url, data=soap, cert=(cert, key), headers=headers, verify=cafile)
@@ -104,7 +94,7 @@ def _send(certificado, method, **kwargs):
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return clean_x509(_render(certificado, "RecepcionarLoteRps", **kwargs))
+    return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -132,7 +122,9 @@ def envio_lote_rps(certificado, **kwargs):
     return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return clean_x509(_render(certificado, "CancelarNfse", **kwargs))
+    response = _render(certificado, "CancelarNfse", **kwargs)
+    print(response)
+    return response
 
 def cancelar_nfse(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -142,10 +134,12 @@ def cancelar_nfse(certificado, **kwargs):
 
     try:
         #Conversão a objeto e Busca pelo elemento Nfse
-        res, xml_obj = sanitize_response(response['object']['CancelarNfseResponse']['outputXML'].text)
+        xml_obj = response['object']['CancelarNfseResponse']
+
         #Caso haja algum erro, as mensagens serão retornadas
         if xml_obj.find(".//ListaMensagemRetorno") is not None:
             xml_obj = xml_obj.find(".//ListaMensagemRetorno")
+
         #Conversão de volta a string
         xml = etree.tostring(xml_obj)
         if sys.version_info[0] > 2:
@@ -156,8 +150,8 @@ def cancelar_nfse(certificado, **kwargs):
             xml = xml.encode('utf-8','ignore')
         #unescape
         xml = HTMLParser().unescape(xml)
-    except Exception as err:
-        pass
+    except:
+        traceback.print_exc()
 
     return xml
 
@@ -168,13 +162,12 @@ def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_lote_rps(certificado, **kwargs)
     response = _send(certificado, "ConsultarLoteRps", **kwargs)
-    print('response', response)
+
     xml = None
 
     try:
-        res, xml_obj = sanitize_response(response['object']['ConsultarLoteRpsResponse']['outputXML'].text)
-        print('res', res)
-        print('xml_obj', xml_obj)
+        xml_obj = response['object']['ConsultarLoteRpsResponse']
+
         xml = etree.tostring(xml_obj,xml_declaration=False)
         if sys.version_info[0] > 2:
             from html.parser import HTMLParser
@@ -185,7 +178,7 @@ def consultar_lote_rps(certificado, **kwargs):
         #unescape
         xml = HTMLParser().unescape(xml)
     except:
-        pass
+        traceback.print_exc()
 
     return xml
 
@@ -205,7 +198,8 @@ def consultar_nfse_por_rps(certificado, **kwargs):
     xml = None
 
     try:
-        res, xml_obj = sanitize_response(response['object']['ConsultarNfsePorRpsResponse']['outputXML'].text)
+        xml_obj = response['object']['ConsultarNfsePorRpsResponse']
+
         xml_obj = xml_obj.find(".//CompNfse")
         #Conversão de volta a string
         xml = etree.tostring(xml_obj)
@@ -218,7 +212,7 @@ def consultar_nfse_por_rps(certificado, **kwargs):
         #unescape
         xml = HTMLParser().unescape(xml)
     except:
-        pass
+        traceback.print_exc()
 
     return xml
 

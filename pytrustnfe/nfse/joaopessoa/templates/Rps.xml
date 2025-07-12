@@ -1,6 +1,6 @@
 <Rps>
 	<InfDeclaracaoPrestacaoServico Id="rps:{{rps.numero}}{{rps.serie}}">
-		<Rps Id="">
+		<Rps>
 			<IdentificacaoRps>
 				<Numero>{{rps.numero}}</Numero>
 				<Serie>{{rps.serie}}</Serie>

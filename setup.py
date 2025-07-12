@@ -85,6 +85,7 @@ later (LGPLv2+)",
             "nfse/tecnos/templates/*xml",
             "nfse/nfpaulistana/templates/*xml",
             "nfse/asten/templates/*xml",
+            "nfse/joaopessoa/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
