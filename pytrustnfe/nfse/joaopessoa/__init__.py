@@ -80,7 +80,6 @@ def _send(certificado, method, **kwargs):
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
-    cafile = os.path.join(os.path.dirname(__file__), "ca.pem")
 
 
     headers = {
@@ -89,7 +88,7 @@ def _send(certificado, method, **kwargs):
         "Content-Type": "text/xml; charset=utf-8",
     }
 
-    request = requests.post(url, data=soap, cert=(cert, key), headers=headers, verify=cafile)
+    request = requests.post(url, data=soap, cert=(cert, key), headers=headers)
     response, obj = sanitize_response(request.content)
     return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
