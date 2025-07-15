@@ -46,7 +46,7 @@
                     <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
                     <InscricaoEstadual>{{ rps.tomador.inscricao_estadual }}</InscricaoEstadual>
                 </IdentificacaoTomador>
-                <RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
+                <RazaoSocial>{{ rps.tomador.razao_social[:80] }}</RazaoSocial>
                 <Endereco>
                     <Endereco>{{ rps.tomador.endereco }}</Endereco>
                     <Numero>{{ rps.tomador.numero }}</Numero>
