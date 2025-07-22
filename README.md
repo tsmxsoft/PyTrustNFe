@@ -36,11 +36,14 @@ NFSe - Empresas Atendidas
 -----------------------------
 * **Agiliblue**
 * **Aspec**
+* **Asten**
 * **Betha**
 * **Directa** - Natal/RN
 * **DMISS** - Caucaia/CE
 * **DSF**
+* **EBM Informática**
 * **EL (Versão Antiga)**
+* **Elmar NFS-e**
 * **Equiplano**
 * **Elotech - OxyISS**
 * **Fortaleza/CE** - (Fork Ginfes?)
@@ -51,12 +54,15 @@ NFSe - Empresas Atendidas
 * **GovBR (ISS Digital)** 
 * **Imperial** - Petrópolis/RH
 * **IPM**
+* **ISS Curitiba**
 * **ISISS** - Vitoria/ES
 * **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
+* **Libre**
 * **Megasoft**
 * **Memory (NFSe Brasil)**
+* **Nova Iguaçú/RJ**
 * **Nota Carioca** - Rio de Janeiro/RJ
 * **Paulistana** - São Paulo/SP
 * **Portal Fácil**
@@ -69,7 +75,7 @@ NFSe - Empresas Atendidas
 * **SIGISS**
 * **Speedgov**
 * **Simpliss**
-* **Sispmjp** - João Pessoa/PB
+* **João Pessoa/PB**
 * **Thema**
 * **Tiplan**
 * **Tributus**
