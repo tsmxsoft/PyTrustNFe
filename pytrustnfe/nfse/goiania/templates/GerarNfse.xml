@@ -1,0 +1,3 @@
+<GerarNfseEnvio xmlns="http://nfse.goiania.go.gov.br/xsd/nfse_gyn_v02.xsd">
+    {% include 'Rps.xml' %}
+</GerarNfseEnvio>

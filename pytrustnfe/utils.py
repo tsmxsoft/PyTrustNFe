@@ -5,6 +5,7 @@
 import os
 import re
 import csv
+import sys
 from datetime import date, datetime
 import lxml.etree as ET
 from unicodedata import normalize
@@ -483,3 +484,36 @@ def gerar_nfeproc_cancel(nfe_proc, cancelamento):
 
 def remover_acentos(txt):
     return normalize('NFKD', txt).encode('ASCII','ignore').decode('ASCII')
+
+
+def conversao_codigo_sedetec(municipio, uf=None):
+    if sys.version_info[0] < 3 and isinstance(municipio, str):
+        municipio = municipio.decode('utf-8')
+
+    municipio = remover_acentos(municipio.strip().upper())
+    uf = uf.strip().upper() if uf else None
+
+    path = os.path.dirname(__file__)
+    csv_path = path + '/data/csvs/Municipios_SEDETEC_17.01.2019.csv'
+
+    msg_error = u'Município "%s" com estado "%s" não encontrado no arquivo.' % (municipio, uf)
+    if sys.version_info[0] < 3:
+        msg_error = msg_error.encode('utf-8')
+
+    try:
+        with open(csv_path, 'r') as file:
+            for row in csv.reader(file, delimiter=';'):
+                if municipio and uf:
+                    if row[1].strip() == municipio and row[2].strip() == uf:
+                        return row[0].strip().zfill(7)
+                if municipio and not uf:
+                    if row[1].strip() == municipio:
+                        return row[0].strip().zfill(7)
+                
+    except FileNotFoundError:
+        raise FileNotFoundError('Arquivo CSV não encontrado: %s' % csv_path)
+    except Exception as e:
+        raise RuntimeError('Erro ao processar o arquivo CSV: %s' % str(e))
+    
+    raise ValueError(msg_error)
+    
