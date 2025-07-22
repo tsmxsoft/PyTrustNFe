@@ -86,6 +86,7 @@ later (LGPLv2+)",
             "nfse/nfpaulistana/templates/*xml",
             "nfse/asten/templates/*xml",
             "nfse/joaopessoa/templates/*xml",
+            "nfse/goiania/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]

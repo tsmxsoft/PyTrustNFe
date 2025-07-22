@@ -1,0 +1,57 @@
+<Rps>
+    <InfDeclaracaoPrestacaoServico>
+        <Rps>
+            <IdentificacaoRps>
+                <Numero>{{ rps.numero }}</Numero>
+                <Serie>{{ rps.serie }}</Serie>
+                <Tipo>{{ rps.tipo_rps }}</Tipo>
+            </IdentificacaoRps>
+            <DataEmissao>{{ rps.data_emissao }}</DataEmissao>
+            <Status>{{ rps.status }}</Status>
+        </Rps>
+        <Servico>
+            <Valores>
+                <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+                <ValorDeducoes>{{ rps.servico.valor_descontos|default("0.00", true) }}</ValorDeducoes>
+                <ValorPis>{{ rps.servico.pis|default("0.00", true) }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins|default("0.00", true) }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss|default("0.00", true) }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir|default("0.00", true) }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll|default("0.00", true) }}</ValorCsll>
+            </Valores>
+            <CodigoTributacaoMunicipio>{{ rps.servico.cnae_servico }}</CodigoTributacaoMunicipio>
+            <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+            <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+        </Servico>
+        <Prestador>
+            <CpfCnpj>
+                <Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
+            </CpfCnpj>
+            <InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
+        </Prestador>
+        <Tomador>
+            <IdentificacaoTomador>
+                <CpfCnpj>
+                    {% if rps.tomador.cpf_cnpj|length == 14  %}
+                    <Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+                    {% endif %}
+                    {% if rps.tomador.cpf_cnpj|length == 11  %}
+                    <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
+                    {% endif %}
+                </CpfCnpj>
+                <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+                <InscricaoEstadual>{{ rps.tomador.inscricao_estadual }}</InscricaoEstadual>
+            </IdentificacaoTomador>
+            <RazaoSocial>{{ rps.tomador.razao_social|truncate(80) }}</RazaoSocial>
+            <Endereco>
+                <Endereco>{{ rps.tomador.endereco }}</Endereco>
+                <Numero>{{ rps.tomador.numero }}</Numero>
+                <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                <Bairro>{{ rps.tomador.bairro }}</Bairro>
+                <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
+                <Uf>{{ rps.tomador.uf }}</Uf>
+                <Cep>{{ rps.tomador.cep }}</Cep>
+            </Endereco>
+        </Tomador>
+    </InfDeclaracaoPrestacaoServico>
+</Rps>
