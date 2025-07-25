@@ -1,0 +1,9 @@
+<!-- VALIDADO -->
+<ConsultarLoteRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+	<Prestador>
+		<CpfCnpj>
+			<Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+		</CpfCnpj>
+	</Prestador>
+	<Protocolo>{{ nfse.protocolo }}</Protocolo>
+</ConsultarLoteRpsEnvio>
