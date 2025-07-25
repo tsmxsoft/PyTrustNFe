@@ -13,17 +13,6 @@ from requests import Session
 import requests
 
 
-def clean_x509(xml_string):
-    parser = etree.XMLParser(remove_blank_text=True, remove_comments=True, strip_cdata=False)
-    root = etree.fromstring(xml_string, parser=parser)
-
-
-    for elem in root.iter():
-        if elem.tag.endswith('X509Certificate'):
-            if '\n' in elem.text:
-                elem.text = elem.text.replace('\n', '')
-    return etree.tostring(root, encoding='unicode')
-
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -31,10 +20,6 @@ def _render(certificado, method, **kwargs):
         remove_blank_text=True, remove_comments=True, strip_cdata=False
     )
     signer = Assinatura(certificado.pfx, certificado.password)
-
-    referencia = ""
-    if method == "RecepcionarLoteRpsSincrono" or method == "RecepcionarLoteRps":
-        referencia = kwargs.get('nfse').get('numero_lote')
 
     xml_string_send = render_xml(path, "%s.xml" % method, True, False, **kwargs)
 
@@ -44,15 +29,14 @@ def _render(certificado, method, **kwargs):
     
 
     if method == "RecepcionarLoteRps":
+        referencia = kwargs.get('nfse').get('numero_lote')
         for item in kwargs["nfse"]["lista_rps"]:
-            reference = "rps:{0}{1}".format(
+            reference = "rps{0}{1}".format(
                 item.get('numero'), item.get('serie'))
 
             signer.assina_xml(xml_send, reference)
 
-        xml_signed_send = signer.assina_xml(
-            xml_send, "lote:{0}".format(referencia))
-
+        xml_signed_send = signer.assina_xml(xml_send, "lote{0}".format(referencia))
         
 
     elif method == "CancelarNfse":
@@ -71,25 +55,32 @@ def _render(certificado, method, **kwargs):
 def _send(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
 
-    ambiente = kwargs.get("ambiente", None)
     base_url = kwargs.get("base_url", None)
+    ambiente = kwargs.get("ambiente", None)
+    action = ""
 
-    if ambiente == "homologacao":
-        base_url = "https://www3.ereceita.net.br/ws/montecarmelomg/wsHomologacao.php?wsdl"
-    elif ambiente == "producao":
-        base_url = "https://webservice.ereceita.net.br/ws/montecarmelomg/wsProducao.php?wsdl"
+    # Se informar ambiente e não informar base_url, usar como padrão URL de Monte Carmelo - MG
+    if ambiente == "homologacao" and not base_url:
+        base_url = "https://www3.ereceita.net.br/ws/montecarmelomg/wsHomologacao.php"
+        action = "https://www3.ereceita.net.br/%s" % (method)
+    elif ambiente == "producao" and not base_url:
+        action = "https://www.ereceita.net.br/%s" % (method)
+        base_url = "https://webservice.ereceita.net.br/ws/montecarmelomg/wsProducao.php"
+    
+    if not base_url:
+        raise ValueError("Informar URL de produção")
 
     
     xml_send = kwargs["xml"]
     path = os.path.join(os.path.dirname(__file__), "templates")
-    soap = render_xml(path, "SoapRequest.xml", False, **{"soap_body":xml_send, "method": method })
+    soap = render_xml(path, "SoapRequest.xml", False, False, **{"soap_body":xml_send, "method": method })
 
     cert, key = extract_cert_and_key_from_pfx(certificado.pfx, certificado.password)
     cert, key = save_cert_key(cert, key)
     session = Session()
     session.cert = (cert, key)
     session.verify = False
-    action = "https://www3.ereceita.net.br/%s" % (method)
+    
     headers = {
         "Content-Type": "text/xml;charset=UTF-8",
         "SOAPAction": action,
@@ -97,14 +88,14 @@ def _send(certificado, method, **kwargs):
     }
 
     request = requests.post(base_url, data=soap, headers=headers)
-    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))
+    response, obj = sanitize_response(request.content.decode('utf8', 'ignore'))    
     try:
         return {"sent_xml": str(soap), "received_xml": str(response.encode('utf8')), "object": obj.Body }
     except:
         return {"sent_xml": str(soap), "received_xml": str(response), "object": obj.Body }
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    return clean_x509(_render(certificado, "RecepcionarLoteRps", **kwargs))
+    return _render(certificado, "RecepcionarLoteRps", **kwargs)
 
 def recepcionar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -112,26 +103,11 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado, "RecepcionarLoteRps", **kwargs)
 
 def xml_recepcionar_lote_rps_sincrono(certificado, **kwargs):
-    return clean_x509(_render(certificado, "RecepcionarLoteRpsSincrono", **kwargs))
+    return _render(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
-def recepcionar_lote_rps_sincrono(certificado, **kwargs):
-    if "xml" not in kwargs:
-        kwargs["xml"] = xml_recepcionar_lote_rps(certificado, **kwargs)
-    if len(kwargs["xml"]["nfse"]["lista_rps"]) > 2:
-        return {}
-    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
-
-def gerar_nfse(certificado, **kwargs):
-    return _send(certificado, "GerarNfse", **kwargs)
-
-def envio_lote_rps_assincrono(certificado, **kwargs):
-    return _send(certificado, "RecepcionarLoteRps", **kwargs)
-
-def envio_lote_rps(certificado, **kwargs):
-    return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 def xml_cancelar_nfse(certificado, **kwargs):
-    return clean_x509(_render(certificado, "CancelarNfse", **kwargs))
+    return _render(certificado, "CancelarNfse", **kwargs)
 
 def cancelar_nfse(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -141,7 +117,7 @@ def cancelar_nfse(certificado, **kwargs):
 
     try:
         #Conversão a objeto e Busca pelo elemento Nfse
-        res, xml_obj = sanitize_response(response['object']['CancelarNfseResponse']['return'].text)
+        res, xml_obj = sanitize_response(response["object"]["CancelarNfseResponse"]['outputXML'].text)
         #Caso haja algum erro, as mensagens serão retornadas
         if xml_obj.find(".//ListaMensagemRetorno") is not None:
             xml_obj = xml_obj.find(".//ListaMensagemRetorno")
@@ -161,7 +137,7 @@ def cancelar_nfse(certificado, **kwargs):
     return xml
 
 def xml_consultar_lote_rps(certificado, **kwargs):
-    return clean_x509(_render(certificado, "ConsultarLoteRps", **kwargs))
+    return _render(certificado, "ConsultarLoteRps", **kwargs)
 
 def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
@@ -170,8 +146,7 @@ def consultar_lote_rps(certificado, **kwargs):
     xml = None
 
     try:
-        xml_clean = re.sub(r'\<\?xml.+\?\>\n?','',response['object']['ConsultarLoteRpsResponse']['return'].text)
-        res, xml_obj = sanitize_response(xml_clean)
+        res, xml_obj = sanitize_response(response['object']['ConsultarLoteRpsResponse']['outputXML'].text)
         xml = etree.tostring(xml_obj,xml_declaration=False)
         if sys.version_info[0] > 2:
             from html.parser import HTMLParser
@@ -200,10 +175,10 @@ def consultar_nfse_por_rps(certificado, **kwargs):
         kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
     response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
     xml = None
-
     try:
-        res, xml_obj = sanitize_response(response['object']['ConsultarNfsePorRpsResponse']['return'].text)
-        xml_obj = xml_obj.find(".//CompNfse")
+        res, xml_obj = sanitize_response(response["object"]["ConsultarNfsePorRpsResponse"]['outputXML'].text)
+        if xml_obj.find(".//CompNfse"):
+            xml_obj = xml_obj.find(".//CompNfse")
         #Conversão de volta a string
         xml = etree.tostring(xml_obj)
         if sys.version_info[0] > 2:
@@ -218,15 +193,3 @@ def consultar_nfse_por_rps(certificado, **kwargs):
         pass
 
     return xml
-
-def consulta_nfse_servico_prestado(certificado, **kwargs):
-    return _send(certificado, "ConsultarNfseServicoPrestado", **kwargs)
-
-def consultar_nfse_servico_tomado(certificado, **kwargs):
-    return _send(certificado, "ConsultarNfseServicoTomado", **kwargs)
-
-def consulta_nfse_faixe(certificado, **kwargs):
-    return _send(certificado, "ConsultarNfseFaixa", **kwargs)
-
-def consulta_cnpj(certificado, **kwargs):
-    return _send(certificado, "ConsultaCNPJ", **kwargs)

@@ -6,5 +6,4 @@
 		</CpfCnpj>
 	</Prestador>
 	<Protocolo>{{ nfse.protocolo }}</Protocolo>
-	<InscricaoMunicipal>{{ nfse.inscricao_municipal}}</InscricaoMunicipal>
 </ConsultarLoteRpsEnvio>

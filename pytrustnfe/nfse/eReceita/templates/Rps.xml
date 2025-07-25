@@ -1,13 +1,13 @@
 
 <Rps>
-    <InfDeclaracaoPrestacaoServico Id="rps:{{ rps.numero }}{{ rps.serie }}">
+    <InfDeclaracaoPrestacaoServico Id="rps{{ rps.numero }}{{ rps.serie }}">
+        {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
         <Rps>
             <IdentificacaoRps>
                 <Numero>{{ rps.numero }}</Numero>
                 <Serie>{{ rps.serie }}</Serie>
-                <Tipo>{{ rps.tipo_rps }}</Tipo>
+                <Tipo>{{ rps.tipo_rps }}</Tipo>    
             </IdentificacaoRps>
-            {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
             <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
             <Status>{{ rps.status }}</Status>
         </Rps>

@@ -1,7 +1,7 @@
 <!-- VALIDADO -->
 <CancelarNfseEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
     <Pedido>
-        <InfPedidoCancelamento Id="rps:{{nfse.rps.numero}}">
+        <InfPedidoCancelamento Id="{{nfse.numero}}">
             <IdentificacaoNfse>
                 <Numero>{{ nfse.rps.numero }}</Numero>
                 <CpfCnpj>

@@ -1,8 +1,8 @@
 <!-- VALIDADO -->
-<EnviarLoteRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd"
-                    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                    xmlns:ser="http://services.nfse">
-    <LoteRps Id="lote:{{ nfse.numero_lote }}" versao="2.02">
+<EnviarLoteRpsEnvio xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.abrasf.org.br/nfse.xsd">
+    <LoteRps Id="lote{{ nfse.numero_lote }}" versao="2.02">
         <NumeroLote>{{ nfse.numero_lote }}</NumeroLote>
         <CpfCnpj>
             <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
