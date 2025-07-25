@@ -3,16 +3,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import os
-import traceback
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfse.novaIguacu.assinatura import Assinatura
 from lxml import etree
-from zeep.transports import Transport
 from requests import Session
 import requests
-from datetime import datetime, timedelta
 import hashlib
+from pytrustnfe.utils import ibge2siafi
 from decimal import Decimal
 
 
@@ -28,34 +26,6 @@ def clean_x509(xml_string):
     return etree.tostring(root, encoding='unicode')
 
 
-def gerar_assinatura_rps(**kwargs):
-    assinatura = ''
-    inscricao_municipal = kwargs.get('nfse').get('inscricao_municipal')
-    assinatura += inscricao_municipal.zfill(11)
-    assinatura += 'NF'
-    assinatura += '   '
-
-    rps = kwargs.get('nfse')
-    for rps in rps['lista_rps']:
-        assinatura += rps['numero'].zfill(12)
-        assinatura += rps['data_emissao'][:10].replace('-', '')
-        assinatura += 'H'
-        assinatura += ' '
-        assinatura += 'N' if rps['status'] == '1' else 'C'
-        recolhimento = rps['servico']['iss_retido'] = 'N' if rps['servico']['iss_retido'] == '2' else 'S'
-        assinatura += recolhimento
-        servico_deducao = float(rps['servico']['valor_servico']) - float(rps['servico']['deducoes'])
-        servico_deducao = str(servico_deducao).replace('.', '').replace(',', '').zfill(14) 
-        assinatura += servico_deducao
-        assinatura += rps['servico']['deducoes'].replace('.', '').replace(',', '.').zfill(16)    
-        assinatura += rps['servico']['cnae_servico'].replace('.', '').replace('-', '').zfill(10)
-        assinatura += rps['tomador']['cpf_cnpj'].replace('.', '').replace('-', '').zfill(14)
-
-        hash_assinatura = hashlib.sha1(assinatura.encode('utf-8')).hexdigest()
-
-    return hash_assinatura
-
-
 
 def _render(certificado, method, **kwargs):
     path = os.path.join(os.path.dirname(__file__), "templates")
@@ -66,6 +36,16 @@ def _render(certificado, method, **kwargs):
 
     referencia = ""
     if method == "RecepcionarLoteRpsSincrono" or method == "enviar":
+        cnpj_pref = kwargs["nfse"].get("cnpj_prefeitura", None)
+        ibge_cid_tomador = kwargs.get("nfse", {}).get("lista_rps", [{}])[0].get("tomador", {}).get("codigo_municipio", None)
+        ibge_cid_servico = kwargs.get("nfse", {}).get("lista_rps", [{}])[0].get("servico", {}).get("codigo_municipio", None)
+
+        for rps in kwargs["nfse"]["lista_rps"]:
+            rps["servico"]["codigo_municipio"] = ibge2siafi(ibge_cid_servico) \
+                if ibge_cid_servico else cnpj_pref
+            rps["tomador"]["codigo_municipio"] = ibge2siafi(ibge_cid_tomador) \
+                if ibge_cid_tomador else cnpj_pref
+        
         referencia = kwargs.get('nfse').get('numero_lote')
         
     xml_string_send = render_xml(path, "%s.xml" % method, True, False, **kwargs)
@@ -144,7 +124,34 @@ def recepcionar_lote_rps(certificado, **kwargs):
     return _send(certificado, "enviar", **kwargs)
 
 def xml_recepcionar_lote_rps(certificado, **kwargs):
-    kwargs['nfse']['assinatura'] = gerar_assinatura_rps(**kwargs)
+    for i, rps in enumerate(kwargs['nfse']['lista_rps']):
+        assinatura = ''
+
+        inscricao_municipal = kwargs.get('nfse').get('inscricao_municipal')
+        assinatura += inscricao_municipal.zfill(11)
+        assinatura += 'NF'
+        assinatura += '   '
+        assinatura += rps['numero'].zfill(12)
+        assinatura += rps['data_emissao'][:10].replace('-', '')
+        assinatura += 'H'
+        assinatura += ' '
+        assinatura += 'N' if rps['status'] == '1' else 'C'
+        recolhimento = rps['servico']['iss_retido'] = 'N' if rps['servico']['iss_retido'] == '2' else 'S'
+        assinatura += recolhimento
+        servico_deducao = float(rps['servico']['valor_servico']) - float(rps['servico'].get('deducoes', 0.00))
+        servico_deducao = str(servico_deducao).replace('.', '').replace(',', '').zfill(15) 
+        assinatura += servico_deducao
+        assinatura += str(rps['servico'].get('deducoes', 0.00)).replace('.', '').replace(',', '.').zfill(15)    
+        assinatura += rps['servico']['cnae_servico'].replace('.', '').replace('-', '').zfill(10)
+        assinatura += rps['tomador']['cpf_cnpj'].replace('.', '').replace('-', '').zfill(14)
+
+        assinatura_slice = [assinatura[i:i+94] for i in range(0, len(assinatura), 94)]
+        hash_assinatura = []
+        for slice in assinatura_slice:
+            hash_assinatura.append(hashlib.sha1(slice.encode('utf-8')).hexdigest())
+
+        for assinatura in hash_assinatura:
+            rps['assinatura'] = assinatura
 
     kwargs['nfse']['total_servicos'] = '{0:.2f}'.format(sum(Decimal(rps['servico']['valor_servico']) \
                             for rps in kwargs['nfse']['lista_rps']))

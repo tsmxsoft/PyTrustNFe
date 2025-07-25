@@ -34,6 +34,8 @@ from dateutil import parser as dateparser
 if sys.version_info >= (3, 0):
     unicode = str
 
+UMED = ['MIN','MB','GB','UN']
+
 
 def chunks(cString, nLen):
     for start in range(0, len(cString), nLen):
@@ -169,7 +171,7 @@ def round_decimal(number, decimal_places=2):
     result = whole_part + (',00' if dec in [0,''] else ',' + dec)
     return result
 
-class DANFCom(object):
+class DANFECom(object):
     def __init__(
         self,
         sizepage=A4,
@@ -248,7 +250,7 @@ class DANFCom(object):
 
                 # Calculando nr. aprox. de páginas
                 if nId > self.maxprod:
-                    self.NrPages += math.ceil((nId-self.maxprod)/self.maxprod) + 1
+                    self.NrPages += math.ceil(nId/(self.maxprod*5)) + 1
 
             self.ide_emit(oXML=oXML, timezone=timezone)
             self.destinatario(oXML=oXML, timezone=timezone)
@@ -257,32 +259,29 @@ class DANFCom(object):
             index = self.detalhamentos(
                 oXML=oXML,
                 el_det=el_det,
-                max_index=min(50,nId+1),
+                max_index=min((self.maxprod*5),nId),
                 list_desc=list_desc,
                 list_cod_prod=list_cod_prod,
             )
-            self.tarjas(oXML=oXML)
             for np in range(1,int(self.NrPages)):
-                p1 = 50+(50*np)
-                p2 = nId + (50*np)
-                maxindex = min(p1,p2)
-                if nId-maxindex > (50*np):
-                    self.newpage()
-                    self.ide_emit(oXML=oXML, timezone=timezone)
-                    index = self.detalhamentos(
-                        oXML=oXML,
-                        el_det=el_det,
-                        index=index*np,
-                        max_index=maxindex,
-                        list_desc=list_desc,
-                        list_cod_prod=list_cod_prod,
-                    )
+                p2 = nId
+                self.newpage()
+                self.ide_emit(oXML=oXML, timezone=timezone)
+                if index > p2:
+                    break
+                index = self.detalhamentos(
+                    oXML=oXML,
+                    el_det=el_det,
+                    index=index,
+                    max_index=p2,
+                    list_desc=list_desc,
+                    list_cod_prod=list_cod_prod,
+                )
                 self.nlin = self.height - 36
-                if nId-maxindex <= (50*np):
+
+                if index >= p2:
                     self.newpage()
                     self.ide_emit(oXML=oXML, timezone=timezone)
-                
-                if p1 > p2:
                     break
 
             self.detalhamentos_resumo(oXML=oXML, timezone=timezone)
@@ -324,7 +323,7 @@ class DANFCom(object):
         qr_code = qr.QrCodeWidget(string)
         drawing = Drawing(25 * mm, 25 * mm)
         drawing.add(qr_code)
-        renderPDF.draw(drawing, self.canvas, (self.nLeft + 65) * mm, (self.height - nlin - 30) * mm)
+        renderPDF.draw(drawing, self.canvas, (self.nLeft + 99) * mm, (self.height - nlin - 35) * mm)
 
     def ide_emit(self, oXML=None, timezone=None):
         elem_emit = oXML.find(".//{http://www.portalfiscal.inf.br/nfcom}emit")
@@ -348,7 +347,7 @@ class DANFCom(object):
                 self.canvas, (self.nLeft + 5) * mm, (self.height - self.nlin - 20) * mm
             )
         cEnd = u"DOCUMENTO AUXILIAR DA NOTA FISCAL FATURA DE SERVIÇOS DE COMUNICAÇÃO ELETRÔNICA"
-        cEnd += u"<br/><br/>%s<br/>" % (tagtext(oNode=elem_emit, cTag="xNome"))
+        cEnd += u"<br/><br/>%s<br/>" % (tagtext(oNode=elem_emit, cTag="xNome")[:60])
         cEnd += "CNPJ: " + format_cnpj_cpf(tagtext(oNode=elem_emit, cTag="CNPJ")) + "<br />"
         if tagtext(oNode=elem_emit, cTag="IE"):
             cEnd += "IE: " + tagtext(oNode=elem_emit, cTag="IE") + "<br />"
@@ -408,7 +407,7 @@ class DANFCom(object):
         # Conteúdo campos
         self.canvas.setFont("NimbusSanL-Regu", 8)
         self.string(
-            self.nLeft, self.nlin + (self.nlin-offset)*2.5, tagtext(oNode=elem_dest, cTag="xNome")
+            self.nLeft, self.nlin + (self.nlin-offset)*2.5, tagtext(oNode=elem_dest, cTag="xNome")[:60]
         )
         self.nlin += 1
         self.canvas.setFont("NimbusSanL-Regu", 6)
@@ -479,10 +478,12 @@ class DANFCom(object):
         if tel:
             self.string(self.nLeft, self.nlin + (self.nlin-offset)*2.0, "Telefone: " + tel)
             self.nlin += 1
-        periodo = "%s à %s" %(
-            datetime.strptime(tagtext(oNode=elem_fat,cTag="dPerUsoIni"),"%Y-%m-%d").strftime("%d/%m/%Y"),
-            datetime.strptime(tagtext(oNode=elem_fat,cTag="dPerUsoFim"),"%Y-%m-%d").strftime("%d/%m/%Y"),
-        )
+        periodo = ""
+        if tagtext(oNode=elem_fat,cTag="dPerUsoIni") and tagtext(oNode=elem_fat,cTag="dPerUsoFim"):
+            periodo = "%s à %s" %(
+                datetime.strptime(tagtext(oNode=elem_fat,cTag="dPerUsoIni"),"%Y-%m-%d").strftime("%d/%m/%Y"),
+                datetime.strptime(tagtext(oNode=elem_fat,cTag="dPerUsoFim"),"%Y-%m-%d").strftime("%d/%m/%Y"),
+            )
         self.string(self.nLeft, self.nlin + (self.nlin-offset)*2.0, "Período: %s" % periodo)
         self.nlin += 1
 
@@ -551,17 +552,17 @@ class DANFCom(object):
         P = Paragraph(cEnd, styleN)
         w, h = P.wrap(150 * mm, 20 * mm)
         P.drawOn(
-            self.canvas, (self.nLeft + 99) * mm, (self.height - nlin - 22) * mm
+            self.canvas, (self.nLeft + 131) * mm, (self.height - nlin - 27) * mm
         )
         nlin += cEnd.count("<br")
         self.canvas.setFillColor(white)
         
         if elem_infprot is not None:
             self.canvas.setFillColor(black)
-            self.string(self.nLeft + 99, nlin + 18, "Protocolo de Autorização: %s - %s" %(
-                tagtext(oNode=elem_infprot, cTag="nProt"),
-                dateparser.parse(tagtext(oNode=elem_infprot, cTag="dhRecbto")).strftime("%d/%m/%Y as %H:%I:%S%z")
+            self.string(self.nLeft + 131, nlin + 21, "Protocolo de Autorização: %s" %(
+                tagtext(oNode=elem_infprot, cTag="nProt")
             ))
+            self.string(self.nLeft + 131, nlin + 24, dateparser.parse(tagtext(oNode=elem_infprot, cTag="dhRecbto")).strftime("%d/%m/%Y as %H:%I:%S%z"))
             nlin += 1
 
         #Área do contribuinte
@@ -603,9 +604,10 @@ class DANFCom(object):
         # somar a ele a altura atual que é nlin
         maxHeight = self.nlin + max_index + nH
 
-        lineHeight = 4.0 + ((max_index-index) * 3.5)
+        lineHeight = 4.0 + ((max_index-index+1) * 3.5)
         self.canvas.setFont("NimbusSanL-Regu", 5.5)
         # Colunas
+        self.stringcenter(self.nLeft + 7, self.nlin + 4.5, "COD.")
         self.stringcenter(self.nLeft + 20.5, self.nlin + 4.5, "ITENS")
         self.stringcenter(nMr - 80, self.nlin + 4.5, "UN")
         self.stringcenter(nMr - 70, self.nlin + 4.5, "QTD")
@@ -636,7 +638,7 @@ class DANFCom(object):
         # Conteúdo campos
         self.canvas.setFont("NimbusSanL-Regu", 5)
 
-        while id < max_index:
+        while id <= max_index:
             item = el_det[id]
             piscofins  = decimal.Decimal(tagtext(oNode=item, cTag="vPIS") or 0) or decimal.Decimal(0)
             piscofins += decimal.Decimal(tagtext(oNode=item, cTag="vCOFINS") or 0) or decimal.Decimal(0)
@@ -650,14 +652,17 @@ class DANFCom(object):
             codprod = tagtext(oNode=item, cTag="cProd")[:60]
             descprod = tagtext(oNode=item, cTag="xProd")[:120]
             self.string(nMr - 187, nLin, codprod)
-            self.string(nMr - len(codprod) - 175, nLin, descprod[:100-len(codprod)])
+            self.vline(nMr - len(codprod) - 172, self.nlin + 2, lineHeight)
+            self.string(nMr - len(codprod) - 170, nLin, descprod[:100-len(codprod)])
 
-            self.stringcenter(nMr - 80, nLin, tagtext(oNode=item, cTag="uMed"))
+            umed = tagtext(oNode=item, cTag="uMed")
+            if umed and unicode(umed).isnumeric() and int(umed)> 0:
+                self.stringcenter(nMr - 80, nLin, UMED[int(tagtext(oNode=item, cTag="uMed"))-1])
             self.stringcenter(nMr - 70, nLin, tagtext(oNode=item, cTag="qFaturada"))
             self.stringcenter(nMr - 60, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vItem")), 8))
             self.stringcenter(nMr - 50, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vProd")), 8))
             self.stringcenter(nMr - 37, nLin, round_decimal(piscofins, 2))
-            self.stringcenter(nMr - 25, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vBC")), 8))
+            self.stringcenter(nMr - 25, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vBC") or 0), 8))
             self.stringcenter(nMr - 15, nLin, round_decimal(decimal.Decimal(aliquota * 100), 4) + '%')
             self.stringcenter(nMr - 5, nLin, round_decimal(decimal.Decimal(icms), 8))
 
@@ -700,18 +705,17 @@ class DANFCom(object):
             ('VALOR ISENTO', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vDesc")), 8)),
             ('VALOR OUTROS', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vOutro")), 8)),
         ]
-        t = Table(data,[None for x in range(len(data[0]))],[None for x in range(len(data))])
-        t.setStyle(TableStyle([
+        t1 = Table(data,[None for x in range(len(data[0]))],[None for x in range(len(data))])
+        t1.setStyle(TableStyle([
             ("FONTSIZE", (0, 0), (-1, -1), 7),
             ("FONT", (1, 0), (1, -1), "NimbusSanL-Regu"),
             ("FONT", (0, 0), (0, -1), "NimbusSanL-Bold"),
             ("ALIGN", (1, 0), (0, -1), "LEFT"),
-            ("ALIGN", (1, 0), (1, -1), "CENTER"),
+            ("ALIGN", (1, 0), (1, -1), "LEFT"),
             ('BACKGROUND', (0,0), (0,len(data)), lightgrey),
             ('GRID', (0,0), (len(data[0]),len(data)), 1, black),
         ]))
-        t.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight)/4) * mm, 450)
-        t.drawOn(self.canvas, self.nLeft * mm, 122*mm)
+        w1, h1 = t1.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight)/4) * mm, 450)
         
         #col 2
         data = [
@@ -722,20 +726,19 @@ class DANFCom(object):
             ('FUST', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vFUST")), 8)),
             ('FUNTTEL', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vFUNTTEL")), 8)),
         ]
-        t = Table(data,[None for x in range(len(data[0]))],[15 for x in range(len(data))])
-        t.setStyle(TableStyle([
+        t2 = Table(data,[None for x in range(len(data[0]))],[15 for x in range(len(data))])
+        t2.setStyle(TableStyle([
             ("FONTSIZE", (0, 0), (-1, -1), 6),
             ("FONT", (0, 2), (1, -1), "NimbusSanL-Regu"),
             ("FONT", (0, 0), (1, 1), "NimbusSanL-Bold"),
             ("ALIGN", (1, 0), (0, -1), "LEFT"),
-            ("ALIGN", (1, 0), (1, -1), "CENTER"),
+            ("ALIGN", (1, 0), (1, -1), "LEFT"),
             ("VALIGN", (0,0), (1, -1), "MIDDLE"),
             ('BACKGROUND', (0,0), (1,1), lightgrey),
             ('GRID', (0,0), (len(data[0]),len(data)), 1, black),
             ('SPAN', (0,0), (1, 0)),
         ]))
-        t.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight)/4) * mm, 450)
-        t.drawOn(self.canvas, (self.nLeft + 53) * mm, 122*mm)
+        w2, h2 = t2.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight)/4) * mm, 450)
         
         #col 3
         texto_fisco = ''
@@ -753,13 +756,14 @@ class DANFCom(object):
         frame_ptexto_fisco = KeepInFrame(w, h, [ptexto_fisco], mode='truncate')
         frame_ptexto_fisco.width = ((self.width - self.nLeft - self.nRight)) * mm
         frame_ptexto_fisco.height = 450
-        
+
         data = [
             ('RESERVADO AO FISCO', ''),
             (frame_ptexto_fisco, ''),
         ]
-        t = Table(data,[140,140],[10,80])
-        t.setStyle(TableStyle([
+        w3 = (538-w1-w2)/2
+        t3 = Table(data,[w3,w3],[10,80])
+        t3.setStyle(TableStyle([
             ("FONTSIZE", (0, 0), (1, 1), 6),
             ("FONT", (0, 0), (1, 0), "NimbusSanL-Bold"),
             ("FONT", (0, 1), (1, 1), "NimbusSanL-Regu"),
@@ -773,8 +777,18 @@ class DANFCom(object):
             ('SPAN', (0,0), (1, 0)),
             ('SPAN', (0,1), (1, 1)),
         ]))
-        t.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight)) * mm, 450)
-        t.drawOn(self.canvas, (self.nLeft + 91) * mm, 122*mm)
+        w3, h3 = t3.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight)) * mm, 450)
+        tables = [
+            [t1,t2,t3],
+        ]
+        final_table = Table(tables,[w1,w2,(538-w1-w2)],[None])
+        final_table.setStyle(TableStyle([
+            ("LEFTPADDING", (0, 0), (2, 0), 0),
+            ("RIGHTPADDING", (0, 0), (2, 0), 0),
+            ("ALIGNMENT", (0, 0), (2, 0), "LEFT"),
+        ]))
+        final_table.wrapOn(self.canvas, ((self.width - self.nLeft - self.nRight - 50)) * mm, 450)
+        final_table.drawOn(self.canvas, (self.nLeft) * mm, 122*mm)
         self.nlin += 5
 
     def info_complementares(self, oXML=None, timezone=None):
@@ -1032,7 +1046,7 @@ class DANFCom(object):
 
         elem_infNFCom = cce_xml.find(".//{http://www.portalfiscal.inf.br/nfcom}infEvento")
 
-        res_partner = tagtext(oNode=infNFCom, cTag="xNome")
+        res_partner = tagtext(oNode=infNFCom, cTag="xNome")[:60]
         self.string(82, 18, res_partner)
         cnpj = format_cnpj_cpf(tagtext(oNode=elem_infNFCom, cTag="CNPJ"))
         self.string(82, 24, cnpj)

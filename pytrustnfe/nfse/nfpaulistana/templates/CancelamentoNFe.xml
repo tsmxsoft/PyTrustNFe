@@ -1,0 +1,15 @@
+<xs:PedidoCancelamentoNFe xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.prefeitura.sp.gov.br/nfe">
+  <Cabecalho Versao="1">
+    <CPFCNPJRemetente>
+      <CNPJ>{{ nfse.cnpj_prestador }}</CNPJ>
+    </CPFCNPJRemetente>
+    <transacao>true</transacao>
+  </Cabecalho>
+  <Detalhe>
+    <ChaveNFe>
+      <InscricaoPrestador>{{ nfse.inscricao_municipal }}</InscricaoPrestador>
+      <NumeroNFe>{{nfse.rps.numero}}</NumeroNFe>
+    </ChaveNFe>
+    <AssinaturaCancelamento>assinatura</AssinaturaCancelamento>
+  </Detalhe>
+</xs:PedidoCancelamentoNFe>

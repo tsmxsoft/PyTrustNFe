@@ -1,0 +1,15 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfse="http://nfse.abrasf.org.br/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <nfse:{{ method }} soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <parameters xsi:type="nfse:input">
+            <nfseCabecMsg xsi:type="xsd:string"><cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" versao="2.02">
+  <versaoDados>2.02</versaoDados>
+</cabecalho></nfseCabecMsg>
+            <nfseDadosMsg xsi:type="xsd:string">
+				{{ soap_body }}
+			</nfseDadosMsg>
+         </parameters>
+      </nfse:{{ method }}>
+   </soapenv:Body>
+</soapenv:Envelope>

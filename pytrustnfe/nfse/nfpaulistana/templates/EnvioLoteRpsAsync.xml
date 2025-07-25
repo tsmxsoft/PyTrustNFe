@@ -1,0 +1,20 @@
+<xd:PedidoEnvioLoteRPS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.prefeitura.sp.gov.br/nfe">
+    <Cabecalho Versao="1">
+        <CPFCNPJRemetente>
+            <CNPJ>{{ nfse.cnpj_prestador }}</CNPJ>
+        </CPFCNPJRemetente>
+        <transacao>{{ nfse.transacao|default("true", true) }}</transacao>
+        {% with first = nfse.lista_rps|first %}
+        <dtInicio>{{ first.data_competencia.split("T")[0] }}</dtInicio>
+        {% endwith %}
+        {% with last = nfse.lista_rps|last %}
+        <dtFim>{{ last.data_competencia.split("T")[0] }}</dtFim>
+        {% endwith %}
+        <QtdRPS>{{ nfse.lista_rps|length }}</QtdRPS>
+        <ValorTotalServicos>{{ nfse.total_servicos }}</ValorTotalServicos>
+        <ValorTotalDeducoes>{{ nfse.total_deducoes }}</ValorTotalDeducoes>
+    </Cabecalho>
+    {% for rps in nfse.lista_rps -%}
+    {% include 'Rps.xml' %}
+    {% endfor %}
+</xd:PedidoEnvioLoteRPS>

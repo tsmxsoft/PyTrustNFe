@@ -22,17 +22,10 @@ from zeep import Client
 from zeep.transports import Transport
 import logging.config
 import base64
-import zlib
-import struct
-import time
 import gzip
 try:
     from StringIO import StringIO
 except ImportError:
-    # original line
-    #from io import StringIO
-
-    # fix
     import io as StringIO
 
 
@@ -59,6 +52,7 @@ def _generate_nfcom_id(**kwargs):
     item["Id"] = chave_nfcom[:len(chave_nfcom)]
     item["ide"]["cDV"] = chave_nfcom[len(chave_nfcom) - 1 :]
     item["qrCodNFCom"] = nfcom_qrcode(chave_nfcom[5:len(chave_nfcom)],item["ide"]["tpAmb"],item["ide"]["cUF"])
+    item["ide"]["verProc"] = "PyTrustNFe " + pytrustnfe.get_version()
 
 def _generate_nfcom_evento_id(**kwargs):
     item = kwargs.get("evento")
@@ -110,7 +104,7 @@ def _get_client(base_url, transport):
 def _send(certificado, method, **kwargs):
     xml_send = kwargs["xml"]
     base_url = localizar_url(
-        method, kwargs["estado"], kwargs["modelo"], kwargs["ambiente"]
+        method, kwargs["estado"], mod=kwargs["modelo"], ambiente=int(kwargs["ambiente"])
     )
     logging.config.dictConfig({
         'version': 1,
@@ -135,26 +129,15 @@ def _send(certificado, method, **kwargs):
         }
     })
     session = _get_session(certificado)
-    transport = Transport(session=session,timeout=3000)
-    print(base_url)
+    transport = Transport(session=session,timeout=kwargs.get('timeout',3000))
     first_op, client = _get_client(base_url, transport)
     return _send_zeep(first_op, client, xml_send, method == "NFComRecepcao")
 
 
 def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
     #Base64 encode
-    print(xml_send_raw)
     xml_send = ""
     if b64_encode:
-        ###
-        #gzip_header = struct.pack("<BBBBLBB", 0x1f, 0x8b, 8, 0, int(time.time()), 2, 255)
-        #gzip_trailer = struct.pack("<LL", zlib.crc32(xml_send_raw), (len(xml_send_raw) & 0xffffffff))
-        #compress_obj = zlib.compressobj(9, zlib.DEFLATED, -15)
-        #xml_bytes = compress_obj.compress(xml_send_raw.encode())
-        #xml_bytes = compress_obj.flush()
-        #b64_bytes = base64.b64encode(gzip_header + xml_bytes + gzip_trailer)
-        #xml_send  = b64_bytes.decode('utf-8')
-        ###
         out_file = StringIO()
         gzip_file = gzip.GzipFile(fileobj=out_file, mode='wb')
         gzip_file.write(xml_send_raw.encode('utf-8'))
@@ -166,15 +149,17 @@ def _send_zeep(first_operation, client, xml_send_raw, b64_encode = False):
 
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     with client.settings(raw_response=True):
+        response_raw = None
         if not b64_encode:
-            response = client.service[first_operation](etree.fromstring(xml_send))
+            response_raw = client.service[first_operation](etree.fromstring(xml_send))
         else:
-            response = client.service[first_operation](xml_send)
-        response, obj = sanitize_response(response.text)
+            response_raw = client.service[first_operation](xml_send)
+        response, obj = sanitize_response(response_raw.text)
         return {
             "sent_xml": xml_send,
             "received_xml": response,
             "object": obj.Body.getchildren()[0],
+            "response": response_raw,
         }
 
 
