@@ -106,7 +106,6 @@
         {% if infNFCom.gSub is defined -%}
         {% with gSub = infNFCom.gSub %}
         <gSub>
-            <chNFCom>{{ gSub.chNFCom }}</chNFCom>
             {% if gSub.gNF is defined -%}
             <gNF>
                 <CNPJ>{{ gSub.gNF.CNPJ }}</CNPJ>
@@ -116,9 +115,11 @@
                 <CompetEmis>{{ gSub.gNF.CompetEmis }}</CompetEmis>
                 <hash115>{{ gSub.gNF.hash115 }}</hash115>
             </gNF>
+            {% else %}
+            <chNFCom>{{ gSub.chNFCom }}</chNFCom>
             {% endif %}
             <motSub>{{ gSub.motSub }}</motSub>
-        </gsub>
+        </gSub>
         {% endwith %}
         {% endif %}
         {% if infNFCom.gCoFat is defined -%}
@@ -233,6 +234,7 @@
                     <vFCPUFDest>{{ icmsufdest.vFCPUFDest }}</vFCPUFDest>
                     <vICMSUFDest>{{ icmsufdest.vICMSUFDest }}</vICMSUFDest>
                     <vICMSUFEmi>{{ icmsufdest.vICMSUFEmi }}</vICMSUFEmi>
+                    <cBenefUFDest>{{ icmsufdest.cBenefUFDest }}</cBenefUFDest>
                 </ICMSUFDest>
                 {% endfor %}
                 <indSemCST>{{ det.imposto.indSemCST }}</indSemCST>
