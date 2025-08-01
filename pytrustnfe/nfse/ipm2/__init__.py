@@ -6,7 +6,7 @@ import os
 import sys
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfse.imp2.assinatura import Assinatura
+from pytrustnfe.nfse.ipm2.assinatura import Assinatura
 from lxml import etree
 from requests import Session
 import requests
