@@ -4,7 +4,7 @@
 
 def get_version():
 
-    return "1.0.362"
+    return "1.0.363"
 
 
 class HttpClient(object):

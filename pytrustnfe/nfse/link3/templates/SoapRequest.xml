@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:impl="http://impl.nfse.services.l3grp.link3.com.br/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <impl:{{method}}>
+         <arg0><![CDATA[{{ soap_body }}]]></arg0>
+      </impl:{{method}}>
+   </soapenv:Body>
+</soapenv:Envelope>
