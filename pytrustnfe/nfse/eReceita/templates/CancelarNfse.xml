@@ -1,5 +1,7 @@
 <!-- VALIDADO -->
-<CancelarNfseEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+<CancelarNfseEnvio xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.abrasf.org.br/nfse.xsd">
     <Pedido>
         <InfPedidoCancelamento Id="{{nfse.numero}}">
             <IdentificacaoNfse>

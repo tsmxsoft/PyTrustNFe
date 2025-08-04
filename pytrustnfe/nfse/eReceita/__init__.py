@@ -66,6 +66,8 @@ def _send(certificado, method, **kwargs):
     elif ambiente == "producao" and not base_url:
         action = "https://www.ereceita.net.br/%s" % (method)
         base_url = "https://webservice.ereceita.net.br/ws/montecarmelomg/wsProducao.php"
+    else:
+        action = "https://www.ereceita.net.br/%s" % (method)
     
     if not base_url:
         raise ValueError("Informar URL de produção")
