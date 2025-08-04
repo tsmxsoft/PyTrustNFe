@@ -1,7 +1,7 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfs="http://www3.ereceita.net.br/soap/NfseWebService">
    <soapenv:Header/>
    <soapenv:Body>
-      <nfs:RecepcionarLoteRpsRequest>
+      <nfs:{{method}}Request>
          <nfs:nfseCabecMsg><![CDATA[
 <cabecalho versao="2.02"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,6 +10,6 @@
    <versaoDados>2.02</versaoDados>
 </cabecalho>]]></nfs:nfseCabecMsg>
          <nfs:nfseDadosMsg><![CDATA[{{ soap_body }}]]></nfs:nfseDadosMsg>
-      </nfs:RecepcionarLoteRpsRequest>
+      </nfs:{{method}}Request>
    </soapenv:Body>
 </soapenv:Envelope>
