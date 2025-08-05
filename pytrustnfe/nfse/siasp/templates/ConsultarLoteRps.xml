@@ -1,7 +1,7 @@
-<ConsultarLoteRpsEnvio xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd">
-    <Prestador>
-        <Cnpj>{{ consulta.cnpj_prestador }}</Cnpj>
-        <InscricaoMunicipal>{{ consulta.inscricao_municipal }}</InscricaoMunicipal>
+<ConsultarLoteRpsEnvio xmlns="http://www.publica.inf.br">
+    <Prestador Id="protocolo:{{ nfse.protocolo }}">
+        <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
+        <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
     </Prestador>
-    <Protocolo>{{ consulta.protocolo }}</Protocolo>
+    <Protocolo>{{ nfse.protocolo }}</Protocolo>
 </ConsultarLoteRpsEnvio>
