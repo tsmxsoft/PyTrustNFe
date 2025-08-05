@@ -14,6 +14,7 @@ from requests.packages.urllib3 import disable_warnings
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
 from pytrustnfe.nfse.siasp.assinatura import Assinatura
+from pytrustnfe.nfse.libre.assinatura import Assinatura as AssinaturaConsulta
 from lxml import etree
 
 def _render(certificado, method, **kwargs):
@@ -23,9 +24,15 @@ def _render(certificado, method, **kwargs):
                              strip_cdata=False)
 
     signer = Assinatura(certificado.pfx, certificado.password)
+    signer_consulta = AssinaturaConsulta(certificado.pfx, certificado.password)
     xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
     xml_send = etree.fromstring(xml_string_send, parser=parser)
     xml_signed_send = signer.assina_xml(xml_send)
+    
+
+    if method in ["ConsultarLoteRps"]:
+        reference = "protocolo:%s" %str(kwargs["nfse"]["protocolo"])
+        xml_signed_send = signer_consulta.assina_xml(xml_send, reference=reference)
 
     return xml_signed_send
 
