@@ -27,7 +27,7 @@ def _render(certificado, method, **kwargs):
     if method == "RecepcionarLoteRpsSincrono" or method == "RecepcionarLoteRps":
         referencia = kwargs.get("nfse").get("numero_lote")
 
-    xml_string_send = render_xml(path, "%s.xml" % method, True, **kwargs)
+    xml_string_send = render_xml(path, "%s.xml" % method, False, **kwargs)
 
     # xml object
     xml_send = etree.fromstring(
