@@ -85,6 +85,22 @@ def _send(certificado, method, **kwargs):
             </cabecalho>""",
         }
 
+        if method in ["ConsultarLoteRps", "ConsultarNfsePorRps"]:
+            xml_send = {
+                "nfseDadosMsg": kwargs["xml"],
+                "nfseCabecMsg": """<?xml version='1.0'?>
+                <ns1:cabecalho xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                xmlns:ns2='http://www.w3.org/2000/09/xmldsig#'
+                xmlns:ns1='http://www.abrasf.org.br/nfse.xsd'
+                xsi:schemaLocation='http://www.w3.org/2000/09/xmldsig#
+                abrasfteste/xmldsig-core-schema20020212.xsd
+                http://www.abrasf.org.br/nfse.xsd
+                abrasfteste/nfse_v2-04.xsd'>
+                    <ns1:versaoDados>2.04</ns1:versaoDados>
+                </ns1:cabecalho>""",
+            }
+
+
         response = client.service[method](xml_send)
         print(response.content)
         response, obj = sanitize_response(response.text)
@@ -109,7 +125,28 @@ def xml_consultar_lote_rps(certificado, **kwargs):
 def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_lote_rps(certificado, **kwargs)
-    return _send(certificado, "ConsultarLoteRps", **kwargs)
+    response = _send(certificado, "ConsultarLoteRps", **kwargs)
+    
+    xml = None
+
+    try:
+        xml_obj = response['object'].find(".//ConsultarLoteRpsResponse")
+        if xml_obj.find(".//ListaMensagemRetorno"):
+            xml_obj = xml_obj.find(".//ListaMensagemRetorno")
+
+        xml = etree.tostring(xml_obj, xml_declaration=False)
+        if sys.version_info[0] > 2:
+            from html.parser import HTMLParser
+            xml = xml.encode(str)
+        else:
+            from HTMLParser import HTMLParser
+            xml = xml.encode('utf-8','ignore')
+        #unescape
+        xml = HTMLParser().unescape(xml)
+    except:
+        pass
+
+    return xml
 
 def xml_cancelar_nfse(certificado, **kwargs):
     return _render(certificado, "CancelarNfse", **kwargs)
@@ -119,29 +156,31 @@ def cancelar_nfse(certificado, **kwargs):
         kwargs["xml"] = xml_cancelar_nfse(certificado, **kwargs)
     return _send(certificado, "CancelarNfse", **kwargs)
 
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render(certificado, "ConsultarNfsePorRps", **kwargs)
+
 def consultar_nfse_por_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_nfse_por_rps(certificado, **kwargs)
 
-    print (kwargs["xml"])
     
     response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
     xml = None
-
+    import traceback
     try:
-        xml_element = response['object'].find('.//Nfse')
-
+        xml_obj = response['object'].find(".//ConsultarNfsePorRpsResponse")
+        xml = etree.tostring(xml_obj, xml_declaration=False)
         if sys.version_info[0] > 2:
-            xml = str(etree.tostring(xml_element, encoding=str))
+            from html.parser import HTMLParser
+            xml = xml.encode(str)
         else:
-            xml = str(etree.tostring(xml_element, encoding="utf8"))
-            
-        xml = xml.replace('&#13;', '')
+            from HTMLParser import HTMLParser
+            xml = xml.encode('utf-8','ignore')
+        #unescape
+        xml = HTMLParser().unescape(xml)
+        
     except:
-        pass
+        traceback.print_exc()
 
     return xml
 
-
-def xml_consultar_nfse_por_rps(certificado, **kwargs):
-    return _render_unsigned(certificado, "ConsultarNfsePorRps", **kwargs)
