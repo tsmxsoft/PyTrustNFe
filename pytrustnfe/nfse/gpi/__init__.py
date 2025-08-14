@@ -126,10 +126,7 @@ def consultar_lote_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = xml_consultar_lote_rps(certificado, **kwargs)
     response = _send(certificado, "ConsultarLoteRps", **kwargs)
-    print('--- xml kwargs ---')
-    print (kwargs["xml"])
-    print('--- response ---')
-    print(response)
+    
     xml = None
 
     try:
