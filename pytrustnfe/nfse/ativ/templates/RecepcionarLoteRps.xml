@@ -18,7 +18,10 @@
             {% else %}
                 <LOCAL>F</LOCAL>
             {% endif %}
-			<SITUACAO>4</SITUACAO>
+			{% if rps.optante_simples|int == 1 %}
+				<SITUACAO>4</SITUACAO>
+			{% else %}
+				<SITUACAO>1</SITUACAO>
             {% if rps.servico.iss_retido|int == 1 %}
 			    <RETIDO>S</RETIDO>
             {% elif rps.servico.iss_retido|int == 2 %}
