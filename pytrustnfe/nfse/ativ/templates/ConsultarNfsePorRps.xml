@@ -1,0 +1,7 @@
+<NFSE>
+    <IDENTIFICACAO>
+        <INSCRICAO>{{ nfse.inscricao_municipal }}</INSCRICAO>
+        <LOTE>{{ nfse.numero_lote }}</LOTE>
+        <RPS>{{ nfse.rps.numero }}</RPS>
+    </IDENTIFICACAO>
+</NFSE>

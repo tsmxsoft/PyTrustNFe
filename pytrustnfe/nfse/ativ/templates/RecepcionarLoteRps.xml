@@ -1,0 +1,77 @@
+<NFSE>
+	<IDENTIFICACAO>
+		<MESCOMP>{{ nfse.nfse_data_competencia.split('-')[1] }}</MESCOMP>
+		<ANOCOMP>{{ nfse.nfse_data_competencia.split('-')[0] }}</ANOCOMP>
+		<INSCRICAO>{{ nfse.inscricao_municipal }}</INSCRICAO>
+		<VERSAO>1.00</VERSAO>
+	</IDENTIFICACAO>
+	<NOTAS>
+        {% for rps in nfse.lista_rps %}
+        {% set dataemissao = rps.data_emissao.split('T')[0].split('-') %}
+		<NOTA>
+			<RPS>{{ rps.numero }}</RPS>
+			<LOTE>{{ nfse.numero_lote }}</LOTE>
+            <DATAEMISSAO>{{ dataemissao[2] }}/{{ dataemissao[1] }}/{{ dataemissao[0] }}</DATAEMISSAO>
+			<HORAEMISSAO>{{ rps.data_emissao.split('T')[1] }}</HORAEMISSAO>
+            {% if rps.servico.codigo_municipio == rps.tomador.codigo_municipio %}
+			    <LOCAL>D</LOCAL>
+            {% else %}
+                <LOCAL>F</LOCAL>
+            {% endif %}
+			<SITUACAO>4</SITUACAO>
+            {% if rps.servico.iss_retido|int == 1 %}
+			    <RETIDO>S</RETIDO>
+            {% elif rps.servico.iss_retido|int == 2 %}
+			    <RETIDO>N</RETIDO>
+            {% endif %}
+			<ATIVIDADE>{{ rps.servico.cnae_servico }}</ATIVIDADE>
+			<ALIQUOTAAPLICADA>{{ rps.servico.aliquota|float * 100 }}</ALIQUOTAAPLICADA>
+			<DEDUCAO>{{ rps.servico.deducoes|default(0.00, true) }}</DEDUCAO>
+			<IMPOSTO>{{ rps.servico.iss }}</IMPOSTO>
+            {% if rps.servico.iss|int == 1 %}
+			<RETENCAO>{{ rps.servico.iss }}</RETENCAO>
+            {% else %}
+            <RETENCAO>0.00</RETENCAO>
+            {% endif %}
+			<OBSERVACAO>{{ rps.servico.informacao_complementar|default("", true) }}</OBSERVACAO>
+			<TOMADOR>
+                {% if rps.tomador.cpf_cnpj|length == 14  %}
+				    <NATUREZA>J</NATUREZA>
+                {% elif rps.tomador.cpf_cnpj|length == 11 %}
+                    <NATUREZA>F</NATUREZA>
+                {% endif %}
+				<CPFCNPJ>{{ rps.tomador.cpf_cnpj }}</CPFCNPJ>
+				<NOMERAZAO>{{ rps.tomador.razao_social }}</NOMERAZAO>
+				<MUNICIPIO>{{ rps.tomador.codigo_municipio }}</MUNICIPIO>
+				<BAIRRO>{{ rps.tomador.bairro }}</BAIRRO>
+				<CEP>{{ rps.tomador.cep }}</CEP>
+				<PREFIXO>END:</PREFIXO>
+				<LOGRADOURO>{{ rps.tomador.endereco }}</LOGRADOURO>
+				<COMPLEMENTO>{{ rps.tomador.complemento }}</COMPLEMENTO>
+				<NUMERO>{{ rps.tomador.numero }}</NUMERO>
+				<DENTROPAIS>S</DENTROPAIS>
+			</TOMADOR>
+			<IMPOSTOS>
+                {% if rps.servico.iss_retido|int == 1 %}
+				    <RESPONSAVELIMPOSTO>T</RESPONSAVELIMPOSTO>
+                {% elif rps.servico.iss_retido|int == 2 %}
+                    <RESPONSAVELIMPOSTO>P</RESPONSAVELIMPOSTO>
+                {% endif %}
+				<PIS>{{ rps.servico.pis|default("0.00", true) }}</PIS>
+				<COFINS>{{ rps.servico.cofins|default("0.00", true) }}</COFINS>
+				<INSS>{{ rps.servico.inss|default("0.00", true) }}</INSS>
+				<IR>{{ rps.servico.ir|default("0.00", true) }}</IR>
+				<CSLL>{{ rps.servico.csll|default("0.00", true) }}</CSLL>
+				<OUTRASRETENCOES>{{ rps.servico.retencoes|default("0.00", true) }}</OUTRASRETENCOES>
+			</IMPOSTOS>
+			<SERVICOS>
+				<SERVICO>
+					<SERVDESCRICAO>{{ rps.servico.discriminacao }}</SERVDESCRICAO>
+					<SERVVALORUNIT>{{ rps.servico.valor_servico }}</SERVVALORUNIT>
+					<SERVQUANTIDADE>1</SERVQUANTIDADE>
+				</SERVICO>
+			</SERVICOS>
+		</NOTA>
+        {% endfor %}
+	</NOTAS>
+</NFSE>

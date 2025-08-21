@@ -1,0 +1,12 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:nfse="http://com/mbsolutions/webservices/nfse">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <nfse:ExecuteRequest>
+         <nfse:Operacao>{{ nfse.operacao }}</nfse:Operacao>
+         <nfse:Usuario>{{ nfse.usuario }}</nfse:Usuario>
+         <nfse:Senha>{{ nfse.senha }}</nfse:Senha>
+         <nfse:Webxml><![CDATA[{{ soap_body }}]]></nfse:Webxml>
+      </nfse:ExecuteRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
