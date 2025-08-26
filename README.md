@@ -41,6 +41,7 @@ NFSe - Empresas Atendidas
 * **Directa** - Natal/RN
 * **DMISS** - Caucaia/CE
 * **DSF**
+* **e-Receita**
 * **EBM Informática**
 * **EL (Versão Antiga)**
 * **Elmar NFS-e**
@@ -50,16 +51,19 @@ NFSe - Empresas Atendidas
 * **GPI - Gestão Publica Integrada (EL)**
 * **GINFES**
 * **GISS** - (Fork Ginfes?)
+* **Goiânia - GO**
 * **Governa**
 * **GovBR (ISS Digital)** 
 * **Imperial** - Petrópolis/RH
 * **IPM**
+* **IPM ABRASF 2.04**
 * **ISS Curitiba**
 * **ISISS** - Vitoria/ES
 * **ISS Legal**
 * **ISSNET**
 * **ISSWEB**
 * **Libre**
+* **Link3**
 * **Megasoft**
 * **Memory (NFSe Brasil)**
 * **Nova Iguaçú/RJ**
@@ -70,6 +74,7 @@ NFSe - Empresas Atendidas
 * **Recife** - Recife/PE
 * **Saatri**
 * **SmartAPD** - Cariacica/ES
+* **Smart4 (Ativ)**
 * **SIASP (Publica)**
 * **SIAP Sistemas**
 * **SIGISS**
