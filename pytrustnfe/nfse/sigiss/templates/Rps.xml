@@ -15,18 +15,18 @@
         <Servico>
             <Valores>
                 <ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
-                <ValorDeducoes>{{ rps.servico.deducoes }}</ValorDeducoes>
-                <ValorPis>{{ rps.servico.pis }}</ValorPis>
-                <ValorCofins>{{ rps.servico.cofins }}</ValorCofins>
-                <ValorInss>{{ rps.servico.inss }}</ValorInss>
-                <ValorIr>{{ rps.servico.ir }}</ValorIr>
-                <ValorCsll>{{ rps.servico.csll }}</ValorCsll>
-                <OutrasRetencoes>{{ rps.servico.retencoes }}</OutrasRetencoes>
-                <ValTotTributos>{{ rps.servico.valor_tributos }}</ValTotTributos>
-                <ValorIss>{{ rps.servico.iss }}</ValorIss>
+                <ValorDeducoes>{{ rps.servico.deducoes|default(0.00, true) }}</ValorDeducoes>
+                <ValorPis>{{ rps.servico.pis|default(0.00, true) }}</ValorPis>
+                <ValorCofins>{{ rps.servico.cofins|default(0.00, true) }}</ValorCofins>
+                <ValorInss>{{ rps.servico.inss|default(0.00, true) }}</ValorInss>
+                <ValorIr>{{ rps.servico.ir|default(0.00, true) }}</ValorIr>
+                <ValorCsll>{{ rps.servico.csll|default(0.00, true) }}</ValorCsll>
+                <OutrasRetencoes>{{ rps.servico.retencoes|default(0.00, true) }}</OutrasRetencoes>
+                <ValTotTributos>{{ rps.servico.valor_tributos|default(0.00, true) }}</ValTotTributos>
+                <ValorIss>{{ rps.servico.iss|default(0.00, true) }}</ValorIss>
                 <Aliquota>{{ rps.servico.aliquota | float * 100.00 }}</Aliquota>
-                <DescontoIncondicionado>{{ rps.servico.desconto_incodicionado }}</DescontoIncondicionado>
-                <DescontoCondicionado>{{ rps.servico.desconto_codicionado }}</DescontoCondicionado>
+                <DescontoIncondicionado>{{ rps.servico.desconto_incodicionado|default(0.00, true) }}</DescontoIncondicionado>
+                <DescontoCondicionado>{{ rps.servico.desconto_codicionado|default(0.00, true) }}</DescontoCondicionado>
             </Valores>
             <IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
             {% if rps.servico.iss_retido == 1 -%}
