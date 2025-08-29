@@ -35,7 +35,7 @@
             <ItemListaServico>{{ rps.servico.codigo_servico }}</ItemListaServico>
             <CodigoCnae>{{ rps.servico.cnae_servico }}</CodigoCnae>
             <CodigoTributacaoMunicipio>{{ rps.codigo_tributacao_municipio }}</CodigoTributacaoMunicipio>
-            <CodigoNbs></CodigoNbs>
+            <CodigoNbs>0</CodigoNbs>
             <Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
             <CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
             {% if rps.servico.codigo_municipio == 9999999 -%}
@@ -60,7 +60,7 @@
                     <Cpf>{{ rps.tomador.cpf_cnpj }}</Cpf>
                     {% endif %}
                 </CpfCnpj>
-                {% if rps.tomador.inscricao_municipal is defined -%}
+                {% if rps.tomador.inscricao_municipal -%}
                 <InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
                 {% endif %}
             </IdentificacaoTomador>
@@ -68,7 +68,7 @@
             <Endereco>
                 <Endereco>{{ rps.tomador.endereco }}</Endereco>
                 <Numero>{{ rps.tomador.numero|default("SN", true) }}</Numero>
-                <Complemento>{{ rps.tomador.complemento }}</Complemento>
+                <Complemento>{{ rps.tomador.complemento|default("SN", true) }}</Complemento>
                 <Bairro>{{ rps.tomador.bairro }}</Bairro>
                 <CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
                 <Uf>{{ rps.tomador.uf }}</Uf>
