@@ -94,7 +94,7 @@ later (LGPLv2+)",
             "nfse/ipm2/templates/*xml",
             "nfse/link3/templates/*xml",
             "nfse/ativ/templates/*xml",
-            "nfse/focusnfe/templates/*xml",
+            "nfse/dsf_abrasf203/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
