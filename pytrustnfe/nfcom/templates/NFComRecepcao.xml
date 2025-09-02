@@ -347,6 +347,7 @@
         </gFidelidade>
         {% endwith %}
         {% endif %}
+        {% if infNFCom.ide.indCessaoMeiosRede|int != 1 %}
         {% if infNFCom.gFat is defined -%}
         {% with gFat = infNFCom.gFat %}
         <gFat>
@@ -379,6 +380,7 @@
             {% endif %}
         </gFat>
         {% endwith %}
+        {% endif %}
         {% endif %}
         {% if infNFCom.gFatCentral is defined -%}
         {% with gFatCentral = infNFCom.gFatCentral %}
