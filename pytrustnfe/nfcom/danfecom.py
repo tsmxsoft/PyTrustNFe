@@ -28,6 +28,7 @@ from reportlab.graphics import renderPDF
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.barcode.common import I2of5
 import pytz
+import locale
 from datetime import datetime, timedelta
 from dateutil import parser as dateparser
 
@@ -191,6 +192,8 @@ class DANFECom(object):
         pdfmetrics.registerFont(
             TTFont("NimbusSanL-Bold", os.path.join(path, "NimbusSanL Bold.ttf"))
         )
+        
+        locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8") 
         self.width = 210  # 21 x 29,7cm
         self.height = 297
         self.nLeft = 10
@@ -304,10 +307,9 @@ class DANFECom(object):
         #Homologação
         if tagtext(oNode=elem_ide, cTag="tpAmb") == "2":
             self.canvas.saveState()
-            self.canvas.rotate(90)
             self.canvas.setFont("Times-Bold", 40)
-            self.canvas.setFillColorRGB(0.57, 0.57, 0.57)
-            self.string(self.nLeft + 65, 449, "SEM VALOR FISCAL")
+            self.canvas.setFillColorRGB(0.5019607843137255, 0.5019607843137255, 0.5019607843137255,0.8)
+            self.string(self.nLeft,115, "SEM VALOR FISCAL")
             self.canvas.restoreState()
 
         # Cancelado
@@ -540,29 +542,35 @@ class DANFECom(object):
         styleN.alignment = TA_LEFT
 
         #Dados NFCom
-        cEnd = u"NOTA FISCAL FATURA No. %s<br/>" % ("{0:011}".format(int(tagtext(oNode=elem_ide, cTag="nNF"))))
+        cEnd = u"NOTA FISCAL FATURA Nº %s<br/>" % ("{0:011}".format(int(tagtext(oNode=elem_ide, cTag="nNF"))))
         cEnd += u"SÉRIE: " + tagtext(oNode=elem_ide, cTag="serie") + "<br /><br />"
-        cEnd += u"DATA DE EMISSÃO: " + dateparser.parse(tagtext(oNode=elem_ide, cTag="dhEmi")).strftime("%d/%m/%Y as %H:%I:%S") + "<br /><br />"
-        cEnd += u"CONSULTE PELA CHAVE DE ACESSO EM:<br />http://dfe-porta.sefazvirtual.rs.gov.br/NFCom<br /><br />"
+        demi = dateparser.parse(tagtext(oNode=elem_ide, cTag="dhEmi"))
+        cEnd += u"DATA DE EMISSÃO: " + demi.strftime("%d/%m/%Y") + u" às " + demi.strftime("%H:%I:%S") + u"<br /><br />"
         chavenfcom = elem_infnfcom.attrib["Id"][5:]
         cEnd += u"CHAVE DE ACESSO:<br /> %s" % (
             ' '.join(chavenfcom[i:i+4] for i in range(0, len(chavenfcom), 4))
         )
-
         P = Paragraph(cEnd, styleN)
         w, h = P.wrap(150 * mm, 20 * mm)
         P.drawOn(
-            self.canvas, (self.nLeft + 131) * mm, (self.height - nlin - 27) * mm
+            self.canvas, (self.nLeft + 131) * mm, (self.height - nlin - 20) * mm
         )
-        nlin += cEnd.count("<br")
+
+        P = Paragraph("<link href=\""+qrcod+"\">" + qrcod + "</link>", styleN)
+        w, h = P.wrap(60 * mm, 20 * mm)
+        P.drawOn(
+            self.canvas, (self.nLeft + 131) * mm, (self.height - nlin - 33) * mm
+        )
+
+        nlin += cEnd.count("<br") + 2
         self.canvas.setFillColor(white)
         
         if elem_infprot is not None:
             self.canvas.setFillColor(black)
-            self.string(self.nLeft + 131, nlin + 21, "Protocolo de Autorização: %s" %(
+            self.string(self.nLeft + 131, nlin + 16, "Protocolo de Autorização: %s" %(
                 tagtext(oNode=elem_infprot, cTag="nProt")
             ))
-            self.string(self.nLeft + 131, nlin + 24, dateparser.parse(tagtext(oNode=elem_infprot, cTag="dhRecbto")).strftime("%d/%m/%Y as %H:%I:%S%z"))
+            self.string(self.nLeft + 131, nlin + 19, dateparser.parse(tagtext(oNode=elem_infprot, cTag="dhRecbto")).strftime("%d/%m/%Y às %H:%I:%S%z"))
             nlin += 1
 
         #Área do contribuinte
@@ -644,7 +652,6 @@ class DANFECom(object):
             piscofins += decimal.Decimal(tagtext(oNode=item, cTag="vCOFINS") or 0) or decimal.Decimal(0)
             
             aliquota  = decimal.Decimal(tagtext(oNode=item, cTag="pICMS") or 0) or decimal.Decimal(0)
-            aliquota += decimal.Decimal(tagtext(oNode=item, cTag="pFCP") or 0) or decimal.Decimal(0)
             
             icms  = decimal.Decimal(tagtext(oNode=item, cTag="vICMS") or 0) or decimal.Decimal(0)
             icms += decimal.Decimal(tagtext(oNode=item, cTag="vFCP") or 0) or decimal.Decimal(0)
@@ -659,12 +666,12 @@ class DANFECom(object):
             if umed and unicode(umed).isnumeric() and int(umed)> 0:
                 self.stringcenter(nMr - 80, nLin, UMED[int(tagtext(oNode=item, cTag="uMed"))-1])
             self.stringcenter(nMr - 70, nLin, tagtext(oNode=item, cTag="qFaturada"))
-            self.stringcenter(nMr - 60, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vItem")), 8))
-            self.stringcenter(nMr - 50, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vProd")), 8))
-            self.stringcenter(nMr - 37, nLin, round_decimal(piscofins, 2))
-            self.stringcenter(nMr - 25, nLin, round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vBC") or 0), 8))
-            self.stringcenter(nMr - 15, nLin, round_decimal(decimal.Decimal(aliquota * 100), 4) + '%')
-            self.stringcenter(nMr - 5, nLin, round_decimal(decimal.Decimal(icms), 8))
+            self.stringcenter(nMr - 60, nLin, "R$ " + round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vItem")), 8))
+            self.stringcenter(nMr - 50, nLin, "R$ " + round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vProd")), 8))
+            self.stringcenter(nMr - 37, nLin, "R$ " + round_decimal(piscofins, 2))
+            self.stringcenter(nMr - 25, nLin, "R$ " + round_decimal(decimal.Decimal(tagtext(oNode=item, cTag="vBC") or 0), 8))
+            self.stringcenter(nMr - 15, nLin, round_decimal(decimal.Decimal(aliquota), 4) + '%')
+            self.stringcenter(nMr - 5, nLin, "R$ " + round_decimal(decimal.Decimal(icms), 8))
 
             #TODO: Fazer o codigo do item e produto quebrar linha
             #TODO: Segue abaixo o exemplo da danfe
@@ -699,11 +706,11 @@ class DANFECom(object):
 
         #col 1
         data = [
-            ('VALOR NFF', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vNF")), 8)),
-            ('TOTAL BASE DE CALCULO', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vBC")), 8)),
-            ('VALOR ICMS', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vICMS")), 8)),
-            ('VALOR ISENTO', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vDesc")), 8)),
-            ('VALOR OUTROS', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vOutro")), 8)),
+            ('VALOR NFF', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vNF")), 8)),
+            ('TOTAL BASE DE CÁLCULO', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vBC")), 8)),
+            ('VALOR ICMS', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vICMS")), 8)),
+            ('VALOR ISENTO', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vDesc")), 8)),
+            ('VALOR OUTROS', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vOutro")), 8)),
         ]
         t1 = Table(data,[None for x in range(len(data[0]))],[None for x in range(len(data))])
         t1.setStyle(TableStyle([
@@ -862,7 +869,7 @@ class DANFECom(object):
         #col2
         itens = []
         bcH = 0
-        P3 = Paragraph("CODIGO DE BARRAS<br/><br/><br/>", styleL)
+        P3 = Paragraph("CÓDIGO DE BARRAS<br/><br/><br/>", styleL)
         w, h = P1.wrap(((self.width - self.nLeft - self.nRight)/0.2) * mm, 6 * mm)
         itens.append(P3)
         bcH += h
