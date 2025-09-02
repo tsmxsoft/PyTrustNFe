@@ -9,7 +9,7 @@ import requests
 import traceback
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
-from pytrustnfe.nfse.focusnfe.assinatura import Assinatura
+from pytrustnfe.nfse.dsf_abrasf203.assinatura import Assinatura
 from lxml import etree
 
 
