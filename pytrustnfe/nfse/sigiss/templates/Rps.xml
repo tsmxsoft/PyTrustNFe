@@ -86,6 +86,6 @@
         <RegimeEspecialTributacao>{{ rps.regime_tributacao }}</RegimeEspecialTributacao>
         <OptanteSimplesNacional>{{ rps.optante_simples }}</OptanteSimplesNacional>
         <IncentivoFiscal>{{ rps.incentivo_fiscal }}</IncentivoFiscal>
-        <InformacoesComplementares>{{ rps.servico.informacao_complementar }}</InformacoesComplementares>
+        <InformacoesComplementares>{{ rps.servico.informacao_complementar|default("-") }}</InformacoesComplementares>
     </InfDeclaracaoPrestacaoServico>
 </Rps>
