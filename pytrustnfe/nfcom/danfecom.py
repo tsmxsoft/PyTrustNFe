@@ -875,7 +875,7 @@ class DANFECom(object):
         bcH += h
 
         codbar = tagtext(oNode=oXML_gfat, cTag="codBarras")
-        if codbar:
+        if codbar and len(codbar) >= 44:
             altura = 13 * mm
             comprimento = 100 * mm
             tracoFino = 0.254320987654 * mm  # Tamanho correto aproximado
