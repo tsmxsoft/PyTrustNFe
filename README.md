@@ -41,6 +41,7 @@ NFSe - Empresas Atendidas
 * **Directa** - Natal/RN
 * **DMISS** - Caucaia/CE
 * **DSF**
+* **DSF ABRASF 2.03**
 * **e-Receita**
 * **EBM Informática**
 * **EL (Versão Antiga)**
@@ -73,6 +74,7 @@ NFSe - Empresas Atendidas
 * **Portal Tributário (Tax Tecnologia)** TODO: ConsultarNfsePorRps e CancelarNfse
 * **Recife** - Recife/PE
 * **Saatri**
+* **SEGISS** - Limeira/SP
 * **SmartAPD** - Cariacica/ES
 * **Smart4 (Ativ)**
 * **SIASP (Publica)**
