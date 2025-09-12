@@ -1,0 +1,73 @@
+<GerarNfseEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+	<Rps>
+		<InfDeclaracaoPrestacaoServico Id="{{ rps.numero }}{{ rps.serie }}">
+			<Rps>
+				<IdentificacaoRps>
+					<Numero>{{ rps.numero }}</Numero>
+					<Serie>{{ rps.serie }}</Serie>
+					<Tipo>{{ rps.tipo_rps }}</Tipo>
+				</IdentificacaoRps>
+                    {% set datatempo = rps.data_emissao.split('T')[0].split('-') %}
+                    <DataEmissao>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</DataEmissao>
+                    <Status>{{rps.status}}</Status>
+                </Rps>
+                {% set datatempo = rps.data_competencia.split('T')[0].split('-') %}
+                <Competencia>{{ datatempo[0] }}-{{ datatempo[1] }}-{{ datatempo[2] }}</Competencia>
+                <Servico>
+				<Valores>
+					<ValorServicos>{{ rps.servico.valor_servico }}</ValorServicos>
+					<ValorDeducoes>{{ rps.servico.deducoes|default("0", true) }}</ValorDeducoes>
+					<ValorPis>{{ rps.servico.pis|default("0", true) }}</ValorPis>
+					<ValorCofins>{{ rps.servico.cofins|default("0", true) }}</ValorCofins>
+					<ValorInss>{{ rps.servico.inss|default("0", true) }}</ValorInss>
+					<ValorIr>{{ rps.servico.ir|default("0", true) }}</ValorIr>
+					<ValorCsll>{{ rps.servico.csll|default("0", true) }}</ValorCsll>
+					<OutrasRetencoes>{{ rps.servico.retencoes|default("0", true) }}</OutrasRetencoes>
+					<Aliquota>0</Aliquota>
+					<DescontoIncondicionado>{{ rps.servico.desconto_incondicionado|default("0", true) }}</DescontoIncondicionado>
+                    <DescontoCondicionado>{{ rps.servico.desconto_condicionado|default("0", true) }}</DescontoCondicionado>
+				</Valores>
+				<IssRetido>{{ rps.servico.iss_retido }}</IssRetido>
+				{% if rps.servico.iss_retido == 1 -%}
+                <ResponsavelRetencao>{% if rps.intermediario is defined -%}2{% else %}1{% endif %}</ResponsavelRetencao>
+                {% endif %}
+				<ItemListaServico>{{ rps.servico.codigo_atividade }}</ItemListaServico>
+				<Discriminacao>{{ rps.servico.discriminacao }}</Discriminacao>
+				<CodigoMunicipio>{{ rps.servico.codigo_municipio }}</CodigoMunicipio>
+				<!-- <CodigoPais>1058</CodigoPais> -->
+			</Servico>
+			<Prestador>
+				<CpfCnpj>
+					<Cnpj>{{ rps.prestador.cnpj }}</Cnpj>
+				</CpfCnpj>
+				<InscricaoMunicipal>{{ rps.prestador.inscricao_municipal }}</InscricaoMunicipal>
+			</Prestador>
+			<TomadorServico>
+				<IdentificacaoTomador>
+					<CpfCnpj>
+						<Cnpj>{{ rps.tomador.cpf_cnpj }}</Cnpj>
+					</CpfCnpj>
+					<InscricaoMunicipal>{{ rps.tomador.inscricao_municipal }}</InscricaoMunicipal>
+				</IdentificacaoTomador>
+				<RazaoSocial>{{ rps.tomador.razao_social }}</RazaoSocial>
+				<Endereco>
+					<Endereco>{{ rps.tomador.endereco }}</Endereco>
+					<Numero>{{ rps.tomador.numero }}</Numero>
+					<Complemento>{{ rps.tomador.complemento }}</Complemento>
+					<Bairro>{{ rps.tomador.bairro }}</Bairro>
+					<CodigoMunicipio>{{ rps.tomador.codigo_municipio }}</CodigoMunicipio>
+					<Uf>{{ rps.tomador.uf }}</Uf>
+					<Cep>{{ rps.tomador.cep }}</Cep>
+				</Endereco>
+				<Contato>
+					<Telefone>{{ rps.tomador.telefone }}</Telefone>
+					<Email>{{ rps.tomador.email }}</Email>
+				</Contato>
+				<AtualizaTomador>2</AtualizaTomador>
+				<TomadorExterior>2</TomadorExterior>
+			</TomadorServico>
+			<InformacoesComplementares>{{ rps.servico.informacao_complementar }}</InformacoesComplementares>
+		</InfDeclaracaoPrestacaoServico>
+	</Rps>
+	<Integridade>{{ rps.integridade }}</Integridade>
+</GerarNfseEnvio>
