@@ -258,7 +258,7 @@
                 <FUST>
                     <vBC>{{ det.imposto.FUST.vBC }}</vBC>
                     <pFUST>{{ det.imposto.FUST.pFUST }}</pFUST>
-                    <vFUTS>{{ det.imposto.FUST.vFUST }}</vFUST>
+                    <vFUST>{{ det.imposto.FUST.vFUST }}</vFUST>
                 </FUST>
                 {% endif %}
                 {% if det.imposto.FUNTTEL is defined -%}
