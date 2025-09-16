@@ -192,11 +192,12 @@
                     <vFCP>{{ det.imposto.ICMS.vFCP }}</vFCP>
                 </ICMS20>
                 {% endif %}
-                {% if det.imposto.ICMS.CST == '40' -%}
+                {% if det.imposto.ICMS.CST in ['40','41'] -%}
                 <ICMS40>
                     <CST>{{ det.imposto.ICMS.CST }}</CST>
                     <vICMSDeson>{{ det.imposto.ICMS.vICMSDeson }}</vICMSDeson>
                     <cBenef>{{ det.imposto.ICMS.cBenef }}</cBenef>
+                </ICMS40>
                 {% endif %}
                 {% if det.imposto.ICMS.CST == '51' -%}
                 <ICMS51>
