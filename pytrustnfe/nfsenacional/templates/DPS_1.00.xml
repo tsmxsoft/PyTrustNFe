@@ -356,7 +356,11 @@
                         <pTotTribMun>{{ valores.trib.totTrib.pTrotTrib.pTotTribMun }}</pTotTribMun>
                     </pTotTrib>
                     {% endif %}
-                    <indTotTrib>0</indTotTrib>
+                     {% if valores.trib.totTrib.pTotTribSN is defined -%}
+                    <pTotTribSN>{{ valores.trib.totTrib.pTotTribSN }}</pTotTribSN>
+                    {% else %}
+                    <pTotTribSN>0</pTotTribSN>
+                    {% endif %}
                 </totTrib>
             </trib>
         </valores>

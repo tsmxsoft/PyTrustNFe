@@ -95,7 +95,8 @@ def _render(certificado, method, sign, **kwargs):
     )
     signer = Assinatura(certificado.pfx, certificado.password)
     xml_string_send = render_xml(path, "%s_%s.xml" % (method, VERSAO), True, **kwargs)
-    
+
+
     xmlElem_send = etree.fromstring(
         xml_string_send, parser=parser)
 
@@ -456,6 +457,7 @@ def _abrasf_adapter(**kwargs):
             }
         }
     }
+
     if op_simples in ['1','2']:
         nfse_base["infDPS"]["prest"]["regTrib"].pop("regApTribSN")
     #Exigibilidade ISS
