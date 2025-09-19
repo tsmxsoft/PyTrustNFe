@@ -728,10 +728,10 @@ class DANFECom(object):
         data = [
             ('INFORMAÇÕES DOS TRIBUTOS', ''),
             ('TRIBUTO', 'VALOR'),
-            ('PIS', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vPIS")), 8)),
-            ('COFINS', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vCOFINS")), 8)),
-            ('FUST', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vFUST")), 8)),
-            ('FUNTTEL', 'R$' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vFUNTTEL")), 8)),
+            ('PIS', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vPIS")), 8)),
+            ('COFINS', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vCOFINS")), 8)),
+            ('FUST', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vFUST")), 8)),
+            ('FUNTTEL', 'R$ ' + round_decimal(decimal.Decimal(tagtext(oNode=oXML_total, cTag="vFUNTTEL")), 8)),
         ]
         t2 = Table(data,[None for x in range(len(data[0]))],[15 for x in range(len(data))])
         t2.setStyle(TableStyle([
