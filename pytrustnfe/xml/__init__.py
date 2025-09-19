@@ -3,12 +3,40 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import re
+import traceback
 from lxml import etree,objectify
 from jinja2 import Environment, FileSystemLoader
+from jinja2.exceptions import TemplateNotFound
+from jinja2.loaders import split_template_path, open_if_exists
+from os import path
 from . import filters
 from pytrustnfe.utils import ibge2siafi
 
 import sys
+
+class FileLoader(FileSystemLoader):
+    def get_source(self, environment, template):
+        pieces = split_template_path(template)
+        for searchpath in self.searchpath:
+            filename = path.join(searchpath, *pieces)
+            with open_if_exists(filename) as f:
+                if f is None:
+                    continue
+                try:
+                    contents = f.read().decode(self.encoding)
+                except:
+                    traceback.print_exc()
+
+            mtime = path.getmtime(filename)
+
+            def uptodate():
+                try:
+                    return path.getmtime(filename) == mtime
+                except OSError:
+                    return False
+
+            return contents, filename, uptodate
+        raise TemplateNotFound(template)
 
 
 def recursively_empty(e):
@@ -26,7 +54,7 @@ def truncate(value,len):
 
 def render_xml(path, template_name, remove_empty, remove_newline = True, **nfe):
     nfe = recursively_normalize(nfe)
-    env = Environment(loader=FileSystemLoader(
+    env = Environment(loader=FileLoader(
         path))
     env.filters["normalize"] = filters.strip_line_feed
     env.filters["normalize_str"] = filters.normalize_str
