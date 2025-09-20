@@ -22,6 +22,7 @@
 				<SITUACAO>4</SITUACAO>
 			{% else %}
 				<SITUACAO>1</SITUACAO>
+			{% endif %}
             {% if rps.servico.iss_retido|int == 1 %}
 			    <RETIDO>S</RETIDO>
             {% elif rps.servico.iss_retido|int == 2 %}
