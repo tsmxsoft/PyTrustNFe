@@ -45,7 +45,7 @@ def _render(certificado, method, **kwargs):
         kwargs["nfse"]["rps"]["numero"] = formatar_rps(kwargs["nfse"]["rps"]["numero"])
 
 
-    usuario = kwargs.get('nfse', {}).get('usuario', None)
+    usuario = kwargs.get('nfse', {}).get('cnpj_prestador', None)
     senha = kwargs.get('nfse', {}).get('senha', None)
 
     nfse_competencia = kwargs.get('nfse', {}).get('lista_rps', [{}])[0].get('data_competencia', None)
