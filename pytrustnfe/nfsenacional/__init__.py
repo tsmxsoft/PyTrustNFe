@@ -95,6 +95,7 @@ def _render(certificado, method, sign, **kwargs):
     )
     signer = Assinatura(certificado.pfx, certificado.password)
     xml_string_send = render_xml(path, "%s_%s.xml" % (method, VERSAO), True, **kwargs)
+    print(xml_string_send)
 
 
     xmlElem_send = etree.fromstring(
@@ -150,7 +151,7 @@ def _send(certificado, method, **kwargs):
         payload = {
             "pedidoRegistroEventoXmlGZipB64": xml_send,
         }
-    request = requests.request(method_request, base_url,json=payload, params=params, cert=(cert, key), headers=headers, verify=certifi.where())
+    request = requests.request(method_request, base_url,json=payload, params=params, cert=(cert, key), headers=headers, verify=False)
     return {"sent_xml": xml_send, "received_xml": request.json(), "obj": request}
 
 
