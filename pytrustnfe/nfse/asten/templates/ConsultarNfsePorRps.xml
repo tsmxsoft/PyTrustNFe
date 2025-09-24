@@ -4,13 +4,13 @@
     <IdentificacaoRps>
         <Numero>{{ nfse.rps.numero }}</Numero>
         <Serie>{{ nfs.rps.serie }}</Serie>
-        <Tipo>{{ nfse.rps.ti }}</Tipo>
+        <Tipo>{{ nfse.rps.tipo }}</Tipo>
     </IdentificacaoRps>
     <Prestador>
         <CpfCnpj>
-            <Cnpj>11485077000115</Cnpj>
+            <Cnpj>{{ nfse.cnpj_prestador }}</Cnpj>
         </CpfCnpj>
-        <InscricaoMunicipal>597159</InscricaoMunicipal>
-        <Token>{{nfse.chave_digital}}</Token>
+        <InscricaoMunicipal>{{ nfse.inscricao_municipal }}</InscricaoMunicipal>
+        <Token>{{ nfse.chave_digital }}</Token>
     </Prestador>
 </ConsultarNfseRpsEnvio>
