@@ -118,6 +118,15 @@ def recepcionar_lote_rps_sincrono(certificado, **kwargs):
     return _send(certificado, "RecepcionarLoteRpsSincrono", **kwargs)
 
 
+def xml_consultar_nfse_por_rps(certificado, **kwargs):
+    return _render(certificado, "ConsultarNfsePorRps", **kwargs)
+
+def consultar_nfse_por_rps(certificado, **kwargs):
+    if "xml" not in kwargs:
+        kwargs["xml"] = _render(certificado, "ConsultarNfsePorRps", **kwargs)
+    return _send(certificado, "ConsultarNfsePorRps", **kwargs)
+
+
 def xml_cancelar_nfse(certificado, **kwargs):
     return clean_x509(_render(certificado, "CancelarNfse", **kwargs))
 

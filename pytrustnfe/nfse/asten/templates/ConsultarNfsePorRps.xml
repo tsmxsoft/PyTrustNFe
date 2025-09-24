@@ -1,0 +1,16 @@
+<ConsultarNfseRpsEnvio
+    xmlns:ns="http://www.w3.org/2000/09/xmldsig#"
+	xmlns="http://www.abrasf.org.br/nfse.xsd">
+    <IdentificacaoRps>
+        <Numero>{{ nfse.rps.numero }}</Numero>
+        <Serie>{{ nfs.rps.serie }}</Serie>
+        <Tipo>{{ nfse.rps.ti }}</Tipo>
+    </IdentificacaoRps>
+    <Prestador>
+        <CpfCnpj>
+            <Cnpj>11485077000115</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>597159</InscricaoMunicipal>
+        <Token>{{nfse.chave_digital}}</Token>
+    </Prestador>
+</ConsultarNfseRpsEnvio>
