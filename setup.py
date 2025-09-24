@@ -96,6 +96,7 @@ later (LGPLv2+)",
             "nfse/ativ/templates/*xml",
             "nfse/segiss/templates/*xml",
             "nfse/dsf_abrasf203/templates/*xml",
+            "nfse/sig_issweb/templates/*xml",
             "xml/schemas/*xsd",
             "data/csvs/*csv",
         ]
