@@ -6,6 +6,7 @@ import re
 import os
 import sys
 import requests
+import traceback
 
 from pytrustnfe.xml import render_xml, sanitize_response
 from pytrustnfe.certificado import extract_cert_and_key_from_pfx, save_cert_key
@@ -124,6 +125,24 @@ def xml_consultar_nfse_por_rps(certificado, **kwargs):
 def consultar_nfse_por_rps(certificado, **kwargs):
     if "xml" not in kwargs:
         kwargs["xml"] = _render(certificado, "ConsultarNfsePorRps", **kwargs)
+    response = _send(certificado, "ConsultarNfsePorRps", **kwargs)
+    xml = None
+
+    try:
+        res, xml_obj = sanitize_response(response['object']['ConsultarNfsePorRpsResponse']['return']['outputXML'].text)
+        xml = etree.tostring(xml_obj, pretty_print=True)
+        if sys.version_info[0] > 2:
+            from html.parser import HTMLParser
+            xml = xml.encode(str)
+        else:
+            from HTMLParser import HTMLParser
+            xml = xml.encode('utf-8','ignore')
+        #unescape
+        xml = HTMLParser().unescape(xml)
+    except:
+        traceback.print_exc()
+
+    return xml
     return _send(certificado, "ConsultarNfsePorRps", **kwargs)
 
 
