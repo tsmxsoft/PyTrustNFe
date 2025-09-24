@@ -3,7 +3,7 @@
 	xmlns="http://www.abrasf.org.br/nfse.xsd">
     <IdentificacaoRps>
         <Numero>{{ nfse.rps.numero }}</Numero>
-        <Serie>{{ nfs.rps.serie }}</Serie>
+        <Serie>{{ nfse.rps.serie }}</Serie>
         <Tipo>{{ nfse.rps.tipo }}</Tipo>
     </IdentificacaoRps>
     <Prestador>
