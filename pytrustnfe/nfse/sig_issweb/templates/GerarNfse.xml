@@ -1,0 +1,97 @@
+<notafiscal>
+    {% set dataemissao = rps.data_emissao.split('T')[0].split('-') %}
+    <cnpj_cpf_prestador>{{ rps.prestador.cnpj }}</cnpj_cpf_prestador>
+    {% if rps.tomador.cpf_cnpj|length == 14 %}
+        <pessoa_destinatario>J</pessoa_destinatario>
+    {% else %}
+        <pessoa_destinatario>F</pessoa_destinatario>
+    {% endif %}
+    <exterior_dest>0</exterior_dest>
+    <ie_destinatario>-</ie_destinatario>
+    <im_destinatario>-</im_destinatario>
+    <razao_social_destinatario>{{ rps.tomador.razao_social }}</razao_social_destinatario>
+    <cnpj_cpf_destinatario>{{ rps.tomador.cpf_cnpj }}</cnpj_cpf_destinatario>
+    <endereco_destinatario>{{ rps.tomador.endereco }}</endereco_destinatario>
+    <numero_ende_destinatario>{{ rps.tomador.numero }}</numero_ende_destinatario>
+    <complemento_ende_destinatario>{{ rps.tomador.complemento|default("-", true) }}</complemento_ende_destinatario>
+    <bairro_destinatario>{{ rps.tomador.bairro }}</bairro_destinatario>
+    <cep_destinatario>{{ rps.tomador.cep }}</cep_destinatario>
+    <cidade_destinatario>{{ rps.tomador.cidade }}</cidade_destinatario>
+    <uf_destinatario>{{ rps.tomador.uf }}</uf_destinatario>
+    <pais_destinatario>Brasil</pais_destinatario>
+    <fone_destinatario>{{ rps.tomador.telefone|default("-", true) }}</fone_destinatario>
+    <email_destinatario>{{ rps.tomador.email|default("-", true) }}</email_destinatario>
+    <valor_nf>{{ rps.servico.valor_servico }}</valor_nf>
+    <valor_servico>{{ rps.servico.valor_servico }}</valor_servico>
+    <deducao>{{ rps.servico.deducoes|default(0, true) }}</deducao>
+    <data_emissao>{{ dataemissao[2] }}/{{ dataemissao[1] }}/{{ dataemissao[0] }}</data_emissao>
+    <forma_de_pagamento>Pgto</forma_de_pagamento>
+    <descricao>{{ rps.servico.discriminacao }}</descricao>
+    <id_codigo_servico>01.07.01</id_codigo_servico>
+    <cancelada>N</cancelada>
+    {% if rps.servico.iss_retido|int == 2 %}
+        <iss_retido>N</iss_retido>
+    {% else %}
+        <iss_retido>S</iss_retido>
+    {% endif %}
+    <!-- IMPOSTOS -->
+    <!-- ISS -->
+    <aliq_iss>{{ rps.servico.aliquota | float * 100 }}</aliq_iss>
+    <valor_iss>{{ rps.servico.iss }}</valor_iss>
+    <!-- PIS -->
+    {% if rps.servico.pis %}
+        <bc_pis>{{ rps.servico.valor_servico }}</bc_pis>
+    {% else %}
+        <bc_pis>0</bc_pis>
+        <aliq_pis>0</aliq_pis>
+        <valor_pis>0</valor_pis>
+    {% endif %}
+    <!-- COFINS -->
+    {% if rps.servico.cofins %}
+        <bc_cofins>{{ rps.servico.valor_servico }}</bc_cofins>
+        <aliq_cofins>{{ rps.servico.aliquota }}</aliq_cofins>
+        <valor_cofins>{{ rps.servico.cofins }}</valor_cofins>
+    {% else %}
+        <aliq_cofins>0</aliq_cofins>
+        <bc_cofins>0</bc_cofins>
+        <valor_cofins>0</valor_cofins>
+    {% endif %}
+    <!-- CSLL -->
+    {% if rps.servico.csll %}
+        <bc_csll>{{ rps.servico.valor_servico }}</bc_csll>
+        <aliq_csll>{{ rps.servico.aliquota }}</aliq_csll>
+        <valor_csll>{{ rps.servico.csll }}</valor_csll>
+    {% else %}
+        <bc_csll>0</bc_csll>
+        <aliq_csll>0</aliq_csll>
+        <valor_csll>0</valor_csll>
+    {% endif %}
+    <!-- IRRF -->
+    {% if rps.servico.irrf %}
+        <bc_irrf>{{ rps.servico.valor_servico }}</bc_irrf>
+        <aliq_irrf>{{ rps.servico.aliquota }}</aliq_irrf>
+        <valor_irrf>{{ rps.servico.irrf }}</valor_irrf>
+    {% else %}
+        <bc_irrf>0</bc_irrf>
+        <aliq_irrf>0</aliq_irrf>
+        <valor_irrf>0</valor_irrf>
+    {% endif %}
+    <!-- INSS -->
+    {% if rps.servico.inss %}
+        <bc_inss>{{ rps.servico.valor_servico }}</bc_inss>
+        <aliq_inss>{{ rps.servico.aliquota }}</aliq_inss>
+        <valor_inss>{{ rps.servico.inss }}</valor_inss>
+    {% else %}
+        <bc_inss>0</bc_inss>
+        <aliq_inss>0</aliq_inss>
+        <valor_inss>0</valor_inss>
+    {% endif %}
+    <sistema_gerador>PyTrustNFe3</sistema_gerador>
+    <serie_rps>{{ rps.serie }}</serie_rps>
+    <rps>{{ rps.numero }}</rps>
+    <codigo_nbs>{{ rps.servico.codigo_atividade }}</codigo_nbs>
+    <exterior_prestacao_servico>0</exterior_prestacao_servico>
+    <pais_local_prest>Brasil</pais_local_prest>
+    <cidade_local_prest>{{ rps.prestador.cidade }}</cidade_local_prest>
+    <uf_local_prest>{{ rps.prestador.uf }}</uf_local_prest>
+</notafiscal>
