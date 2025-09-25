@@ -85,7 +85,7 @@ def localizar_url(servico, estado, mod="55", ambiente=2):
     
     # Implementação inicial do NFCom
     # Todos estados utilizam o servidor SVRS para NFCom
-    if mod == "62":
+    if mod == "62" and estado not in ["31"]:
         ws = ESTADO_WS["SVRS"]
 
     if servico in (WS_DFE_DISTRIBUICAO, WS_DOWNLOAD_NFE):
@@ -613,7 +613,7 @@ UFMG = {
             WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
             WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
-            WS_NFCOM_QR_CODE: "portalnfcom.fazenda.mg.gov.br",
+            WS_NFCOM_QR_CODE: "nfcom.fazenda.mg.gov.br",
         },
         AMBIENTE_HOMOLOGACAO: {
             "servidor": "hnfcom.fazenda.mg.gov.br",
@@ -621,7 +621,7 @@ UFMG = {
             WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
             WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
-            WS_NFCOM_QR_CODE: "portalnfcom.fazenda.mg.gov.br",
+            WS_NFCOM_QR_CODE: "hnfcom.fazenda.mg.gov.br",
         },
     },
     CTE_MODELO: {
