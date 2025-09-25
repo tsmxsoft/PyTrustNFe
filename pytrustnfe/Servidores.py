@@ -191,7 +191,7 @@ SVRS = {
             WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
             WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
-            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br",
+            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br/NFCom",
         },
         AMBIENTE_HOMOLOGACAO: {
             "servidor": "nfcom-homologacao.svrs.rs.gov.br",
@@ -199,7 +199,7 @@ SVRS = {
             WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
             WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
-            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br",
+            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br/NFCom",
         },
     },
     CTE_MODELO: {
@@ -447,6 +447,24 @@ UFMT = {
             WS_NFCE_QR_CODE: "http://www.sefaz.mt.gov.br/nfce/consultanfce",
         },
     },
+    NFCOM_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfcom.svrs.rs.gov.br",
+            WS_NFCOM_CONSULTA: "WS/NFComConsulta/NFComConsulta.asmx?wsdl",
+            WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
+            WS_NFCOM_QR_CODE: "www.sefaz.mt.gov.br/nfcom-ext-fe",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "homologacao.sefaz.mt.gov.br",
+            WS_NFCOM_CONSULTA: "nfcom/services/NFComConsulta?wsdl",
+            WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
+            WS_NFCOM_QR_CODE: "homologacao.sefaz.mt.gov.br/nfcom-ext-fe",
+        },
+    },
     CTE_MODELO: {
         AMBIENTE_PRODUCAO: {
             "servidor": "cte.sefaz.mt.gov.br",
@@ -470,7 +488,6 @@ UFMT = {
         }
     }
 }
-UFMT[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFMS = {
     NFE_MODELO: {
@@ -589,6 +606,24 @@ UFMG = {
             WS_NFCE_QR_CODE: "nfce.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml?",
         },
     },
+    NFCOM_MODELO: {
+        AMBIENTE_PRODUCAO: {
+            "servidor": "nfcom.fazenda.mg.gov.br",
+            WS_NFCOM_CONSULTA: "nfcom/services/NFComConsulta?wsdl",
+            WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
+            WS_NFCOM_QR_CODE: "portalnfcom.fazenda.mg.gov.br",
+        },
+        AMBIENTE_HOMOLOGACAO: {
+            "servidor": "hnfcom.fazenda.mg.gov.br",
+            WS_NFCOM_CONSULTA: "nfcom/services/NFComConsulta?wsdl",
+            WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
+            WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
+            WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
+            WS_NFCOM_QR_CODE: "portalnfcom.fazenda.mg.gov.br",
+        },
+    },
     CTE_MODELO: {
         AMBIENTE_PRODUCAO: {
             "servidor": "cte.fazenda.mg.gov.br",
@@ -612,7 +647,6 @@ UFMG = {
         }
     }
 }
-UFMG[NFCOM_MODELO] = copy(SVRS[NFCOM_MODELO])
 
 UFPR = {
     NFE_MODELO: {
