@@ -191,7 +191,7 @@ SVRS = {
             WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
             WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
-            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br/NFCom",
+            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br/Nfcom/QrCode",
         },
         AMBIENTE_HOMOLOGACAO: {
             "servidor": "nfcom-homologacao.svrs.rs.gov.br",
@@ -199,7 +199,7 @@ SVRS = {
             WS_NFCOM_RECEPCAO: "WS/NFComRecepcao/NFComRecepcao.asmx?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "WS/NFComRecepcaoEvento/NFComRecepcaoEvento.asmx?wsdl",
             WS_NFCOM_STATUS_SERVICO: "WS/NFComStatusServico/NFComStatusServico.asmx?wsdl",
-            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br/NFCom",
+            WS_NFCOM_QR_CODE: "dfe-portal.svrs.rs.gov.br/Nfcom/QrCode",
         },
     },
     CTE_MODELO: {
@@ -613,7 +613,7 @@ UFMG = {
             WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
             WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
-            WS_NFCOM_QR_CODE: "nfcom.fazenda.mg.gov.br",
+            WS_NFCOM_QR_CODE: "portalnfcom.fazenda.mg.gov.br/qrcode",
         },
         AMBIENTE_HOMOLOGACAO: {
             "servidor": "hnfcom.fazenda.mg.gov.br",
@@ -621,7 +621,7 @@ UFMG = {
             WS_NFCOM_RECEPCAO: "nfcom/services/NFComRecepcao?wsdl",
             WS_NFCOM_RECEPCAO_EVENTO: "nfcom/services/NFComRecepcaoEvento?wsdl",
             WS_NFCOM_STATUS_SERVICO: "nfcom/services/NFComStatusServico?wsdl",
-            WS_NFCOM_QR_CODE: "hnfcom.fazenda.mg.gov.br",
+            WS_NFCOM_QR_CODE: "portalnfcom.fazenda.mg.gov.br/qrcode",
         },
     },
     CTE_MODELO: {

@@ -289,8 +289,8 @@ def nfcom_valor(valor):
 
 def nfcom_qrcode(chNFCom, tpAmb, sigla, offline=False, assinatura=""):
     if offline:
-        return "https://%s/Nfcom/QrCode?chNFCom=%s&tpAmb=%d&amp;sign=%s" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb,assinatura)
-    return "https://%s/Nfcom/QrCode?chNFCom=%s&amp;tpAmb=%d" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb)
+        return "https://%s?chNFCom=%s&tpAmb=%d&amp;sign=%s" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb,assinatura)
+    return "https://%s?chNFCom=%s&amp;tpAmb=%d" %(ESTADO_WS[SIGLA_ESTADO[str(sigla)]]["62"][tpAmb]["QRCode"],chNFCom,tpAmb)
 
 def validar_dv(chave,dv):
     pesos = [4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2,9,8,7,6,5,4,3,2]
