@@ -85,7 +85,7 @@ def localizar_url(servico, estado, mod="55", ambiente=2):
     
     # Implementação inicial do NFCom
     # Todos estados utilizam o servidor SVRS para NFCom
-    if mod == "62":
+    if mod == "62" and estado not in ["31"]:
         ws = ESTADO_WS["SVRS"]
 
     if servico in (WS_DFE_DISTRIBUICAO, WS_DOWNLOAD_NFE):
